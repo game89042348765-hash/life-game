@@ -876,6 +876,267 @@
     font-size: 13px;
   }
 </style>
+<style>
+  /* Полные названия без ограничения строк */
+  .task-title {
+    display: block;
+    overflow: visible;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    max-height: none;
+    -webkit-line-clamp: unset;
+  }
+
+  /* Тип задания и награды — компактной строкой.
+     На узком экране перенос разрешён. */
+  .compact-details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 5px 8px;
+    margin: 7px 0 12px;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .detail-muted,
+  .detail-separator {
+    color: var(--muted);
+  }
+
+  .detail-reward {
+    color: var(--accent);
+    font-weight: 650;
+  }
+
+  .done .detail-reward {
+    color: #b9a84e;
+  }
+
+  .more-button {
+    font-size: 24px;
+    line-height: 1;
+    color: var(--muted);
+  }
+
+  .menu-actions {
+    display: grid;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  /* Только клавиатурный фокус получает обводку */
+  button:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+</style>
+<style>
+  .compact-details .detail-reward {
+    display: inline-block;
+    max-width: 100%;
+  }
+
+  .compact-details .detail-separator {
+    display: none;
+  }
+
+  .compact-details {
+    column-gap: 14px;
+    row-gap: 4px;
+  }
+</style>
+<style>
+  .quest-reward-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 6px 0 8px;
+  }
+
+  .quest-reward-line .compact-details {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .quest-plan-toggle {
+    flex: 0 0 auto;
+    min-height: 32px !important;
+    margin: 0 !important;
+    gap: 6px !important;
+    color: var(--muted);
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .quest-plan-toggle input {
+    flex: 0 0 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    min-height: 18px !important;
+  }
+
+  @media (max-width: 390px) {
+    .quest-reward-line {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .quest-plan-toggle {
+      align-self: flex-start;
+    }
+  }
+</style>
+<style>
+  /* Центральное уведомление о награде */
+  .reward-toast {
+    position: fixed;
+    z-index: 100;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(.85);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 210px;
+    max-width: calc(100vw - 40px);
+    min-height: 82px;
+    padding: 18px 26px;
+
+    border: 2px solid var(--accent);
+    border-radius: 14px;
+    background: #18180f;
+    color: var(--accent);
+    text-align: center;
+    font-size: 25px;
+    font-weight: 900;
+    white-space: nowrap;
+
+    opacity: 0;
+    pointer-events: none;
+
+    box-shadow:
+      0 0 0 9999px #00000066,
+      0 0 35px #ffda2966,
+      0 12px 35px #000c;
+  }
+
+  .reward-toast.show {
+    animation: reward-toast-center 1.7s ease-out forwards;
+  }
+
+  .reward-toast.level-up {
+    animation-duration: 3.6s;
+    min-width: 260px;
+    min-height: 96px;
+    border-color: #fff29a;
+    background: #302b0d;
+    color: #fff29a;
+    font-size: 27px;
+    box-shadow:
+      0 0 0 9999px #00000070,
+      0 0 45px #ffda2999,
+      0 14px 40px #000d;
+  }
+
+  @keyframes reward-toast-center {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.78);
+    }
+
+    15% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.08);
+    }
+
+    30% {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    75% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.96);
+    }
+  }
+
+  @media (max-width: 390px) {
+    .reward-toast {
+      min-width: 190px;
+      min-height: 74px;
+      padding: 16px 20px;
+      font-size: 21px;
+    }
+
+    .reward-toast.level-up {
+      min-width: 230px;
+      font-size: 23px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reward-toast.show {
+      animation: reward-toast-simple-center 1.3s ease-out forwards;
+    }
+  }
+
+  @keyframes reward-toast-simple-center {
+    0%, 20% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+</style>
+<style>
+  .reward-toast.day-bonus-toast {
+    min-width: 270px;
+    min-height: 105px;
+    border-color: #fff29a;
+    background: #332d0b;
+    color: #fff29a;
+    font-size: 22px;
+    white-space: normal;
+    line-height: 1.35;
+    text-align: center;
+    box-shadow:
+      0 0 0 9999px #00000078,
+      0 0 50px #ffda29aa,
+      0 14px 42px #000e;
+  }
+
+  .reward-toast.day-bonus-toast.show {
+    animation-duration: 4s;
+  }
+
+  @media (max-width: 390px) {
+    .reward-toast.day-bonus-toast {
+      min-width: 250px;
+      font-size: 19px;
+    }
+  }
+</style>
 </head>
 
 <body>
@@ -946,8 +1207,9 @@
   // ===== Настройки и состояние =====
 
   const STORAGE_KEY = "lifegame-prototype-v1";
-  const MIN_DAY_TASKS = 3;
-  const DAY_REWARD = 50;
+    const MIN_DAY_TASKS = 3;
+  const DAY_REWARD = 100;
+  const LEVEL_COST = 1000;
 
   const BLOCKS = [
     "Душевное состояние",
@@ -1429,6 +1691,14 @@
       return false;
     }
 
+        const earnedBefore = totals(state).earned;
+    const levelBefore = Math.floor(
+  earnedBefore / LEVEL_COST
+) + 1;
+    const completionIdsBefore = new Set(
+      state.completions.map(record => record.id)
+    );
+
     let next;
 
     try {
@@ -1456,8 +1726,42 @@
     try {
       const serialized = JSON.stringify(next);
       localStorage.setItem(STORAGE_KEY, serialized);
-      storedSnapshot = serialized;
+            storedSnapshot = serialized;
       state = next;
+
+            const earnedAfter = totals(state).earned;
+      const rewardAmount = earnedAfter - earnedBefore;
+      const levelAfter = Math.floor(
+        earnedAfter / LEVEL_COST
+      ) + 1;
+
+      const dayBonusAdded = state.completions.some(record =>
+        !completionIdsBefore.has(record.id) &&
+        record.taskId.startsWith("day-bonus:")
+      );
+
+      render();
+
+      if (rewardAmount > 0) {
+        playCoinSound();
+        showRewardToast(rewardAmount);
+      }
+
+      if (dayBonusAdded) {
+        setTimeout(() => {
+          playDayBonusSound();
+          showDayBonusToast();
+        }, rewardAmount > DAY_REWARD ? 900 : 150);
+      }
+
+            if (levelAfter > levelBefore) {
+        setTimeout(() => {
+          playLevelUpSound();
+          showRewardToast(0, levelAfter);
+        }, rewardAmount > 0 ? 1900 : 250);
+      }
+
+      return true;
     } catch (error) {
       storageError(
         "Сохранение не удалось. Действие не применено. " +
@@ -1469,8 +1773,7 @@
       return false;
     }
 
-    render();
-    return true;
+    
   }
 
   function syncDay() {
@@ -1524,7 +1827,258 @@
     bar.append(fill);
     return bar;
   }
+  let coinAudioContext = null;
+  function playLevelUpSound() {
+    try {
+      const AudioContext =
+        window.AudioContext || window.webkitAudioContext;
 
+      if (!AudioContext) return;
+
+      if (!coinAudioContext) {
+        coinAudioContext = new AudioContext();
+      }
+
+      if (coinAudioContext.state === "suspended") {
+        coinAudioContext.resume();
+      }
+
+      const now = coinAudioContext.currentTime;
+
+      const notes = [
+        { frequency: 523.25, delay: 0 },
+        { frequency: 659.25, delay: 0.14 },
+        { frequency: 783.99, delay: 0.28 },
+        { frequency: 1046.5, delay: 0.44 }
+      ];
+
+      notes.forEach(note => {
+        const oscillator = coinAudioContext.createOscillator();
+        const gain = coinAudioContext.createGain();
+
+        oscillator.type = "triangle";
+        oscillator.frequency.setValueAtTime(
+          note.frequency,
+          now + note.delay
+        );
+
+        gain.gain.setValueAtTime(
+          0.0001,
+          now + note.delay
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.16,
+          now + note.delay + 0.025
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.0001,
+          now + note.delay + 0.42
+        );
+
+        oscillator.connect(gain);
+        gain.connect(coinAudioContext.destination);
+
+        oscillator.start(now + note.delay);
+        oscillator.stop(now + note.delay + 0.45);
+      });
+    } catch (error) {
+      console.warn(
+        "Звук повышения уровня недоступен:",
+        error
+      );
+    }
+  }
+    function playToneSequence(notes, volume = 0.14) {
+    try {
+      const AudioContext =
+        window.AudioContext || window.webkitAudioContext;
+
+      if (!AudioContext) return;
+
+      if (!coinAudioContext) {
+        coinAudioContext = new AudioContext();
+      }
+
+      if (coinAudioContext.state === "suspended") {
+        coinAudioContext.resume();
+      }
+
+      const now = coinAudioContext.currentTime;
+
+      notes.forEach(note => {
+        const oscillator = coinAudioContext.createOscillator();
+        const gain = coinAudioContext.createGain();
+
+        oscillator.type = note.type || "triangle";
+
+        oscillator.frequency.setValueAtTime(
+          note.frequency,
+          now + note.delay
+        );
+
+        gain.gain.setValueAtTime(
+          0.0001,
+          now + note.delay
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+          volume,
+          now + note.delay + 0.025
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.0001,
+          now + note.delay + note.duration
+        );
+
+        oscillator.connect(gain);
+        gain.connect(coinAudioContext.destination);
+
+        oscillator.start(now + note.delay);
+        oscillator.stop(
+          now + note.delay + note.duration + 0.03
+        );
+      });
+    } catch (error) {
+      console.warn("Звук недоступен:", error);
+    }
+  }
+
+  function playDayBonusSound() {
+    playToneSequence([
+      { frequency: 523.25, delay: 0, duration: .28 },
+      { frequency: 659.25, delay: .13, duration: .28 },
+      { frequency: 783.99, delay: .26, duration: .32 },
+      { frequency: 1046.5, delay: .43, duration: .55 }
+    ], 0.17);
+  }
+
+  function playPurchaseSound() {
+    playToneSequence([
+      { frequency: 392, delay: 0, duration: .18 },
+      { frequency: 523.25, delay: .12, duration: .24 },
+      { frequency: 659.25, delay: .25, duration: .38 }
+    ], 0.12);
+  }
+  function playCoinSound() {
+    try {
+      const AudioContext =
+        window.AudioContext || window.webkitAudioContext;
+
+      if (!AudioContext) return;
+
+      if (!coinAudioContext) {
+        coinAudioContext = new AudioContext();
+      }
+
+      if (coinAudioContext.state === "suspended") {
+        coinAudioContext.resume();
+      }
+
+      const now = coinAudioContext.currentTime;
+
+      // Небольшая последовательность нот,
+      // создающая ощущение падающих монет.
+      const notes = [
+        { frequency: 880, delay: 0 },
+        { frequency: 1175, delay: 0.07 },
+        { frequency: 1480, delay: 0.14 }
+      ];
+
+      notes.forEach(note => {
+        const oscillator = coinAudioContext.createOscillator();
+        const gain = coinAudioContext.createGain();
+
+        oscillator.type = "triangle";
+        oscillator.frequency.setValueAtTime(
+          note.frequency,
+          now + note.delay
+        );
+
+        gain.gain.setValueAtTime(
+          0.0001,
+          now + note.delay
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.12,
+          now + note.delay + 0.01
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.0001,
+          now + note.delay + 0.16
+        );
+
+        oscillator.connect(gain);
+        gain.connect(coinAudioContext.destination);
+
+        oscillator.start(now + note.delay);
+        oscillator.stop(now + note.delay + 0.18);
+      });
+    } catch (error) {
+      // Звук необязателен: ошибка аудио не должна
+      // ломать начисление монет.
+      console.warn("Звук монет недоступен:", error);
+    }
+  }
+  let rewardToastTimer = null;
+
+  function showRewardToast(amount, levelUp = false) {
+    if (!amount && !levelUp) return;
+
+    const oldToast = document.querySelector(".reward-toast");
+
+    if (oldToast) {
+      oldToast.remove();
+    }
+
+    const toast = document.createElement("div");
+    toast.className = "reward-toast";
+
+    if (levelUp) {
+      toast.classList.add("level-up");
+      toast.textContent = `★ УРОВЕНЬ ${levelUp}`;
+    } else {
+      toast.textContent = `+${amount} монет`;
+    }
+
+    document.body.append(toast);
+
+    // Перезапускаем CSS-анимацию.
+    requestAnimationFrame(() => {
+      toast.classList.add("show");
+    });
+
+    clearTimeout(rewardToastTimer);
+
+            rewardToastTimer = setTimeout(() => {
+      toast.remove();
+    }, levelUp ? 3800 : 1700);
+  }
+    function showDayBonusToast() {
+    const oldToast = document.querySelector(".reward-toast");
+
+    if (oldToast) oldToast.remove();
+
+    const toast = document.createElement("div");
+    toast.className = "reward-toast day-bonus-toast";
+    toast.textContent = `★ БОНУС ДНЯ`;
+
+    document.body.append(toast);
+
+    requestAnimationFrame(() => {
+      toast.classList.add("show");
+    });
+
+    clearTimeout(rewardToastTimer);
+
+    rewardToastTimer = setTimeout(() => {
+      toast.remove();
+    }, 4200);
+  }
   function balanceCard(value) {
     const card = el("div", "card balance");
 
@@ -1605,26 +2159,92 @@
     return label;
   }
 
+    function openCardMenu(collection, id, allowDelete = true) {
+    const item = state[collection].find(record => record.id === id);
+    if (!item) return;
+
+    let menu = document.getElementById("card-menu");
+
+    if (!menu) {
+      menu = el("dialog");
+      menu.id = "card-menu";
+      menu.setAttribute("aria-labelledby", "card-menu-title");
+      document.body.append(menu);
+    }
+
+    menu.replaceChildren();
+
+    const title = el("h2", "", item.name);
+    title.id = "card-menu-title";
+    title.style.overflowWrap = "anywhere";
+
+    menu.append(title);
+
+    const actions = el("div", "menu-actions");
+
+    if (collection === "quests") {
+      actions.append(
+        btn(
+          "Настроить награду за шаг",
+          "button secondary full",
+          () => {
+            menu.close();
+            configureStepReward(id);
+          },
+          true
+        )
+      );
+    }
+
+    if (allowDelete) {
+      actions.append(
+        btn(
+          "Удалить",
+          "button secondary full",
+          () => {
+            if (!confirm(
+              "Удалить «" + item.name + "»? " +
+              "Уже начисленные монеты и история покупок останутся."
+            )) return;
+
+            const success = transact(data => {
+              data[collection] = data[collection].filter(
+                record => record.id !== id
+              );
+            });
+
+            if (success) menu.close();
+          },
+          true
+        )
+      );
+    }
+
+    actions.append(
+      btn("Закрыть", "button full", () => menu.close())
+    );
+
+    menu.append(actions);
+    menu.showModal();
+  }
+
   function cardHead(item, collection, allowDelete = true) {
     const head = el("div", "task-head");
     head.append(el("div", "task-title", item.name));
 
-    if (allowDelete) {
-      const remove = btn("×", "delete", () => {
-        if (!confirm(
-          "Удалить «" + item.name + "»? " +
-          "Уже начисленные монеты и история покупок останутся."
-        )) return;
+    if (allowDelete || collection === "quests") {
+      const more = btn(
+        "⋯",
+        "delete more-button",
+        () => openCardMenu(collection, item.id, allowDelete)
+      );
 
-        transact(data => {
-          data[collection] = data[collection].filter(
-            record => record.id !== item.id
-          );
-        });
-      }, true);
+      more.setAttribute(
+        "aria-label",
+        "Действия: " + item.name
+      );
 
-      remove.setAttribute("aria-label", "Удалить: " + item.name);
-      head.append(remove);
+      head.append(more);
     }
 
     return head;
@@ -1840,7 +2460,7 @@
     });
   }
 
-  function taskCard(task) {
+    function taskCard(task) {
     const record = task.type === "once"
       ? view.anyTask.get(task.id)
       : view.todayTask.get(task.id);
@@ -1849,16 +2469,33 @@
       Boolean(record) &&
       record.date !== today();
 
-    const card = el("article", "card" + (record ? " done" : ""));
+    const card = el(
+      "article",
+      "card" + (record ? " done" : "")
+    );
+
+    const details = el("div", "compact-details");
+
+    details.append(
+      el(
+        "span",
+        "detail-muted",
+        task.type === "daily" ? "Ежедневно" : "Разовое"
+      ),
+      el("span", "detail-separator", "·"),
+      el(
+        "span",
+        "detail-reward",
+        record
+          ? `✓ ${record.reward} монет`
+          : `+${task.reward} монет`
+      )
+    );
 
     card.append(
       favoriteBar("tasks", task),
       cardHead(task, "tasks"),
-      el("div", "meta", task.type === "daily" ? "Ежедневно" : "Разовое"),
-      el("div", "reward",
-        record
-          ? `✓ Получено ${record.reward} монет`
-          : `+${task.reward} монет`),
+      details,
       btn(
         record ? "Отменить выполнение" : "Выполнить",
         "button full" + (record ? " secondary" : ""),
@@ -1866,7 +2503,7 @@
         true
       ),
       checkbox(
-        oldOneTime ? "Выполнено в другой день" : "В плане на сегодня",
+        oldOneTime ? "Выполнено в другой день" : "Конструктор дня",
         view.planIds.has(task.id),
         checked => togglePlan(task.id, checked),
         oldOneTime
@@ -1981,60 +2618,88 @@
     });
   }
 
-  function questCard(quest, inDay = false) {
+      function questCard(quest, inDay = false) {
     const done = quest.progress >= quest.target;
-    const card = el("article", "card" + (done ? " done" : ""));
+
+    const card = el(
+      "article",
+      "card" + (done ? " done" : "")
+    );
+
+    const rewards = el("div", "compact-details");
+
+    if (quest.stepReward > 0) {
+      rewards.append(
+        el(
+          "span",
+          "detail-reward",
+          `За продвижение: +${quest.stepReward} монет`
+        ),
+        el("span", "detail-separator", "·")
+      );
+    }
+
+    rewards.append(
+      el(
+        "span",
+        "detail-reward",
+        done
+          ? `✓ Достижение получено: +${quest.reward} монет`
+          : `За достижение: +${quest.reward} монет`
+      )
+    );
+
+    const planToggle = checkbox(
+      "Конструктор дня",
+      quest.showInDay,
+      checked => transact(data => {
+        const actual = data.quests.find(
+          item => item.id === quest.id
+        );
+
+        if (actual) actual.showInDay = checked;
+      })
+    );
+
+    planToggle.classList.add("quest-plan-toggle");
+
+    const header = el("div", "quest-reward-line");
+    header.append(rewards, planToggle);
 
     card.append(
       favoriteBar("quests", quest),
       cardHead(quest, "quests", !inDay),
-      el("div", "meta", done ? "✓ Квест завершён" : "Долгосрочная цель"),
-      el("div", "reward",
-        done
-          ? `Получено ${quest.reward} монет за завершение`
-          : `За завершение: +${quest.reward} монет`),
-      el("div", "meta",
-        quest.stepReward > 0
-          ? `За шаг: +${quest.stepReward} монет`
-          : "Без награды за шаг"),
-      btn(
-        "Настроить награду за шаг",
-        "button secondary small",
-        () => configureStepReward(quest.id),
-        true
-      ),
+      header,
       progressBar(quest.progress, quest.target, quest.name),
-      el("div", "progress-label", `${quest.progress} / ${quest.target}`)
+      el(
+        "div",
+        "progress-label",
+        `${quest.progress} / ${quest.target}` +
+        (done ? " · Завершён" : "")
+      )
     );
 
     const actions = el("div", "actions");
 
     const minus = btn(
-      `−${quest.step}`, "button secondary",
-      () => moveQuest(quest.id, -1), true
+      `−${quest.step}`,
+      "button secondary",
+      () => moveQuest(quest.id, -1),
+      true
     );
 
     const plus = btn(
-      `+${quest.step}`, "button",
-      () => moveQuest(quest.id, 1), true
+      `+${quest.step}`,
+      "button",
+      () => moveQuest(quest.id, 1),
+      true
     );
 
     minus.disabled = !storageHealthy || quest.progress === 0;
     plus.disabled = !storageHealthy || done;
 
     actions.append(minus, plus);
-
-    card.append(
-      actions,
-      checkbox(
-        "Показывать в конструкторе дня",
-        quest.showInDay,
-        checked => transact(data => {
-          const actual = data.quests.find(item => item.id === quest.id);
-          if (actual) actual.showInDay = checked;
-        })
-      )
-    );
+    card.append(actions);
 
     return card;
   }
@@ -2045,11 +2710,7 @@
     const bonus = state.bonuses.find(item => item.id === id);
     if (!bonus) return;
 
-    if (!confirm(
-      `Купить «${bonus.name}» за ${bonus.price} монет?`
-    )) return;
-
-    transact(data => {
+        const purchased = transact(data => {
       const actual = data.bonuses.find(item => item.id === id);
       if (!actual) return;
 
@@ -2065,6 +2726,10 @@
         createdAt: new Date().toISOString()
       });
     });
+
+    if (purchased) {
+      playPurchaseSound();
+    }
   }
 
   function bonusCard(bonus) {
@@ -2168,15 +2833,21 @@
 
   function renderHero() {
     const sectionNode = el("section", "hero");
-    const progress = view.money.earned % 100;
+    const progress = view.money.earned % LEVEL_COST;
 
     sectionNode.append(
       el("div", "avatar", "V"),
       el("div", "level",
-        `УРОВЕНЬ ${Math.floor(view.money.earned / 100) + 1}`),
-      progressBar(progress, 100, "Прогресс уровня"),
+        `УРОВЕНЬ ${Math.floor(
+  view.money.earned / LEVEL_COST
+) + 1}`),
+      progressBar(
+  progress,
+  LEVEL_COST,
+  "Прогресс уровня"
+),
       el("div", "progress-label",
-        `${progress} / 100 до следующего уровня`),
+        `${progress} / ${LEVEL_COST} до следующего уровня`),
       balanceCard(view.money.balance)
     );
 
@@ -2192,7 +2863,7 @@
         "progress-label center",
         view.planned.length
           ? `Выполнено ${view.plannedDone.length} из ${view.planned.length}` +
-            (view.bonus ? " · Бонус +50 получен" : "")
+            (view.bonus ? " · Бонус +100 получен" : "")
           : "Выбери действия на сегодня"
       ),
       btn(
@@ -2295,11 +2966,29 @@
       )
     );
 
-    section("", favoriteSort(state.bonuses), bonusCard);
+        const purchasedBonusIds = new Set(
+      state.purchases.map(purchase => purchase.bonusId)
+    );
 
-    if (!state.bonuses.length) {
+    const availableBonuses = state.bonuses.filter(
+      bonus => !purchasedBonusIds.has(bonus.id)
+    );
+
+    section(
+      "",
+      favoriteSort(availableBonuses),
+      bonusCard
+    );
+
+    if (!availableBonuses.length) {
       screen.append(
-        el("div", "empty", "Добавь первую награду и назначь ей цену.")
+        el(
+          "div",
+          "empty",
+          state.bonuses.length
+            ? "Добавь награду и назначь ей цену."
+            : "Добавь награду и назначь ей цену."
+        )
       );
     }
 
@@ -2326,7 +3015,7 @@
       "p",
       "",
       view.bonus
-        ? "✓ Бонус дня получен: +50 монет"
+        ? "✓ Бонус дня получен: +100 монет"
         : total < MIN_DAY_TASKS
           ? "Для бонуса нужно минимум 3 задания"
           : "Выполни весь план: +50 монет"
