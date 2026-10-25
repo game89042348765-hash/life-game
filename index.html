@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#09090d">
+<title>LifeGame</title>
+
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #09090d;
+    --card: #14141d;
+    --border: #292936;
+    --text: #f4f4fa;
+    --muted: #9595a8;
+    --accent: #62f5d1;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  button, input, select { font: inherit; }
+
+  button { cursor: pointer; }
+
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+    opacity: .5;
+  }
+
+  .app {
+    max-width: 480px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: auto;
+    padding: 24px 20px calc(110px + env(safe-area-inset-bottom));
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+  }
+
+  .brand {
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--muted);
+  }
+
+  .wallet {
+    color: var(--accent);
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 27px;
+    margin: 0 0 12px;
+    overflow-wrap: anywhere;
+  }
+
+  h2 { font-size: 21px; }
+
+  p {
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .hero {
+    padding-top: 24px;
+    text-align: center;
+  }
+
+  .avatar {
+    width: 142px;
+    height: 142px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 30px;
+    border-radius: 50%;
+    border: 1px solid #65517e;
+    background: radial-gradient(circle at 30% 20%, #49305e, #171720 70%);
+    box-shadow: 0 0 35px #a66cff12;
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--accent);
+  }
+
+  .level {
+    font-size: 24px;
+    font-weight: 750;
+    letter-spacing: 2px;
+  }
+
+  .progress {
+    height: 7px;
+    margin-top: 20px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #252532;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #9280ff, var(--accent));
+  }
+
+  .progress-label {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 20px;
+  }
+
+  .balance {
+    margin-top: 34px;
+    text-align: center;
+  }
+
+  .balance-number {
+    font-size: 44px;
+    font-weight: 750;
+    color: var(--accent);
+  }
+
+  .label {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+
+  .list {
+    display: grid;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    width: 100%;
+    min-height: 64px;
+    padding: 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    color: var(--text);
+    text-align: left;
+  }
+
+  .arrow, .reward { color: var(--accent); }
+
+  .back {
+    min-height: 44px;
+    margin-bottom: 16px;
+    padding: 0 10px 0 0;
+    border: 0;
+    background: transparent;
+    color: var(--accent);
+  }
+
+  .empty {
+    margin-top: 24px;
+    padding: 24px;
+    border: 1px dashed var(--border);
+    border-radius: 18px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .task-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .task-title {
+    font-size: 17px;
+    font-weight: 650;
+    overflow-wrap: anywhere;
+  }
+
+  .meta {
+    color: var(--muted);
+    font-size: 13px;
+    margin: 8px 0 14px;
+  }
+
+  .reward { margin-bottom: 16px; }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .button {
+    min-height: 46px;
+    padding: 12px 16px;
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    background: #62f5d10b;
+    color: var(--accent);
+  }
+
+  .button.full { width: 100%; }
+
+  .button.secondary {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--muted);
+  }
+
+  .delete {
+    min-width: 44px;
+    min-height: 44px;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font-size: 20px;
+  }
+
+  .done { border-color: #62f5d13b; }
+
+  .section-label {
+    margin-top: 28px;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  nav {
+    position: fixed;
+    z-index: 10;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+    max-width: 480px;
+    padding: 10px 8px calc(10px + env(safe-area-inset-bottom));
+    background: #101017;
+    border-top: 1px solid var(--border);
+  }
+
+  .nav-button {
+    min-width: 0;
+    min-height: 54px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border: 0;
+    border-radius: 12px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  .nav-icon { font-size: 21px; }
+
+  .nav-button.active {
+    background: #62f5d10a;
+    color: var(--accent);
+  }
+
+  dialog {
+    width: calc(100% - 32px);
+    max-width: 440px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 24px;
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+  }
+
+  dialog::backdrop { background: #000b; }
+
+  label {
+    display: block;
+    margin: 18px 0 8px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  input, select {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  #save-warning {
+    color: #ffb4b4;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+
+<body>
+<div class="app">
+  <header>
+    <span class="brand">LIFE / GAME</span>
+    <span id="wallet" class="wallet"></span>
+  </header>
+
+  <p id="save-warning" role="alert" hidden></p>
+  <main id="screen"></main>
+</div>
+
+<nav aria-label="Главное меню">
+  <button class="nav-button" data-page="hero">
+    <span class="nav-icon" aria-hidden="true">◉</span>Герой
+  </button>
+  <button class="nav-button" data-page="blocks">
+    <span class="nav-icon" aria-hidden="true">▦</span>Блоки
+  </button>
+  <button class="nav-button" data-page="quests">
+    <span class="nav-icon" aria-hidden="true">◇</span>Квесты
+  </button>
+  <button class="nav-button" data-page="bonuses">
+    <span class="nav-icon" aria-hidden="true">✧</span>Бонусы
+  </button>
+</nav>
+
+<dialog id="task-dialog" aria-labelledby="dialog-title">
+  <form id="task-form">
+    <h2 id="dialog-title">Новое задание</h2>
+
+    <label for="task-name">Название</label>
+    <input id="task-name" required maxlength="120"
+           placeholder="Например: прогулка 30 минут">
+
+    <label for="task-type">Тип задания</label>
+    <select id="task-type">
+      <option value="once">Разовое</option>
+      <option value="daily">Ежедневное</option>
+    </select>
+
+    <label for="task-reward">Награда в монетах</label>
+    <input id="task-reward" type="number"
+           min="1" max="100000" step="1" value="15" required>
+
+    <div class="form-actions">
+      <button type="button" class="button secondary" id="cancel-task">
+        Отмена
+      </button>
+      <button type="submit" class="button">Создать</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+  const STORAGE_KEY = "lifegame-prototype-v1";
+
+  const blocks = [
+    "Душевное состояние",
+    "Физическое состояние",
+    "Знания, навыки, опыт",
+    "Ресурсы и материальное",
+    "Окружение и отношения",
+    "Наполнение и организация",
+    "Обстоятельства",
+    "Исключить"
+  ];
+
+  const screen = document.getElementById("screen");
+  const dialog = document.getElementById("task-dialog");
+  const form = document.getElementById("task-form");
+  const warning = document.getElementById("save-warning");
+
+  let state = { tasks: [], completions: [] };
+  let currentPage = "hero";
+  let currentBlock = null;
+  let storageHealthy = true;
+
+  function storageError(message) {
+    storageHealthy = false;
+    warning.hidden = false;
+    warning.textContent = message;
+  }
+
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+
+    if (stored) {
+      const parsed = JSON.parse(stored);
+
+      if (
+        !parsed ||
+        !Array.isArray(parsed.tasks) ||
+        !Array.isArray(parsed.completions)
+      ) {
+        throw new Error("Неверная структура данных");
+      }
+
+      state = parsed;
+    }
+  } catch (error) {
+    storageError(
+      "Не удалось прочитать сохранение. Изменения отключены, " +
+      "чтобы не перезаписать данные. Не очищай хранилище; " +
+      "пришли сообщение об ошибке."
+    );
+    console.error(error);
+  }
+
+  function save() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      return true;
+    } catch (error) {
+      storageError(
+        "Сохранение не удалось. Последнее действие отменено. " +
+        "Дальнейшие изменения отключены до перезагрузки страницы."
+      );
+      console.error(error);
+      return false;
+    }
+  }
+
+  function changeState(change) {
+    if (!storageHealthy) {
+      alert("Изменения отключены из-за ошибки сохранения.");
+      return;
+    }
+
+    const previous = JSON.stringify(state);
+    change();
+
+    if (!save()) {
+      state = JSON.parse(previous);
+    }
+
+    render();
+  }
+
+  function today() {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  function newId() {
+    return crypto.randomUUID();
+  }
+
+  function earnedCoins() {
+    return state.completions.reduce((sum, item) => sum + item.reward, 0);
+  }
+
+  function completedRecord(task) {
+    return state.completions.find(item =>
+      item.taskId === task.id &&
+      (task.type === "once" || item.date === today())
+    );
+  }
+
+  function element(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+
+  function button(text, className, action) {
+    const node = element("button", className, text);
+    node.type = "button";
+    node.addEventListener("click", action);
+    return node;
+  }
+
+  function updateNavigation() {
+    document.querySelectorAll(".nav-button").forEach(node => {
+      const active = node.dataset.page === currentPage;
+      node.classList.toggle("active", active);
+
+      if (active) node.setAttribute("aria-current", "page");
+      else node.removeAttribute("aria-current");
+    });
+  }
+
+  function render() {
+    screen.replaceChildren();
+    updateNavigation();
+
+    const coins = earnedCoins();
+    document.getElementById("wallet").textContent = `${coins} монет`;
+
+    if (currentPage === "hero") renderHero(coins);
+    if (currentPage === "blocks") {
+      if (currentBlock === null) renderBlocks();
+      else renderBlock();
+    }
+
+    if (currentPage === "quests") {
+      screen.append(
+        element("h1", "", "КВЕСТЫ"),
+        element("p", "", "Большие цели — маленькими шагами."),
+        element("div", "empty", "Настраиваемые квесты подключим следующим этапом.")
+      );
+    }
+
+    if (currentPage === "bonuses") {
+      screen.append(
+        element("h1", "", "БОНУСЫ"),
+        element("div", "empty", "Покупку бонусов подключим следующим этапом.")
+      );
+    }
+  }
+
+  function renderHero(coins) {
+    const level = Math.floor(coins / 100) + 1;
+    const progress = coins % 100;
+
+    const section = element("section", "hero");
+    section.append(
+      element("div", "avatar", "V"),
+      element("div", "level", `УРОВЕНЬ ${level}`)
+    );
+
+    const bar = element("div", "progress");
+    bar.setAttribute("role", "progressbar");
+    bar.setAttribute("aria-label", "Прогресс уровня");
+    bar.setAttribute("aria-valuemin", "0");
+    bar.setAttribute("aria-valuemax", "100");
+    bar.setAttribute("aria-valuenow", String(progress));
+
+    const fill = element("div", "progress-fill");
+    fill.style.width = `${progress}%`;
+    bar.append(fill);
+
+    section.append(
+      bar,
+      element("div", "progress-label",
+        `${progress} / 100 до следующего уровня`)
+    );
+
+    const balance = element("div", "card balance");
+    balance.append(
+      element("div", "balance-number", String(coins)),
+      element("div", "label", "МОНЕТЫ")
+    );
+
+    section.append(balance);
+    screen.append(section);
+  }
+
+  function renderBlocks() {
+    screen.append(
+      element("h1", "", "БЛОКИ"),
+      element("p", "", "Выбери, чему посвятить время.")
+    );
+
+    const list = element("div", "list");
+
+    blocks.forEach((name, index) => {
+      const node = button("", "block", () => {
+        currentBlock = index;
+        render();
+        window.scrollTo(0, 0);
+      });
+
+      node.append(
+        element("span", "", name),
+        element("span", "arrow", "›")
+      );
+
+      list.append(node);
+    });
+
+    screen.append(list);
+  }
+
+  function renderBlock() {
+    screen.append(
+      button("← Все блоки", "back", () => {
+        currentBlock = null;
+        render();
+      }),
+      element("h1", "", blocks[currentBlock])
+    );
+
+    if (currentBlock === 7) return;
+
+    const add = button("+ Добавить задание", "button full", () => {
+      form.reset();
+      dialog.showModal();
+      document.getElementById("task-name").focus();
+    });
+
+    add.style.marginTop = "14px";
+    add.disabled = !storageHealthy;
+    screen.append(add);
+
+    const tasks = state.tasks.filter(task => task.block === currentBlock);
+    const pending = tasks.filter(task => !completedRecord(task));
+    const done = tasks.filter(task => completedRecord(task));
+
+    if (!tasks.length) {
+      screen.append(
+        element("div", "empty", "Пока заданий нет. Добавь первое.")
+      );
+    }
+
+    const list = element("div", "list");
+    pending.forEach(task => list.append(taskCard(task)));
+    screen.append(list);
+
+    if (done.length) {
+      screen.append(
+        element("div", "section-label", "ВЫПОЛНЕННЫЕ")
+      );
+
+      const completedList = element("div", "list");
+      done.forEach(task => completedList.append(taskCard(task)));
+      screen.append(completedList);
+    }
+  }
+
+  function taskCard(task) {
+    const record = completedRecord(task);
+    const card = element("article", `card${record ? " done" : ""}`);
+    const head = element("div", "task-head");
+
+    const remove = button("×", "delete", () => {
+      const message =
+        "Удалить задание? Уже заработанные за него монеты останутся.";
+
+      if (!confirm(message)) return;
+
+      changeState(() => {
+        state.tasks = state.tasks.filter(item => item.id !== task.id);
+      });
+    });
+
+    remove.setAttribute("aria-label", `Удалить задание: ${task.name}`);
+    remove.disabled = !storageHealthy;
+
+    head.append(
+      element("div", "task-title", task.name),
+      remove
+    );
+
+    card.append(
+      head,
+      element("div", "meta",
+        task.type === "daily" ? "Ежедневно" : "Разовое"),
+      element("div", "reward",
+        record
+          ? `✓ Получено ${record.reward} монет`
+          : `+${task.reward} монет`)
+    );
+
+    const action = button(
+      record ? "Отменить выполнение" : "Выполнить",
+      record ? "button secondary full" : "button full",
+      () => {
+        // Повторная проверка защищает от двойного начисления.
+        const actual = completedRecord(task);
+
+        if (actual) {
+          if (!confirm("Отменить выполнение и убрать начисленные монеты?")) {
+            return;
+          }
+
+          changeState(() => {
+            state.completions = state.completions.filter(
+              item => item.id !== actual.id
+            );
+          });
+        } else {
+          changeState(() => {
+            state.completions.push({
+              id: newId(),
+              taskId: task.id,
+              date: today(),
+              reward: task.reward
+            });
+          });
+        }
+      }
+    );
+
+    action.disabled = !storageHealthy;
+    card.append(action);
+    return card;
+  }
+
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const name = document.getElementById("task-name").value.trim();
+    const reward = Number(document.getElementById("task-reward").value);
+    const type = document.getElementById("task-type").value;
+
+    if (!name) {
+      alert("Введи название задания.");
+      return;
+    }
+
+    if (!Number.isInteger(reward) || reward < 1 || reward > 100000) {
+      alert("Награда должна быть целым числом от 1 до 100000.");
+      return;
+    }
+
+    changeState(() => {
+      state.tasks.push({
+        id: newId(),
+        block: currentBlock,
+        name,
+        type,
+        reward
+      });
+    });
+
+    dialog.close();
+  });
+
+  document.getElementById("cancel-task").addEventListener("click", () => {
+    dialog.close();
+  });
+
+  document.querySelectorAll(".nav-button").forEach(node => {
+    node.addEventListener("click", () => {
+      currentPage = node.dataset.page;
+      currentBlock = null;
+      render();
+      window.scrollTo(0, 0);
+    });
+  });
+
+  // При возвращении на страницу обновляем ежедневные задания.
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && !dialog.open) render();
+  });
+
+  // Обновляем экран после смены даты, если приложение осталось открытым.
+  let lastDay = today();
+  setInterval(() => {
+    const day = today();
+    if (day !== lastDay && !dialog.open) {
+      lastDay = day;
+      render();
+    }
+  }, 30000);
+
+  render();
+</script>
+<script>
+(() => {
+  // Дополняем существующие данные.
+  if (!Array.isArray(state.quests)) {
+    state.quests = [];
+  }
+
+  const questDialog = document.createElement("dialog");
+  questDialog.setAttribute("aria-labelledby", "quest-dialog-title");
+
+  questDialog.innerHTML = `
+    <form id="quest-form">
+      <h2 id="quest-dialog-title">Новый квест</h2>
+
+      <label for="quest-name">Название</label>
+      <input id="quest-name" required maxlength="120"
+             placeholder="Например: прочитать 100 глав">
+
+      <label for="quest-target">Целевое значение</label>
+      <input id="quest-target" type="number"
+             min="1" max="1000000" step="1"
+             value="100" required>
+
+      <label for="quest-step">Шаг нажатия</label>
+      <input id="quest-step" type="number"
+             min="1" max="1000000" step="1"
+             value="1" required>
+
+      <label for="quest-reward">Награда за завершение</label>
+      <input id="quest-reward" type="number"
+             min="1" max="100000" step="1"
+             value="200" required>
+
+      <div class="form-actions">
+        <button type="button"
+                class="button secondary"
+                id="cancel-quest">
+          Отмена
+        </button>
+        <button type="submit" class="button">
+          Создать
+        </button>
+      </div>
+    </form>
+  `;
+
+  document.body.append(questDialog);
+
+  const questForm = questDialog.querySelector("form");
+
+  questDialog.querySelector("#cancel-quest")
+    .addEventListener("click", () => questDialog.close());
+
+  function questRewardRecord(quest) {
+    return state.completions.find(
+      record => record.taskId === `quest:${quest.id}`
+    );
+  }
+
+  function updateQuest(id, direction) {
+    const quest = state.quests.find(item => item.id === id);
+    if (!quest) return;
+
+    const nextProgress = Math.max(
+      0,
+      Math.min(
+        quest.target,
+        quest.progress + direction * quest.step
+      )
+    );
+
+    if (nextProgress === quest.progress) return;
+
+    const rewardRecord = questRewardRecord(quest);
+
+    if (
+      nextProgress < quest.target &&
+      rewardRecord &&
+      !confirm(
+        "Уменьшить прогресс? Награда за завершение " +
+        "будет отменена, а уровень пересчитан."
+      )
+    ) {
+      return;
+    }
+
+    changeState(() => {
+      quest.progress = nextProgress;
+
+      if (quest.progress === quest.target && !rewardRecord) {
+        state.completions.push({
+          id: newId(),
+          taskId: `quest:${quest.id}`,
+          date: today(),
+          reward: quest.reward
+        });
+      }
+
+      if (quest.progress < quest.target && rewardRecord) {
+        state.completions = state.completions.filter(
+          record => record.id !== rewardRecord.id
+        );
+      }
+    });
+  }
+
+  function questCard(quest) {
+    const completed = quest.progress >= quest.target;
+
+    const card = element(
+      "article",
+      completed ? "card done" : "card"
+    );
+
+    const head = element("div", "task-head");
+
+    const remove = button("×", "delete", () => {
+      const message = completed
+        ? "Удалить завершённый квест? Полученная награда останется."
+        : "Удалить квест и его прогресс?";
+
+      if (!confirm(message)) return;
+
+      changeState(() => {
+        state.quests = state.quests.filter(
+          item => item.id !== quest.id
+        );
+      });
+    });
+
+    remove.setAttribute(
+      "aria-label",
+      `Удалить квест: ${quest.name}`
+    );
+
+    remove.disabled = !storageHealthy;
+
+    head.append(
+      element("div", "task-title", quest.name),
+      remove
+    );
+
+    card.append(
+      head,
+      element(
+        "div",
+        "meta",
+        completed ? "✓ Квест завершён" : "Награда за завершение"
+      ),
+      element(
+        "div",
+        "reward",
+        completed
+          ? `Получено ${quest.reward} монет`
+          : `+${quest.reward} монет`
+      )
+    );
+
+    const bar = element("div", "progress");
+    const percentage = quest.progress / quest.target * 100;
+
+    bar.setAttribute("role", "progressbar");
+    bar.setAttribute("aria-label", quest.name);
+    bar.setAttribute("aria-valuemin", "0");
+    bar.setAttribute("aria-valuemax", String(quest.target));
+    bar.setAttribute("aria-valuenow", String(quest.progress));
+
+    const fill = element("div", "progress-fill");
+    fill.style.width = `${percentage}%`;
+    bar.append(fill);
+
+    card.append(
+      bar,
+      element(
+        "div",
+        "progress-label",
+        `${quest.progress} / ${quest.target}`
+      )
+    );
+
+    const actions = element("div", "actions");
+    actions.style.marginTop = "18px";
+
+    const minus = button(
+      `−${quest.step}`,
+      "button secondary",
+      () => updateQuest(quest.id, -1)
+    );
+
+    const plus = button(
+      `+${quest.step}`,
+      "button",
+      () => updateQuest(quest.id, 1)
+    );
+
+    minus.style.flex = "1";
+    plus.style.flex = "1";
+
+    minus.disabled = !storageHealthy || quest.progress === 0;
+    plus.disabled = !storageHealthy || completed;
+
+    actions.append(minus, plus);
+    card.append(actions);
+
+    return card;
+  }
+
+  function renderQuests() {
+    screen.replaceChildren();
+
+    screen.append(
+      element("h1", "", "КВЕСТЫ"),
+      element("p", "", "Большие цели — маленькими шагами.")
+    );
+
+    const add = button(
+      "+ Добавить квест",
+      "button full",
+      () => {
+        questForm.reset();
+        questDialog.showModal();
+        questDialog.querySelector("#quest-name").focus();
+      }
+    );
+
+    add.disabled = !storageHealthy;
+    screen.append(add);
+
+    if (!state.quests.length) {
+      screen.append(
+        element(
+          "div",
+          "empty",
+          "Пока квестов нет. Создай первую цель."
+        )
+      );
+      return;
+    }
+
+    const active = state.quests.filter(
+      quest => quest.progress < quest.target
+    );
+
+    const completed = state.quests.filter(
+      quest => quest.progress >= quest.target
+    );
+
+    const activeList = element("div", "list");
+    active.forEach(quest => activeList.append(questCard(quest)));
+    screen.append(activeList);
+
+    if (completed.length) {
+      screen.append(
+        element("div", "section-label", "ЗАВЕРШЁННЫЕ")
+      );
+
+      const completedList = element("div", "list");
+
+      completed.forEach(quest => {
+        completedList.append(questCard(quest));
+      });
+
+      screen.append(completedList);
+    }
+  }
+
+  questForm.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const name = questDialog.querySelector("#quest-name")
+      .value.trim();
+
+    const target = Number(
+      questDialog.querySelector("#quest-target").value
+    );
+
+    const step = Number(
+      questDialog.querySelector("#quest-step").value
+    );
+
+    const reward = Number(
+      questDialog.querySelector("#quest-reward").value
+    );
+
+    if (!name) {
+      alert("Введи название квеста.");
+      return;
+    }
+
+    if (
+      !Number.isInteger(target) ||
+      target < 1 ||
+      target > 1000000 ||
+      !Number.isInteger(step) ||
+      step < 1 ||
+      step > 1000000 ||
+      !Number.isInteger(reward) ||
+      reward < 1 ||
+      reward > 100000
+    ) {
+      alert("Проверь цель, шаг и награду: нужны целые положительные числа.");
+      return;
+    }
+
+    changeState(() => {
+      state.quests.push({
+        id: newId(),
+        name,
+        target,
+        step,
+        reward,
+        progress: 0
+      });
+    });
+
+    questDialog.close();
+  });
+
+  // Сохраняем прежние экраны и заменяем только экран квестов.
+  const previousRender = render;
+
+  render = function () {
+    previousRender();
+
+    if (currentPage === "quests") {
+      renderQuests();
+    }
+  };
+
+  render();
+})();
+</script>
+<script>
+(() => {
+  if (!Array.isArray(state.bonuses)) state.bonuses = [];
+  if (!Array.isArray(state.purchases)) state.purchases = [];
+
+  function spentCoins() {
+    return state.purchases.reduce(
+      (sum, purchase) => sum + purchase.price,
+      0
+    );
+  }
+
+  function availableCoins() {
+    return earnedCoins() - spentCoins();
+  }
+
+  /*
+    Не позволяем отменить заработок, если эти монеты уже потрачены.
+    Сначала потребуется отменить соответствующие покупки.
+  */
+  const previousChangeState = changeState;
+
+  changeState = function (change) {
+    previousChangeState(() => {
+      const before = JSON.stringify(state);
+      change();
+
+      if (availableCoins() < 0) {
+        state = JSON.parse(before);
+
+        alert(
+          "Эти монеты уже потрачены. " +
+          "Сначала отмени покупку в истории бонусов, " +
+          "затем повтори действие."
+        );
+      }
+    });
+  };
+
+  const bonusDialog = document.createElement("dialog");
+  bonusDialog.setAttribute("aria-labelledby", "bonus-dialog-title");
+
+  bonusDialog.innerHTML = `
+    <form id="bonus-form">
+      <h2 id="bonus-dialog-title">Новый бонус</h2>
+
+      <label for="bonus-name">Название</label>
+      <input id="bonus-name"
+             required maxlength="120"
+             placeholder="Например: покупка для хобби">
+
+      <label for="bonus-description">Описание — необязательно</label>
+      <input id="bonus-description"
+             maxlength="300"
+             placeholder="Что входит в эту награду">
+
+      <label for="bonus-price">Цена в монетах</label>
+      <input id="bonus-price"
+             type="number"
+             min="1" max="1000000" step="1"
+             value="50" required>
+
+      <div class="form-actions">
+        <button type="button"
+                class="button secondary"
+                id="cancel-bonus">
+          Отмена
+        </button>
+
+        <button type="submit" class="button">
+          Создать
+        </button>
+      </div>
+    </form>
+  `;
+
+  document.body.append(bonusDialog);
+
+  const bonusForm = bonusDialog.querySelector("form");
+
+  bonusDialog.querySelector("#cancel-bonus")
+    .addEventListener("click", () => bonusDialog.close());
+
+  function buyBonus(id) {
+    if (!storageHealthy) return;
+
+    const bonus = state.bonuses.find(item => item.id === id);
+    if (!bonus) return;
+
+    if (availableCoins() < bonus.price) {
+      alert("Недостаточно монет.");
+      return;
+    }
+
+    if (!confirm(
+      `Купить «${bonus.name}» за ${bonus.price} монет?`
+    )) {
+      return;
+    }
+
+    changeState(() => {
+      // Проверяем баланс повторно перед списанием.
+      if (availableCoins() < bonus.price) return;
+
+      state.purchases.push({
+        id: newId(),
+        bonusId: bonus.id,
+        name: bonus.name,
+        price: bonus.price,
+        createdAt: new Date().toISOString()
+      });
+    });
+  }
+
+  function bonusCard(bonus) {
+    const card = element("article", "card");
+    const head = element("div", "task-head");
+
+    const remove = button("×", "delete", () => {
+      if (!confirm(
+        "Удалить бонус из магазина? История покупок останется."
+      )) {
+        return;
+      }
+
+      changeState(() => {
+        state.bonuses = state.bonuses.filter(
+          item => item.id !== bonus.id
+        );
+      });
+    });
+
+    remove.setAttribute(
+      "aria-label",
+      `Удалить бонус: ${bonus.name}`
+    );
+    remove.disabled = !storageHealthy;
+
+    head.append(
+      element("div", "task-title", bonus.name),
+      remove
+    );
+
+    card.append(head);
+
+    if (bonus.description) {
+      card.append(
+        element("p", "", bonus.description)
+      );
+    }
+
+    const missing = Math.max(
+      0,
+      bonus.price - availableCoins()
+    );
+
+    card.append(
+      element("div", "reward", `${bonus.price} монет`)
+    );
+
+    const buy = button(
+      missing > 0
+        ? `Не хватает ${missing} монет`
+        : "Купить",
+      missing > 0
+        ? "button secondary full"
+        : "button full",
+      () => buyBonus(bonus.id)
+    );
+
+    buy.disabled = !storageHealthy || missing > 0;
+    card.append(buy);
+
+    return card;
+  }
+
+  function purchaseCard(purchase) {
+    const card = element("article", "card");
+
+    const date = new Date(purchase.createdAt)
+      .toLocaleString("ru-RU", {
+        day: "numeric",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+
+    card.append(
+      element("div", "task-title", purchase.name),
+      element("div", "meta", date),
+      element("div", "reward", `−${purchase.price} монет`)
+    );
+
+    const cancel = button(
+      "Отменить покупку",
+      "button secondary full",
+      () => {
+        if (!confirm(
+          `Отменить покупку «${purchase.name}» ` +
+          `и вернуть ${purchase.price} монет?`
+        )) {
+          return;
+        }
+
+        changeState(() => {
+          state.purchases = state.purchases.filter(
+            item => item.id !== purchase.id
+          );
+        });
+      }
+    );
+
+    cancel.disabled = !storageHealthy;
+    card.append(cancel);
+
+    return card;
+  }
+
+  function renderBonuses() {
+    screen.replaceChildren();
+
+    screen.append(element("h1", "", "БОНУСЫ"));
+
+    const balance = element("div", "card balance");
+    balance.style.marginTop = "20px";
+
+    balance.append(
+      element(
+        "div",
+        "balance-number",
+        String(availableCoins())
+      ),
+      element("div", "label", "ДОСТУПНО МОНЕТ")
+    );
+
+    screen.append(balance);
+
+    const list = element("div", "list");
+
+    state.bonuses.forEach(bonus => {
+      list.append(bonusCard(bonus));
+    });
+
+    screen.append(list);
+
+    const add = button(
+      "+ Добавить бонус",
+      "button full",
+      () => {
+        bonusForm.reset();
+        bonusDialog.showModal();
+        bonusDialog.querySelector("#bonus-name").focus();
+      }
+    );
+
+    add.style.marginTop = "16px";
+    add.disabled = !storageHealthy;
+    screen.append(add);
+
+    if (!state.bonuses.length) {
+      screen.append(
+        element(
+          "div",
+          "empty",
+          "Добавь первую награду и назначь ей цену."
+        )
+      );
+    }
+
+    if (state.purchases.length) {
+      screen.append(
+        element("div", "section-label", "ИСТОРИЯ ПОКУПОК")
+      );
+
+      const history = element("div", "list");
+
+      [...state.purchases].reverse().forEach(purchase => {
+        history.append(purchaseCard(purchase));
+      });
+
+      screen.append(history);
+    }
+  }
+
+  bonusForm.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const name = bonusDialog.querySelector("#bonus-name")
+      .value.trim();
+
+    const description = bonusDialog
+      .querySelector("#bonus-description").value.trim();
+
+    const price = Number(
+      bonusDialog.querySelector("#bonus-price").value
+    );
+
+    if (!name) {
+      alert("Введи название бонуса.");
+      return;
+    }
+
+    if (
+      !Number.isInteger(price) ||
+      price < 1 ||
+      price > 1000000
+    ) {
+      alert("Цена должна быть целым числом от 1 до 1000000.");
+      return;
+    }
+
+    changeState(() => {
+      state.bonuses.push({
+        id: newId(),
+        name,
+        description,
+        price
+      });
+    });
+
+    bonusDialog.close();
+  });
+
+  const previousRender = render;
+
+  render = function () {
+    previousRender();
+
+    // Показываем доступный баланс, не общий заработок.
+    document.getElementById("wallet").textContent =
+      `${availableCoins()} монет`;
+
+    if (currentPage === "hero") {
+      const balance = screen.querySelector(".balance-number");
+
+      if (balance) {
+        balance.textContent = String(availableCoins());
+      }
+    }
+
+    if (currentPage === "bonuses") {
+      renderBonuses();
+    }
+  };
+
+  render();
+})();
+</script>
+<script>
+(() => {
+  const backupDialog = document.createElement("dialog");
+  backupDialog.setAttribute("aria-labelledby", "backup-title");
+
+  backupDialog.innerHTML = `
+    <h2 id="backup-title">Резервная копия</h2>
+
+    <p>
+      Создай копию, скопируй весь текст и сохрани его
+      в надёжном месте. Для восстановления вставь
+      ранее сохранённый текст в поле ниже.
+    </p>
+
+    <button type="button"
+            class="button full"
+            id="generate-backup">
+      Создать копию
+    </button>
+
+    <label for="backup-text">Данные сохранения</label>
+
+    <textarea id="backup-text"
+              spellcheck="false"
+              autocapitalize="off"
+              autocomplete="off"
+              style="
+                width:100%;
+                min-height:180px;
+                padding:12px;
+                border:1px solid var(--border);
+                border-radius:12px;
+                background:var(--bg);
+                color:var(--text);
+                font-size:16px;
+                resize:vertical;
+              "></textarea>
+
+    <div class="form-actions" style="flex-wrap:wrap">
+      <button type="button"
+              class="button"
+              id="copy-backup">
+        Копировать
+      </button>
+
+      <button type="button"
+              class="button secondary"
+              id="restore-backup">
+        Восстановить
+      </button>
+
+      <button type="button"
+              class="button secondary"
+              id="close-backup">
+        Закрыть
+      </button>
+    </div>
+
+    <p id="backup-status" role="status"></p>
+  `;
+
+  document.body.append(backupDialog);
+
+  const text = backupDialog.querySelector("#backup-text");
+  const status = backupDialog.querySelector("#backup-status");
+
+  const openBackup = button(
+    "Резервная копия",
+    "button secondary full",
+    () => {
+      status.textContent = "";
+      backupDialog.showModal();
+    }
+  );
+
+  openBackup.style.marginTop = "28px";
+
+  backupDialog.querySelector("#close-backup")
+    .addEventListener("click", () => backupDialog.close());
+
+  backupDialog.querySelector("#generate-backup")
+    .addEventListener("click", () => {
+      if (!storageHealthy) {
+        status.textContent =
+          "Сначала нужно разобраться с ошибкой хранилища. " +
+          "Не заменяй прежнюю резервную копию.";
+        return;
+      }
+
+      text.value = JSON.stringify({
+        app: "LifeGame",
+        version: 1,
+        createdAt: new Date().toISOString(),
+        data: state
+      }, null, 2);
+
+      status.textContent =
+        "Копия подготовлена. Нажми «Копировать» " +
+        "и сохрани текст вне приложения.";
+    });
+
+  backupDialog.querySelector("#copy-backup")
+    .addEventListener("click", async () => {
+      if (!text.value.trim()) {
+        status.textContent = "Сначала создай копию.";
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(text.value);
+        status.textContent =
+          "Скопировано. Теперь вставь текст в заметку " +
+          "и убедись, что она сохранилась.";
+      } catch {
+        text.focus();
+        text.select();
+        status.textContent =
+          "Автоматическое копирование недоступно. " +
+          "Скопируй выделенный текст вручную.";
+      }
+    });
+
+  function validateBackup(parsed) {
+    if (
+      !parsed ||
+      parsed.app !== "LifeGame" ||
+      parsed.version !== 1
+    ) {
+      throw new Error("Это не поддерживаемая копия LifeGame.");
+    }
+
+    const data = parsed.data;
+
+    if (!data || typeof data !== "object") {
+      throw new Error("В копии отсутствуют данные.");
+    }
+
+    const collections = [
+      "tasks", "completions", "quests", "bonuses", "purchases"
+    ];
+
+    for (const key of collections) {
+      if (!Array.isArray(data[key])) {
+        throw new Error(`Отсутствует список: ${key}.`);
+      }
+
+      const ids = new Set();
+
+      for (const item of data[key]) {
+        if (
+          !item ||
+          typeof item !== "object" ||
+          typeof item.id !== "string" ||
+          !item.id ||
+          ids.has(item.id)
+        ) {
+          throw new Error(`Повреждены записи списка: ${key}.`);
+        }
+
+        ids.add(item.id);
+      }
+    }
+
+    const integer = (value, min, max) =>
+      Number.isSafeInteger(value) &&
+      value >= min &&
+      value <= max;
+
+    const nameValid = value =>
+      typeof value === "string" &&
+      value.trim().length > 0 &&
+      value.length <= 120;
+
+    for (const task of data.tasks) {
+      if (
+        !nameValid(task.name) ||
+        !integer(task.block, 0, 6) ||
+        !["once", "daily"].includes(task.type) ||
+        !integer(task.reward, 1, 100000)
+      ) {
+        throw new Error("Повреждены данные задания.");
+      }
+    }
+
+    for (const quest of data.quests) {
+      if (
+        !nameValid(quest.name) ||
+        !integer(quest.target, 1, 1000000) ||
+        !integer(quest.progress, 0, quest.target) ||
+        !integer(quest.step, 1, 1000000) ||
+        !integer(quest.reward, 1, 100000)
+      ) {
+        throw new Error("Повреждены данные квеста.");
+      }
+    }
+
+    for (const bonus of data.bonuses) {
+      if (
+        !nameValid(bonus.name) ||
+        typeof bonus.description !== "string" ||
+        bonus.description.length > 300 ||
+        !integer(bonus.price, 1, 1000000)
+      ) {
+        throw new Error("Повреждены данные бонуса.");
+      }
+    }
+
+    const completionKeys = new Set();
+
+    for (const record of data.completions) {
+      if (
+        typeof record.taskId !== "string" ||
+        !record.taskId ||
+        typeof record.date !== "string" ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(record.date) ||
+        !integer(record.reward, 1, 100000)
+      ) {
+        throw new Error("Повреждена история начислений.");
+      }
+
+      const key = JSON.stringify([record.taskId, record.date]);
+
+      if (completionKeys.has(key)) {
+        throw new Error("В истории есть повторное начисление.");
+      }
+
+      completionKeys.add(key);
+    }
+
+    for (const purchase of data.purchases) {
+      if (
+        !nameValid(purchase.name) ||
+        typeof purchase.bonusId !== "string" ||
+        !integer(purchase.price, 1, 1000000) ||
+        typeof purchase.createdAt !== "string" ||
+        !Number.isFinite(Date.parse(purchase.createdAt))
+      ) {
+        throw new Error("Повреждена история покупок.");
+      }
+    }
+
+    const earned = data.completions.reduce(
+      (sum, item) => sum + item.reward, 0
+    );
+
+    const spent = data.purchases.reduce(
+      (sum, item) => sum + item.price, 0
+    );
+
+    if (
+      !Number.isSafeInteger(earned) ||
+      !Number.isSafeInteger(spent) ||
+      spent > earned
+    ) {
+      throw new Error("Некорректный баланс монет.");
+    }
+
+    return data;
+  }
+
+  backupDialog.querySelector("#restore-backup")
+    .addEventListener("click", () => {
+      if (!storageHealthy) {
+        status.textContent =
+          "Восстановление отключено из-за ошибки хранилища.";
+        return;
+      }
+
+      try {
+        const data = validateBackup(JSON.parse(text.value));
+
+        if (!confirm(
+          "Заменить текущий прогресс данными из копии? " +
+          "Это не объединение: нынешние данные будут заменены. " +
+          "Убедись, что сохранил их отдельно."
+        )) {
+          return;
+        }
+
+        // Сначала записываем в хранилище.
+        // Если запись не удалась, текущее состояние не меняется.
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+        state = data;
+        currentPage = "hero";
+        currentBlock = null;
+
+        render();
+
+        status.textContent =
+          "Прогресс восстановлен. Можно закрыть это окно.";
+      } catch (error) {
+        status.textContent =
+          "Восстановление не выполнено: " + error.message;
+      }
+    });
+
+  const previousRender = render;
+
+  render = function () {
+    previousRender();
+
+    if (currentPage === "hero") {
+      screen.append(openBackup);
+    }
+  };
+
+  render();
+})();
+</script>
+</body>
+</html>
