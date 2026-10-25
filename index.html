@@ -335,6 +335,58 @@
     line-height: 1.5;
   }
 </style>
+<style>
+  /* Постоянная верхняя панель */
+  .app > header {
+    position: fixed;
+    z-index: 20;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 100%;
+    max-width: 480px;
+    min-height: calc(64px + env(safe-area-inset-top, 0px));
+
+    margin: 0;
+    padding:
+      calc(14px + env(safe-area-inset-top, 0px))
+      20px
+      14px;
+
+    background: #101017;
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 8px 24px #00000026;
+  }
+
+  /* Отступ, чтобы панель не перекрывала начало страницы */
+  .app {
+    padding-top: calc(
+      88px + env(safe-area-inset-top, 0px)
+    );
+  }
+
+  /* Баланс хорошо читается и не переносится */
+  #wallet {
+    flex-shrink: 0;
+    white-space: nowrap;
+    font-size: 16px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent);
+  }
+
+  .app > header .brand {
+    white-space: nowrap;
+  }
+
+  /* При переходе к элементам учитываем высоту панели */
+  html {
+    scroll-padding-top: calc(
+      80px + env(safe-area-inset-top, 0px)
+    );
+  }
+</style>
 </head>
 
 <body>
@@ -1073,6 +1125,10 @@
       questDialog.querySelector("#quest-reward").value
     );
 
+    const stepReward = Number(
+      questDialog.querySelector("#quest-step-reward").value
+    );
+
     if (!name) {
       alert("Введи название квеста.");
       return;
@@ -1087,9 +1143,16 @@
       step > 1000000 ||
       !Number.isInteger(reward) ||
       reward < 1 ||
-      reward > 100000
+      reward > 100000 ||
+      !Number.isInteger(stepReward) ||
+      stepReward < 0 ||
+      stepReward > 100000
     ) {
-      alert("Проверь цель, шаг и награду: нужны целые положительные числа.");
+      alert(
+        "Цель и шаг: целые числа от 1 до 1000000. " +
+        "Награда за завершение: от 1 до 100000. " +
+        "Награда за шаг: от 0 до 100000."
+      );
       return;
     }
 
@@ -1100,6 +1163,8 @@
         target,
         step,
         reward,
+        stepReward,
+        stepHistory: [],
         progress: 0
       });
     });
@@ -1645,7 +1710,7 @@
     for (const task of data.tasks) {
       if (
         !nameValid(task.name) ||
-        !integer(task.block, 0, 6) ||
+        !integer(task.block, 0, 7) ||
         !["once", "daily"].includes(task.type) ||
         !integer(task.reward, 1, 100000)
       ) {
@@ -1773,6 +1838,1737 @@
 
     if (currentPage === "hero") {
       screen.append(openBackup);
+    }
+  };
+
+  render();
+})();
+</script>
+<script>
+(() => {
+  const MIN_TASKS = 3;
+  const DAY_REWARD = 50;
+
+  if (!state.dayPlans || typeof state.dayPlans !== "object" ||
+      Array.isArray(state.dayPlans)) {
+    state.dayPlans = {};
+  }
+
+  function ensurePlans() {
+    if (!state.dayPlans || typeof state.dayPlans !== "object" ||
+        Array.isArray(state.dayPlans)) {
+      state.dayPlans = {};
+    }
+  }
+
+  function planIds() {
+    ensurePlans();
+    const ids = state.dayPlans[today()];
+    return Array.isArray(ids) ? ids : [];
+  }
+
+  function plannedTasks() {
+    const ids = new Set(planIds());
+    return state.tasks.filter(task => ids.has(task.id));
+  }
+
+  function todayCompletion(task) {
+    return state.completions.find(record =>
+      record.taskId === task.id &&
+      record.date === today()
+    );
+  }
+
+  function bonusRecord() {
+    return state.completions.find(record =>
+      record.taskId === `day-bonus:${today()}`
+    );
+  }
+
+  function canPlan(task) {
+    // Разовое задание, выполненное раньше, не включаем в новый день.
+    return !(
+      task.type === "once" &&
+      completedRecord(task) &&
+      !todayCompletion(task)
+    );
+  }
+
+  /*
+    Проверяем бонус внутри каждого изменения данных.
+    История начислений уже участвует в расчёте монет и уровня.
+  */
+  function reconcileDayBonus() {
+    ensurePlans();
+
+    // Если отменено выполнение из награждённого плана,
+    // отменяем связанный бонус — в том числе за прошлый день.
+    const existingIds = new Set(
+      state.completions.map(record => record.id)
+    );
+
+    state.completions = state.completions.filter(record => {
+      if (
+        !record.taskId.startsWith("day-bonus:") ||
+        !Array.isArray(record.sourceCompletionIds)
+      ) {
+        return true;
+      }
+
+      return record.sourceCompletionIds.every(
+        id => existingIds.has(id)
+      );
+    });
+
+    // За текущую дату бонус уже выдан.
+    if (bonusRecord()) return;
+
+    const tasks = plannedTasks();
+
+    if (tasks.length < MIN_TASKS) return;
+
+    const records = tasks.map(todayCompletion);
+
+    if (records.some(record => !record)) return;
+
+    state.completions.push({
+      id: newId(),
+      taskId: `day-bonus:${today()}`,
+      date: today(),
+      reward: DAY_REWARD,
+      sourceCompletionIds: records.map(record => record.id)
+    });
+  }
+
+  /*
+    Предыдущая функция уже обеспечивает сохранение
+    и не позволяет сделать баланс отрицательным.
+  */
+  const previousChangeState = changeState;
+
+  changeState = function(change) {
+    previousChangeState(() => {
+      change();
+      reconcileDayBonus();
+    });
+  };
+
+  function togglePlan(task, checked) {
+    if (checked && !canPlan(task)) {
+      alert("Это разовое задание выполнено в другой день.");
+      render();
+      return;
+    }
+
+    changeState(() => {
+      ensurePlans();
+
+      const ids = new Set(planIds());
+
+      if (checked) ids.add(task.id);
+      else ids.delete(task.id);
+
+      state.dayPlans[today()] = [...ids];
+    });
+  }
+
+  // Дополняем существующие карточки заданий галочкой.
+  const previousTaskCard = taskCard;
+
+  taskCard = function(task) {
+    const card = previousTaskCard(task);
+
+    const label = document.createElement("label");
+    label.style.cssText = `
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height:44px;
+      margin:16px 0 0;
+      cursor:pointer;
+      font-size:14px;
+    `;
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = planIds().includes(task.id);
+    checkbox.disabled = !storageHealthy || !canPlan(task);
+
+    checkbox.style.cssText = `
+      width:22px;
+      height:22px;
+      min-height:22px;
+      margin:0;
+      flex:0 0 22px;
+      accent-color:var(--accent);
+    `;
+
+    checkbox.addEventListener("change", () => {
+      togglePlan(task, checkbox.checked);
+    });
+
+    const caption = document.createElement("span");
+    caption.textContent = canPlan(task)
+      ? "В плане на сегодня"
+      : "Выполнено в другой день";
+
+    label.append(checkbox, caption);
+    card.append(label);
+
+    return card;
+  };
+
+  function openDayConstructor() {
+    currentPage = "day-constructor";
+    currentBlock = null;
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  function renderDayConstructor() {
+    screen.replaceChildren();
+
+    screen.append(
+      button("← Герой", "back", () => {
+        currentPage = "hero";
+        currentBlock = null;
+        render();
+      }),
+      element("h1", "", "КОНСТРУКТОР ДНЯ"),
+      element("p", "", new Date().toLocaleDateString("ru-RU", {
+        day: "numeric",
+        month: "long"
+      }))
+    );
+
+    const tasks = plannedTasks();
+    const done = tasks.filter(todayCompletion);
+    const awarded = bonusRecord();
+
+    const summary = element("div", "card");
+
+    summary.append(
+      element(
+        "div",
+        "task-title",
+        `Выполнено ${done.length} из ${tasks.length}`
+      )
+    );
+
+    const percent = tasks.length
+      ? Math.round(done.length / tasks.length * 100)
+      : 0;
+
+    const bar = element("div", "progress");
+
+    bar.setAttribute("role", "progressbar");
+    bar.setAttribute("aria-label", "Выполнение плана дня");
+    bar.setAttribute("aria-valuemin", "0");
+    bar.setAttribute("aria-valuemax", "100");
+    bar.setAttribute("aria-valuenow", String(percent));
+
+    const fill = element("div", "progress-fill");
+    fill.style.width = `${percent}%`;
+    bar.append(fill);
+
+    summary.append(bar);
+
+    let bonusText;
+
+    if (awarded) {
+      bonusText = "✓ Бонус дня получен: +50 монет";
+    } else if (tasks.length < MIN_TASKS) {
+      bonusText = "Для бонуса нужно минимум 3 задания";
+    } else {
+      bonusText = "Выполни весь план: +50 монет";
+    }
+
+    const hint = element("p", "", bonusText);
+    hint.style.marginBottom = "0";
+
+    if (awarded) hint.style.color = "var(--accent)";
+
+    summary.append(hint);
+    screen.append(summary);
+
+    const add = button(
+      "Выбрать задания в блоках",
+      "button full",
+      () => {
+        currentPage = "blocks";
+        currentBlock = null;
+        render();
+        window.scrollTo(0, 0);
+      }
+    );
+
+    add.style.marginTop = "16px";
+    screen.append(add);
+
+    if (!tasks.length) {
+      screen.append(
+        element(
+          "div",
+          "empty",
+          "План пока пуст. Открой блоки и отметь у нужных " +
+          "заданий «В плане на сегодня»."
+        )
+      );
+      return;
+    }
+
+    blocks.forEach((name, index) => {
+      const group = tasks.filter(task => task.block === index);
+      if (!group.length) return;
+
+      screen.append(
+        element("div", "section-label", name.toUpperCase())
+      );
+
+      const list = element("div", "list");
+
+      // Сначала невыполненные, затем выполненные.
+      const ordered = [...group].sort(
+        (a, b) => Number(!!todayCompletion(a)) -
+                  Number(!!todayCompletion(b))
+      );
+
+      ordered.forEach(task => list.append(taskCard(task)));
+
+      screen.append(list);
+    });
+
+    screen.append(
+      element(
+        "p",
+        "",
+        "Сними галочку, чтобы убрать задание из плана. " +
+        "В своём блоке оно останется."
+      )
+    );
+  }
+
+  const previousRender = render;
+
+  render = function() {
+    previousRender();
+
+    if (currentPage === "hero") {
+      const tasks = plannedTasks();
+      const done = tasks.filter(todayCompletion);
+
+      const launch = button(
+        "Конструктор дня →",
+        "button full",
+        openDayConstructor
+      );
+
+      launch.style.marginTop = "24px";
+
+      const caption = element(
+        "div",
+        "progress-label",
+        tasks.length
+          ? `Выполнено ${done.length} из ${tasks.length}` +
+            (bonusRecord() ? " · Бонус +50 получен" : "")
+          : "Выбери действия на сегодня"
+      );
+
+      caption.style.textAlign = "center";
+
+      // Ставим кнопку перед кнопкой резервной копии.
+      const backupButton = Array.from(screen.children).find(
+        node =>
+          node.tagName === "BUTTON" &&
+          node.textContent === "Резервная копия"
+      );
+
+      screen.insertBefore(launch, backupButton || null);
+      screen.insertBefore(caption, backupButton || null);
+    }
+
+    if (currentPage === "day-constructor") {
+      renderDayConstructor();
+
+      // В конструкторе активной остаётся вкладка «Герой».
+      document.querySelectorAll(".nav-button").forEach(node => {
+        const active = node.dataset.page === "hero";
+        node.classList.toggle("active", active);
+
+        if (active) node.setAttribute("aria-current", "page");
+        else node.removeAttribute("aria-current");
+      });
+    }
+  };
+
+  render();
+})();
+</script>
+<script>
+(() => {
+  function transferDailyTasks() {
+    if (!storageHealthy) return;
+
+    const currentDate = today();
+
+    if (state.dayPlanDate === currentDate) return;
+
+    const before = JSON.stringify(state);
+
+    if (
+      !state.dayPlans ||
+      typeof state.dayPlans !== "object" ||
+      Array.isArray(state.dayPlans)
+    ) {
+      state.dayPlans = {};
+    }
+
+    /*
+      Берём последний сохранённый день перед сегодняшним.
+      Это работает и после перерыва в несколько дней.
+    */
+    const previousDates = Object.keys(state.dayPlans)
+      .filter(date =>
+        /^\d{4}-\d{2}-\d{2}$/.test(date) &&
+        date < currentDate
+      )
+      .sort();
+
+    const previousDate = previousDates[previousDates.length - 1];
+
+    const previousIds = previousDate &&
+      Array.isArray(state.dayPlans[previousDate])
+        ? state.dayPlans[previousDate]
+        : [];
+
+    const previousSet = new Set(previousIds);
+
+    const dailyIds = state.tasks
+      .filter(task =>
+        task.type === "daily" &&
+        previousSet.has(task.id)
+      )
+      .map(task => task.id);
+
+    /*
+      Если на сегодня уже есть план, не меняем его:
+      пользователь мог специально убрать какие-то задания.
+    */
+    if (!Array.isArray(state.dayPlans[currentDate])) {
+      state.dayPlans[currentDate] = dailyIds;
+    }
+
+    state.dayPlanDate = currentDate;
+
+    if (!save()) {
+      state = JSON.parse(before);
+    }
+  }
+
+  const previousRender = render;
+
+  render = function() {
+    transferDailyTasks();
+    previousRender();
+  };
+
+  /*
+    Проверяем дату и перед действиями.
+    Это важно, если приложение оставалось открытым ночью.
+  */
+  const previousChangeState = changeState;
+
+  changeState = function(change) {
+    transferDailyTasks();
+    previousChangeState(change);
+  };
+
+  render();
+})();
+</script>
+<script>
+(() => {
+  /*
+    1. Открываем в «Исключить» обычные задания.
+    Используем существующую форму создания и карточки.
+  */
+  const previousRenderBlock = renderBlock;
+
+  renderBlock = function() {
+    if (currentBlock !== 7) {
+      previousRenderBlock();
+      return;
+    }
+
+    screen.append(
+      button("← Все блоки", "back", () => {
+        currentBlock = null;
+        render();
+      }),
+      element("h1", "", blocks[currentBlock])
+    );
+
+    const add = button(
+      "+ Добавить задание",
+      "button full",
+      () => {
+        form.reset();
+        dialog.showModal();
+        document.getElementById("task-name").focus();
+      }
+    );
+
+    add.style.marginTop = "14px";
+    add.disabled = !storageHealthy;
+    screen.append(add);
+
+    const tasks = state.tasks.filter(
+      task => task.block === currentBlock
+    );
+
+    if (!tasks.length) {
+      screen.append(
+        element("div", "empty", "Пока заданий нет. Добавь первое.")
+      );
+      return;
+    }
+
+    const pending = tasks.filter(task => !completedRecord(task));
+    const done = tasks.filter(task => completedRecord(task));
+
+    const pendingList = element("div", "list");
+    pending.forEach(task => pendingList.append(taskCard(task)));
+    screen.append(pendingList);
+
+    if (done.length) {
+      screen.append(
+        element("div", "section-label", "ВЫПОЛНЕННЫЕ")
+      );
+
+      const doneList = element("div", "list");
+      done.forEach(task => doneList.append(taskCard(task)));
+      screen.append(doneList);
+    }
+  };
+
+  /*
+    2. Галочка квеста.
+    Это отдельное свойство, не связанное со списком
+    заданий dayPlans и бонусом дня.
+  */
+  function questVisibilityCheckbox(quest) {
+    const label = document.createElement("label");
+
+    label.style.cssText = `
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height:44px;
+      margin:16px 0 0;
+      cursor:pointer;
+      font-size:14px;
+    `;
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = quest.showInDay === true;
+    checkbox.disabled = !storageHealthy;
+
+    checkbox.style.cssText = `
+      width:22px;
+      height:22px;
+      min-height:22px;
+      margin:0;
+      flex:0 0 22px;
+      accent-color:var(--accent);
+    `;
+
+    checkbox.addEventListener("change", () => {
+      changeState(() => {
+        const actual = state.quests.find(
+          item => item.id === quest.id
+        );
+
+        if (actual) actual.showInDay = checkbox.checked;
+      });
+    });
+
+    label.append(
+      checkbox,
+      element("span", "", "Показывать в конструкторе дня")
+    );
+
+    return label;
+  }
+
+  /*
+    3. Изменение прогресса квеста из конструктора.
+    Правила награды те же, что на странице квестов.
+  */
+  function changeQuestProgress(id, direction) {
+    const quest = state.quests.find(item => item.id === id);
+    if (!quest) return;
+
+    const next = Math.max(
+      0,
+      Math.min(
+        quest.target,
+        quest.progress + direction * quest.step
+      )
+    );
+
+    if (next === quest.progress) return;
+
+    const rewardRecord = state.completions.find(
+      record => record.taskId === `quest:${quest.id}`
+    );
+
+    if (
+      next < quest.target &&
+      rewardRecord &&
+      !confirm(
+        "Уменьшить прогресс? Награда за завершение " +
+        "квеста будет отменена, а уровень пересчитан."
+      )
+    ) {
+      return;
+    }
+
+    changeState(() => {
+      const actual = state.quests.find(item => item.id === id);
+      if (!actual) return;
+
+      actual.progress = next;
+
+      const existingReward = state.completions.find(
+        record => record.taskId === `quest:${id}`
+      );
+
+      if (next === actual.target && !existingReward) {
+        state.completions.push({
+          id: newId(),
+          taskId: `quest:${id}`,
+          date: today(),
+          reward: actual.reward
+        });
+      }
+
+      if (next < actual.target && existingReward) {
+        state.completions = state.completions.filter(
+          record => record.id !== existingReward.id
+        );
+      }
+    });
+  }
+
+  function dayQuestCard(quest) {
+    const completed = quest.progress >= quest.target;
+    const card = element(
+      "article",
+      completed ? "card done" : "card"
+    );
+
+    card.append(
+      element("div", "task-title", quest.name),
+      element(
+        "div",
+        "meta",
+        completed ? "✓ Квест завершён" : "Долгосрочная цель"
+      ),
+      element(
+        "div",
+        "reward",
+        completed
+          ? `Получено ${quest.reward} монет`
+          : `За завершение: +${quest.reward} монет`
+      )
+    );
+
+    const bar = element("div", "progress");
+    bar.setAttribute("role", "progressbar");
+    bar.setAttribute("aria-label", quest.name);
+    bar.setAttribute("aria-valuemin", "0");
+    bar.setAttribute("aria-valuemax", String(quest.target));
+    bar.setAttribute("aria-valuenow", String(quest.progress));
+
+    const fill = element("div", "progress-fill");
+    fill.style.width =
+      `${quest.progress / quest.target * 100}%`;
+
+    bar.append(fill);
+
+    card.append(
+      bar,
+      element(
+        "div",
+        "progress-label",
+        `${quest.progress} / ${quest.target}`
+      )
+    );
+
+    const actions = element("div", "actions");
+    actions.style.marginTop = "18px";
+
+    const minus = button(
+      `−${quest.step}`,
+      "button secondary",
+      () => changeQuestProgress(quest.id, -1)
+    );
+
+    const plus = button(
+      `+${quest.step}`,
+      "button",
+      () => changeQuestProgress(quest.id, 1)
+    );
+
+    minus.style.flex = "1";
+    plus.style.flex = "1";
+
+    minus.disabled = !storageHealthy || quest.progress === 0;
+    plus.disabled = !storageHealthy || completed;
+
+    actions.append(minus, plus);
+
+    card.append(
+      actions,
+      questVisibilityCheckbox(quest)
+    );
+
+    return card;
+  }
+
+  /*
+    4. Дополняем существующие экраны,
+    не меняя расчёт бонуса дня.
+  */
+  const previousRender = render;
+
+  render = function() {
+    previousRender();
+
+    if (currentPage === "quests") {
+      // Порядок карточек существующего экрана:
+      // сначала активные, затем завершённые.
+      const ordered = [
+        ...state.quests.filter(
+          quest => quest.progress < quest.target
+        ),
+        ...state.quests.filter(
+          quest => quest.progress >= quest.target
+        )
+      ];
+
+      const cards = screen.querySelectorAll("article.card");
+
+      ordered.forEach((quest, index) => {
+        if (cards[index]) {
+          cards[index].append(
+            questVisibilityCheckbox(quest)
+          );
+        }
+      });
+    }
+
+    if (currentPage === "day-constructor") {
+      const visible = state.quests.filter(
+        quest => quest.showInDay === true
+      );
+
+      if (!visible.length) return;
+
+      screen.append(
+        element("div", "section-label", "КВЕСТЫ"),
+        element(
+          "p",
+          "",
+          "Не учитываются в плане и бонусе дня. " +
+          "Награда за завершение квеста начисляется отдельно."
+        )
+      );
+
+      const list = element("div", "list");
+
+      visible.forEach(quest => {
+        list.append(dayQuestCard(quest));
+      });
+
+      screen.append(list);
+    }
+  };
+
+  render();
+})();
+</script>
+<script>
+(() => {
+  const previousRender = render;
+
+  render = function() {
+    previousRender();
+
+    if (currentPage !== "day-constructor") return;
+
+    // Убираем дублирующую кнопку.
+    Array.from(screen.querySelectorAll("button")).forEach(node => {
+      if (node.textContent.trim() === "Выбрать задания в блоках") {
+        node.remove();
+      }
+    });
+
+    // Убираем лишние пояснения.
+    const unwantedTexts = new Set([
+      "Сними галочку, чтобы убрать задание из плана. " +
+      "В своём блоке оно останется.",
+
+      "Не учитываются в плане и бонусе дня. " +
+      "Награда за завершение квеста начисляется отдельно."
+    ]);
+
+    screen.querySelectorAll("p").forEach(node => {
+      if (unwantedTexts.has(node.textContent.trim())) {
+        node.remove();
+      }
+    });
+
+    /*
+      Находим карточки квестов.
+      Предыдущий код размещает их списком
+      сразу после заголовка «КВЕСТЫ».
+    */
+    const questHeading = Array.from(
+      screen.querySelectorAll(".section-label")
+    ).find(node => node.textContent.trim() === "КВЕСТЫ");
+
+    let questList = null;
+
+    if (questHeading) {
+      let next = questHeading.nextElementSibling;
+
+      while (next) {
+        if (next.classList.contains("list")) {
+          questList = next;
+          break;
+        }
+
+        next = next.nextElementSibling;
+      }
+    }
+
+    const questCards = questList
+      ? Array.from(questList.querySelectorAll("article.card"))
+      : [];
+
+    const questSet = new Set(questCards);
+
+    const taskCards = Array.from(
+      screen.querySelectorAll("article.card")
+    ).filter(card => !questSet.has(card));
+
+    const pendingCards = taskCards.filter(
+      card => !card.classList.contains("done")
+    );
+
+    const completedCards = taskCards.filter(
+      card => card.classList.contains("done")
+    );
+
+    /*
+      Удаляем старое расположение списков.
+      Сами карточки сохраняются вместе с кнопками
+      и обработчиками нажатий.
+    */
+    screen.querySelectorAll(".list, .section-label")
+      .forEach(node => node.remove());
+
+    function appendSection(title, cards) {
+      if (!cards.length) return;
+
+      const heading = element("div", "section-label", title);
+      const list = element("div", "list");
+
+      cards.forEach(card => list.append(card));
+
+      screen.append(heading, list);
+    }
+
+    appendSection("ЗАДАНИЯ", pendingCards);
+    appendSection("КВЕСТЫ", questCards);
+    appendSection("ВЫПОЛНЕНО", completedCards);
+  };
+
+  render();
+})();
+</script>
+<script>
+(() => {
+  // ---------- Оформление ----------
+
+  const style = document.createElement("style");
+
+  style.textContent = `
+    .favorite-button {
+      display: inline-grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 25px;
+      cursor: pointer;
+    }
+
+    .favorite-button.is-favorite {
+      color: #edcf83;
+      border-color: #edcf8355;
+      background: #edcf8309;
+    }
+
+    .favorite-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 18px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .summary-row:last-child {
+      border-bottom: 0;
+    }
+
+    .summary-row span:first-child {
+      color: var(--muted);
+    }
+
+    .summary-row strong {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .summary-total {
+      color: var(--accent);
+    }
+  `;
+
+  document.head.append(style);
+
+  // ---------- Избранное ----------
+
+  function collectionFor(kind) {
+    if (kind === "task") return state.tasks;
+    if (kind === "quest") return state.quests;
+    if (kind === "bonus") return state.bonuses;
+    return [];
+  }
+
+  function makeFavoriteButton(kind, item) {
+    const favorite = item.favorite === true;
+
+    const star = button(
+      favorite ? "★" : "☆",
+      favorite
+        ? "favorite-button is-favorite"
+        : "favorite-button",
+      () => {
+        changeState(() => {
+          const actual = collectionFor(kind).find(
+            record => record.id === item.id
+          );
+
+          if (actual) {
+            actual.favorite = actual.favorite !== true;
+          }
+        });
+      }
+    );
+
+    star.setAttribute("aria-pressed", String(favorite));
+
+    star.setAttribute(
+      "aria-label",
+      favorite
+        ? `Убрать из избранного: ${item.name}`
+        : `Добавить в избранное: ${item.name}`
+    );
+
+    star.title = favorite
+      ? "Убрать из избранного"
+      : "Добавить в избранное";
+
+    star.disabled = !storageHealthy;
+
+    return star;
+  }
+
+  function decorateCard(card, kind, item) {
+    if (!card || !item) return;
+
+    card.dataset.favoriteKind = kind;
+    card.dataset.favoriteId = item.id;
+
+    // Защита от повторного добавления звезды.
+    if (card.querySelector(".favorite-bar")) return;
+
+    const bar = element("div", "favorite-bar");
+    bar.append(makeFavoriteButton(kind, item));
+
+    card.prepend(bar);
+  }
+
+  /*
+    Карточки заданий создаются общей функцией.
+    Помечаем их сразу, чтобы правильно сортировать
+    и в блоках, и в конструкторе.
+  */
+  const previousTaskCard = taskCard;
+
+  taskCard = function(task) {
+    const card = previousTaskCard(task);
+    decorateCard(card, "task", task);
+    return card;
+  };
+
+  function isCompleted(kind, item) {
+    if (kind === "task") {
+      return Boolean(completedRecord(item));
+    }
+
+    if (kind === "quest") {
+      return item.progress >= item.target;
+    }
+
+    return false;
+  }
+
+  function sortCardList(list, kind) {
+    const cards = Array.from(list.children).filter(
+      node =>
+        node.tagName === "ARTICLE" &&
+        node.dataset.favoriteKind === kind
+    );
+
+    const collection = collectionFor(kind);
+
+    const itemsById = new Map(
+      collection.map(item => [item.id, item])
+    );
+
+    // При одинаковом приоритете сохраняем порядок
+    // из исходного списка данных.
+    const originalOrder = new Map(
+      collection.map((item, index) => [item.id, index])
+    );
+
+    cards.sort((cardA, cardB) => {
+      const a = itemsById.get(cardA.dataset.favoriteId);
+      const b = itemsById.get(cardB.dataset.favoriteId);
+
+      if (!a || !b) return 0;
+
+      const completionDifference =
+        Number(isCompleted(kind, a)) -
+        Number(isCompleted(kind, b));
+
+      if (completionDifference) return completionDifference;
+
+      const favoriteDifference =
+        Number(b.favorite === true) -
+        Number(a.favorite === true);
+
+      if (favoriteDifference) return favoriteDifference;
+
+      return originalOrder.get(a.id) - originalOrder.get(b.id);
+    });
+
+    cards.forEach(card => list.append(card));
+  }
+
+  function sortTaskLists() {
+    screen.querySelectorAll(".list").forEach(list => {
+      sortCardList(list, "task");
+    });
+  }
+
+  function decorateQuestPage() {
+    // До нашей сортировки прежний экран выводит
+    // активные квесты, затем завершённые.
+    const ordered = [
+      ...state.quests.filter(
+        quest => quest.progress < quest.target
+      ),
+      ...state.quests.filter(
+        quest => quest.progress >= quest.target
+      )
+    ];
+
+    const cards = Array.from(
+      screen.querySelectorAll("article.card")
+    );
+
+    ordered.forEach((quest, index) => {
+      decorateCard(cards[index], "quest", quest);
+    });
+
+    screen.querySelectorAll(".list").forEach(list => {
+      sortCardList(list, "quest");
+    });
+  }
+
+  function decorateDayQuests() {
+    const heading = Array.from(
+      screen.querySelectorAll(".section-label")
+    ).find(node => node.textContent.trim() === "КВЕСТЫ");
+
+    if (!heading) return;
+
+    const list = heading.nextElementSibling;
+
+    if (!list || !list.classList.contains("list")) return;
+
+    const visible = state.quests.filter(
+      quest => quest.showInDay === true
+    );
+
+    const cards = Array.from(
+      list.querySelectorAll("article.card")
+    );
+
+    visible.forEach((quest, index) => {
+      decorateCard(cards[index], "quest", quest);
+    });
+
+    sortCardList(list, "quest");
+  }
+
+  function decorateBonusPage() {
+    // Первый список — магазин.
+    // Историю покупок не меняем.
+    const list = screen.querySelector(".list");
+
+    if (!list) return;
+
+    const cards = Array.from(
+      list.querySelectorAll("article.card")
+    );
+
+    state.bonuses.forEach((bonus, index) => {
+      decorateCard(cards[index], "bonus", bonus);
+    });
+
+    sortCardList(list, "bonus");
+  }
+
+  // ---------- Итоги дня ----------
+
+  function addSummaryRow(container, title, value, total = false) {
+    const row = element("div", "summary-row");
+
+    row.append(
+      element("span", "", title),
+      element(
+        "strong",
+        total ? "summary-total" : "",
+        String(value)
+      )
+    );
+
+    container.append(row);
+  }
+
+  function isTodayPurchase(purchase) {
+    const date = new Date(purchase.createdAt);
+
+    if (!Number.isFinite(date.getTime())) return false;
+
+    const localDate = [
+      date.getFullYear(),
+      String(date.getMonth() + 1).padStart(2, "0"),
+      String(date.getDate()).padStart(2, "0")
+    ].join("-");
+
+    return localDate === today();
+  }
+
+  function renderDaySummary() {
+    screen.replaceChildren();
+
+    screen.append(
+      button("← Герой", "back", () => {
+        currentPage = "hero";
+        currentBlock = null;
+        render();
+        window.scrollTo(0, 0);
+      }),
+      element("h1", "", "ИТОГИ ДНЯ"),
+      element(
+        "p",
+        "",
+        new Date().toLocaleDateString("ru-RU", {
+          day: "numeric",
+          month: "long"
+        })
+      )
+    );
+
+    const records = state.completions.filter(
+      record => record.date === today()
+    );
+
+    const taskRecords = records.filter(record =>
+      !record.taskId.startsWith("quest:") &&
+      !record.taskId.startsWith("day-bonus:")
+    );
+
+    const questRecords = records.filter(
+      record => record.taskId.startsWith("quest:")
+    );
+
+    const dayBonusRecords = records.filter(
+      record => record.taskId.startsWith("day-bonus:")
+    );
+
+    const sumRewards = list =>
+      list.reduce((sum, record) => sum + record.reward, 0);
+
+    const tasks = state.tasks.filter(task => {
+      const ids = state.dayPlans &&
+        state.dayPlans[today()];
+
+      return Array.isArray(ids) && ids.includes(task.id);
+    });
+
+    const completedPlanTasks = tasks.filter(task =>
+      state.completions.some(record =>
+        record.taskId === task.id &&
+        record.date === today()
+      )
+    );
+
+    const spent = state.purchases
+      .filter(isTodayPurchase)
+      .reduce((sum, purchase) => sum + purchase.price, 0);
+
+    const activity = element("section", "card");
+
+    addSummaryRow(
+      activity,
+      "Выполнено заданий",
+      taskRecords.length
+    );
+
+    addSummaryRow(
+      activity,
+      "План дня",
+      `${completedPlanTasks.length} из ${tasks.length}`
+    );
+
+    addSummaryRow(
+      activity,
+      "Завершено квестов",
+      questRecords.length
+    );
+
+    const money = element("section", "card");
+    money.style.marginTop = "16px";
+
+    addSummaryRow(
+      money,
+      "За задания",
+      `+${sumRewards(taskRecords)}`
+    );
+
+    addSummaryRow(
+      money,
+      "За квесты",
+      `+${sumRewards(questRecords)}`
+    );
+
+    addSummaryRow(
+      money,
+      "Бонус дня",
+      `+${sumRewards(dayBonusRecords)}`
+    );
+
+    addSummaryRow(
+      money,
+      "Всего заработано",
+      `${sumRewards(records)} монет`,
+      true
+    );
+
+    addSummaryRow(
+      money,
+      "Потрачено",
+      `${spent} монет`
+    );
+
+    screen.append(activity, money);
+
+    if (!records.length) {
+      screen.append(
+        element(
+          "p",
+          "",
+          "Сегодня ещё нет выполненных действий. " +
+          "Начни с одного посильного задания."
+        )
+      );
+    }
+  }
+
+  // ---------- Подключение к экранам ----------
+
+  const previousRender = render;
+
+  render = function() {
+    previousRender();
+
+    if (currentPage === "hero") {
+      const summaryButton = button(
+        "Итоги дня",
+        "button secondary full",
+        () => {
+          currentPage = "day-summary";
+          currentBlock = null;
+          render();
+          window.scrollTo(0, 0);
+        }
+      );
+
+      summaryButton.style.marginTop = "12px";
+
+      // Добавляем после уже существующей
+      // кнопки резервной копии.
+      screen.append(summaryButton);
+    }
+
+    if (currentPage === "blocks") {
+      sortTaskLists();
+    }
+
+    if (currentPage === "quests") {
+      decorateQuestPage();
+    }
+
+    if (currentPage === "bonuses") {
+      decorateBonusPage();
+    }
+
+    if (currentPage === "day-constructor") {
+      sortTaskLists();
+      decorateDayQuests();
+    }
+
+    if (currentPage === "day-summary") {
+      renderDaySummary();
+
+      document.querySelectorAll(".nav-button").forEach(node => {
+        const active = node.dataset.page === "hero";
+
+        node.classList.toggle("active", active);
+
+        if (active) {
+          node.setAttribute("aria-current", "page");
+        } else {
+          node.removeAttribute("aria-current");
+        }
+      });
+    }
+  };
+
+  render();
+})();
+</script>
+<script>
+(() => {
+  // ---------- Поле в форме создания ----------
+
+  const questForm = document.getElementById("quest-form");
+
+  if (!questForm) {
+    console.error("Форма создания квеста не найдена.");
+    return;
+  }
+
+  const stepLabel = document.createElement("label");
+  stepLabel.htmlFor = "quest-step-reward";
+  stepLabel.textContent = "Монет за шаг";
+
+  const stepInput = document.createElement("input");
+  stepInput.id = "quest-step-reward";
+  stepInput.type = "number";
+  stepInput.min = "0";
+  stepInput.max = "100000";
+  stepInput.step = "1";
+  stepInput.defaultValue = "0";
+  stepInput.required = true;
+
+  const stepHint = element(
+    "p",
+    "",
+    "За одно нажатие «+». Укажи 0, если награда не нужна."
+  );
+
+  stepHint.style.fontSize = "13px";
+
+  const formActions = questForm.querySelector(".form-actions");
+
+  questForm.insertBefore(stepLabel, formActions);
+  questForm.insertBefore(stepInput, formActions);
+  questForm.insertBefore(stepHint, formActions);
+
+
+  function stepReward(quest) {
+    return Number.isInteger(quest.stepReward) &&
+      quest.stepReward >= 0
+        ? quest.stepReward
+        : 0;
+  }
+
+  // ---------- Изменение прогресса ----------
+
+  function moveQuest(id, direction) {
+    if (!storageHealthy) return;
+
+    const quest = state.quests.find(item => item.id === id);
+    if (!quest) return;
+
+    const history = Array.isArray(quest.stepHistory)
+      ? quest.stepHistory
+      : [];
+
+    const last = history[history.length - 1];
+
+    let next;
+
+    if (direction > 0) {
+      next = Math.min(
+        quest.target,
+        quest.progress + quest.step
+      );
+    } else if (last && last.to === quest.progress) {
+      // Отменяем последнее продвижение точно,
+      // даже если последний шаг был неполным.
+      next = last.from;
+    } else {
+      // Старый прогресс, созданный до обновления.
+      next = Math.max(0, quest.progress - quest.step);
+    }
+
+    if (next === quest.progress) return;
+
+    const finalReward = state.completions.find(
+      record => record.taskId === `quest:${id}`
+    );
+
+    if (direction < 0) {
+      const payment = last &&
+        last.to === quest.progress
+          ? state.completions.find(
+              record => record.id === last.completionId
+            )
+          : null;
+
+      let refund = payment ? payment.reward : 0;
+
+      if (next < quest.target && finalReward) {
+        refund += finalReward.reward;
+      }
+
+      const message = refund > 0
+        ? `Отменить последний шаг? Будет убрано ${refund} монет.`
+        : "Отменить последний шаг?";
+
+      if (!confirm(message)) return;
+    }
+
+    changeState(() => {
+      const actual = state.quests.find(item => item.id === id);
+      if (!actual) return;
+
+      if (!Array.isArray(actual.stepHistory)) {
+        actual.stepHistory = [];
+      }
+
+      if (direction > 0) {
+        const reward = stepReward(actual);
+        const paymentId = reward > 0 ? newId() : null;
+
+        actual.stepHistory.push({
+          from: actual.progress,
+          to: next,
+          completionId: paymentId
+        });
+
+        if (reward > 0) {
+          state.completions.push({
+            id: paymentId,
+            taskId: `quest:step:${id}:${paymentId}`,
+            date: today(),
+            reward
+          });
+        }
+      } else {
+        const actualLast = actual.stepHistory[
+          actual.stepHistory.length - 1
+        ];
+
+        if (
+          actualLast &&
+          actualLast.to === actual.progress
+        ) {
+          actual.stepHistory.pop();
+
+          if (actualLast.completionId) {
+            state.completions = state.completions.filter(
+              record => record.id !== actualLast.completionId
+            );
+          }
+        }
+      }
+
+      actual.progress = next;
+
+      const existingFinalReward = state.completions.find(
+        record => record.taskId === `quest:${id}`
+      );
+
+      if (
+        next === actual.target &&
+        !existingFinalReward
+      ) {
+        state.completions.push({
+          id: newId(),
+          taskId: `quest:${id}`,
+          date: today(),
+          reward: actual.reward
+        });
+      }
+
+      if (
+        next < actual.target &&
+        existingFinalReward
+      ) {
+        state.completions = state.completions.filter(
+          record => record.id !== existingFinalReward.id
+        );
+      }
+    });
+  }
+
+  /*
+    Перехватываем кнопки прогресса на обоих экранах:
+    «Квесты» и «Конструктор дня».
+
+    Остальные кнопки, звёзды и галочки не затрагиваем.
+  */
+  screen.addEventListener("click", event => {
+    if (!(event.target instanceof Element)) return;
+
+    const clicked = event.target.closest("button");
+    if (!clicked || clicked.disabled) return;
+
+    const card = clicked.closest(
+      'article[data-favorite-kind="quest"]'
+    );
+
+    if (!card) return;
+
+    const quest = state.quests.find(
+      item => item.id === card.dataset.favoriteId
+    );
+
+    if (!quest) return;
+
+    const caption = clicked.textContent.trim();
+
+    let direction = 0;
+
+    if (caption === `+${quest.step}`) direction = 1;
+    if (caption === `−${quest.step}`) direction = -1;
+
+    if (!direction) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    moveQuest(quest.id, direction);
+  }, true);
+
+  // ---------- Подписи на карточках ----------
+
+    function decorateStepRewards() {
+    const questsById = new Map(
+      state.quests.map(quest => [quest.id, quest])
+    );
+
+    screen.querySelectorAll(
+      'article[data-favorite-kind="quest"]'
+    ).forEach(card => {
+      const quest = questsById.get(card.dataset.favoriteId);
+      if (!quest) return;
+
+      const previous = card.querySelector(
+        '[data-step-reward-info="true"]'
+      );
+
+      if (previous) previous.remove();
+
+      const container = element("div", "");
+      container.dataset.stepRewardInfo = "true";
+      container.style.marginBottom = "16px";
+
+      const info = element(
+        "div",
+        "meta",
+        stepReward(quest) > 0
+          ? `За шаг: +${stepReward(quest)} монет`
+          : "Без награды за шаг"
+      );
+
+      const configure = button(
+        "Настроить награду за шаг",
+        "button secondary",
+        () => {
+          const actual = state.quests.find(
+            item => item.id === quest.id
+          );
+
+          if (!actual) return;
+
+          const entered = prompt(
+            "Сколько монет давать за одно нажатие «+»? " +
+            "От 0 до 100000. Изменение действует только " +
+            "на следующие шаги.",
+            String(stepReward(actual))
+          );
+
+          if (entered === null) return;
+
+          const trimmed = entered.trim();
+          const value = Number(trimmed);
+
+          if (
+            trimmed === "" ||
+            !Number.isInteger(value) ||
+            value < 0 ||
+            value > 100000
+          ) {
+            alert("Введи целое число от 0 до 100000.");
+            return;
+          }
+
+          changeState(() => {
+            const current = state.quests.find(
+              item => item.id === quest.id
+            );
+
+            if (current) {
+              current.stepReward = value;
+            }
+          });
+        }
+      );
+
+      configure.style.fontSize = "12px";
+      configure.style.padding = "8px 12px";
+      configure.disabled = !storageHealthy;
+
+      container.append(info, configure);
+
+      const progress = card.querySelector(".progress");
+
+      if (progress) {
+        card.insertBefore(container, progress);
+      } else {
+        card.append(container);
+      }
+    });
+  }
+
+  // ---------- Уточняем итоги дня ----------
+
+  function updateDaySummary() {
+    const records = state.completions.filter(
+      record => record.date === today()
+    );
+
+    const stepRecords = records.filter(
+      record => record.taskId.startsWith("quest:step:")
+    );
+
+    const finishedRecords = records.filter(record =>
+      record.taskId.startsWith("quest:") &&
+      !record.taskId.startsWith("quest:step:")
+    );
+
+    function findRow(title) {
+      return Array.from(
+        screen.querySelectorAll(".summary-row")
+      ).find(row =>
+        row.querySelector("span")?.textContent === title
+      );
+    }
+
+    const completedRow = findRow("Завершено квестов");
+
+    if (completedRow) {
+      completedRow.querySelector("strong").textContent =
+        String(finishedRecords.length);
+    }
+
+    const questMoneyRow = findRow("За квесты");
+
+    if (questMoneyRow) {
+      questMoneyRow.querySelector("span").textContent =
+        "За завершение квестов";
+
+      questMoneyRow.querySelector("strong").textContent =
+        `+${finishedRecords.reduce(
+          (sum, record) => sum + record.reward, 0
+        )}`;
+
+      const row = element("div", "summary-row");
+
+      row.append(
+        element("span", "", "За шаги квестов"),
+        element(
+          "strong",
+          "",
+          `+${stepRecords.reduce(
+            (sum, record) => sum + record.reward, 0
+          )}`
+        )
+      );
+
+      questMoneyRow.after(row);
+    }
+  }
+
+  const previousRender = render;
+
+  render = function() {
+    previousRender();
+
+    if (
+      currentPage === "quests" ||
+      currentPage === "day-constructor"
+    ) {
+      decorateStepRewards();
+    }
+
+    if (currentPage === "day-summary") {
+      updateDaySummary();
     }
   };
 
