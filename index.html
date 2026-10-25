@@ -461,6 +461,421 @@
     .progress-fill { transition: width .2s ease; }
   }
 </style>
+<style>
+  /* ===== LIFE / GAME — BLACK & YELLOW ===== */
+
+  :root {
+    --bg: #090909;
+    --card: #141413;
+    --border: #303029;
+    --text: #f4f3e9;
+    --muted: #99998c;
+    --accent: #ffda29;
+    --gold: #ffda29;
+  }
+
+  body {
+    background: var(--bg);
+  }
+
+  .app {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: calc(
+      78px + env(safe-area-inset-top, 0px)
+    );
+  }
+
+  /* Верхняя панель */
+
+  .topbar {
+    min-height: calc(
+      58px + env(safe-area-inset-top, 0px)
+    );
+
+    padding:
+      calc(12px + env(safe-area-inset-top, 0px))
+      16px
+      12px;
+
+    background: #10100f;
+    border-bottom: 1px solid #ffda2933;
+    box-shadow: 0 5px 18px #0005;
+  }
+
+  .brand {
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 2px;
+  }
+
+  #wallet {
+    color: var(--accent);
+    font-size: 16px;
+    font-weight: 800;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: .5px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  p {
+    line-height: 1.45;
+  }
+
+  /* Карточки: компактные игровые панели */
+
+  .card {
+    position: relative;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card);
+    box-shadow: inset 3px 0 0 #ffda291a;
+  }
+
+  .list {
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .task-head {
+    align-items: flex-start;
+    gap: 8px;
+
+    /* Справа оставляем место для звезды. */
+    min-height: 36px;
+    padding-right: 40px;
+  }
+
+  .task-title {
+    flex: 1;
+    min-width: 0;
+    padding-top: 7px;
+    font-size: 16px;
+    line-height: 1.3;
+    font-weight: 750;
+  }
+
+  /* Звезда больше не занимает отдельную строку */
+
+  .favorite-bar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    display: block;
+    margin: 0;
+  }
+
+  .favorite-button {
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: #77776a;
+    font-size: 24px;
+  }
+
+  .favorite-button.is-favorite {
+    color: var(--accent);
+    background: #ffda290b;
+    border-color: #ffda2938;
+  }
+
+  .delete {
+    min-width: 36px;
+    min-height: 36px;
+    padding: 0;
+    color: #818175;
+    font-size: 20px;
+  }
+
+  .meta {
+    margin: 5px 0 8px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .reward {
+    margin: 8px 0 10px;
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 650;
+    line-height: 1.35;
+  }
+
+  /* Кнопки */
+
+  .button {
+    min-height: 44px;
+    padding: 10px 13px;
+    border: 1px solid #ffda2970;
+    border-radius: 8px;
+    background: #ffda290c;
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 650;
+  }
+
+  .button.secondary {
+    border-color: var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .button.small {
+    min-height: 36px;
+    padding: 7px 9px;
+    border-color: transparent;
+    background: #ffffff04;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .button:active:not(:disabled),
+  .block:active {
+    background: #ffda291c;
+  }
+
+  .actions {
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  /* Прогресс */
+
+  .progress {
+    height: 6px;
+    margin-top: 12px;
+    border-radius: 3px;
+    background: #2b2b25;
+  }
+
+  .progress-fill {
+    background: var(--accent);
+    box-shadow: 0 0 8px #ffda2926;
+  }
+
+  .progress-label {
+    margin-top: 7px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  /* Галочки */
+
+  .check-label {
+    gap: 10px;
+    min-height: 44px;
+    margin: 7px 0 0;
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .check-label input {
+    flex-basis: 20px;
+    width: 20px;
+    height: 20px;
+    min-height: 20px;
+    accent-color: var(--accent);
+  }
+
+  /* Выполненные карточки не конкурируют с активными */
+
+  .card.done {
+    border-color: #38382b;
+    background: #111110;
+    box-shadow: inset 3px 0 0 #ffda2933;
+  }
+
+  .done .task-title {
+    color: #c0c0b3;
+  }
+
+  .done .reward {
+    color: #b9a84e;
+  }
+
+  .section-label {
+    margin-top: 22px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+  }
+
+  /* Блоки времени */
+
+  .block {
+    min-height: 56px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: var(--card);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .arrow {
+    color: var(--accent);
+    font-size: 23px;
+  }
+
+  .back {
+    min-height: 40px;
+    margin-bottom: 10px;
+    color: var(--accent);
+    font-size: 13px;
+  }
+
+  /* Главная */
+
+  .hero {
+    padding-top: 10px;
+  }
+
+  .avatar {
+    width: 112px;
+    height: 112px;
+    margin-bottom: 20px;
+    border: 1px solid #ffda2960;
+    border-radius: 24px;
+    background:
+      linear-gradient(145deg, #34301a, #151510 70%);
+    box-shadow:
+      inset 0 0 20px #ffda2905,
+      0 0 24px #ffda2907;
+    color: var(--accent);
+    font-size: 42px;
+    font-weight: 900;
+  }
+
+  .level {
+    color: var(--text);
+    font-size: 23px;
+    font-weight: 850;
+    letter-spacing: 2px;
+  }
+
+  .hero .progress {
+    margin-top: 16px;
+  }
+
+  .balance,
+  .hero .balance {
+    margin-top: 22px;
+    padding: 16px;
+  }
+
+  .balance-number {
+    color: var(--accent);
+    font-size: 38px;
+    line-height: 1.1;
+    font-weight: 850;
+  }
+
+  .label {
+    margin-top: 7px;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .hero-link {
+    margin-top: 18px;
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #111108;
+    font-weight: 800;
+  }
+
+  .hero-link:active:not(:disabled) {
+    background: #ebc817;
+  }
+
+  .backup-link {
+    margin-top: 22px;
+  }
+
+  .summary-link {
+    margin-top: 10px;
+  }
+
+  .spaced {
+    margin-top: 12px;
+  }
+
+  /* Нижняя навигация */
+
+  nav {
+    background: #10100f;
+    border-top-color: #ffda292b;
+  }
+
+  .nav-button {
+    min-height: 50px;
+    border-radius: 8px;
+    color: #8f8f81;
+    font-size: 10px;
+  }
+
+  .nav-icon {
+    font-size: 20px;
+  }
+
+  .nav-button.active {
+    background: #ffda2910;
+    color: var(--accent);
+    box-shadow: inset 0 2px 0 var(--accent);
+  }
+
+  /* Формы и итоги */
+
+  dialog {
+    padding: 20px;
+    border-color: #ffda2938;
+    border-radius: 12px;
+    background: #141413;
+  }
+
+  input,
+  select,
+  textarea {
+    border-radius: 8px;
+    border-color: var(--border);
+    background: #0c0c0b;
+  }
+
+  .summary-row {
+    gap: 12px;
+    padding: 11px 0;
+    font-size: 13px;
+  }
+
+  .summary-total {
+    color: var(--accent);
+  }
+
+  .empty {
+    margin-top: 16px;
+    padding: 18px;
+    border-radius: 10px;
+    font-size: 13px;
+  }
+</style>
 </head>
 
 <body>
@@ -1943,16 +2358,40 @@
       taskCard
     );
 
-    section(
-      "КВЕСТЫ",
-      questSort(state.quests.filter(quest => quest.showInDay)),
-      quest => questCard(quest, true)
+        const visibleQuests = state.quests.filter(
+      quest => quest.showInDay
     );
 
     section(
+      "КВЕСТЫ",
+      favoriteSort(
+        visibleQuests.filter(
+          quest => quest.progress < quest.target
+        )
+      ),
+      quest => questCard(quest, true)
+    );
+
+    const completedItems = favoriteSort([
+      ...view.plannedDone.map(task => ({
+        ...task,
+        itemKind: "task"
+      })),
+
+      ...visibleQuests
+        .filter(quest => quest.progress >= quest.target)
+        .map(quest => ({
+          ...quest,
+          itemKind: "quest"
+        }))
+    ]);
+
+    section(
       "ВЫПОЛНЕНО",
-      favoriteSort(view.plannedDone),
-      taskCard
+      completedItems,
+      item => item.itemKind === "quest"
+        ? questCard(item, true)
+        : taskCard(item)
     );
   }
 
