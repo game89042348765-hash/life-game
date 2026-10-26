@@ -4,1137 +4,584 @@
 <meta charset="UTF-8">
 <meta name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#09090d">
+<meta name="theme-color" content="#090909">
 <title>LifeGame</title>
 
 <style>
-  :root {
-    color-scheme: dark;
-    --bg: #09090d;
-    --card: #14141d;
-    --border: #292936;
-    --text: #f4f4fa;
-    --muted: #9595a8;
-    --accent: #62f5d1;
-    --gold: #edcf83;
+:root {
+  color-scheme: dark;
+  --bg: #090909;
+  --card: #141413;
+  --border: #303029;
+  --text: #f4f3e9;
+  --muted: #99998c;
+  --accent: #ffda29;
+  --green: #acd8b8;
+}
+* { box-sizing: border-box; }
+html {
+  touch-action: manipulation;
+  scroll-padding-top: calc(80px + env(safe-area-inset-top, 0px));
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+button, input, select, textarea { font: inherit; }
+button, a, label, input, select, textarea {
+  touch-action: manipulation;
+}
+button {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+button:disabled { opacity: .5; cursor: not-allowed; }
+button:focus:not(:focus-visible) { outline: none; }
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.app {
+  max-width: 480px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: auto;
+  padding:
+    calc(78px + env(safe-area-inset-top, 0px))
+    16px
+    calc(110px + env(safe-area-inset-bottom, 0px));
+}
+.topbar {
+  position: fixed;
+  z-index: 20;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  max-width: 480px;
+  min-height: calc(58px + env(safe-area-inset-top, 0px));
+  padding:
+    calc(12px + env(safe-area-inset-top, 0px))
+    16px 12px;
+  background: #10100f;
+  border-bottom: 1px solid #ffda2933;
+  box-shadow: 0 5px 18px #0005;
+}
+.brand {
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 2px;
+}
+#wallet {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  font-size: 14px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+#wallet span { white-space: nowrap; }
+.wallet-diamonds { color: var(--green); }
+h1 {
+  margin: 0 0 10px;
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  overflow-wrap: anywhere;
+}
+h2 {
+  margin-top: 0;
+  font-size: 20px;
+  overflow-wrap: anywhere;
+}
+p { color: var(--muted); line-height: 1.45; }
+.hero { padding-top: 10px; text-align: center; }
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 112px;
+  height: 112px;
+  margin: 0 auto 20px;
+  border: 1px solid #ffda2960;
+  border-radius: 24px;
+  background: linear-gradient(145deg, #34301a, #151510 70%);
+  color: var(--accent);
+  font-size: 42px;
+  font-weight: 900;
+}
+.level { font-size: 23px; font-weight: 850; letter-spacing: 2px; }
+.progress {
+  height: 6px;
+  margin-top: 12px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #2b2b25;
+}
+.progress-fill { height: 100%; background: var(--accent); }
+.hero .progress { margin-top: 16px; }
+.progress-label {
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.center { text-align: center; }
+.card {
+  position: relative;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  box-shadow: inset 3px 0 0 #ffda291a;
+}
+.balances-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+  margin-top: 22px;
+}
+.balance { min-width: 0; padding: 16px 10px; text-align: center; }
+.balance-number {
+  color: var(--accent);
+  font-size: 30px;
+  line-height: 1.1;
+  font-weight: 850;
+  overflow-wrap: anywhere;
+}
+.diamond-balance .balance-number { color: var(--green); }
+.label {
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+.list { display: grid; gap: 10px; margin-top: 14px; }
+.block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  min-height: 56px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--text);
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+}
+.block span:first-child { overflow-wrap: anywhere; }
+.arrow { color: var(--accent); font-size: 23px; }
+.back {
+  min-height: 40px;
+  margin-bottom: 10px;
+  padding: 0 10px 0 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font-size: 13px;
+}
+.empty {
+  margin-top: 16px;
+  padding: 18px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.task-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 36px;
+  padding-right: 40px;
+}
+.task-title {
+  flex: 1;
+  min-width: 0;
+  padding-top: 7px;
+  font-size: 16px;
+  line-height: 1.3;
+  font-weight: 750;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+.meta {
+  margin: 5px 0 8px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+.reward {
+  margin: 8px 0 10px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 650;
+}
+.compact-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 7px 0 12px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.detail-muted { color: var(--muted); }
+.detail-reward { color: var(--accent); font-weight: 650; }
+.actions, .form-actions { display: flex; gap: 8px; }
+.actions { margin-top: 10px; }
+.actions > button { flex: 1; }
+.form-actions { flex-wrap: wrap; margin-top: 24px; }
+.button {
+  min-height: 44px;
+  padding: 10px 13px;
+  border: 1px solid #ffda2970;
+  border-radius: 8px;
+  background: #ffda290c;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 650;
+}
+.full { width: 100%; }
+.button.secondary {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-weight: 500;
+}
+.button:active:not(:disabled), .block:active {
+  background: #ffda291c;
+}
+.spaced { margin-top: 12px; }
+.hero-link {
+  margin-top: 18px;
+  background: var(--accent);
+  color: #111108;
+  font-weight: 800;
+}
+.hero-link:active:not(:disabled) { background: #ebc817; }
+.backup-link { margin-top: 22px; }
+.summary-link { margin-top: 10px; }
+.more-button {
+  flex-shrink: 0;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 24px;
+}
+.card.done {
+  border-color: #38382b;
+  background: #111110;
+  box-shadow: inset 3px 0 0 #ffda2933;
+}
+.done .task-title { color: #c0c0b3; }
+.done .detail-reward { color: #b9a84e; }
+.section-label {
+  margin-top: 22px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+.favorite-bar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.favorite-button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: #77776a;
+  font-size: 24px;
+}
+.favorite-button.is-favorite {
+  color: var(--accent);
+  background: #ffda290b;
+  border-color: #ffda2938;
+}
+.check-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  margin: 7px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+  cursor: pointer;
+}
+.check-label input {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  min-height: 20px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+.quest-reward-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 6px 0 8px;
+}
+.quest-reward-line .compact-details { flex: 1; min-width: 0; margin: 0; }
+.quest-plan-toggle {
+  flex-shrink: 0;
+  min-height: 36px;
+  margin: 0;
+  gap: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.quest-plan-toggle input {
+  flex-basis: 18px;
+  width: 18px;
+  height: 18px;
+  min-height: 18px;
+}
+.block-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.block-heading h1 { flex: 1; min-width: 0; }
+.block-create-actions { display: grid; gap: 10px; margin-top: 14px; }
+.card.goal-card {
+  border-color: #52765b;
+  background: #142019;
+  box-shadow: inset 3px 0 0 #79a985;
+}
+.active-goal { margin-top: 14px; }
+.goal-card .task-head { padding-right: 0; }
+.goal-label {
+  color: #a4c9ae;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+.goal-card .task-title { color: #e0eee3; }
+.goal-card .reward { color: #a9dfb9; }
+.goal-card .button, .button.goal-button {
+  border-color: #89bd9770;
+  background: #89bd9710;
+  color: #c0e6ca;
+}
+.card.goal-card.done {
+  background: #111a14;
+  border-color: #3d5743;
+  box-shadow: inset 3px 0 0 #52765b;
+}
+.goal-card .meta { color: #94af9b; }
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.summary-row:last-child { border-bottom: 0; }
+.summary-row span { color: var(--muted); }
+.summary-row strong { text-align: right; }
+.summary-total { color: var(--accent); }
+nav {
+  position: fixed;
+  z-index: 10;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  max-width: 480px;
+  padding: 10px 8px calc(10px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid #ffda292b;
+  background: #10100f;
+}
+.nav-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  min-height: 50px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #8f8f81;
+  font-size: 10px;
+}
+.nav-icon { font-size: 20px; }
+.nav-button.active {
+  color: var(--accent);
+  background: #ffda2910;
+  box-shadow: inset 0 2px 0 var(--accent);
+}
+dialog {
+  width: calc(100% - 32px);
+  max-width: 440px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 20px;
+  border: 1px solid #ffda2940;
+  border-radius: 14px;
+  background: var(--card);
+  color: var(--text);
+}
+dialog::backdrop { background: #000b; }
+label:not(.check-label) {
+  display: block;
+  margin: 18px 0 8px;
+  color: var(--muted);
+  font-size: 14px;
+}
+input, select, textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0c0c0b;
+  color: var(--text);
+  font-size: 16px;
+}
+textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
+.menu-actions { display: grid; gap: 10px; margin-top: 18px; }
+#backup-dialog > p { font-size: 13px; }
+#backup-dialog .form-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+#backup-dialog .form-actions button {
+  min-width: 0;
+  width: 100%;
+  padding: 10px 8px;
+  font-size: 13px;
+}
+#close-backup { grid-column: 1 / -1; }
+.settings-danger {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+.settings-danger h3 { margin: 0 0 8px; font-size: 14px; }
+.settings-danger p { font-size: 12px; }
+.button.danger {
+  width: 100%;
+  border-color: #ff797950;
+  background: #ff797908;
+  color: #ffaaaa;
+}
+#save-warning {
+  color: #ffb4b4;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.reward-toast {
+  position: fixed;
+  z-index: 100;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  min-width: 210px;
+  max-width: calc(100vw - 40px);
+  min-height: 82px;
+  padding: 18px 24px;
+  border: 2px solid var(--accent);
+  border-radius: 14px;
+  background: #18180f;
+  color: var(--accent);
+  font-size: 25px;
+  font-weight: 900;
+  text-align: center;
+  white-space: pre-line;
+  line-height: 1.4;
+  pointer-events: none;
+  box-shadow: 0 0 0 9999px #0006, 0 0 35px #ffda2944;
+  animation: reward-popup var(--duration, 1700ms) ease-out forwards;
+}
+.reward-toast.level-up,
+.reward-toast.day-bonus-toast {
+  min-width: 250px;
+  background: #302b0d;
+  color: #fff29a;
+  border-color: #fff29a;
+}
+.reward-toast.goal-toast {
+  min-width: 240px;
+  background: #15271b;
+  border-color: #96caa4;
+  color: #c0e6ca;
+  font-size: 23px;
+}
+@keyframes reward-popup {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.85); }
+  12% { opacity: 1; transform: translate(-50%, -50%) scale(1.04); }
+  24%, 85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(.97); }
+}
+@media (max-width: 390px) {
+  .quest-reward-line { flex-direction: column; align-items: flex-start; gap: 3px; }
+  .reward-toast { font-size: 21px; }
+}
+@media (max-width: 350px) {
+  .brand { font-size: 10px; letter-spacing: 1px; }
+  #wallet { font-size: 12px; gap: 4px 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reward-toast { animation-name: reward-fade; }
+  @keyframes reward-fade {
+    0%, 85% { opacity: 1; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(-50%, -50%); }
   }
-
-  * { box-sizing: border-box; }
-
-  html {
-    scroll-padding-top:
-      calc(80px + env(safe-area-inset-top, 0px));
-  }
-
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family:
-      -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  }
-
-  button, input, select, textarea { font: inherit; }
-
-  button { cursor: pointer; }
-
-  button:disabled {
-    opacity: .5;
-    cursor: not-allowed;
-  }
-
-  button:focus-visible,
-  input:focus-visible,
-  select:focus-visible,
-  textarea:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-  }
-
-  .app {
-    max-width: 480px;
-    min-height: 100vh;
-    min-height: 100dvh;
-    margin: auto;
-    padding:
-      calc(88px + env(safe-area-inset-top, 0px))
-      20px
-      calc(110px + env(safe-area-inset-bottom, 0px));
-  }
-
-  .topbar {
-    position: fixed;
-    z-index: 20;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    max-width: 480px;
-    min-height: calc(64px + env(safe-area-inset-top, 0px));
-    padding:
-      calc(14px + env(safe-area-inset-top, 0px))
-      20px
-      14px;
-    background: #101017;
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 8px 24px #00000026;
-  }
-
-  .brand {
-    white-space: nowrap;
-    font-size: 12px;
-    letter-spacing: 3px;
-    color: var(--muted);
-  }
-
-  #wallet {
-    flex-shrink: 0;
-    white-space: nowrap;
-    color: var(--accent);
-    font-size: 16px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-  }
-
-  h1 {
-    margin: 0 0 12px;
-    font-size: 27px;
-    overflow-wrap: anywhere;
-  }
-
-  h2 { font-size: 21px; }
-
-  p {
-    color: var(--muted);
-    line-height: 1.6;
-  }
-
-  .hero {
-    padding-top: 24px;
-    text-align: center;
-  }
-
-  .avatar {
-    display: grid;
-    place-items: center;
-    width: 142px;
-    height: 142px;
-    margin: 0 auto 30px;
-    border: 1px solid #65517e;
-    border-radius: 50%;
-    background:
-      radial-gradient(circle at 30% 20%, #49305e, #171720 70%);
-    box-shadow: 0 0 35px #a66cff12;
-    color: var(--accent);
-    font-size: 44px;
-    font-weight: 800;
-  }
-
-  .level {
-    font-size: 24px;
-    font-weight: 750;
-    letter-spacing: 2px;
-  }
-
-  .progress {
-    height: 7px;
-    margin-top: 20px;
-    overflow: hidden;
-    border-radius: 20px;
-    background: #252532;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background:
-      linear-gradient(90deg, #9280ff, var(--accent));
-  }
-
-  .progress-label {
-    margin-top: 10px;
-    color: var(--muted);
-    font-size: 13px;
-  }
-
-  .center { text-align: center; }
-
-  .card {
-    padding: 20px;
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    background: var(--card);
-  }
-
-  .balance {
-    margin-top: 24px;
-    text-align: center;
-  }
-
-  .hero .balance { margin-top: 34px; }
-
-  .balance-number {
-    color: var(--accent);
-    font-size: 44px;
-    font-weight: 750;
-    overflow-wrap: anywhere;
-  }
-
-  .label {
-    margin-top: 6px;
-    color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 2px;
-  }
-
-  .list {
-    display: grid;
-    gap: 12px;
-    margin-top: 24px;
-  }
-
-  .block {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 14px;
-    width: 100%;
-    min-height: 64px;
-    padding: 16px;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    background: var(--card);
-    color: var(--text);
-    text-align: left;
-  }
-
-  .arrow, .reward { color: var(--accent); }
-
-  .back {
-    min-height: 44px;
-    margin-bottom: 16px;
-    padding: 0 10px 0 0;
-    border: 0;
-    background: transparent;
-    color: var(--accent);
-  }
-
-  .empty {
-    margin-top: 24px;
-    padding: 24px;
-    border: 1px dashed var(--border);
-    border-radius: 18px;
-    color: var(--muted);
-    line-height: 1.7;
-  }
-
-  .task-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .task-title {
-    font-size: 17px;
-    font-weight: 650;
-    overflow-wrap: anywhere;
-  }
-
-  .meta {
-    margin: 8px 0 14px;
-    color: var(--muted);
-    font-size: 13px;
-  }
-
-  .reward { margin-bottom: 16px; }
-
-  .actions, .form-actions {
-    display: flex;
-    gap: 10px;
-  }
-
-  .actions { margin-top: 18px; }
-  .actions > button { flex: 1; }
-
-  .form-actions {
-    flex-wrap: wrap;
-    margin-top: 24px;
-  }
-
-  .button {
-    min-height: 46px;
-    padding: 12px 16px;
-    border: 1px solid var(--accent);
-    border-radius: 12px;
-    background: #62f5d10b;
-    color: var(--accent);
-  }
-
-  .full { width: 100%; }
-
-  .secondary {
-    border-color: var(--border);
-    background: transparent;
-    color: var(--muted);
-  }
-
-  .small {
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-
-  .spaced { margin-top: 16px; }
-  .hero-link { margin-top: 24px; }
-  .backup-link { margin-top: 28px; }
-  .summary-link { margin-top: 12px; }
-
-  .delete {
-    flex-shrink: 0;
-    min-width: 44px;
-    min-height: 44px;
-    border: 0;
-    background: transparent;
-    color: var(--muted);
-    font-size: 20px;
-  }
-
-  .done { border-color: #62f5d13b; }
-
-  .section-label {
-    margin-top: 28px;
-    color: var(--muted);
-    font-size: 12px;
-    letter-spacing: 1px;
-  }
-
-  .favorite-bar {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
-  }
-
-  .favorite-button {
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    padding: 0;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: transparent;
-    color: var(--muted);
-    font-size: 25px;
-  }
-
-  .is-favorite {
-    border-color: #edcf8355;
-    background: #edcf8309;
-    color: var(--gold);
-  }
-
-  .check-label {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-height: 44px;
-    margin: 16px 0 0;
-    color: var(--muted);
-    font-size: 14px;
-    cursor: pointer;
-  }
-
-  .check-label input {
-    flex: 0 0 22px;
-    width: 22px;
-    height: 22px;
-    min-height: 22px;
-    margin: 0;
-    accent-color: var(--accent);
-  }
-
-  .summary-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 18px;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .summary-row:last-child { border-bottom: 0; }
-  .summary-row span { color: var(--muted); }
-
-  .summary-row strong {
-    text-align: right;
-    white-space: nowrap;
-  }
-
-  .summary-total { color: var(--accent); }
-
-  nav {
-    position: fixed;
-    z-index: 10;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    width: 100%;
-    max-width: 480px;
-    padding:
-      10px 8px
-      calc(10px + env(safe-area-inset-bottom, 0px));
-    border-top: 1px solid var(--border);
-    background: #101017;
-  }
-
-  .nav-button {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    min-width: 0;
-    min-height: 54px;
-    border: 0;
-    border-radius: 12px;
-    background: transparent;
-    color: var(--muted);
-    font-size: 11px;
-  }
-
-  .nav-icon { font-size: 21px; }
-
-  .nav-button.active {
-    background: #62f5d10a;
-    color: var(--accent);
-  }
-
-  dialog {
-    width: calc(100% - 32px);
-    max-width: 440px;
-    max-height: 85vh;
-    overflow-y: auto;
-    padding: 24px;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    background: var(--card);
-    color: var(--text);
-  }
-
-  dialog::backdrop { background: #000b; }
-
-  label:not(.check-label) {
-    display: block;
-    margin: 18px 0 8px;
-    color: var(--muted);
-    font-size: 14px;
-  }
-
-  input, select, textarea {
-    width: 100%;
-    min-height: 48px;
-    padding: 12px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: var(--bg);
-    color: var(--text);
-    font-size: 16px;
-  }
-
-  textarea {
-    min-height: 180px;
-    resize: vertical;
-  }
-
-  #save-warning {
-    color: #ffb4b4;
-    font-size: 13px;
-    line-height: 1.5;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .progress-fill { transition: width .2s ease; }
-  }
+}
 </style>
 <style>
-  /* ===== LIFE / GAME — BLACK & YELLOW ===== */
-
-  :root {
-    --bg: #090909;
-    --card: #141413;
-    --border: #303029;
-    --text: #f4f3e9;
-    --muted: #99998c;
-    --accent: #ffda29;
-    --gold: #ffda29;
-  }
-
-  body {
-    background: var(--bg);
-  }
-
-  .app {
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: calc(
-      78px + env(safe-area-inset-top, 0px)
-    );
-  }
-
-  /* Верхняя панель */
-
-  .topbar {
-    min-height: calc(
-      58px + env(safe-area-inset-top, 0px)
-    );
-
-    padding:
-      calc(12px + env(safe-area-inset-top, 0px))
-      16px
-      12px;
-
-    background: #10100f;
-    border-bottom: 1px solid #ffda2933;
-    box-shadow: 0 5px 18px #0005;
-  }
-
-  .brand {
-    color: var(--text);
-    font-size: 11px;
-    font-weight: 750;
-    letter-spacing: 2px;
-  }
-
-  #wallet {
-    color: var(--accent);
-    font-size: 16px;
-    font-weight: 800;
-  }
-
-  h1 {
-    margin-bottom: 10px;
-    font-size: 23px;
-    font-weight: 800;
-    letter-spacing: .5px;
-  }
-
-  h2 {
-    font-size: 20px;
-  }
-
-  p {
-    line-height: 1.45;
-  }
-
-  /* Карточки: компактные игровые панели */
-
-  .card {
-    position: relative;
-    padding: 14px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: var(--card);
-    box-shadow: inset 3px 0 0 #ffda291a;
-  }
-
-  .list {
-    gap: 10px;
-    margin-top: 14px;
-  }
-
-  .task-head {
-    align-items: flex-start;
-    gap: 8px;
-
-    /* Справа оставляем место для звезды. */
-    min-height: 36px;
-    padding-right: 40px;
-  }
-
-  .task-title {
-    flex: 1;
-    min-width: 0;
-    padding-top: 7px;
-    font-size: 16px;
-    line-height: 1.3;
-    font-weight: 750;
-  }
-
-  /* Звезда больше не занимает отдельную строку */
-
-  .favorite-bar {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 1;
-    display: block;
-    margin: 0;
-  }
-
-  .favorite-button {
-    width: 40px;
-    height: 40px;
-    min-height: 40px;
-    padding: 0;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    background: transparent;
-    color: #77776a;
-    font-size: 24px;
-  }
-
-  .favorite-button.is-favorite {
-    color: var(--accent);
-    background: #ffda290b;
-    border-color: #ffda2938;
-  }
-
-  .delete {
-    min-width: 36px;
-    min-height: 36px;
-    padding: 0;
-    color: #818175;
-    font-size: 20px;
-  }
-
-  .meta {
-    margin: 5px 0 8px;
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.35;
-  }
-
-  .reward {
-    margin: 8px 0 10px;
-    color: var(--accent);
-    font-size: 13px;
-    font-weight: 650;
-    line-height: 1.35;
-  }
-
-  /* Кнопки */
-
-  .button {
-    min-height: 44px;
-    padding: 10px 13px;
-    border: 1px solid #ffda2970;
-    border-radius: 8px;
-    background: #ffda290c;
-    color: var(--accent);
-    font-size: 14px;
-    font-weight: 650;
-  }
-
-  .button.secondary {
-    border-color: var(--border);
-    background: transparent;
-    color: var(--muted);
-    font-weight: 500;
-  }
-
-  .button.small {
-    min-height: 36px;
-    padding: 7px 9px;
-    border-color: transparent;
-    background: #ffffff04;
-    font-size: 11px;
-    font-weight: 500;
-  }
-
-  .button:active:not(:disabled),
-  .block:active {
-    background: #ffda291c;
-  }
-
-  .actions {
-    gap: 8px;
-    margin-top: 10px;
-  }
-
-  /* Прогресс */
-
-  .progress {
-    height: 6px;
-    margin-top: 12px;
-    border-radius: 3px;
-    background: #2b2b25;
-  }
-
-  .progress-fill {
-    background: var(--accent);
-    box-shadow: 0 0 8px #ffda2926;
-  }
-
-  .progress-label {
-    margin-top: 7px;
-    color: var(--muted);
-    font-size: 12px;
-  }
-
-  /* Галочки */
-
-  .check-label {
-    gap: 10px;
-    min-height: 44px;
-    margin: 7px 0 0;
-    font-size: 12px;
-    line-height: 1.35;
-  }
-
-  .check-label input {
-    flex-basis: 20px;
-    width: 20px;
-    height: 20px;
-    min-height: 20px;
-    accent-color: var(--accent);
-  }
-
-  /* Выполненные карточки не конкурируют с активными */
-
-  .card.done {
-    border-color: #38382b;
-    background: #111110;
-    box-shadow: inset 3px 0 0 #ffda2933;
-  }
-
-  .done .task-title {
-    color: #c0c0b3;
-  }
-
-  .done .reward {
-    color: #b9a84e;
-  }
-
-  .section-label {
-    margin-top: 22px;
-    color: var(--muted);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-  }
-
-  /* Блоки времени */
-
-  .block {
-    min-height: 56px;
-    padding: 12px 14px;
-    border-radius: 8px;
-    background: var(--card);
-    font-size: 14px;
-    font-weight: 600;
-  }
-
-  .arrow {
-    color: var(--accent);
-    font-size: 23px;
-  }
-
-  .back {
-    min-height: 40px;
-    margin-bottom: 10px;
-    color: var(--accent);
-    font-size: 13px;
-  }
-
-  /* Главная */
-
-  .hero {
-    padding-top: 10px;
-  }
-
-  .avatar {
-    width: 112px;
-    height: 112px;
-    margin-bottom: 20px;
-    border: 1px solid #ffda2960;
-    border-radius: 24px;
-    background:
-      linear-gradient(145deg, #34301a, #151510 70%);
-    box-shadow:
-      inset 0 0 20px #ffda2905,
-      0 0 24px #ffda2907;
-    color: var(--accent);
-    font-size: 42px;
-    font-weight: 900;
-  }
-
-  .level {
-    color: var(--text);
-    font-size: 23px;
-    font-weight: 850;
-    letter-spacing: 2px;
-  }
-
-  .hero .progress {
-    margin-top: 16px;
-  }
-
-  .balance,
-  .hero .balance {
-    margin-top: 22px;
-    padding: 16px;
-  }
-
-  .balance-number {
-    color: var(--accent);
-    font-size: 38px;
-    line-height: 1.1;
-    font-weight: 850;
-  }
-
-  .label {
-    margin-top: 7px;
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: 2px;
-  }
-
-  .hero-link {
-    margin-top: 18px;
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #111108;
-    font-weight: 800;
-  }
-
-  .hero-link:active:not(:disabled) {
-    background: #ebc817;
-  }
-
-  .backup-link {
-    margin-top: 22px;
-  }
-
-  .summary-link {
-    margin-top: 10px;
-  }
-
-  .spaced {
-    margin-top: 12px;
-  }
-
-  /* Нижняя навигация */
-
-  nav {
-    background: #10100f;
-    border-top-color: #ffda292b;
-  }
-
-  .nav-button {
-    min-height: 50px;
-    border-radius: 8px;
-    color: #8f8f81;
-    font-size: 10px;
-  }
-
-  .nav-icon {
-    font-size: 20px;
-  }
-
-  .nav-button.active {
-    background: #ffda2910;
-    color: var(--accent);
-    box-shadow: inset 0 2px 0 var(--accent);
-  }
-
-  /* Формы и итоги */
-
-  dialog {
-    padding: 20px;
-    border-color: #ffda2938;
-    border-radius: 12px;
-    background: #141413;
-  }
-
-  input,
-  select,
-  textarea {
-    border-radius: 8px;
-    border-color: var(--border);
-    background: #0c0c0b;
-  }
-
-  .summary-row {
-    gap: 12px;
-    padding: 11px 0;
-    font-size: 13px;
-  }
-
-  .summary-total {
-    color: var(--accent);
-  }
-
-  .empty {
-    margin-top: 16px;
-    padding: 18px;
-    border-radius: 10px;
-    font-size: 13px;
-  }
-</style>
-<style>
-  /* Полные названия без ограничения строк */
-  .task-title {
-    display: block;
-    overflow: visible;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    max-height: none;
-    -webkit-line-clamp: unset;
-  }
-
-  /* Тип задания и награды — компактной строкой.
-     На узком экране перенос разрешён. */
-  .compact-details {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 5px 8px;
-    margin: 7px 0 12px;
-    font-size: 12px;
-    line-height: 1.4;
-  }
-
-  .detail-muted,
-  .detail-separator {
-    color: var(--muted);
-  }
-
-  .detail-reward {
-    color: var(--accent);
-    font-weight: 650;
-  }
-
-  .done .detail-reward {
-    color: #b9a84e;
-  }
-
-  .more-button {
-    font-size: 24px;
-    line-height: 1;
-    color: var(--muted);
-  }
-
-  .menu-actions {
-    display: grid;
-    gap: 10px;
-    margin-top: 18px;
-  }
-
-  /* Только клавиатурный фокус получает обводку */
-  button:focus:not(:focus-visible) {
-    outline: none;
-  }
-
-  button:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-  }
-
-  button {
-    -webkit-tap-highlight-color: transparent;
-  }
-</style>
-<style>
-  .compact-details .detail-reward {
-    display: inline-block;
-    max-width: 100%;
-  }
-
-  .compact-details .detail-separator {
-    display: none;
-  }
-
-  .compact-details {
-    column-gap: 14px;
-    row-gap: 4px;
-  }
-</style>
-<style>
-  .quest-reward-line {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin: 6px 0 8px;
-  }
-
-  .quest-reward-line .compact-details {
-    flex: 1;
-    min-width: 0;
-    margin: 0;
-  }
-
-  .quest-plan-toggle {
-    flex: 0 0 auto;
-    min-height: 32px !important;
-    margin: 0 !important;
-    gap: 6px !important;
-    color: var(--muted);
-    font-size: 11px;
-    white-space: nowrap;
-  }
-
-  .quest-plan-toggle input {
-    flex: 0 0 18px !important;
-    width: 18px !important;
-    height: 18px !important;
-    min-height: 18px !important;
-  }
-
-  @media (max-width: 390px) {
-    .quest-reward-line {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .quest-plan-toggle {
-      align-self: flex-start;
-    }
-  }
-</style>
-<style>
-  /* Центральное уведомление о награде */
-  .reward-toast {
-    position: fixed;
-    z-index: 100;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(.85);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 210px;
-    max-width: calc(100vw - 40px);
-    min-height: 82px;
-    padding: 18px 26px;
-
-    border: 2px solid var(--accent);
-    border-radius: 14px;
-    background: #18180f;
-    color: var(--accent);
-    text-align: center;
-    font-size: 25px;
-    font-weight: 900;
-    white-space: nowrap;
-
-    opacity: 0;
-    pointer-events: none;
-
-    box-shadow:
-      0 0 0 9999px #00000066,
-      0 0 35px #ffda2966,
-      0 12px 35px #000c;
-  }
-
-  .reward-toast.show {
-    animation: reward-toast-center 1.7s ease-out forwards;
-  }
-
-  .reward-toast.level-up {
-    animation-duration: 3.6s;
-    min-width: 260px;
-    min-height: 96px;
-    border-color: #fff29a;
-    background: #302b0d;
-    color: #fff29a;
-    font-size: 27px;
-    box-shadow:
-      0 0 0 9999px #00000070,
-      0 0 45px #ffda2999,
-      0 14px 40px #000d;
-  }
-
-  @keyframes reward-toast-center {
-    0% {
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(.78);
-    }
-
-    15% {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1.08);
-    }
-
-    30% {
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    75% {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    100% {
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(.96);
-    }
-  }
-
-  @media (max-width: 390px) {
-    .reward-toast {
-      min-width: 190px;
-      min-height: 74px;
-      padding: 16px 20px;
-      font-size: 21px;
-    }
-
-    .reward-toast.level-up {
-      min-width: 230px;
-      font-size: 23px;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .reward-toast.show {
-      animation: reward-toast-simple-center 1.3s ease-out forwards;
-    }
-  }
-
-  @keyframes reward-toast-simple-center {
-    0%, 20% {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    100% {
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(1);
-    }
-  }
-</style>
-<style>
-  .reward-toast.day-bonus-toast {
-    min-width: 270px;
-    min-height: 105px;
-    border-color: #fff29a;
-    background: #332d0b;
-    color: #fff29a;
-    font-size: 22px;
-    white-space: normal;
-    line-height: 1.35;
-    text-align: center;
-    box-shadow:
-      0 0 0 9999px #00000078,
-      0 0 50px #ffda29aa,
-      0 14px 42px #000e;
+  .card.diamond-shop-card {
+    border-color: #52765b;
+    box-shadow: inset 3px 0 0 #79a98555;
   }
 
-  .reward-toast.day-bonus-toast.show {
-    animation-duration: 4s;
+  .diamond-shop-card .reward {
+    color: var(--green);
   }
 
-  @media (max-width: 390px) {
-    .reward-toast.day-bonus-toast {
-      min-width: 250px;
-      font-size: 19px;
-    }
+  .diamond-shop-card .button:not(.secondary) {
+    border-color: #89bd9770;
+    background: #89bd9710;
+    color: #c0e6ca;
   }
 </style>
 </head>
@@ -1143,9 +590,8 @@
 <div class="app">
   <header class="topbar">
     <span class="brand">LIFE / GAME</span>
-    <span id="wallet" aria-live="polite">0 монет</span>
+    <span id="wallet" aria-live="polite"></span>
   </header>
-
   <p id="save-warning" role="alert" hidden></p>
   <main id="screen"></main>
 </div>
@@ -1166,29 +612,22 @@
 </nav>
 
 <dialog id="editor" aria-labelledby="editor-title"></dialog>
+<dialog id="menu" aria-labelledby="menu-title"></dialog>
 
 <dialog id="backup-dialog" aria-labelledby="backup-title">
-  <h2 id="backup-title">Резервная копия</h2>
-
+  <h2 id="backup-title">Настройки</h2>
   <p>
     Создай копию и сохрани весь текст вне приложения.
     Для восстановления вставь ранее сохранённую копию.
   </p>
-
   <button type="button" class="button full" id="generate-backup">
     Создать копию
   </button>
-
   <label for="backup-text">Данные сохранения</label>
-  <textarea id="backup-text"
-            spellcheck="false"
-            autocapitalize="off"
-            autocomplete="off"></textarea>
-
+  <textarea id="backup-text" spellcheck="false"
+            autocapitalize="off" autocomplete="off"></textarea>
   <div class="form-actions">
-    <button type="button" class="button" id="copy-backup">
-      Копировать
-    </button>
+    <button type="button" class="button" id="copy-backup">Копировать</button>
     <button type="button" class="button secondary" id="restore-backup">
       Восстановить
     </button>
@@ -1196,7 +635,17 @@
       Закрыть
     </button>
   </div>
-
+  <section class="settings-danger">
+    <h3>Полный сброс</h3>
+    <p>
+      Удалит задания, квесты, цели, покупки, монеты и алмазы.
+      Вернёт восемь стартовых блоков.
+      Сначала сохрани резервную копию вне приложения.
+    </p>
+    <button type="button" class="button danger" id="reset-data">
+      Сбросить все данные
+    </button>
+  </section>
   <p id="backup-status" role="status"></p>
 </dialog>
 
@@ -1204,14 +653,12 @@
 "use strict";
 
 (() => {
-  // ===== Настройки и состояние =====
-
   const STORAGE_KEY = "lifegame-prototype-v1";
-    const MIN_DAY_TASKS = 3;
+  const MIN_DAY_TASKS = 3;
   const DAY_REWARD = 100;
   const LEVEL_COST = 1000;
 
-  const BLOCKS = [
+  const DEFAULT_NAMES = [
     "Душевное состояние",
     "Физическое состояние",
     "Знания, навыки, опыт",
@@ -1222,23 +669,34 @@
     "Исключить"
   ];
 
-  const screen = document.getElementById("screen");
-  const wallet = document.getElementById("wallet");
-  const warning = document.getElementById("save-warning");
-  const editor = document.getElementById("editor");
-  const backupDialog = document.getElementById("backup-dialog");
-  const backupText = document.getElementById("backup-text");
-  const backupStatus = document.getElementById("backup-status");
+  const $ = id => document.getElementById(id);
+  const screen = $("screen");
+  const wallet = $("wallet");
+  const warning = $("save-warning");
+  const editor = $("editor");
+  const menu = $("menu");
+  const settings = $("backup-dialog");
+  const backupText = $("backup-text");
+  const backupStatus = $("backup-status");
 
   let state = emptyState();
-  let storedSnapshot = null;
-  let storageHealthy = true;
+  let snapshot = null;
+  let healthy = true;
   let page = "hero";
-  let block = null;
+  let blockId = null;
   let view;
+  let audioContext = null;
+  const effects = [];
+  let effectRunning = false;
+  let effectTimer = null;
 
   function emptyState() {
     return {
+      blocks: DEFAULT_NAMES.map((name, index) => ({
+        id: "block-" + index, name
+      })),
+      goals: [],
+      diamondRecords: [],
       tasks: [],
       quests: [],
       bonuses: [],
@@ -1249,23 +707,25 @@
     };
   }
 
-  function clone(value) {
-    return JSON.parse(JSON.stringify(value));
+  function clone(value) { return JSON.parse(JSON.stringify(value)); }
+  function fail(message) { throw new Error(message); }
+  function integer(value, min, max) {
+    return Number.isSafeInteger(value) && value >= min && value <= max;
   }
-
+  function validId(value) {
+    return typeof value === "string" && value.length > 0;
+  }
+  function validName(value) {
+    return typeof value === "string" &&
+      value.trim().length > 0 && value.length <= 120;
+  }
   function uid() {
-    if (typeof crypto.randomUUID === "function") {
-      return crypto.randomUUID();
-    }
-
-    const bytes = crypto.getRandomValues(new Uint8Array(16));
-
+    if (typeof crypto.randomUUID === "function") return crypto.randomUUID();
     return Array.from(
-      bytes,
+      crypto.getRandomValues(new Uint8Array(16)),
       value => value.toString(16).padStart(2, "0")
     ).join("");
   }
-
   function dateKey(date = new Date()) {
     return [
       date.getFullYear(),
@@ -1273,310 +733,306 @@
       String(date.getDate()).padStart(2, "0")
     ].join("-");
   }
-
-  function today() {
-    return dateKey();
-  }
-
+  function today() { return dateKey(); }
   function dateLabel() {
     return new Date().toLocaleDateString("ru-RU", {
-      day: "numeric",
-      month: "long"
+      day: "numeric", month: "long"
     });
   }
-
-  function fail(message) {
-    throw new Error(message);
-  }
-
-  function integer(value, min, max) {
-    return Number.isSafeInteger(value) &&
-      value >= min && value <= max;
-  }
-
   function validDate(value) {
-    if (
-      typeof value !== "string" ||
-      !/^\d{4}-\d{2}-\d{2}$/.test(value)
-    ) return false;
-
+    if (typeof value !== "string" ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
     const date = new Date(value + "T12:00:00Z");
-
     return Number.isFinite(date.getTime()) &&
       date.toISOString().slice(0, 10) === value;
   }
+  function sum(list, key) {
+    return list.reduce((total, item) => total + item[key], 0);
+  }
+    function totals(data) {
+    const earned = sum(data.completions, "reward");
 
-  function validName(value) {
-    return typeof value === "string" &&
-      value.trim().length > 0 &&
-      value.length <= 120;
+    const spent = sum(
+      data.purchases.filter(
+        purchase => purchase.currency !== "diamonds"
+      ),
+      "price"
+    );
+
+    const diamondsEarned = sum(data.diamondRecords, "amount");
+
+    const diamondsSpent = sum(
+      data.purchases.filter(
+        purchase => purchase.currency === "diamonds"
+      ),
+      "price"
+    );
+
+    return {
+      earned,
+      spent,
+      balance: earned - spent,
+      diamondsEarned,
+      diamondsSpent,
+      diamonds: diamondsEarned - diamondsSpent
+    };
   }
 
-  function validId(value) {
-    return typeof value === "string" &&
-      value.length > 0;
-  }
-
-  // ===== Проверка и совместимость сохранений =====
-
+  // Проверка данных и перенос старых числовых блоков.
   function normalize(raw) {
-    if (
-      !raw || typeof raw !== "object" ||
-      Array.isArray(raw) ||
-      !Array.isArray(raw.tasks) ||
-      !Array.isArray(raw.completions)
-    ) {
+    if (!raw || typeof raw !== "object" || Array.isArray(raw) ||
+        !Array.isArray(raw.tasks) || !Array.isArray(raw.completions)) {
       fail("Неверная структура сохранения.");
     }
 
     const data = clone(raw);
 
-    for (const key of ["quests", "bonuses", "purchases"]) {
+    if (data.blocks === undefined) {
+      data.blocks = emptyState().blocks;
+      for (const task of data.tasks) {
+        if (integer(task.block, 0, 7)) task.block = "block-" + task.block;
+      }
+    }
+
+    for (const key of [
+      "quests", "bonuses", "purchases", "goals", "diamondRecords"
+    ]) {
       if (data[key] === undefined) data[key] = [];
     }
 
     for (const key of [
-      "tasks", "quests", "bonuses", "completions", "purchases"
+      "blocks", "tasks", "quests", "bonuses", "purchases",
+      "completions", "goals", "diamondRecords"
     ]) {
-      if (!Array.isArray(data[key])) {
-        fail("Некорректный список: " + key);
-      }
-
+      if (!Array.isArray(data[key])) fail("Повреждён список: " + key);
       const ids = new Set();
-
       for (const item of data[key]) {
-        if (
-          !item || typeof item !== "object" ||
-          !validId(item.id) || ids.has(item.id)
-        ) {
-          fail("Повреждены записи списка: " + key);
+        if (!item || typeof item !== "object" ||
+            !validId(item.id) || ids.has(item.id)) {
+          fail("Повреждены записи: " + key);
         }
-
         ids.add(item.id);
       }
     }
 
-    function optionalBoolean(item, key) {
-      if (item[key] === undefined) item[key] = false;
+    const blocks = new Set();
+    for (const item of data.blocks) {
+      if (!validName(item.name)) fail("Некорректное название блока.");
+      blocks.add(item.id);
+    }
 
-      if (typeof item[key] !== "boolean") {
-        fail("Некорректное поле: " + key);
-      }
+    function bool(item, key) {
+      if (item[key] === undefined) item[key] = false;
+      if (typeof item[key] !== "boolean") fail("Некорректное поле: " + key);
     }
 
     for (const task of data.tasks) {
-      if (
-        !validName(task.name) ||
-        !integer(task.block, 0, 7) ||
-        !["once", "daily"].includes(task.type) ||
-        !integer(task.reward, 1, 100000)
-      ) fail("Повреждены данные задания.");
-
-      optionalBoolean(task, "favorite");
+      if (!validName(task.name) || !blocks.has(task.block) ||
+          !["once", "daily"].includes(task.type) ||
+          !integer(task.reward, 1, 100000)) {
+        fail("Повреждены данные задания.");
+      }
+      bool(task, "favorite");
     }
 
-    const completionKeys = new Set();
-
+    const recordKeys = new Set();
     for (const record of data.completions) {
-      if (
-        !validId(record.taskId) ||
-        !validDate(record.date) ||
-        !integer(record.reward, 1, 100000)
-      ) fail("Повреждена история начислений.");
-
-      const key = JSON.stringify([record.taskId, record.date]);
-
-      if (completionKeys.has(key)) {
-        fail("Повторное начисление в истории.");
+      if (!validId(record.taskId) || !validDate(record.date) ||
+          !integer(record.reward, 1, 100000)) {
+        fail("Повреждена история монет.");
       }
+      const key = JSON.stringify([record.taskId, record.date]);
+      if (recordKeys.has(key)) fail("Повторное начисление монет.");
+      recordKeys.add(key);
 
-      completionKeys.add(key);
-
-      if (record.sourceCompletionIds !== undefined) {
-        if (
-          !Array.isArray(record.sourceCompletionIds) ||
-          !record.sourceCompletionIds.every(validId) ||
-          new Set(record.sourceCompletionIds).size !==
-            record.sourceCompletionIds.length
-        ) fail("Повреждены связи бонуса дня.");
+      if (record.sourceCompletionIds !== undefined &&
+          (!Array.isArray(record.sourceCompletionIds) ||
+           !record.sourceCompletionIds.every(validId) ||
+           new Set(record.sourceCompletionIds).size !==
+             record.sourceCompletionIds.length)) {
+        fail("Повреждены связи бонуса дня.");
       }
     }
 
-    const recordsById = new Map(
-      data.completions.map(record => [record.id, record])
-    );
+    const recordsById = new Map(data.completions.map(x => [x.id, x]));
 
     for (const quest of data.quests) {
-      if (
-        !validName(quest.name) ||
-        !integer(quest.target, 1, 1000000) ||
-        !integer(quest.progress, 0, quest.target) ||
-        !integer(quest.step, 1, 1000000) ||
-        !integer(quest.reward, 1, 100000)
-      ) fail("Повреждены данные квеста.");
-
-      optionalBoolean(quest, "favorite");
-      optionalBoolean(quest, "showInDay");
-
+      if (!validName(quest.name) ||
+          !integer(quest.target, 1, 1000000) ||
+          !integer(quest.progress, 0, quest.target) ||
+          !integer(quest.step, 1, 1000000) ||
+          !integer(quest.reward, 1, 100000)) {
+        fail("Повреждены данные квеста.");
+      }
+      bool(quest, "favorite");
+      bool(quest, "showInDay");
       if (quest.stepReward === undefined) quest.stepReward = 0;
       if (quest.stepHistory === undefined) quest.stepHistory = [];
-
-      if (
-        !integer(quest.stepReward, 0, 100000) ||
-        !Array.isArray(quest.stepHistory)
-      ) fail("Повреждена награда или история шагов квеста.");
+      if (!integer(quest.stepReward, 0, 100000) ||
+          !Array.isArray(quest.stepHistory)) fail("Повреждена история квеста.");
 
       let previousTo = null;
-      const payments = new Set();
-
+      const paymentIds = new Set();
       for (const entry of quest.stepHistory) {
-        if (
-          !entry || typeof entry !== "object" ||
-          !integer(entry.from, 0, quest.target) ||
-          !integer(entry.to, 1, quest.target) ||
-          entry.to <= entry.from ||
-          (previousTo !== null && entry.from !== previousTo)
-        ) fail("Нарушена последовательность шагов квеста.");
-
-        previousTo = entry.to;
-
-        if (entry.completionId === undefined) {
-          entry.completionId = null;
+        if (!entry || !integer(entry.from, 0, quest.target) ||
+            !integer(entry.to, 1, quest.target) ||
+            entry.to <= entry.from ||
+            (previousTo !== null && entry.from !== previousTo)) {
+          fail("Нарушена последовательность шагов.");
         }
-
+        previousTo = entry.to;
+        if (entry.completionId === undefined) entry.completionId = null;
         if (entry.completionId !== null) {
           const payment = recordsById.get(entry.completionId);
-
-          if (
-            !payment ||
-            payments.has(entry.completionId) ||
-            payment.taskId !==
-              `quest:step:${quest.id}:${entry.completionId}`
-          ) fail("Повреждена связь шага с начислением.");
-
-          payments.add(entry.completionId);
+          if (!payment || paymentIds.has(entry.completionId) ||
+              payment.taskId !==
+                `quest:step:${quest.id}:${entry.completionId}`) {
+            fail("Повреждена связь шага с наградой.");
+          }
+          paymentIds.add(entry.completionId);
         }
       }
-
-      if (
-        quest.stepHistory.length &&
-        previousTo !== quest.progress
-      ) fail("История шагов не соответствует прогрессу квеста.");
+      if (quest.stepHistory.length && previousTo !== quest.progress) {
+        fail("История не соответствует прогрессу квеста.");
+      }
     }
 
     for (const bonus of data.bonuses) {
+            if (bonus.currency === undefined) {
+        bonus.currency = "coins";
+      }
+
+      if (!["coins", "diamonds"].includes(bonus.currency)) {
+        fail("Некорректная валюта бонуса.");
+      }
       if (bonus.description === undefined) bonus.description = "";
-
-      if (
-        !validName(bonus.name) ||
-        typeof bonus.description !== "string" ||
-        bonus.description.length > 300 ||
-        !integer(bonus.price, 1, 1000000)
-      ) fail("Повреждены данные бонуса.");
-
-      optionalBoolean(bonus, "favorite");
+      if (!validName(bonus.name) ||
+          typeof bonus.description !== "string" ||
+          bonus.description.length > 300 ||
+          !integer(bonus.price, 1, 1000000)) fail("Повреждены данные бонуса.");
+      bool(bonus, "favorite");
     }
 
     for (const purchase of data.purchases) {
-      if (
-        !validName(purchase.name) ||
-        !validId(purchase.bonusId) ||
-        !integer(purchase.price, 1, 1000000) ||
-        typeof purchase.createdAt !== "string" ||
-        !Number.isFinite(Date.parse(purchase.createdAt))
-      ) fail("Повреждена история покупок.");
+            if (purchase.currency === undefined) {
+        purchase.currency = "coins";
+      }
+
+      if (!["coins", "diamonds"].includes(purchase.currency)) {
+        fail("Некорректная валюта покупки.");
+      }
+      if (!validName(purchase.name) || !validId(purchase.bonusId) ||
+          !integer(purchase.price, 1, 1000000) ||
+          typeof purchase.createdAt !== "string" ||
+          !Number.isFinite(Date.parse(purchase.createdAt))) {
+        fail("Повреждена история покупок.");
+      }
+    }
+
+    const activeBlocks = new Set();
+    for (const goal of data.goals) {
+      if (goal.completedDate === undefined) goal.completedDate = null;
+      if (!validName(goal.name) || !blocks.has(goal.blockId) ||
+          !integer(goal.diamonds, 1, 100000) ||
+          (goal.completedDate !== null && !validDate(goal.completedDate))) {
+        fail("Повреждены данные цели.");
+      }
+      if (goal.completedDate === null) {
+        if (activeBlocks.has(goal.blockId)) {
+          fail("В блоке может быть только одна активная цель.");
+        }
+        activeBlocks.add(goal.blockId);
+      }
+    }
+
+    const diamondGoals = new Map();
+    for (const record of data.diamondRecords) {
+      if (!validId(record.goalId) || !validDate(record.date) ||
+          !integer(record.amount, 1, 100000) ||
+          diamondGoals.has(record.goalId)) {
+        fail("Повреждена история алмазов.");
+      }
+      diamondGoals.set(record.goalId, record);
+    }
+
+    for (const goal of data.goals) {
+      const reward = diamondGoals.get(goal.id);
+      if (goal.completedDate === null && reward) {
+        fail("У активной цели уже начислена награда.");
+      }
+      if (goal.completedDate !== null &&
+          (!reward || reward.amount !== goal.diamonds ||
+           reward.date !== goal.completedDate)) {
+        fail("Награда цели не соответствует истории.");
+      }
     }
 
     if (data.dayPlans === undefined) data.dayPlans = {};
-
-    if (
-      !data.dayPlans ||
-      typeof data.dayPlans !== "object" ||
-      Array.isArray(data.dayPlans)
-    ) fail("Повреждены планы дня.");
-
+    if (!data.dayPlans || typeof data.dayPlans !== "object" ||
+        Array.isArray(data.dayPlans)) fail("Повреждены планы дня.");
     for (const [date, ids] of Object.entries(data.dayPlans)) {
-      if (
-        !validDate(date) ||
-        !Array.isArray(ids) ||
-        !ids.every(validId) ||
-        new Set(ids).size !== ids.length
-      ) fail("Повреждён список заданий в плане дня.");
+      if (!validDate(date) || !Array.isArray(ids) ||
+          !ids.every(validId) || new Set(ids).size !== ids.length) {
+        fail("Повреждён план дня.");
+      }
+    }
+    if (data.dayPlanDate === undefined) data.dayPlanDate = null;
+    if (data.dayPlanDate !== null && !validDate(data.dayPlanDate)) {
+      fail("Некорректная дата плана.");
     }
 
-    if (data.dayPlanDate === undefined) data.dayPlanDate = null;
+        const money = totals(data);
 
-    if (
-      data.dayPlanDate !== null &&
-      !validDate(data.dayPlanDate)
-    ) fail("Некорректная дата плана.");
+    const amounts = [
+      money.earned,
+      money.spent,
+      money.balance,
+      money.diamondsEarned,
+      money.diamondsSpent,
+      money.diamonds
+    ];
 
-    const money = totals(data);
-
-    if (
-      !Number.isSafeInteger(money.earned) ||
-      !Number.isSafeInteger(money.spent) ||
-      money.balance < 0
-    ) fail("Некорректный баланс монет.");
+    if (!amounts.every(
+      value => Number.isSafeInteger(value) && value >= 0
+    )) {
+      fail("Некорректный баланс монет или алмазов.");
+    }
 
     return data;
   }
 
-  function totals(data) {
-    const earned = data.completions.reduce(
-      (sum, record) => sum + record.reward, 0
-    );
-
-    const spent = data.purchases.reduce(
-      (sum, purchase) => sum + purchase.price, 0
-    );
-
-    return { earned, spent, balance: earned - spent };
-  }
-
   function storageError(message) {
-    storageHealthy = false;
+    healthy = false;
     warning.hidden = false;
     warning.textContent = message;
   }
 
-  try {
-    storedSnapshot = localStorage.getItem(STORAGE_KEY);
-
-    if (storedSnapshot !== null) {
-      state = normalize(JSON.parse(storedSnapshot));
+  function loadLatest() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw !== snapshot) {
+        const loaded = raw === null ? emptyState() : normalize(JSON.parse(raw));
+        state = loaded;
+        snapshot = raw;
+      }
+      return true;
+    } catch (error) {
+      storageError("Не удалось прочитать данные. Не очищай хранилище. " +
+        error.message);
+      return false;
     }
-  } catch (error) {
-    storageError(
-      "Не удалось прочитать сохранение. " +
-      "Изменения отключены, чтобы не перезаписать данные. " +
-      "Не очищай хранилище. Ошибка: " + error.message
-    );
   }
-
-  // ===== План дня и начисления =====
 
   function ensureDay(data) {
     const date = today();
-
-    if (!Array.isArray(data.dayPlans[date])) {
-      const dates = Object.keys(data.dayPlans)
-        .filter(value => value < date)
-        .sort();
-
-      const previousDate = dates[dates.length - 1];
-      const previousIds = new Set(
-        previousDate ? data.dayPlans[previousDate] : []
-      );
-
+    if (!Object.hasOwn(data.dayPlans, date)) {
+      const dates = Object.keys(data.dayPlans).filter(x => x < date).sort();
+      const previous = dates[dates.length - 1];
+      const ids = new Set(previous ? data.dayPlans[previous] : []);
       data.dayPlans[date] = data.tasks
-        .filter(task =>
-          task.type === "daily" &&
-          previousIds.has(task.id)
-        )
+        .filter(task => task.type === "daily" && ids.has(task.id))
         .map(task => task.id);
     }
-
     data.dayPlanDate = date;
   }
 
@@ -1585,134 +1041,79 @@
     return data.tasks.filter(task => ids.has(task.id));
   }
 
-  function completion(data, task, onlyToday = false) {
-    const date = today();
-
+  function completion(data, task, todayOnly = false) {
     return data.completions.find(record =>
       record.taskId === task.id &&
-      (
-        (!onlyToday && task.type === "once") ||
-        record.date === date
-      )
+      ((!todayOnly && task.type === "once") || record.date === today())
     );
   }
 
   function addRecord(data, taskId, reward, extra = {}) {
-    const record = {
-      id: uid(),
-      taskId,
-      date: today(),
-      reward,
-      ...extra
-    };
-
+    const record = { id: uid(), taskId, date: today(), reward, ...extra };
     data.completions.push(record);
     return record;
   }
 
   function reconcileDayBonus(data) {
-    const existing = new Set(
-      data.completions.map(record => record.id)
-    );
-
+    const ids = new Set(data.completions.map(x => x.id));
     data.completions = data.completions.filter(record =>
       !record.taskId.startsWith("day-bonus:") ||
       !Array.isArray(record.sourceCompletionIds) ||
-      record.sourceCompletionIds.every(id => existing.has(id))
+      record.sourceCompletionIds.every(id => ids.has(id))
     );
 
-    const bonusId = `day-bonus:${today()}`;
-
-    if (data.completions.some(record => record.taskId === bonusId)) {
-      return;
-    }
-
+    const key = "day-bonus:" + today();
+    if (data.completions.some(x => x.taskId === key)) return;
     const tasks = plannedTasks(data);
-
     if (tasks.length < MIN_DAY_TASKS) return;
-
     const records = tasks.map(task => completion(data, task, true));
-
-    if (records.some(record => !record)) return;
-
-    addRecord(data, bonusId, DAY_REWARD, {
-      sourceCompletionIds: records.map(record => record.id)
+    if (records.some(x => !x)) return;
+    addRecord(data, key, DAY_REWARD, {
+      sourceCompletionIds: records.map(x => x.id)
     });
   }
 
-  // ===== Единая транзакция =====
-
-  function refreshFromStorage() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-
-      if (raw === storedSnapshot) return true;
-
-      state = raw === null
-        ? emptyState()
-        : normalize(JSON.parse(raw));
-
-      storedSnapshot = raw;
-      return true;
-    } catch (error) {
-      storageError(
-        "Не удалось обновить данные из хранилища: " +
-        error.message
-      );
-      return false;
-    }
-  }
-
   function transact(change, awardDayBonus = true) {
-    if (!storageHealthy) {
+    if (!healthy) {
       alert("Изменения отключены из-за ошибки хранилища.");
       return false;
     }
 
-    let currentRaw;
-
     try {
-      currentRaw = localStorage.getItem(STORAGE_KEY);
+      if (localStorage.getItem(STORAGE_KEY) !== snapshot) {
+        loadLatest();
+        render();
+        alert("Данные изменились в другой вкладке. Повтори действие.");
+        return false;
+      }
     } catch (error) {
       storageError("Хранилище недоступно: " + error.message);
       render();
       return false;
     }
 
-    if (currentRaw !== storedSnapshot) {
-      refreshFromStorage();
-      render();
-
-      alert(
-        "Данные изменились в другой вкладке. " +
-        "Экран обновлён. Повтори действие."
-      );
-
-      return false;
-    }
-
-        const earnedBefore = totals(state).earned;
-    const levelBefore = Math.floor(
-  earnedBefore / LEVEL_COST
-) + 1;
-    const completionIdsBefore = new Set(
-      state.completions.map(record => record.id)
-    );
-
+    const before = totals(state);
+    const beforeIds = new Set(state.completions.map(x => x.id));
     let next;
 
     try {
       const draft = clone(state);
-
       ensureDay(draft);
       change(draft);
-
       if (awardDayBonus) reconcileDayBonus(draft);
+            const money = totals(draft);
 
-      if (totals(draft).balance < 0) {
+      if (money.balance < 0) {
         fail(
-          "Эти монеты уже потрачены. Сначала отмени " +
-          "покупку в истории бонусов, затем повтори действие."
+          "Эти монеты уже потрачены. " +
+          "Сначала отмени соответствующие покупки."
+        );
+      }
+
+      if (money.diamonds < 0) {
+        fail(
+          "Эти алмазы уже потрачены. " +
+          "Сначала отмени соответствующие покупки."
         );
       }
 
@@ -1726,69 +1127,145 @@
     try {
       const serialized = JSON.stringify(next);
       localStorage.setItem(STORAGE_KEY, serialized);
-            storedSnapshot = serialized;
+      snapshot = serialized;
       state = next;
-
-            const earnedAfter = totals(state).earned;
-      const rewardAmount = earnedAfter - earnedBefore;
-      const levelAfter = Math.floor(
-        earnedAfter / LEVEL_COST
-      ) + 1;
-
-      const dayBonusAdded = state.completions.some(record =>
-        !completionIdsBefore.has(record.id) &&
-        record.taskId.startsWith("day-bonus:")
-      );
-
-      render();
-
-      if (rewardAmount > 0) {
-        playCoinSound();
-        showRewardToast(rewardAmount);
-      }
-
-      if (dayBonusAdded) {
-        setTimeout(() => {
-          playDayBonusSound();
-          showDayBonusToast();
-        }, rewardAmount > DAY_REWARD ? 900 : 150);
-      }
-
-            if (levelAfter > levelBefore) {
-        setTimeout(() => {
-          playLevelUpSound();
-          showRewardToast(0, levelAfter);
-        }, rewardAmount > 0 ? 1900 : 250);
-      }
-
-      return true;
     } catch (error) {
-      storageError(
-        "Сохранение не удалось. Действие не применено. " +
-        "Изменения отключены до перезагрузки. Ошибка: " +
-        error.message
-      );
-
+      storageError("Сохранение не удалось. Действие не применено. " +
+        error.message);
       render();
       return false;
     }
 
-    
+    // Ошибки эффектов не должны объявлять успешную запись неудачной.
+    render();
+    try {
+      celebrateChanges(before, beforeIds);
+    } catch (error) {
+      console.warn("Эффект награды недоступен:", error);
+    }
+    return true;
   }
 
   function syncDay() {
-    if (!storageHealthy) return;
-
-    if (
-      state.dayPlanDate !== today() ||
-      !Array.isArray(state.dayPlans[today()])
-    ) {
+    if (healthy && (state.dayPlanDate !== today() ||
+        !Object.hasOwn(state.dayPlans, today()))) {
       transact(() => {}, false);
     }
   }
 
-  // ===== DOM и общие элементы =====
+  // Звуки и последовательные уведомления.
+  function primeAudio() {
+    try {
+      const Audio = window.AudioContext || window.webkitAudioContext;
+      if (!Audio) return;
+      if (!audioContext) audioContext = new Audio();
+      if (audioContext.state === "suspended") {
+        audioContext.resume().catch(() => {});
+      }
+    } catch (error) {
+      console.warn("Аудио недоступно:", error);
+    }
+  }
 
+  function tones(frequencies, interval = .12, duration = .25, volume = .12) {
+    try {
+      primeAudio();
+      if (!audioContext) return;
+      const now = audioContext.currentTime;
+      frequencies.forEach((frequency, index) => {
+        const start = now + interval * index;
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        oscillator.type = "triangle";
+        oscillator.frequency.setValueAtTime(frequency, start);
+        gain.gain.setValueAtTime(.0001, start);
+        gain.gain.exponentialRampToValueAtTime(volume, start + .015);
+        gain.gain.exponentialRampToValueAtTime(.0001, start + duration);
+        oscillator.connect(gain);
+        gain.connect(audioContext.destination);
+        oscillator.onended = () => {
+          oscillator.disconnect();
+          gain.disconnect();
+        };
+        oscillator.start(start);
+        oscillator.stop(start + duration + .03);
+      });
+    } catch (error) {
+      console.warn("Звук недоступен:", error);
+    }
+  }
+
+  function enqueueEffect(type, value) {
+    primeAudio();
+    effects.push({ type, value });
+    runEffect();
+  }
+
+  function runEffect() {
+    if (effectRunning || !effects.length || document.hidden) return;
+    effectRunning = true;
+
+    const event = effects.shift();
+    const toast = el("div", "reward-toast");
+    let duration = 1700;
+
+    if (event.type === "coins") {
+      toast.textContent = `+${event.value} монет`;
+      tones([880, 1175, 1480], .07, .16);
+    } else if (event.type === "day") {
+      duration = 4000;
+      toast.classList.add("day-bonus-toast");
+      toast.textContent = `★ БОНУС ДНЯ\n+${event.value} МОНЕТ`;
+      tones([523.25, 659.25, 783.99, 1046.5], .14, .5, .14);
+    } else if (event.type === "goal") {
+      duration = 2800;
+      toast.classList.add("goal-toast");
+      toast.textContent = `✓ ЦЕЛЬ ДОСТИГНУТА\n+${event.value} ◆`;
+      tones([659.25, 783.99, 1046.5], .16, .45, .13);
+    } else if (event.type === "level") {
+      duration = 3600;
+      toast.classList.add("level-up");
+      toast.textContent = `★ УРОВЕНЬ ${event.value}`;
+      tones([523.25, 659.25, 783.99, 1046.5], .15, .45, .14);
+    }
+
+    toast.style.setProperty("--duration", duration + "ms");
+    document.body.append(toast);
+
+    effectTimer = setTimeout(() => {
+      toast.remove();
+      effectRunning = false;
+      runEffect();
+    }, duration + 100);
+  }
+
+  function clearEffects() {
+    effects.length = 0;
+    clearTimeout(effectTimer);
+    effectRunning = false;
+    document.querySelectorAll(".reward-toast").forEach(x => x.remove());
+  }
+
+  function celebrateChanges(before, beforeIds) {
+    const after = totals(state);
+    const bonus = state.completions.find(record =>
+      !beforeIds.has(record.id) && record.taskId.startsWith("day-bonus:")
+    );
+    const regular = after.earned - before.earned - (bonus ? bonus.reward : 0);
+    if (regular > 0) enqueueEffect("coins", regular);
+    if (bonus) enqueueEffect("day", bonus.reward);
+        const diamondsAwarded =
+      after.diamondsEarned - before.diamondsEarned;
+
+    if (diamondsAwarded > 0) {
+      enqueueEffect("goal", diamondsAwarded);
+    }
+    const oldLevel = Math.floor(before.earned / LEVEL_COST) + 1;
+    const newLevel = Math.floor(after.earned / LEVEL_COST) + 1;
+    if (newLevel > oldLevel) enqueueEffect("level", newLevel);
+  }
+
+  // Общие элементы интерфейса.
   function el(tag, className = "", text) {
     const node = document.createElement(tag);
     if (className) node.className = className;
@@ -1799,348 +1276,75 @@
   function btn(text, className, action, mutating = false) {
     const node = el("button", className, text);
     node.type = "button";
-    node.disabled = mutating && !storageHealthy;
+    node.disabled = mutating && !healthy;
     node.addEventListener("click", action);
     return node;
   }
 
-  function go(nextPage, nextBlock = null) {
+  function go(nextPage, selectedBlock = null) {
     syncDay();
     page = nextPage;
-    block = nextBlock;
+    blockId = selectedBlock;
     render();
     window.scrollTo(0, 0);
   }
 
   function progressBar(value, max, label) {
     const bar = el("div", "progress");
-
     bar.setAttribute("role", "progressbar");
     bar.setAttribute("aria-label", label);
     bar.setAttribute("aria-valuemin", "0");
     bar.setAttribute("aria-valuemax", String(max));
     bar.setAttribute("aria-valuenow", String(value));
-
     const fill = el("div", "progress-fill");
     fill.style.width = `${max ? value / max * 100 : 0}%`;
-
     bar.append(fill);
     return bar;
   }
-  let coinAudioContext = null;
-  function playLevelUpSound() {
-    try {
-      const AudioContext =
-        window.AudioContext || window.webkitAudioContext;
 
-      if (!AudioContext) return;
-
-      if (!coinAudioContext) {
-        coinAudioContext = new AudioContext();
-      }
-
-      if (coinAudioContext.state === "suspended") {
-        coinAudioContext.resume();
-      }
-
-      const now = coinAudioContext.currentTime;
-
-      const notes = [
-        { frequency: 523.25, delay: 0 },
-        { frequency: 659.25, delay: 0.14 },
-        { frequency: 783.99, delay: 0.28 },
-        { frequency: 1046.5, delay: 0.44 }
-      ];
-
-      notes.forEach(note => {
-        const oscillator = coinAudioContext.createOscillator();
-        const gain = coinAudioContext.createGain();
-
-        oscillator.type = "triangle";
-        oscillator.frequency.setValueAtTime(
-          note.frequency,
-          now + note.delay
-        );
-
-        gain.gain.setValueAtTime(
-          0.0001,
-          now + note.delay
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-          0.16,
-          now + note.delay + 0.025
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-          0.0001,
-          now + note.delay + 0.42
-        );
-
-        oscillator.connect(gain);
-        gain.connect(coinAudioContext.destination);
-
-        oscillator.start(now + note.delay);
-        oscillator.stop(now + note.delay + 0.45);
-      });
-    } catch (error) {
-      console.warn(
-        "Звук повышения уровня недоступен:",
-        error
+  function balancesPanel() {
+    const panel = el("div", "balances-grid");
+    for (const [value, label, className] of [
+      [view.money.balance, "МОНЕТЫ", ""],
+      [view.money.diamonds, "АЛМАЗЫ", " diamond-balance"]
+    ]) {
+      const card = el("div", "card balance" + className);
+      card.append(
+        el("div", "balance-number", String(value)),
+        el("div", "label", label)
       );
+      panel.append(card);
     }
-  }
-    function playToneSequence(notes, volume = 0.14) {
-    try {
-      const AudioContext =
-        window.AudioContext || window.webkitAudioContext;
-
-      if (!AudioContext) return;
-
-      if (!coinAudioContext) {
-        coinAudioContext = new AudioContext();
-      }
-
-      if (coinAudioContext.state === "suspended") {
-        coinAudioContext.resume();
-      }
-
-      const now = coinAudioContext.currentTime;
-
-      notes.forEach(note => {
-        const oscillator = coinAudioContext.createOscillator();
-        const gain = coinAudioContext.createGain();
-
-        oscillator.type = note.type || "triangle";
-
-        oscillator.frequency.setValueAtTime(
-          note.frequency,
-          now + note.delay
-        );
-
-        gain.gain.setValueAtTime(
-          0.0001,
-          now + note.delay
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-          volume,
-          now + note.delay + 0.025
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-          0.0001,
-          now + note.delay + note.duration
-        );
-
-        oscillator.connect(gain);
-        gain.connect(coinAudioContext.destination);
-
-        oscillator.start(now + note.delay);
-        oscillator.stop(
-          now + note.delay + note.duration + 0.03
-        );
-      });
-    } catch (error) {
-      console.warn("Звук недоступен:", error);
-    }
+    return panel;
   }
 
-  function playDayBonusSound() {
-    playToneSequence([
-      { frequency: 523.25, delay: 0, duration: .28 },
-      { frequency: 659.25, delay: .13, duration: .28 },
-      { frequency: 783.99, delay: .26, duration: .32 },
-      { frequency: 1046.5, delay: .43, duration: .55 }
-    ], 0.17);
-  }
-
-  function playPurchaseSound() {
-    playToneSequence([
-      { frequency: 392, delay: 0, duration: .18 },
-      { frequency: 523.25, delay: .12, duration: .24 },
-      { frequency: 659.25, delay: .25, duration: .38 }
-    ], 0.12);
-  }
-  function playCoinSound() {
-    try {
-      const AudioContext =
-        window.AudioContext || window.webkitAudioContext;
-
-      if (!AudioContext) return;
-
-      if (!coinAudioContext) {
-        coinAudioContext = new AudioContext();
-      }
-
-      if (coinAudioContext.state === "suspended") {
-        coinAudioContext.resume();
-      }
-
-      const now = coinAudioContext.currentTime;
-
-      // Небольшая последовательность нот,
-      // создающая ощущение падающих монет.
-      const notes = [
-        { frequency: 880, delay: 0 },
-        { frequency: 1175, delay: 0.07 },
-        { frequency: 1480, delay: 0.14 }
-      ];
-
-      notes.forEach(note => {
-        const oscillator = coinAudioContext.createOscillator();
-        const gain = coinAudioContext.createGain();
-
-        oscillator.type = "triangle";
-        oscillator.frequency.setValueAtTime(
-          note.frequency,
-          now + note.delay
-        );
-
-        gain.gain.setValueAtTime(
-          0.0001,
-          now + note.delay
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-          0.12,
-          now + note.delay + 0.01
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-          0.0001,
-          now + note.delay + 0.16
-        );
-
-        oscillator.connect(gain);
-        gain.connect(coinAudioContext.destination);
-
-        oscillator.start(now + note.delay);
-        oscillator.stop(now + note.delay + 0.18);
-      });
-    } catch (error) {
-      // Звук необязателен: ошибка аудио не должна
-      // ломать начисление монет.
-      console.warn("Звук монет недоступен:", error);
-    }
-  }
-  let rewardToastTimer = null;
-
-  function showRewardToast(amount, levelUp = false) {
-    if (!amount && !levelUp) return;
-
-    const oldToast = document.querySelector(".reward-toast");
-
-    if (oldToast) {
-      oldToast.remove();
-    }
-
-    const toast = document.createElement("div");
-    toast.className = "reward-toast";
-
-    if (levelUp) {
-      toast.classList.add("level-up");
-      toast.textContent = `★ УРОВЕНЬ ${levelUp}`;
-    } else {
-      toast.textContent = `+${amount} монет`;
-    }
-
-    document.body.append(toast);
-
-    // Перезапускаем CSS-анимацию.
-    requestAnimationFrame(() => {
-      toast.classList.add("show");
-    });
-
-    clearTimeout(rewardToastTimer);
-
-            rewardToastTimer = setTimeout(() => {
-      toast.remove();
-    }, levelUp ? 3800 : 1700);
-  }
-    function showDayBonusToast() {
-    const oldToast = document.querySelector(".reward-toast");
-
-    if (oldToast) oldToast.remove();
-
-    const toast = document.createElement("div");
-    toast.className = "reward-toast day-bonus-toast";
-    toast.textContent = `★ БОНУС ДНЯ`;
-
-    document.body.append(toast);
-
-    requestAnimationFrame(() => {
-      toast.classList.add("show");
-    });
-
-    clearTimeout(rewardToastTimer);
-
-    rewardToastTimer = setTimeout(() => {
-      toast.remove();
-    }, 4200);
-  }
-  function balanceCard(value) {
-    const card = el("div", "card balance");
-
-    card.append(
-      el("div", "balance-number", String(value)),
-      el("div", "label", "МОНЕТЫ")
-    );
-
-    return card;
-  }
-
-  function section(title, items, cardBuilder) {
+  function section(title, items, builder) {
     if (!items.length) return;
-
-    if (title) {
-      screen.append(el("div", "section-label", title));
-    }
-
+    if (title) screen.append(el("div", "section-label", title));
     const list = el("div", "list");
-
-    items.forEach(item => list.append(cardBuilder(item)));
+    for (const item of items) list.append(builder(item));
     screen.append(list);
   }
 
-  function favoriteSort(items) {
-    return [...items].sort(
-      (a, b) =>
-        Number(b.favorite === true) -
-        Number(a.favorite === true)
-    );
-  }
-
-  function questSort(items) {
-    return [...items].sort((a, b) =>
-      Number(a.progress >= a.target) -
-      Number(b.progress >= b.target) ||
-      Number(b.favorite === true) -
-      Number(a.favorite === true)
-    );
+  function favorites(items) {
+    return [...items].sort((a, b) => Number(!!b.favorite) - Number(!!a.favorite));
   }
 
   function favoriteBar(collection, item) {
     const bar = el("div", "favorite-bar");
-
     const star = btn(
       item.favorite ? "★" : "☆",
       "favorite-button" + (item.favorite ? " is-favorite" : ""),
       () => transact(data => {
         const actual = data[collection].find(x => x.id === item.id);
-        if (actual) actual.favorite = !actual.favorite;
-      }),
+        if (!actual) fail("Элемент не найден.");
+        actual.favorite = !actual.favorite;
+      }, false),
       true
     );
-
-    star.setAttribute("aria-pressed", String(item.favorite));
-
-    star.setAttribute(
-      "aria-label",
-      (item.favorite ? "Убрать из избранного: " :
-        "Добавить в избранное: ") + item.name
-    );
-
+    star.setAttribute("aria-pressed", String(!!item.favorite));
+    star.setAttribute("aria-label",
+      (item.favorite ? "Убрать из избранного: " : "В избранное: ") + item.name);
     bar.append(star);
     return bar;
   }
@@ -2148,175 +1352,127 @@
   function checkbox(text, checked, action, disabled = false) {
     const label = el("label", "check-label");
     const input = el("input");
-
     input.type = "checkbox";
     input.checked = checked;
-    input.disabled = disabled || !storageHealthy;
-
+    input.disabled = disabled || !healthy;
     input.addEventListener("change", () => action(input.checked));
-
     label.append(input, el("span", "", text));
     return label;
   }
 
-    function openCardMenu(collection, id, allowDelete = true) {
-    const item = state[collection].find(record => record.id === id);
-    if (!item) return;
-
-    let menu = document.getElementById("card-menu");
-
-    if (!menu) {
-      menu = el("dialog");
-      menu.id = "card-menu";
-      menu.setAttribute("aria-labelledby", "card-menu-title");
-      document.body.append(menu);
-    }
-
+  function openMenu(title, actions) {
     menu.replaceChildren();
+    const heading = el("h2", "", title);
+    heading.id = "menu-title";
+    const list = el("div", "menu-actions");
+    actions.forEach(action => {
+      list.append(btn(
+        action.text,
+        "button full " + (action.danger ? "danger" : "secondary"),
+        () => {
+          menu.close();
+          action.run();
+        },
+        true
+      ));
+    });
+    list.append(btn("Закрыть", "button full", () => menu.close()));
+    menu.append(heading, list);
+    menu.showModal();
+  }
 
-    const title = el("h2", "", item.name);
-    title.id = "card-menu-title";
-    title.style.overflowWrap = "anywhere";
-
-    menu.append(title);
-
-    const actions = el("div", "menu-actions");
+  function openCardMenu(collection, id, allowDelete = true) {
+    const item = state[collection].find(x => x.id === id);
+    if (!item) return;
+    const actions = [];
 
     if (collection === "quests") {
-      actions.append(
-        btn(
-          "Настроить награду за шаг",
-          "button secondary full",
-          () => {
-            menu.close();
-            configureStepReward(id);
-          },
-          true
-        )
-      );
+      actions.push({
+        text: "Настроить награду за продвижение",
+        run: () => configureStepReward(id)
+      });
     }
+    if (allowDelete) actions.push({
+      text: "Удалить",
+      danger: true,
+      run: () => {
+        if (!confirm(
+          `Удалить «${item.name}»? Уже начисленные монеты останутся.`
+        )) return;
+        transact(data => {
+          data[collection] = data[collection].filter(x => x.id !== id);
+          if (collection === "tasks") {
+            for (const date of Object.keys(data.dayPlans)) {
+              data.dayPlans[date] = data.dayPlans[date].filter(x => x !== id);
+            }
+          }
+        }, false);
+      }
+    });
 
-    if (allowDelete) {
-      actions.append(
-        btn(
-          "Удалить",
-          "button secondary full",
-          () => {
-            if (!confirm(
-              "Удалить «" + item.name + "»? " +
-              "Уже начисленные монеты и история покупок останутся."
-            )) return;
-
-            const success = transact(data => {
-              data[collection] = data[collection].filter(
-                record => record.id !== id
-              );
-            });
-
-            if (success) menu.close();
-          },
-          true
-        )
-      );
-    }
-
-    actions.append(
-      btn("Закрыть", "button full", () => menu.close())
-    );
-
-    menu.append(actions);
-    menu.showModal();
+    openMenu(item.name, actions);
   }
 
   function cardHead(item, collection, allowDelete = true) {
     const head = el("div", "task-head");
     head.append(el("div", "task-title", item.name));
-
-    if (allowDelete || collection === "quests") {
-      const more = btn(
-        "⋯",
-        "delete more-button",
-        () => openCardMenu(collection, item.id, allowDelete)
-      );
-
-      more.setAttribute(
-        "aria-label",
-        "Действия: " + item.name
-      );
-
-      head.append(more);
-    }
-
+    const more = btn("⋯", "more-button",
+      () => openCardMenu(collection, item.id, allowDelete));
+    more.setAttribute("aria-label", "Действия: " + item.name);
+    head.append(more);
     return head;
   }
 
-  // ===== Формы =====
-
-  function openForm(title, fields, submit) {
-    if (!storageHealthy) return;
-
+  function openForm(title, fields, submit, saveLabel = "Создать") {
+    if (!healthy) return;
     editor.replaceChildren();
-
     const form = el("form");
-    form.append(el("h2", "", title));
-    form.firstElementChild.id = "editor-title";
-
+    const heading = el("h2", "", title);
+    heading.id = "editor-title";
+    form.append(heading);
     const inputs = {};
 
-    fields.forEach(field => {
+    for (const field of fields) {
       const id = "edit-" + field.key;
       const label = el("label", "", field.label);
       label.htmlFor = id;
-
       const input = el(field.options ? "select" : "input");
       input.id = id;
-
       if (field.options) {
-        field.options.forEach(([value, text]) => {
+        for (const [value, text] of field.options) {
           const option = el("option", "", text);
           option.value = value;
           input.append(option);
-        });
+        }
       } else {
         input.type = field.type || "text";
-
         for (const key of ["min", "max", "step", "maxLength"]) {
           if (field[key] !== undefined) input[key] = field[key];
         }
       }
-
       input.required = field.required !== false;
       input.value = String(field.value ?? "");
       inputs[field.key] = input;
       form.append(label, input);
-
-      if (field.hint) {
-        form.append(el("p", "meta", field.hint));
-      }
-    });
+      if (field.hint) form.append(el("p", "meta", field.hint));
+    }
 
     const actions = el("div", "form-actions");
-    const create = el("button", "button", "Создать");
-    create.type = "submit";
-
+    const save = el("button", "button", saveLabel);
+    save.type = "submit";
     actions.append(
-      btn("Отмена", "button secondary", () => editor.close()),
-      create
+      btn("Отмена", "button secondary", () => editor.close()), save
     );
-
     form.append(actions);
 
     form.addEventListener("submit", event => {
       event.preventDefault();
-
       const values = {};
-
-      fields.forEach(field => {
+      for (const field of fields) {
         values[field.key] = field.type === "number"
           ? Number(inputs[field.key].value)
           : inputs[field.key].value.trim();
-      });
-
+      }
       if (submit(values)) editor.close();
     });
 
@@ -2325,415 +1481,469 @@
     Object.values(inputs)[0]?.focus();
   }
 
-  function createTask() {
-    const selectedBlock = block;
+  const nameField = value => ({
+    key: "name", label: "Название", maxLength: 120, value: value || ""
+  });
+  const numberField = (key, label, value, max = 100000, min = 1) => ({
+    key, label, value, type: "number", min, max, step: 1
+  });
 
-    openForm("Новое задание", [
-      { key: "name", label: "Название", maxLength: 120 },
-      {
-        key: "type",
-        label: "Тип задания",
-        value: "once",
-        options: [
-          ["once", "Разовое"],
-          ["daily", "Ежедневное"]
-        ]
-      },
-      {
-        key: "reward", label: "Награда в монетах",
-        type: "number", min: 1, max: 100000,
-        step: 1, value: 15
-      }
-    ], values => transact(data => {
-      data.tasks.push({
-        id: uid(),
-        ...values,
-        block: selectedBlock,
-        favorite: false
-      });
-    }));
+  // Управление блоками.
+  function createBlock() {
+    openForm("Новый блок", [nameField()], values => transact(data => {
+      data.blocks.push({ id: uid(), name: values.name });
+    }, false));
   }
 
+  function blockMenu(id) {
+    const item = state.blocks.find(x => x.id === id);
+    if (!item) return;
+    openMenu(item.name, [
+      {
+        text: "Переименовать",
+        run: () => openForm("Название блока", [nameField(item.name)],
+          values => transact(data => {
+            const actual = data.blocks.find(x => x.id === id);
+            if (!actual) fail("Блок не найден.");
+            actual.name = values.name;
+          }, false), "Сохранить")
+      },
+      {
+        text: "Удалить блок",
+        danger: true,
+        run: () => deleteBlock(id)
+      }
+    ]);
+  }
+
+  function deleteBlock(id) {
+    const item = state.blocks.find(x => x.id === id);
+    if (!item) return;
+    const tasks = state.tasks.filter(x => x.block === id).length;
+    const goals = state.goals.filter(x => x.blockId === id).length;
+
+    if (!confirm(
+      `Удалить блок «${item.name}»?\n\n` +
+      `Заданий: ${tasks}. Целей: ${goals}.\n` +
+      "Они тоже будут удалены.\n\n" +
+      "Заработанные монеты, алмазы, квесты и покупки останутся."
+    )) return;
+
+    const ok = transact(data => {
+      const removed = new Set(
+        data.tasks.filter(x => x.block === id).map(x => x.id)
+      );
+      data.blocks = data.blocks.filter(x => x.id !== id);
+      data.tasks = data.tasks.filter(x => x.block !== id);
+      data.goals = data.goals.filter(x => x.blockId !== id);
+      for (const date of Object.keys(data.dayPlans)) {
+        data.dayPlans[date] = data.dayPlans[date].filter(x => !removed.has(x));
+      }
+    }, false);
+    if (ok) go("blocks");
+  }
+
+  // Цели и алмазы.
+  function goalForm(goal = null) {
+    const selectedBlock = goal ? goal.blockId : blockId;
+    openForm(goal ? "Изменить цель" : "Новая цель", [
+      nameField(goal?.name),
+      numberField("diamonds", "Награда в алмазах", goal?.diamonds ?? 5)
+    ], values => transact(data => {
+      if (!data.blocks.some(x => x.id === selectedBlock)) {
+        fail("Блок не найден.");
+      }
+      if (goal) {
+        const actual = data.goals.find(x => x.id === goal.id);
+        if (!actual || actual.completedDate !== null) {
+          fail("Цель уже изменена или выполнена.");
+        }
+        actual.name = values.name;
+        actual.diamonds = values.diamonds;
+      } else {
+        if (data.goals.some(x =>
+          x.blockId === selectedBlock && x.completedDate === null
+        )) fail("В блоке уже есть активная цель.");
+        data.goals.push({
+          id: uid(),
+          blockId: selectedBlock,
+          ...values,
+          completedDate: null
+        });
+      }
+    }, false), goal ? "Сохранить" : "Создать");
+  }
+
+  function goalMenu(id) {
+    const goal = state.goals.find(x => x.id === id);
+    if (!goal || goal.completedDate !== null) return;
+    openMenu(goal.name, [
+      { text: "Изменить цель", run: () => goalForm(goal) },
+      {
+        text: "Удалить цель",
+        danger: true,
+        run: () => {
+          if (!confirm("Удалить активную цель без награды?")) return;
+          transact(data => {
+            const actual = data.goals.find(x => x.id === id);
+            if (!actual || actual.completedDate !== null) {
+              fail("Цель уже изменена.");
+            }
+            data.goals = data.goals.filter(x => x.id !== id);
+          }, false);
+        }
+      }
+    ]);
+  }
+
+  function toggleGoal(id) {
+    const goal = state.goals.find(x => x.id === id);
+    if (!goal) return;
+    const done = goal.completedDate !== null;
+
+    if (!confirm(done
+      ? `Отменить выполнение и убрать ${goal.diamonds} алмазов?`
+      : `Цель достигнута? Начислить ${goal.diamonds} алмазов?`
+    )) return;
+
+    transact(data => {
+      const actual = data.goals.find(x => x.id === id);
+      if (!actual) fail("Цель не найдена.");
+
+      if (actual.completedDate !== null) {
+        if (data.goals.some(x =>
+          x.id !== id && x.blockId === actual.blockId &&
+          x.completedDate === null
+        )) {
+          fail("В блоке уже есть активная цель. Сначала заверши или удали её.");
+        }
+        data.diamondRecords = data.diamondRecords.filter(x => x.goalId !== id);
+        actual.completedDate = null;
+      } else {
+        if (data.diamondRecords.some(x => x.goalId === id)) {
+          fail("Награда уже начислена.");
+        }
+        actual.completedDate = today();
+        data.diamondRecords.push({
+          id: uid(), goalId: id,
+          amount: actual.diamonds,
+          date: actual.completedDate
+        });
+      }
+    }, false);
+  }
+
+  function goalCard(goal) {
+    const done = goal.completedDate !== null;
+    const card = el("article", "card goal-card" + (done ? " done" : " active-goal"));
+    const head = el("div", "task-head");
+    head.append(el("div", "task-title", goal.name));
+    if (!done) {
+      const more = btn("⋯", "more-button", () => goalMenu(goal.id));
+      more.setAttribute("aria-label", "Действия с целью");
+      head.append(more);
+    }
+    card.append(
+      el("div", "goal-label", done ? "✓ ЦЕЛЬ ДОСТИГНУТА" : "ЦЕЛЬ БЛОКА"),
+      head,
+      el("div", "reward",
+        `${done ? "Получено" : "Награда"}: ${goal.diamonds} ◆`)
+    );
+    if (done) {
+      card.append(el("div", "meta",
+        new Date(goal.completedDate + "T12:00:00").toLocaleDateString("ru-RU")));
+    }
+    card.append(btn(
+      done ? "Отменить выполнение" : "Выполнить цель",
+      "button full" + (done ? " secondary" : ""),
+      () => toggleGoal(goal.id), true
+    ));
+    return card;
+  }
+
+  // Задания.
+  function createTask() {
+    const selectedBlock = blockId;
+    openForm("Новое задание", [
+      nameField(),
+      {
+        key: "type", label: "Тип задания", value: "once",
+        options: [["once", "Разовое"], ["daily", "Ежедневное"]]
+      },
+      numberField("reward", "Награда в монетах", 15)
+    ], values => transact(data => {
+      if (!data.blocks.some(x => x.id === selectedBlock)) fail("Блок не найден.");
+      data.tasks.push({
+        id: uid(), ...values, block: selectedBlock, favorite: false
+      });
+    }, false));
+  }
+
+  function toggleTask(id) {
+    const task = state.tasks.find(x => x.id === id);
+    if (!task) return;
+    if (completion(state, task) && !confirm(
+      "Отменить выполнение? Награда и связанный бонус дня будут пересчитаны."
+    )) return;
+
+    transact(data => {
+      const actual = data.tasks.find(x => x.id === id);
+      if (!actual) fail("Задание не найдено.");
+      const record = completion(data, actual);
+      if (record) {
+        data.completions = data.completions.filter(x => x.id !== record.id);
+      } else addRecord(data, id, actual.reward);
+    });
+  }
+
+  function togglePlan(id, checked) {
+    transact(data => {
+      const task = data.tasks.find(x => x.id === id);
+      if (!task) fail("Задание не найдено.");
+      if (checked && task.type === "once" &&
+          completion(data, task) && !completion(data, task, true)) {
+        fail("Это задание выполнено в другой день.");
+      }
+      const ids = new Set(data.dayPlans[today()]);
+      if (checked) ids.add(id); else ids.delete(id);
+      data.dayPlans[today()] = [...ids];
+    });
+  }
+
+  function taskCard(task) {
+    const record = task.type === "once"
+      ? view.anyTask.get(task.id) : view.todayTask.get(task.id);
+    const old = task.type === "once" && record && record.date !== today();
+    const card = el("article", "card" + (record ? " done" : ""));
+    const details = el("div", "compact-details");
+    details.append(
+      el("span", "detail-muted", task.type === "daily" ? "Ежедневно" : "Разовое"),
+      el("span", "detail-reward",
+        record ? `✓ ${record.reward} монет` : `+${task.reward} монет`)
+    );
+    card.append(
+      favoriteBar("tasks", task),
+      cardHead(task, "tasks"),
+      details,
+      btn(record ? "Отменить выполнение" : "Выполнить",
+        "button full" + (record ? " secondary" : ""),
+        () => toggleTask(task.id), true),
+      checkbox(old ? "Выполнено в другой день" : "Конструктор дня",
+        view.planIds.has(task.id),
+        checked => togglePlan(task.id, checked), !!old)
+    );
+    return card;
+  }
+
+  // Квесты.
   function createQuest() {
     openForm("Новый квест", [
-      { key: "name", label: "Название", maxLength: 120 },
+      nameField(),
+      numberField("target", "Целевое значение", 100, 1000000),
+      numberField("step", "Шаг нажатия", 1, 1000000),
+      numberField("reward", "Награда за достижение в монетах", 200),
       {
-        key: "target", label: "Целевое значение",
-        type: "number", min: 1, max: 1000000,
-        step: 1, value: 100
-      },
-      {
-        key: "step", label: "Шаг нажатия",
-        type: "number", min: 1, max: 1000000,
-        step: 1, value: 1
-      },
-      {
-        key: "reward", label: "Награда за завершение",
-        type: "number", min: 1, max: 100000,
-        step: 1, value: 200
-      },
-      {
-        key: "stepReward", label: "Монет за шаг",
-        type: "number", min: 0, max: 100000,
-        step: 1, value: 0,
-        hint: "За одно нажатие «+». 0 — без награды за шаг."
+        ...numberField("stepReward", "Монет за продвижение", 0, 100000, 0),
+        hint: "За одно нажатие «+». 0 — без награды."
       }
     ], values => transact(data => {
       data.quests.push({
-        id: uid(),
-        ...values,
-        progress: 0,
-        stepHistory: [],
-        favorite: false,
-        showInDay: false
+        id: uid(), ...values, progress: 0, stepHistory: [],
+        favorite: false, showInDay: false
       });
-    }));
+    }, false));
   }
 
-  function createBonus() {
-    openForm("Новый бонус", [
-      { key: "name", label: "Название", maxLength: 120 },
+  function configureStepReward(id) {
+    const quest = state.quests.find(x => x.id === id);
+    if (!quest) return;
+    openForm("Награда за продвижение", [
       {
-        key: "description", label: "Описание — необязательно",
-        maxLength: 300, required: false
+        ...numberField("stepReward", "Монет за одно нажатие «+»",
+          quest.stepReward, 100000, 0),
+        hint: "Изменение действует только на следующие продвижения."
+      }
+    ], values => transact(data => {
+      const actual = data.quests.find(x => x.id === id);
+      if (!actual) fail("Квест не найден.");
+      actual.stepReward = values.stepReward;
+    }, false), "Сохранить");
+  }
+
+  function moveQuest(id, direction) {
+    if (direction < 0 && !confirm(
+      "Отменить последнее продвижение? Его награда, а при необходимости " +
+      "и награда за достижение, будут убраны."
+    )) return;
+
+    transact(data => {
+      const quest = data.quests.find(x => x.id === id);
+      if (!quest) fail("Квест не найден.");
+      const last = quest.stepHistory[quest.stepHistory.length - 1];
+      const next = direction > 0
+        ? Math.min(quest.target, quest.progress + quest.step)
+        : last && last.to === quest.progress
+          ? last.from : Math.max(0, quest.progress - quest.step);
+
+      if (next === quest.progress) return;
+
+      if (direction > 0) {
+        let paymentId = null;
+        if (quest.stepReward > 0) {
+          paymentId = uid();
+          addRecord(data, `quest:step:${id}:${paymentId}`,
+            quest.stepReward, { id: paymentId });
+        }
+        quest.stepHistory.push({
+          from: quest.progress, to: next, completionId: paymentId
+        });
+      } else if (last && last.to === quest.progress) {
+        quest.stepHistory.pop();
+        if (last.completionId) {
+          data.completions = data.completions.filter(x => x.id !== last.completionId);
+        }
+      }
+
+      quest.progress = next;
+      const final = data.completions.find(x => x.taskId === "quest:" + id);
+      if (next === quest.target && !final) {
+        addRecord(data, "quest:" + id, quest.reward);
+      }
+      if (next < quest.target && final) {
+        data.completions = data.completions.filter(x => x.id !== final.id);
+      }
+    }, false);
+  }
+
+  function questCard(quest, inDay = false) {
+    const done = quest.progress >= quest.target;
+    const card = el("article", "card" + (done ? " done" : ""));
+    const rewards = el("div", "compact-details");
+    if (quest.stepReward > 0) {
+      rewards.append(el("span", "detail-reward",
+        `За продвижение: +${quest.stepReward} монет`));
+    }
+    rewards.append(el("span", "detail-reward", done
+      ? `✓ Достижение получено: +${quest.reward} монет`
+      : `За достижение: +${quest.reward} монет`));
+
+    const plan = checkbox("Конструктор дня", quest.showInDay,
+      checked => transact(data => {
+        const actual = data.quests.find(x => x.id === quest.id);
+        if (!actual) fail("Квест не найден.");
+        actual.showInDay = checked;
+      }, false));
+    plan.classList.add("quest-plan-toggle");
+
+    const line = el("div", "quest-reward-line");
+    line.append(rewards, plan);
+
+    const minus = btn(`−${quest.step}`, "button secondary",
+      () => moveQuest(quest.id, -1), true);
+    const plus = btn(`+${quest.step}`, "button",
+      () => moveQuest(quest.id, 1), true);
+    minus.disabled = !healthy || quest.progress === 0;
+    plus.disabled = !healthy || done;
+    const actions = el("div", "actions");
+    actions.append(minus, plus);
+
+    card.append(
+      favoriteBar("quests", quest),
+      cardHead(quest, "quests", !inDay),
+      line,
+      progressBar(quest.progress, quest.target, quest.name),
+      el("div", "progress-label",
+        `${quest.progress} / ${quest.target}` + (done ? " · Завершён" : "")),
+      actions
+    );
+    return card;
+  }
+
+  // Магазин.
+    function createBonus() {
+    openForm("Новый бонус", [
+      nameField(),
+      {
+        key: "description",
+        label: "Описание — необязательно",
+        maxLength: 300,
+        required: false
       },
       {
-        key: "price", label: "Цена в монетах",
-        type: "number", min: 1, max: 1000000,
-        step: 1, value: 50
-      }
+        key: "currency",
+        label: "Валюта",
+        value: "coins",
+        options: [
+          ["coins", "Монеты ●"],
+          ["diamonds", "Алмазы ◆"]
+        ]
+      },
+      numberField("price", "Цена в выбранной валюте", 5, 1000000)
     ], values => transact(data => {
       data.bonuses.push({
         id: uid(),
         ...values,
         favorite: false
       });
-    }));
+    }, false));
   }
 
-  // ===== Задания =====
+    function buyBonus(id) {
+    const ok = transact(data => {
+      const bonus = data.bonuses.find(x => x.id === id);
 
-  function toggleTask(id) {
-    const task = state.tasks.find(item => item.id === id);
-    if (!task) return;
+      if (!bonus) {
+        fail("Бонус не найден.");
+      }
 
-    const record = completion(state, task);
+      if (data.purchases.some(x => x.bonusId === id)) {
+        fail("Этот бонус уже куплен.");
+      }
 
-    if (record && !confirm(
-      "Отменить выполнение? Награда и связанный " +
-      "с ней бонус дня будут пересчитаны."
-    )) return;
+      const money = totals(data);
+      const isDiamonds = bonus.currency === "diamonds";
 
-    transact(data => {
-      const actual = data.tasks.find(item => item.id === id);
-      if (!actual) return;
+      const available = isDiamonds
+        ? money.diamonds
+        : money.balance;
 
-      const existing = completion(data, actual);
-
-      if (existing) {
-        data.completions = data.completions.filter(
-          item => item.id !== existing.id
+      if (available < bonus.price) {
+        fail(
+          isDiamonds
+            ? "Недостаточно алмазов."
+            : "Недостаточно монет."
         );
-      } else {
-        addRecord(data, actual.id, actual.reward);
-      }
-    });
-  }
-
-  function togglePlan(id, checked) {
-    transact(data => {
-      const task = data.tasks.find(item => item.id === id);
-      if (!task) return;
-
-      if (
-        checked && task.type === "once" &&
-        completion(data, task) &&
-        !completion(data, task, true)
-      ) fail("Это разовое задание выполнено в другой день.");
-
-      const ids = new Set(data.dayPlans[today()]);
-
-      if (checked) ids.add(id);
-      else ids.delete(id);
-
-      data.dayPlans[today()] = [...ids];
-    });
-  }
-
-    function taskCard(task) {
-    const record = task.type === "once"
-      ? view.anyTask.get(task.id)
-      : view.todayTask.get(task.id);
-
-    const oldOneTime = task.type === "once" &&
-      Boolean(record) &&
-      record.date !== today();
-
-    const card = el(
-      "article",
-      "card" + (record ? " done" : "")
-    );
-
-    const details = el("div", "compact-details");
-
-    details.append(
-      el(
-        "span",
-        "detail-muted",
-        task.type === "daily" ? "Ежедневно" : "Разовое"
-      ),
-      el("span", "detail-separator", "·"),
-      el(
-        "span",
-        "detail-reward",
-        record
-          ? `✓ ${record.reward} монет`
-          : `+${task.reward} монет`
-      )
-    );
-
-    card.append(
-      favoriteBar("tasks", task),
-      cardHead(task, "tasks"),
-      details,
-      btn(
-        record ? "Отменить выполнение" : "Выполнить",
-        "button full" + (record ? " secondary" : ""),
-        () => toggleTask(task.id),
-        true
-      ),
-      checkbox(
-        oldOneTime ? "Выполнено в другой день" : "Конструктор дня",
-        view.planIds.has(task.id),
-        checked => togglePlan(task.id, checked),
-        oldOneTime
-      )
-    );
-
-    return card;
-  }
-
-  // ===== Квесты: общая логика для обоих экранов =====
-
-  function moveQuest(id, direction) {
-    const quest = state.quests.find(item => item.id === id);
-    if (!quest) return;
-
-    if (
-      direction < 0 &&
-      !confirm(
-        "Отменить последний шаг? Монеты за него, " +
-        "а при необходимости и награда за завершение, " +
-        "будут убраны."
-      )
-    ) return;
-
-    transact(data => {
-      const actual = data.quests.find(item => item.id === id);
-      if (!actual) return;
-
-      const history = actual.stepHistory;
-      const last = history[history.length - 1];
-
-      const next = direction > 0
-        ? Math.min(actual.target, actual.progress + actual.step)
-        : last && last.to === actual.progress
-          ? last.from
-          : Math.max(0, actual.progress - actual.step);
-
-      if (next === actual.progress) return;
-
-      if (direction > 0) {
-        let paymentId = null;
-
-        if (actual.stepReward > 0) {
-          paymentId = uid();
-
-          addRecord(
-            data,
-            `quest:step:${id}:${paymentId}`,
-            actual.stepReward,
-            { id: paymentId }
-          );
-        }
-
-        history.push({
-          from: actual.progress,
-          to: next,
-          completionId: paymentId
-        });
-      } else if (last && last.to === actual.progress) {
-        history.pop();
-
-        if (last.completionId) {
-          data.completions = data.completions.filter(
-            record => record.id !== last.completionId
-          );
-        }
-      }
-
-      actual.progress = next;
-
-      const finalReward = data.completions.find(
-        record => record.taskId === `quest:${id}`
-      );
-
-      if (next === actual.target && !finalReward) {
-        addRecord(data, `quest:${id}`, actual.reward);
-      }
-
-      if (next < actual.target && finalReward) {
-        data.completions = data.completions.filter(
-          record => record.id !== finalReward.id
-        );
-      }
-    });
-  }
-
-  function configureStepReward(id) {
-    const quest = state.quests.find(item => item.id === id);
-    if (!quest) return;
-
-    const entered = prompt(
-      "Монет за одно нажатие «+»: от 0 до 100000. " +
-      "Изменение действует только на следующие шаги.",
-      String(quest.stepReward)
-    );
-
-    if (entered === null) return;
-
-    const value = Number(entered.trim());
-
-    if (
-      entered.trim() === "" ||
-      !integer(value, 0, 100000)
-    ) {
-      alert("Введи целое число от 0 до 100000.");
-      return;
-    }
-
-    transact(data => {
-      const actual = data.quests.find(item => item.id === id);
-      if (actual) actual.stepReward = value;
-    });
-  }
-
-      function questCard(quest, inDay = false) {
-    const done = quest.progress >= quest.target;
-
-    const card = el(
-      "article",
-      "card" + (done ? " done" : "")
-    );
-
-    const rewards = el("div", "compact-details");
-
-    if (quest.stepReward > 0) {
-      rewards.append(
-        el(
-          "span",
-          "detail-reward",
-          `За продвижение: +${quest.stepReward} монет`
-        ),
-        el("span", "detail-separator", "·")
-      );
-    }
-
-    rewards.append(
-      el(
-        "span",
-        "detail-reward",
-        done
-          ? `✓ Достижение получено: +${quest.reward} монет`
-          : `За достижение: +${quest.reward} монет`
-      )
-    );
-
-    const planToggle = checkbox(
-      "Конструктор дня",
-      quest.showInDay,
-      checked => transact(data => {
-        const actual = data.quests.find(
-          item => item.id === quest.id
-        );
-
-        if (actual) actual.showInDay = checked;
-      })
-    );
-
-    planToggle.classList.add("quest-plan-toggle");
-
-    const header = el("div", "quest-reward-line");
-    header.append(rewards, planToggle);
-
-    card.append(
-      favoriteBar("quests", quest),
-      cardHead(quest, "quests", !inDay),
-      header,
-      progressBar(quest.progress, quest.target, quest.name),
-      el(
-        "div",
-        "progress-label",
-        `${quest.progress} / ${quest.target}` +
-        (done ? " · Завершён" : "")
-      )
-    );
-
-    const actions = el("div", "actions");
-
-    const minus = btn(
-      `−${quest.step}`,
-      "button secondary",
-      () => moveQuest(quest.id, -1),
-      true
-    );
-
-    const plus = btn(
-      `+${quest.step}`,
-      "button",
-      () => moveQuest(quest.id, 1),
-      true
-    );
-
-    minus.disabled = !storageHealthy || quest.progress === 0;
-    plus.disabled = !storageHealthy || done;
-
-    actions.append(minus, plus);
-    card.append(actions);
-
-    return card;
-  }
-
-  // ===== Магазин =====
-
-  function buyBonus(id) {
-    const bonus = state.bonuses.find(item => item.id === id);
-    if (!bonus) return;
-
-        const purchased = transact(data => {
-      const actual = data.bonuses.find(item => item.id === id);
-      if (!actual) return;
-
-      if (totals(data).balance < actual.price) {
-        fail("Недостаточно монет.");
       }
 
       data.purchases.push({
         id: uid(),
-        bonusId: actual.id,
-        name: actual.name,
-        price: actual.price,
+        bonusId: id,
+        name: bonus.name,
+        price: bonus.price,
+        currency: bonus.currency,
         createdAt: new Date().toISOString()
       });
-    });
+    }, false);
 
-    if (purchased) {
-      playPurchaseSound();
+    if (ok) {
+      tones([392, 523.25, 659.25], .12, .3);
     }
   }
 
-  function bonusCard(bonus) {
-    const card = el("article", "card");
+    function bonusCard(bonus) {
+    const isDiamonds = bonus.currency === "diamonds";
+
+    const available = isDiamonds
+      ? view.money.diamonds
+      : view.money.balance;
+
+    const missing = Math.max(0, bonus.price - available);
+    const symbol = isDiamonds ? "◆" : "●";
+
+    const card = el(
+      "article",
+      "card" + (isDiamonds ? " diamond-shop-card" : "")
+    );
 
     card.append(
       favoriteBar("bonuses", bonus),
@@ -2744,51 +1954,69 @@
       card.append(el("p", "", bonus.description));
     }
 
-    const missing = Math.max(0, bonus.price - view.money.balance);
-
     const buy = btn(
-      missing ? `Не хватает ${missing} монет` : "Купить",
+      missing
+        ? `Не хватает ${missing} ${symbol}`
+        : "Купить",
       "button full" + (missing ? " secondary" : ""),
       () => buyBonus(bonus.id),
       true
     );
 
-    buy.disabled = !storageHealthy || missing > 0;
+    buy.disabled = !healthy || missing > 0;
 
     card.append(
-      el("div", "reward", `${bonus.price} монет`),
+      el("div", "reward", `${bonus.price} ${symbol}`),
       buy
     );
 
     return card;
   }
 
-  function purchaseCard(purchase) {
-    const card = el("article", "card");
+    function purchaseCard(purchase) {
+    const isDiamonds = purchase.currency === "diamonds";
+    const symbol = isDiamonds ? "◆" : "●";
+
+    const card = el(
+      "article",
+      "card" + (isDiamonds ? " diamond-shop-card" : "")
+    );
 
     card.append(
       el("div", "task-title", purchase.name),
-      el("div", "meta",
+
+      el(
+        "div",
+        "meta",
         new Date(purchase.createdAt).toLocaleString("ru-RU", {
           day: "numeric",
           month: "short",
           hour: "2-digit",
           minute: "2-digit"
-        })),
-      el("div", "reward", `−${purchase.price} монет`),
+        })
+      ),
+
+      el("div", "reward", `−${purchase.price} ${symbol}`),
+
       btn(
         "Отменить покупку",
         "button secondary full",
         () => {
           if (!confirm(
-            `Отменить покупку и вернуть ${purchase.price} монет?`
-          )) return;
+            `Отменить покупку и вернуть ${purchase.price} ${symbol}?`
+          )) {
+            return;
+          }
 
           transact(data => {
+            if (!data.purchases.some(x => x.id === purchase.id)) {
+              fail("Покупка уже отменена.");
+            }
+
             data.purchases = data.purchases.filter(
-              item => item.id !== purchase.id
+              x => x.id !== purchase.id
             );
-          });
+          }, false);
         },
         true
       )
@@ -2797,133 +2025,113 @@
     return card;
   }
 
-  // ===== Экраны =====
-
+  // Экраны.
   function buildView() {
     const date = today();
     const anyTask = new Map();
     const todayTask = new Map();
     const recordsToday = [];
-
     for (const record of state.completions) {
-      if (!anyTask.has(record.taskId)) {
-        anyTask.set(record.taskId, record);
-      }
-
+      if (!anyTask.has(record.taskId)) anyTask.set(record.taskId, record);
       if (record.date === date) {
         todayTask.set(record.taskId, record);
         recordsToday.push(record);
       }
     }
-
     const planIds = new Set(state.dayPlans[date] || []);
-    const planned = state.tasks.filter(task => planIds.has(task.id));
-
+    const planned = state.tasks.filter(x => planIds.has(x.id));
     return {
-      anyTask,
-      todayTask,
-      recordsToday,
-      planIds,
-      planned,
-      plannedDone: planned.filter(task => todayTask.has(task.id)),
-      bonus: todayTask.get(`day-bonus:${date}`),
+      anyTask, todayTask, recordsToday, planIds, planned,
+      plannedDone: planned.filter(x => todayTask.has(x.id)),
+      bonus: todayTask.get("day-bonus:" + date),
       money: totals(state)
     };
   }
 
   function renderHero() {
-    const sectionNode = el("section", "hero");
+    const hero = el("section", "hero");
     const progress = view.money.earned % LEVEL_COST;
-
-    sectionNode.append(
+    hero.append(
       el("div", "avatar", "V"),
-      el("div", "level",
-        `УРОВЕНЬ ${Math.floor(
-  view.money.earned / LEVEL_COST
-) + 1}`),
-      progressBar(
-  progress,
-  LEVEL_COST,
-  "Прогресс уровня"
-),
-      el("div", "progress-label",
-        `${progress} / ${LEVEL_COST} до следующего уровня`),
-      balanceCard(view.money.balance)
+      el("div", "level", `УРОВЕНЬ ${Math.floor(view.money.earned / LEVEL_COST) + 1}`),
+      progressBar(progress, LEVEL_COST, "Прогресс уровня"),
+      el("div", "progress-label", `${progress} / ${LEVEL_COST} до следующего уровня`),
+      balancesPanel()
     );
-
     screen.append(
-      sectionNode,
-      btn(
-        "Конструктор дня →",
-        "button full hero-link",
-        () => go("day")
-      ),
-      el(
-        "div",
-        "progress-label center",
-        view.planned.length
-          ? `Выполнено ${view.plannedDone.length} из ${view.planned.length}` +
-            (view.bonus ? " · Бонус +100 получен" : "")
-          : "Выбери действия на сегодня"
-      ),
-      btn(
-        "Резервная копия",
-        "button secondary full backup-link",
-        () => {
-          backupStatus.textContent = "";
-          backupDialog.showModal();
-        }
-      ),
-      btn(
-        "Итоги дня",
-        "button secondary full summary-link",
-        () => go("summary")
-      )
+      hero,
+      btn("Конструктор дня →", "button full hero-link", () => go("day")),
+      el("div", "progress-label center", view.planned.length
+        ? `Выполнено ${view.plannedDone.length} из ${view.planned.length}` +
+          (view.bonus ? ` · Бонус +${view.bonus.reward} получен` : "")
+        : "Выбери действия на сегодня"),
+      btn("Настройки", "button secondary full backup-link", () => {
+        backupStatus.textContent = "";
+        settings.showModal();
+      }),
+      btn("Итоги дня", "button secondary full summary-link", () => go("summary"))
     );
   }
 
   function renderBlocks() {
-    if (block === null) {
+    if (blockId === null) {
       screen.append(
         el("h1", "", "БЛОКИ"),
-        el("p", "", "Выбери, чему посвятить время.")
+        el("p", "", "Выбери, чему посвятить время."),
+        btn("+ Добавить блок", "button full", createBlock, true)
       );
-
       const list = el("div", "list");
-
-      BLOCKS.forEach((name, index) => {
-        const button = btn("", "block", () => go("blocks", index));
-        button.append(el("span", "", name), el("span", "arrow", "›"));
-        list.append(button);
-      });
-
+      for (const block of state.blocks) {
+        const open = btn("", "block", () => go("blocks", block.id));
+        open.append(el("span", "", block.name), el("span", "arrow", "›"));
+        list.append(open);
+      }
       screen.append(list);
+      if (!state.blocks.length) {
+        screen.append(el("div", "empty", "Создай первый блок."));
+      }
       return;
     }
 
-    screen.append(
-      btn("← Все блоки", "back", () => go("blocks")),
-      el("h1", "", BLOCKS[block]),
-      btn(
-        "+ Добавить задание",
-        "button full spaced",
-        createTask,
-        true
-      )
-    );
+    const selected = state.blocks.find(x => x.id === blockId);
+    if (!selected) {
+      blockId = null;
+      renderBlocks();
+      return;
+    }
 
-    const tasks = state.tasks.filter(task => task.block === block);
+    screen.append(btn("← Все блоки", "back", () => go("blocks")));
+    const heading = el("div", "block-heading");
+    const more = btn("⋯", "more-button", () => blockMenu(selected.id));
+    more.setAttribute("aria-label", "Настройки блока");
+    heading.append(el("h1", "", selected.name), more);
+    screen.append(heading);
 
+    const goals = state.goals.filter(x => x.blockId === blockId);
+    const active = goals.find(x => x.completedDate === null);
+    if (active) screen.append(goalCard(active));
+
+    const create = el("div", "block-create-actions");
+    create.append(btn("+ Добавить задание", "button full", createTask, true));
+    if (!active) {
+      create.append(btn("+ Добавить цель", "button full goal-button",
+        () => goalForm(), true));
+    }
+    screen.append(create);
+
+    const tasks = state.tasks.filter(x => x.block === blockId);
     const done = task => task.type === "once"
-      ? view.anyTask.has(task.id)
-      : view.todayTask.has(task.id);
+      ? view.anyTask.has(task.id) : view.todayTask.has(task.id);
 
-    section("", favoriteSort(tasks.filter(task => !done(task))), taskCard);
-    section(
-      "ВЫПОЛНЕННЫЕ",
-      favoriteSort(tasks.filter(done)),
-      taskCard
-    );
+    section("", favorites(tasks.filter(x => !done(x))), taskCard);
+
+    const completed = [
+      ...favorites(tasks.filter(done)).map(item => ({ kind: "task", item })),
+      ...goals.filter(x => x.completedDate !== null).reverse()
+        .map(item => ({ kind: "goal", item }))
+    ];
+    section("ВЫПОЛНЕНО", completed, entry =>
+      entry.kind === "goal" ? goalCard(entry.item) : taskCard(entry.item));
 
     if (!tasks.length) {
       screen.append(el("div", "empty", "Пока заданий нет. Добавь первое."));
@@ -2936,67 +2144,29 @@
       el("p", "", "Большие цели — маленькими шагами."),
       btn("+ Добавить квест", "button full", createQuest, true)
     );
-
-    section(
-      "",
-      favoriteSort(state.quests.filter(q => q.progress < q.target)),
-      quest => questCard(quest)
-    );
-
-    section(
-      "ЗАВЕРШЁННЫЕ",
-      favoriteSort(state.quests.filter(q => q.progress >= q.target)),
-      quest => questCard(quest)
-    );
-
+    section("", favorites(state.quests.filter(x => x.progress < x.target)),
+      quest => questCard(quest));
+    section("ЗАВЕРШЁННЫЕ",
+      favorites(state.quests.filter(x => x.progress >= x.target)),
+      quest => questCard(quest));
     if (!state.quests.length) {
-      screen.append(el("div", "empty", "Пока квестов нет. Создай первую цель."));
+      screen.append(el("div", "empty", "Добавь первый квест."));
     }
   }
 
   function renderBonuses() {
     screen.append(
       el("h1", "", "БОНУСЫ"),
-      balanceCard(view.money.balance),
-      btn(
-        "+ Добавить бонус",
-        "button full spaced",
-        createBonus,
-        true
-      )
+      balancesPanel(),
+      btn("+ Добавить бонус", "button full spaced", createBonus, true)
     );
-
-        const purchasedBonusIds = new Set(
-      state.purchases.map(purchase => purchase.bonusId)
-    );
-
-    const availableBonuses = state.bonuses.filter(
-      bonus => !purchasedBonusIds.has(bonus.id)
-    );
-
-    section(
-      "",
-      favoriteSort(availableBonuses),
-      bonusCard
-    );
-
-    if (!availableBonuses.length) {
-      screen.append(
-        el(
-          "div",
-          "empty",
-          state.bonuses.length
-            ? "Добавь награду и назначь ей цену."
-            : "Добавь награду и назначь ей цену."
-        )
-      );
+    const bought = new Set(state.purchases.map(x => x.bonusId));
+    const available = state.bonuses.filter(x => !bought.has(x.id));
+    section("", favorites(available), bonusCard);
+    if (!available.length) {
+      screen.append(el("div", "empty", "Добавь награду и назначь ей цену."));
     }
-
-    section(
-      "ИСТОРИЯ ПОКУПОК",
-      [...state.purchases].reverse(),
-      purchaseCard
-    );
+    section("ИСТОРИЯ ПОКУПОК", [...state.purchases].reverse(), purchaseCard);
   }
 
   function renderDay() {
@@ -3005,93 +2175,48 @@
       el("h1", "", "КОНСТРУКТОР ДНЯ"),
       el("p", "", dateLabel())
     );
-
-    const summary = el("div", "card");
     const total = view.planned.length;
     const done = view.plannedDone.length;
-    const percent = total ? Math.round(done / total * 100) : 0;
-
-    const hint = el(
-      "p",
-      "",
-      view.bonus
-        ? "✓ Бонус дня получен: +100 монет"
-        : total < MIN_DAY_TASKS
-          ? "Для бонуса нужно минимум 3 задания"
-          : "Выполни весь план: +50 монет"
-    );
-
+    const summary = el("div", "card");
+    const hint = el("p", "", view.bonus
+      ? `✓ Бонус дня получен: +${view.bonus.reward} монет`
+      : total < MIN_DAY_TASKS
+        ? `Для бонуса нужно минимум ${MIN_DAY_TASKS} задания`
+        : `Выполни весь план: +${DAY_REWARD} монет`);
     hint.style.marginBottom = "0";
     if (view.bonus) hint.style.color = "var(--accent)";
-
     summary.append(
       el("div", "task-title", `Выполнено ${done} из ${total}`),
-      progressBar(percent, 100, "Выполнение плана дня"),
+      progressBar(total ? Math.round(done / total * 100) : 0, 100, "План дня"),
       hint
     );
-
     screen.append(summary);
-
     if (!total) {
-      screen.append(
-        el("div", "empty",
-          "План пока пуст. Отметь нужные задания в блоках.")
-      );
+      screen.append(el("div", "empty",
+        "План пока пуст. Отметь нужные задания в блоках."));
     }
+    section("ЗАДАНИЯ", favorites(view.planned.filter(
+      x => !view.todayTask.has(x.id))), taskCard);
 
-    section(
-      "ЗАДАНИЯ",
-      favoriteSort(view.planned.filter(
-        task => !view.todayTask.has(task.id)
-      )),
-      taskCard
-    );
+    const quests = state.quests.filter(x => x.showInDay);
+    section("КВЕСТЫ", favorites(quests.filter(x => x.progress < x.target)),
+      quest => questCard(quest, true));
 
-        const visibleQuests = state.quests.filter(
-      quest => quest.showInDay
-    );
-
-    section(
-      "КВЕСТЫ",
-      favoriteSort(
-        visibleQuests.filter(
-          quest => quest.progress < quest.target
-        )
-      ),
-      quest => questCard(quest, true)
-    );
-
-    const completedItems = favoriteSort([
-      ...view.plannedDone.map(task => ({
-        ...task,
-        itemKind: "task"
-      })),
-
-      ...visibleQuests
-        .filter(quest => quest.progress >= quest.target)
-        .map(quest => ({
-          ...quest,
-          itemKind: "quest"
-        }))
+    const completed = favorites([
+      ...view.plannedDone.map(x => ({ ...x, kind: "task" })),
+      ...quests.filter(x => x.progress >= x.target)
+        .map(x => ({ ...x, kind: "quest" }))
     ]);
-
-    section(
-      "ВЫПОЛНЕНО",
-      completedItems,
-      item => item.itemKind === "quest"
-        ? questCard(item, true)
-        : taskCard(item)
-    );
+    section("ВЫПОЛНЕНО", completed, item =>
+      item.kind === "quest" ? questCard(item, true) : taskCard(item));
   }
 
   function summaryRow(container, title, value, total = false) {
     const row = el("div", "summary-row");
-
     row.append(
       el("span", "", title),
       el("strong", total ? "summary-total" : "", String(value))
     );
-
     container.append(row);
   }
 
@@ -3101,208 +2226,176 @@
       el("h1", "", "ИТОГИ ДНЯ"),
       el("p", "", dateLabel())
     );
-
     const records = view.recordsToday;
-
-    const tasks = records.filter(record =>
-      !record.taskId.startsWith("quest:") &&
-      !record.taskId.startsWith("day-bonus:")
+    const tasks = records.filter(x =>
+      !x.taskId.startsWith("quest:") && !x.taskId.startsWith("day-bonus:"));
+    const steps = records.filter(x => x.taskId.startsWith("quest:step:"));
+    const quests = records.filter(x =>
+      x.taskId.startsWith("quest:") && !x.taskId.startsWith("quest:step:"));
+    const bonuses = records.filter(x => x.taskId.startsWith("day-bonus:"));
+    const diamonds = state.diamondRecords.filter(x => x.date === today());
+        const purchasesToday = state.purchases.filter(
+      x => dateKey(new Date(x.createdAt)) === today()
     );
 
-    const steps = records.filter(
-      record => record.taskId.startsWith("quest:step:")
+    const spent = sum(
+      purchasesToday.filter(x => x.currency !== "diamonds"),
+      "price"
     );
 
-    const quests = records.filter(record =>
-      record.taskId.startsWith("quest:") &&
-      !record.taskId.startsWith("quest:step:")
+    const diamondsSpent = sum(
+      purchasesToday.filter(x => x.currency === "diamonds"),
+      "price"
     );
-
-    const bonuses = records.filter(
-      record => record.taskId.startsWith("day-bonus:")
-    );
-
-    const sum = list => list.reduce(
-      (result, item) => result + item.reward, 0
-    );
-
-    const spent = state.purchases
-      .filter(purchase =>
-        dateKey(new Date(purchase.createdAt)) === today()
-      )
-      .reduce((result, item) => result + item.price, 0);
 
     const activity = el("section", "card");
     const money = el("section", "card spaced");
-
     summaryRow(activity, "Выполнено заданий", tasks.length);
-    summaryRow(
-      activity,
-      "План дня",
-      `${view.plannedDone.length} из ${view.planned.length}`
-    );
+    summaryRow(activity, "План дня",
+      `${view.plannedDone.length} из ${view.planned.length}`);
     summaryRow(activity, "Завершено квестов", quests.length);
-
-    summaryRow(money, "За задания", `+${sum(tasks)}`);
-    summaryRow(money, "За завершение квестов", `+${sum(quests)}`);
-    summaryRow(money, "За шаги квестов", `+${sum(steps)}`);
-    summaryRow(money, "Бонус дня", `+${sum(bonuses)}`);
-    summaryRow(money, "Всего заработано", `${sum(records)} монет`, true);
-    summaryRow(money, "Потрачено", `${spent} монет`);
-
+    summaryRow(activity, "Достигнуто целей", diamonds.length);
+    summaryRow(money, "За задания", `+${sum(tasks, "reward")}`);
+    summaryRow(money, "За достижение квестов", `+${sum(quests, "reward")}`);
+    summaryRow(money, "За продвижение квестов", `+${sum(steps, "reward")}`);
+    summaryRow(money, "Бонус дня", `+${sum(bonuses, "reward")}`);
+    summaryRow(money, "Всего заработано", `${sum(records, "reward")} монет`, true);
+    summaryRow(money, "Потрачено монет", `${spent} ●`);
+    summaryRow(money, "Потрачено алмазов", `${diamondsSpent} ◆`);
+    summaryRow(money, "Алмазы за цели", `+${sum(diamonds, "amount")} ◆`, true);
     screen.append(activity, money);
   }
 
   function render() {
     view = buildView();
     screen.replaceChildren();
-    wallet.textContent = `${view.money.balance} монет`;
+    wallet.replaceChildren(
+      el("span", "", `${view.money.balance} ●`),
+      el("span", "wallet-diamonds", `${view.money.diamonds} ◆`)
+    );
+    wallet.setAttribute("aria-label",
+      `Монеты: ${view.money.balance}. Алмазы: ${view.money.diamonds}.`);
 
-    const activePage = ["day", "summary"].includes(page) ? "hero" : page;
-
+    const active = ["day", "summary"].includes(page) ? "hero" : page;
     document.querySelectorAll(".nav-button").forEach(node => {
-      const active = node.dataset.page === activePage;
-      node.classList.toggle("active", active);
-
-      if (active) node.setAttribute("aria-current", "page");
+      const selected = node.dataset.page === active;
+      node.classList.toggle("active", selected);
+      if (selected) node.setAttribute("aria-current", "page");
       else node.removeAttribute("aria-current");
     });
-
     const screens = {
-      hero: renderHero,
-      blocks: renderBlocks,
-      quests: renderQuests,
-      bonuses: renderBonuses,
-      day: renderDay,
-      summary: renderSummary
+      hero: renderHero, blocks: renderBlocks, quests: renderQuests,
+      bonuses: renderBonuses, day: renderDay, summary: renderSummary
     };
-
     (screens[page] || renderHero)();
   }
 
-  // ===== Резервные копии =====
+  // Настройки и резервные копии.
+  $("generate-backup").addEventListener("click", () => {
+    if (!healthy || !loadLatest()) {
+      backupStatus.textContent = "Ошибка сохранения. Не заменяй прежнюю копию.";
+      return;
+    }
+    backupText.value = JSON.stringify({
+      app: "LifeGame",
+      version: 1,
+      createdAt: new Date().toISOString(),
+      data: state
+    }, null, 2);
+    render();
+    backupStatus.textContent = "Копия готова. Сохрани весь текст вне приложения.";
+  });
 
-  document.getElementById("generate-backup")
-    .addEventListener("click", () => {
-      if (!storageHealthy) {
-        backupStatus.textContent =
-          "Сохранение содержит ошибку. " +
-          "Не заменяй прежнюю резервную копию.";
-        return;
+  $("copy-backup").addEventListener("click", async () => {
+    if (!backupText.value.trim()) {
+      backupStatus.textContent = "Сначала создай копию.";
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(backupText.value);
+      backupStatus.textContent = "Скопировано. Вставь текст в надёжное место.";
+    } catch {
+      backupText.focus();
+      backupText.select();
+      backupStatus.textContent = "Скопируй выделенный текст вручную.";
+    }
+  });
+
+  $("restore-backup").addEventListener("click", () => {
+    try {
+      const parsed = JSON.parse(backupText.value);
+      if (!parsed || parsed.app !== "LifeGame" || parsed.version !== 1) {
+        fail("Это не поддерживаемая копия LifeGame.");
       }
-
-      if (!refreshFromStorage()) return;
-
-      backupText.value = JSON.stringify({
-        app: "LifeGame",
-        version: 1,
-        createdAt: new Date().toISOString(),
-        data: state
-      }, null, 2);
-
+      const restored = normalize(parsed.data);
+      if (!confirm(
+        "Заменить текущие данные этой копией? Данные не объединяются."
+      )) return;
+      ensureDay(restored);
+      const checked = normalize(restored);
+      const serialized = JSON.stringify(checked);
+      localStorage.setItem(STORAGE_KEY, serialized);
+      clearEffects();
+      state = checked;
+      snapshot = serialized;
+      healthy = true;
+      warning.hidden = true;
+      warning.textContent = "";
+      page = "hero";
+      blockId = null;
       render();
-      backupStatus.textContent =
-        "Копия подготовлена. Скопируй её и сохрани вне приложения.";
-    });
+      backupStatus.textContent = "Прогресс восстановлен.";
+    } catch (error) {
+      backupStatus.textContent = "Восстановление не выполнено: " + error.message;
+    }
+  });
 
-  document.getElementById("copy-backup")
-    .addEventListener("click", async () => {
-      if (!backupText.value.trim()) {
-        backupStatus.textContent = "Сначала создай копию.";
-        return;
-      }
+  $("close-backup").addEventListener("click", () => settings.close());
 
-      try {
-        await navigator.clipboard.writeText(backupText.value);
-        backupStatus.textContent =
-          "Скопировано. Вставь текст в надёжное место.";
-      } catch {
-        backupText.focus();
-        backupText.select();
-        backupStatus.textContent =
-          "Скопируй выделенный текст вручную.";
-      }
-    });
-
-  document.getElementById("restore-backup")
-    .addEventListener("click", () => {
-      try {
-        const parsed = JSON.parse(backupText.value);
-
-        if (
-          !parsed ||
-          parsed.app !== "LifeGame" ||
-          parsed.version !== 1
-        ) fail("Это не поддерживаемая копия LifeGame.");
-
-        const restored = normalize(parsed.data);
-
-        if (!confirm(
-          "Заменить текущий прогресс этой копией? " +
-          "Данные не объединяются. Сохрани текущую копию отдельно."
-        )) return;
-
-        ensureDay(restored);
-        const checked = normalize(restored);
-        const serialized = JSON.stringify(checked);
-
-        // Применяем восстановление только после успешной записи.
-        localStorage.setItem(STORAGE_KEY, serialized);
-
-        state = checked;
-        storedSnapshot = serialized;
-        storageHealthy = true;
-        warning.hidden = true;
-        warning.textContent = "";
-        page = "hero";
-        block = null;
-
-        render();
-
-        backupStatus.textContent = "Прогресс восстановлен.";
-      } catch (error) {
-        backupStatus.textContent =
-          "Восстановление не выполнено: " + error.message;
-      }
-    });
-
-  document.getElementById("close-backup")
-    .addEventListener("click", () => backupDialog.close());
-
-  // ===== Навигация и обновление даты =====
+  $("reset-data").addEventListener("click", () => {
+    const answer = prompt(
+      "Все данные LifeGame в этом браузере будут сброшены: " +
+      "задания, квесты, цели, покупки, планы, монеты и алмазы.\n\n" +
+      "Вернутся восемь стартовых блоков. Внешние копии не изменятся.\n\n" +
+      "Для подтверждения введи СБРОС:"
+    );
+    if (answer === null) return;
+    if (answer.trim().toUpperCase() !== "СБРОС") {
+      backupStatus.textContent = "Сброс отменён.";
+      return;
+    }
+    try {
+      const clean = emptyState();
+      ensureDay(clean);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(normalize(clean)));
+      window.location.reload();
+    } catch (error) {
+      backupStatus.textContent = "Сброс не выполнен: " + error.message;
+    }
+  });
 
   document.querySelectorAll(".nav-button").forEach(node => {
     node.addEventListener("click", () => go(node.dataset.page));
   });
 
   function refreshVisible() {
-    if (document.hidden || !storageHealthy) return;
-
-    refreshFromStorage();
-    syncDay();
+    if (document.hidden || !healthy) return;
+    if (loadLatest()) syncDay();
     render();
+    runEffect();
   }
-
   document.addEventListener("visibilitychange", refreshVisible);
-
   window.addEventListener("storage", event => {
-    if (event.key === STORAGE_KEY || event.key === null) {
-      refreshVisible();
-    }
+    if (event.key === STORAGE_KEY || event.key === null) refreshVisible();
   });
-
   setInterval(() => {
-    if (
-      !document.hidden &&
-      storageHealthy &&
-      state.dayPlanDate !== today()
-    ) {
+    if (!document.hidden && healthy && state.dayPlanDate !== today()) {
       refreshVisible();
     }
   }, 30000);
 
-  // Один стартовый проход, без цепочек переопределений.
-  syncDay();
+  // Инициализация только после объявления всех переменных.
+  if (loadLatest()) syncDay();
   render();
 })();
 </script>
