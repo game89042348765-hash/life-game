@@ -584,6 +584,136 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
     color: #c0e6ca;
   }
 </style>
+<style>
+  /* Смысл — спокойный бордовый, не сигнальный красный. */
+  .card.meaning-card {
+    margin-top: 14px;
+    padding: 12px 14px 16px;
+    border-color: #74454d;
+    background: #24171b;
+    box-shadow: inset 3px 0 0 #a96a76;
+  }
+
+  .meaning-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 36px;
+    margin-bottom: 4px;
+  }
+
+  .meaning-label {
+    color: #d6a5af;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+  }
+
+  .meaning-heading .more-button {
+    color: #c797a2;
+  }
+
+  .meaning-text {
+    color: #f0dce1;
+    font-size: 15px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .button.meaning-button {
+    border-color: #b67c8970;
+    background: #b67c890c;
+    color: #e4b7c1;
+  }
+
+  .button.meaning-button:active:not(:disabled) {
+    background: #b67c891c;
+  }
+
+  textarea.meaning-input {
+    min-height: 160px;
+    max-height: 40vh;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+</style>
+<style>
+  .game-visual {
+    position: relative;
+    width: 100%;
+    margin: 8px auto 22px;
+    padding: 8px 0;
+    overflow: hidden;
+    text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .game-word {
+    display: block;
+    font-family: "Arial Black", Arial, sans-serif;
+    font-size: clamp(66px, 21vw, 100px);
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -3px;
+    white-space: nowrap;
+  }
+
+  /* Основа: только жёлтый контур */
+  .game-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--accent);
+  }
+
+  /* Второй такой же текст: жёлтая заливка */
+  .game-fill {
+    position: absolute;
+    inset: 8px 0;
+    color: var(--accent);
+    -webkit-text-stroke: 1.5px var(--accent);
+    clip-path: inset(0 var(--game-unfilled, 100%) 0 0);
+  }
+
+  .game-caption {
+    margin: -10px 0 20px;
+    color: var(--muted);
+    font-size: 11px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .game-fill {
+      transition: clip-path .5s ease;
+    }
+  }
+</style>
+<style>
+  .game-visual {
+    margin: 8px auto 24px;
+  }
+
+    .game-word {
+    font-family: "Arial Black", Arial, sans-serif;
+    font-size: clamp(54px, 17vw, 78px);
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: 6px;
+    text-indent: 6px;
+  }
+
+  .game-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.2px var(--accent);
+  }
+
+  .game-fill {
+    color: var(--accent);
+    -webkit-text-stroke: 1.2px var(--accent);
+  }
+</style>
 </head>
 
 <body>
@@ -815,9 +945,27 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
       }
     }
 
-    const blocks = new Set();
+        const blocks = new Set();
+
     for (const item of data.blocks) {
-      if (!validName(item.name)) fail("Некорректное название блока.");
+      if (!validName(item.name)) {
+        fail("Некорректное название блока.");
+      }
+
+      // В существующих блоках смысл изначально пустой.
+      if (item.meaning === undefined) {
+        item.meaning = "";
+      }
+
+      if (
+        typeof item.meaning !== "string" ||
+        item.meaning.length > 2000
+      ) {
+        fail("Некорректный текст смысла блока.");
+      }
+
+      item.meaning = item.meaning.trim();
+
       blocks.add(item.id);
     }
 
@@ -1487,7 +1635,163 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
   const numberField = (key, label, value, max = 100000, min = 1) => ({
     key, label, value, type: "number", min, max, step: 1
   });
+  // Смысл блока: одна текстовая карточка без награды.
 
+  function editMeaning(id) {
+    if (!healthy) return;
+
+    const selected = state.blocks.find(item => item.id === id);
+    if (!selected) return;
+
+    editor.replaceChildren();
+
+    const form = el("form");
+
+    const title = el(
+      "h2",
+      "",
+      selected.meaning ? "Изменить смысл" : "Добавить смысл"
+    );
+    title.id = "editor-title";
+
+    const description = el(
+      "p",
+      "meta",
+      "Ради чего тебе важно это направление? " +
+      "Что ты хочешь получить, почувствовать или сохранить?"
+    );
+
+    const label = el("label", "", "Мой смысл");
+    label.htmlFor = "meaning-text";
+
+    const input = el("textarea", "meaning-input");
+    input.id = "meaning-text";
+    input.maxLength = 2000;
+    input.required = true;
+    input.rows = 6;
+    input.value = selected.meaning || "";
+    input.placeholder =
+      "Например: хочу иметь больше сил на путешествия " +
+      "и время с близкими.";
+
+    const actions = el("div", "form-actions");
+
+    const save = el("button", "button meaning-button", "Сохранить");
+    save.type = "submit";
+
+    actions.append(
+      btn("Отмена", "button secondary", () => editor.close()),
+      save
+    );
+
+    form.append(title, description, label, input, actions);
+
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+
+      const text = input.value.trim();
+
+      if (!text) {
+        input.setCustomValidity(
+          "Напиши смысл или нажми «Отмена»."
+        );
+        input.reportValidity();
+        return;
+      }
+
+      input.setCustomValidity("");
+
+      const saved = transact(data => {
+        const actual = data.blocks.find(item => item.id === id);
+
+        if (!actual) {
+          fail("Этот блок больше не существует.");
+        }
+
+        actual.meaning = text;
+      }, false);
+
+      if (saved) editor.close();
+    });
+
+    input.addEventListener("input", () => {
+      input.setCustomValidity("");
+    });
+
+    editor.append(form);
+    editor.showModal();
+    input.focus();
+  }
+
+  function meaningMenu(id) {
+    const selected = state.blocks.find(item => item.id === id);
+    if (!selected) return;
+
+    openMenu("Смысл блока", [
+      {
+        text: "Изменить смысл",
+        run: () => editMeaning(id)
+      },
+      {
+        text: "Удалить смысл",
+        danger: true,
+        run: () => {
+          if (!confirm(
+            "Удалить смысл? Цель, задания и награды останутся."
+          )) {
+            return;
+          }
+
+          transact(data => {
+            const actual = data.blocks.find(item => item.id === id);
+
+            if (!actual) {
+              fail("Этот блок больше не существует.");
+            }
+
+            actual.meaning = "";
+          }, false);
+        }
+      }
+    ]);
+  }
+
+  function meaningCard(selected) {
+    if (!selected.meaning) {
+      return btn(
+        "+ Добавить смысл",
+        "button full meaning-button spaced",
+        () => editMeaning(selected.id),
+        true
+      );
+    }
+
+    const card = el("article", "card meaning-card");
+    const heading = el("div", "meaning-heading");
+
+    const more = btn(
+      "⋯",
+      "more-button",
+      () => meaningMenu(selected.id)
+    );
+
+    more.setAttribute(
+      "aria-label",
+      "Изменить или удалить смысл блока"
+    );
+
+    heading.append(
+      el("div", "meaning-label", "СМЫСЛ"),
+      more
+    );
+
+    card.append(
+      heading,
+      el("div", "meaning-text", selected.meaning)
+    );
+
+    return card;
+  }
   // Управление блоками.
   function createBlock() {
     openForm("Новый блок", [nameField()], values => transact(data => {
@@ -2047,12 +2351,55 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
       money: totals(state)
     };
   }
+  function gameVisual(earned) {
+    const target = 10000;
 
+    const percent = Math.min(
+      100,
+      Math.max(0, earned / target * 100)
+    );
+
+    const visual = el("div", "game-visual");
+
+    visual.setAttribute("role", "img");
+    visual.setAttribute(
+      "aria-label",
+      `GAME: заполнено на ${Math.round(percent)} процентов. ` +
+      `Заработано ${earned} из ${target} монет.`
+    );
+
+    const outline = el(
+      "span",
+      "game-word game-outline",
+      "GAME"
+    );
+
+    const fill = el(
+      "span",
+      "game-word game-fill",
+      "GAME"
+    );
+
+    outline.setAttribute("aria-hidden", "true");
+    fill.setAttribute("aria-hidden", "true");
+
+    fill.style.setProperty(
+      "--game-unfilled",
+      `${100 - percent}%`
+    );
+
+    visual.append(outline, fill);
+
+    return visual;
+  }
+  
   function renderHero() {
     const hero = el("section", "hero");
     const progress = view.money.earned % LEVEL_COST;
     hero.append(
-      el("div", "avatar", "V"),
+            gameVisual(view.money.earned),
+
+      
       el("div", "level", `УРОВЕНЬ ${Math.floor(view.money.earned / LEVEL_COST) + 1}`),
       progressBar(progress, LEVEL_COST, "Прогресс уровня"),
       el("div", "progress-label", `${progress} / ${LEVEL_COST} до следующего уровня`),
@@ -2104,19 +2451,40 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
     const heading = el("div", "block-heading");
     const more = btn("⋯", "more-button", () => blockMenu(selected.id));
     more.setAttribute("aria-label", "Настройки блока");
-    heading.append(el("h1", "", selected.name), more);
+        heading.append(el("h1", "", selected.name), more);
     screen.append(heading);
+
+    // Смысл всегда расположен над целью и заданиями.
+    screen.append(meaningCard(selected));
 
     const goals = state.goals.filter(x => x.blockId === blockId);
     const active = goals.find(x => x.completedDate === null);
     if (active) screen.append(goalCard(active));
 
-    const create = el("div", "block-create-actions");
-    create.append(btn("+ Добавить задание", "button full", createTask, true));
+        const create = el("div", "block-create-actions");
+
+    // Сначала цель, если активной цели ещё нет.
     if (!active) {
-      create.append(btn("+ Добавить цель", "button full goal-button",
-        () => goalForm(), true));
+      create.append(
+        btn(
+          "+ Добавить цель",
+          "button full goal-button",
+          () => goalForm(),
+          true
+        )
+      );
     }
+
+    // Затем задания.
+    create.append(
+      btn(
+        "+ Добавить задание",
+        "button full",
+        createTask,
+        true
+      )
+    );
+
     screen.append(create);
 
     const tasks = state.tasks.filter(x => x.block === blockId);
