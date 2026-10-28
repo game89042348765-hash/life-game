@@ -109,12 +109,12 @@ h2 {
 }
 p { color: var(--muted); line-height: 1.45; }
 .hero { padding-top: 10px; text-align: center; }
-.motivation { margin: 0 0 20px; text-align: center; }
-.motivation-text { margin: 0; color: #c5c5ba; font-size: 14px; line-height: 20px; white-space: pre-wrap; overflow-wrap: anywhere; }
-.motivation-text.collapsed { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; max-height: 60px; }
+.motivation { width: calc(100% - 48px); max-width: 360px; margin: 0 auto 20px; text-align: center; }
+.motivation-text { margin: 0; color: #e5e1d5; font-size: 16px; font-weight: 600; line-height: 23px; text-align: center; white-space: pre-wrap; overflow-wrap: anywhere; }
+.motivation-text.collapsed { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; max-height: 92px; }
 .motivation-expand { min-height: 44px; border: 0; background: transparent; color: #c5c5ba; text-decoration: underline; }
 .motivation-measure { position: fixed; left: -10000px; visibility: hidden; pointer-events: none; }
-.motivation-preview { margin: 12px 0; }
+.motivation-preview { max-width: 100%; margin: 12px auto; }
 .avatar {
   display: grid;
   place-items: center;
@@ -2576,14 +2576,14 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
   
   function motivationWidth() {
     const hero = screen.querySelector(".hero");
-    return hero ? hero.clientWidth : screen.clientWidth;
+    return Math.min(360, Math.max(0, (hero ? hero.clientWidth : screen.clientWidth) - 48));
   }
 
   function motivationOverflows(text, width = motivationWidth()) {
     const measure = el("p", "motivation-text motivation-measure", text);
     measure.style.width = width + "px";
     document.body.append(measure);
-    const overflow = measure.getBoundingClientRect().height > 60.5;
+    const overflow = measure.getBoundingClientRect().height > 92.5;
     measure.remove();
     return overflow;
   }
@@ -2627,12 +2627,17 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     input.id = label.htmlFor;
     input.maxLength = 120;
     input.value = state.motivationText;
-    const hint = el("p", "meta", "Пустое поле — текст по умолчанию.");
+    const hint = el("p", "meta", "Пустое поле — текст по умолчанию. До 120 символов и 4 строк на главной.");
     hint.id = "motivation-hint";
     input.setAttribute("aria-describedby", hint.id + " motivation-count");
     const count = el("div", "meta");
     count.id = "motivation-count";
     const preview = el("p", "motivation-text motivation-preview");
+    preview.style.width = motivationWidth() + "px";
+    const previewObserver = new ResizeObserver(() => {
+      preview.style.width = motivationWidth() + "px";
+    });
+    previewObserver.observe(screen);
     preview.setAttribute("aria-label", "Предпросмотр");
     const error = el("p", "meta");
     error.setAttribute("role", "alert");
@@ -2657,7 +2662,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       event.preventDefault();
       const phrase = input.value.trim();
       if (input.value.length > 120 || (enabled.checked && motivationOverflows(phrase || DEFAULT_MOTIVATION))) {
-        error.textContent = "Сократи текст: не больше 120 символов и 3 строк при текущей ширине главной.";
+        error.textContent = "Сократи текст: не больше 120 символов и 4 строк при текущей ширине главной.";
         input.focus();
         return;
       }
@@ -2666,7 +2671,10 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
         data.motivationText = phrase;
       }, false)) editor.close();
     });
-    editor.addEventListener("close", () => settings.showModal(), { once: true });
+    editor.addEventListener("close", () => {
+      previewObserver.disconnect();
+      settings.showModal();
+    }, { once: true });
     editor.append(form);
     update();
     editor.showModal();
