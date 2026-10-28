@@ -111,7 +111,7 @@ p { color: var(--muted); line-height: 1.45; }
 .hero { padding-top: 10px; text-align: center; }
 .motivation { width: calc(100% - 48px); max-width: 360px; margin: 0 auto 20px; text-align: center; }
 .motivation-text { margin: 0; color: #e5e1d5; font-size: 16px; font-weight: 600; line-height: 23px; text-align: center; white-space: pre-wrap; overflow-wrap: anywhere; }
-.motivation-text.collapsed { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; max-height: 92px; }
+.motivation-text.collapsed { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; line-clamp: 4; overflow: hidden; max-height: 92px; }
 .motivation-expand { min-height: 44px; border: 0; background: transparent; color: #c5c5ba; text-decoration: underline; }
 .motivation-measure { position: fixed; left: -10000px; visibility: hidden; pointer-events: none; }
 .motivation-preview { max-width: 100%; margin: 12px auto; }
@@ -765,6 +765,22 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
   }
 </style>
 </head>
+<style>
+.calendar-grid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:3px; margin-top:12px; }
+.calendar-day { min-width:0; min-height:44px; border:1px solid var(--border); border-radius:7px; background:var(--card); color:var(--text); position:relative; padding:5px 0 10px; }
+.calendar-placeholder { visibility:hidden; border:0; background:none; pointer-events:none; }
+.calendar-day.today { outline:2px solid var(--accent); outline-offset:-3px; }
+.calendar-day.selected { background:var(--accent); color:#090909; }
+.calendar-day.today.selected { outline-color:#090909; box-shadow:0 0 0 1px var(--accent); }
+.calendar-dot { position:absolute; bottom:3px; left:calc(50% - 2px); width:4px; height:4px; border-radius:50%; background:currentColor; }
+.calendar-tools { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:12px 0; }
+.calendar-tools .button { min-height:44px; flex:1; }
+.calendar-month-nav { display:grid; grid-template-columns:44px minmax(0, 1fr) 44px; }
+.calendar-month-nav .button { width:44px; min-height:44px; padding:0; }
+.calendar-month { min-width:0; text-align:center; white-space:nowrap; font-size:14px; }
+@media (max-width:340px) { .calendar-month { font-size:13px; } }
+.calendar-note { white-space:pre-wrap; overflow-wrap:anywhere; }
+</style>
 
 <body>
 <div class="app">
@@ -874,6 +890,10 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
   let snapshot = null;
   let healthy = true;
   let page = "hero";
+  let calendarDate = today();
+  let calendarMonth = today().slice(0, 7);
+  let calendarMode = "days";
+  let calendarPast = false;
   let blockId = null;
   let view;
   let audioContext = null;
@@ -896,6 +916,8 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       quests: [],
       bonuses: [],
       completions: [],
+      calendarEntries: [],
+      calendarCompletions: [],
       purchases: [],
       dayPlans: {},
       dayPlanDate: null
@@ -1000,14 +1022,14 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     }
 
     for (const key of [
-      "quests", "bonuses", "purchases", "goals", "diamondRecords"
+      "quests", "bonuses", "purchases", "goals", "diamondRecords", "calendarEntries", "calendarCompletions"
     ]) {
       if (data[key] === undefined) data[key] = [];
     }
 
     for (const key of [
       "blocks", "tasks", "quests", "bonuses", "purchases",
-      "completions", "goals", "diamondRecords"
+      "completions", "goals", "diamondRecords", "calendarEntries", "calendarCompletions"
     ]) {
       if (!Array.isArray(data[key])) fail("Повреждён список: " + key);
       const ids = new Set();
@@ -1088,6 +1110,33 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     }
 
     const recordsById = new Map(data.completions.map(x => [x.id, x]));
+    const calendarFacts = new Map(data.calendarCompletions.map(x => [x.id, x]));
+    const calendarIds = new Set();
+    const calendarPayments = new Set();
+    for (const fact of data.calendarCompletions) {
+      if (!validId(fact.entryId) || calendarIds.has(fact.entryId) ||
+          !validCalendarDate(fact.date) || !integer(fact.reward, 0, 100000)) fail("Повреждена история календаря.");
+      calendarIds.add(fact.entryId);
+      if (fact.reward === 0) {
+        if (fact.coinRecordId !== null) fail("У записи без награды есть начисление.");
+      } else {
+        const payment = recordsById.get(fact.coinRecordId);
+        if (!payment || calendarPayments.has(payment.id) || payment.taskId !== "calendar:" + fact.entryId ||
+            payment.date !== fact.date || payment.reward !== fact.reward) fail("Повреждена связь календаря с монетами.");
+        calendarPayments.add(payment.id);
+      }
+    }
+    for (const entry of data.calendarEntries) {
+      if (!validName(entry.name) || !validCalendarDate(entry.date) ||
+          typeof entry.time !== "string" || (entry.time !== "" && !/^([01]\d|2[0-3]):[0-5]\d$/.test(entry.time)) ||
+          typeof entry.note !== "string" || entry.note.length > 1000 || !integer(entry.reward, 0, 100000)) fail("Повреждена запись календаря.");
+      const fact = calendarFacts.get(entry.completionId);
+      if (entry.completionId === null ? calendarIds.has(entry.id) :
+          !fact || fact.entryId !== entry.id || fact.reward !== entry.reward) fail("Повреждена связь выполнения календаря.");
+    }
+    for (const payment of data.completions) {
+      if (payment.taskId.startsWith("calendar:") && !calendarPayments.has(payment.id)) fail("Начисление календаря без выполнения.");
+    }
 
     for (const quest of data.quests) {
       if (!validName(quest.name) ||
@@ -1546,6 +1595,10 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
 
   function go(nextPage, selectedBlock = null) {
     syncDay();
+    if (nextPage === "calendar") {
+      calendarDate = today(); calendarMonth = today().slice(0, 7);
+      calendarMode = "days"; calendarPast = false;
+    }
     page = nextPage;
     blockId = selectedBlock;
     render();
@@ -1740,7 +1793,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       const id = "edit-" + field.key;
       const label = el("label", "", field.label);
       label.htmlFor = id;
-      const input = el(field.options ? "select" : "input");
+      const input = el(field.options ? "select" : field.type === "textarea" ? "textarea" : "input");
       input.id = id;
       if (field.options) {
         for (const [value, text] of field.options) {
@@ -1749,12 +1802,13 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
           input.append(option);
         }
       } else {
-        input.type = field.type || "text";
+        if (field.type !== "textarea") input.type = field.type || "text";
         for (const key of ["min", "max", "step", "maxLength"]) {
           if (field[key] !== undefined) input[key] = field[key];
         }
       }
       input.required = field.required !== false;
+      input.disabled = !!field.disabled;
       input.value = String(field.value ?? "");
       inputs[field.key] = input;
       form.append(label, input);
@@ -2125,6 +2179,150 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       () => toggleGoal(goal.id), true
     ));
     return card;
+  }
+
+  // Отдельный календарь. Даты не преобразуются через UTC.
+  function localCalendarDate(value) {
+    const [y, m, d] = value.split("-").map(Number);
+    const result = new Date(2000, m - 1, d, 12);
+    result.setFullYear(y);
+    return result;
+  }
+  function validCalendarDate(value) {
+    return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value) &&
+      value.slice(0, 4) !== "0000" && dateKey(localCalendarDate(value)) === value;
+  }
+  function sortCalendar(entries) {
+    return [...entries].sort((a, b) => (a.time || "99:99").localeCompare(b.time || "99:99"));
+  }
+  function calendarLabel(value) {
+    return localCalendarDate(value).toLocaleDateString("ru-RU", {day:"numeric", month:"long", year:"numeric"});
+  }
+  function editCalendar(id = null) {
+    const entry = id ? state.calendarEntries.find(x => x.id === id) : null;
+    if (id && !entry) return;
+    const locked = !!entry?.completionId;
+    openForm(entry ? "Изменить запись" : "Событие или дело", [
+      nameField(entry?.name),
+      {key:"date", label:"Дата", type:"date", value:entry?.date || (calendarMode === "all" ? today() : calendarDate), disabled:locked},
+      {key:"time", label:"Время", type:"time", value:entry?.time || "", required:false, disabled:locked},
+      {key:"note", label:"Заметка", type:"textarea", value:entry?.note || "", required:false, maxLength:1000},
+      {...numberField("reward", "Награда в монетах", entry?.reward || 0, 100000, 0), disabled:locked,
+        hint:locked ? "0 — без награды. Для изменения даты, времени и награды сначала отмени выполнение." : "0 — без награды"}
+    ], values => transact(data => {
+      if (!id) data.calendarEntries.push({id:uid(), ...values, completionId:null});
+      else {
+        const actual = data.calendarEntries.find(x => x.id === id);
+        if (!actual) fail("Запись не найдена.");
+        if (actual.completionId !== null && (values.date !== actual.date || values.time !== actual.time || values.reward !== actual.reward)) fail("Сначала отмени выполнение.");
+        Object.assign(actual, values);
+      }
+    }, false), entry ? "Сохранить" : "Создать");
+  }
+  function completeCalendar(id, done) {
+    if (!done && !confirm("Отменить выполнение? Связанная награда будет возвращена, если монеты ещё не потрачены.")) return;
+    return transact(data => {
+      const entry = data.calendarEntries.find(x => x.id === id);
+      if (!entry) fail("Запись не найдена.");
+      if ((entry.completionId !== null) === done) return;
+      if (done) {
+        const payment = entry.reward > 0 ? addRecord(data, "calendar:" + id, entry.reward) : null;
+        const fact = {id:uid(), entryId:id, date:today(), reward:entry.reward, coinRecordId:payment?.id || null};
+        data.calendarCompletions.push(fact);
+        entry.completionId = fact.id;
+      } else {
+        const fact = data.calendarCompletions.find(x => x.id === entry.completionId);
+        if (!fact) fail("Выполнение не найдено.");
+        data.completions = data.completions.filter(x => x.id !== fact.coinRecordId);
+        data.calendarCompletions = data.calendarCompletions.filter(x => x.id !== fact.id);
+        entry.completionId = null;
+      }
+    }, false);
+  }
+  function calendarMenu(id) {
+    const entry = state.calendarEntries.find(x => x.id === id);
+    if (!entry) return;
+    const actions = [{text:"Изменить", run:() => editCalendar(id)}];
+    if (entry.completionId === null) actions.push({text:"Перенести на сегодня", run:() => transact(data => {
+      const actual = data.calendarEntries.find(x => x.id === id);
+      if (!actual || actual.completionId !== null) fail("Перенос недоступен.");
+      actual.date = today();
+    }, false)});
+    actions.push({text:"Удалить", danger:true, run:() => {
+      if (!confirm(`Удалить «${entry.name}»?\n` + (entry.completionId !== null
+        ? "Заработанные монеты и факт выполнения в итогах останутся. Для возврата награды сначала отмени выполнение. После удаления отмена недоступна."
+        : "Запись будет удалена."))) return;
+      transact(data => {data.calendarEntries = data.calendarEntries.filter(x => x.id !== id);}, false);
+    }});
+    openMenu(entry.name, actions);
+  }
+  function calendarCard(entry) {
+    const card = el("article", "card");
+    const head = el("div", "task-head");
+    const more = btn("⋯", "more-button", () => calendarMenu(entry.id));
+    more.setAttribute("aria-label", "Действия: " + entry.name);
+    head.append(el("div", "task-title", entry.name), more);
+    card.append(head, el("div", "meta", calendarLabel(entry.date) + (entry.time ? " · " + entry.time : "")));
+    if (entry.note) card.append(el("p", "calendar-note", entry.note));
+    card.append(el("div", "reward", entry.reward ? `+${entry.reward} монет` : "Без награды"));
+    const done = entry.completionId !== null;
+    if (done) {
+      const fact = state.calendarCompletions.find(x => x.id === entry.completionId);
+      if (fact) card.append(el("div", "meta", "Выполнено: " + calendarLabel(fact.date)));
+    }
+    card.append(btn(done ? "Отменить выполнение" : "Готово", "button full" + (done ? " secondary" : ""), () => completeCalendar(entry.id, !done), true));
+    return card;
+  }
+  function renderCalendar() {
+    screen.append(btn("← На главную", "back", () => go("hero")), el("h1", "", "Календарь"),
+      btn("+ Добавить", "button full", () => editCalendar(), true));
+    const tools = el("div", "calendar-tools calendar-month-nav");
+    const shift = delta => {
+      const date = localCalendarDate(calendarMonth + "-01");
+      date.setMonth(date.getMonth() + delta);
+      if (date.getFullYear() < 1 || date.getFullYear() > 9999) return;
+      calendarMonth = dateKey(date).slice(0, 7); render();
+    };
+    const prev = btn("‹", "button secondary", () => shift(-1));
+    const next = btn("›", "button secondary", () => shift(1));
+    prev.setAttribute("aria-label", "Предыдущий месяц"); next.setAttribute("aria-label", "Следующий месяц");
+    const monthName = localCalendarDate(calendarMonth + "-01").toLocaleDateString("ru-RU", {month:"long"});
+    tools.append(prev, el("strong", "calendar-month", monthName[0].toUpperCase() + monthName.slice(1) + " " + calendarMonth.slice(0, 4)), next);
+    screen.append(tools);
+    const grid = el("div", "calendar-grid");
+    WEEKDAYS.forEach(day => grid.append(el("div", "center meta", day)));
+    const first = localCalendarDate(calendarMonth + "-01");
+    const placeholder = () => {
+      const cell = el("div", "calendar-day calendar-placeholder");
+      cell.setAttribute("aria-hidden", "true");
+      return cell;
+    };
+    for (let i=0; i<(first.getDay()+6)%7; i++) grid.append(placeholder());
+    const dates = new Set(state.calendarEntries.map(x => x.date));
+    for (let n=1; n<=31; n++) {
+      const key = calendarMonth + "-" + String(n).padStart(2,"0");
+      if (!validCalendarDate(key)) break;
+      const day = btn(String(n), "calendar-day" + (key === today() ? " today" : "") + (key === calendarDate ? " selected" : ""), () => {calendarDate=key; calendarMode="days"; render();});
+      day.setAttribute("aria-label", calendarLabel(key) + (dates.has(key) ? ", есть записи" : ""));
+      day.setAttribute("aria-pressed", String(key === calendarDate));
+      if (key === today()) day.setAttribute("aria-current", "date");
+      if (dates.has(key)) day.append(el("span", "calendar-dot"));
+      grid.append(day);
+    }
+    while (grid.children.length < WEEKDAYS.length + 42) grid.append(placeholder());
+    screen.append(grid, btn("Сегодня", "button secondary full", () => {calendarDate=today(); calendarMonth=today().slice(0,7); render();}));
+    const modes = el("div", "calendar-tools");
+    for (const [key,label] of [["days","По дням"],["all","Все"]]) {
+      const button = btn(label, "button" + (calendarMode === key ? "" : " secondary"), () => {calendarMode=key; render();});
+      button.setAttribute("aria-pressed", String(calendarMode === key)); modes.append(button);
+    }
+    screen.append(modes);
+    if (calendarMode === "all") screen.append(checkbox("Показать прошедшие", calendarPast, value => {calendarPast=value; render();}));
+    const entries = state.calendarEntries.filter(x => calendarMode === "days" ? x.date === calendarDate : calendarPast || x.date >= today());
+    if (calendarMode === "days") screen.append(el("h2", "", calendarLabel(calendarDate)));
+    if (!entries.length) screen.append(el("div", "empty", "Записей нет."));
+    if (calendarMode === "days") section("", sortCalendar(entries), calendarCard);
+    else for (const date of [...new Set(entries.map(x => x.date))].sort()) section(calendarLabel(date), sortCalendar(entries.filter(x => x.date === date)), calendarCard);
   }
 
   // Задания.
@@ -2699,9 +2897,12 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       hero,
       btn("Конструктор дня →", "button full hero-link", () => go("day")),
       el("div", "progress-label center", view.planned.length
-        ? `Выполнено ${view.plannedDone.length} из ${view.planned.length}` +
+        ? `План заданий: ${view.plannedDone.length} из ${view.planned.length}` +
           (view.bonus ? ` · Бонус +${view.bonus.reward} получен` : "")
         : "Выбери действия на сегодня"),
+      btn("Календарь", "button secondary full backup-link", () => go("calendar")),
+      ...(state.calendarEntries.some(x => x.date === today()) ? [el("div", "progress-label center",
+        `Сегодня записей: ${state.calendarEntries.filter(x => x.date === today()).length}`)] : []),
       btn("Настройки", "button secondary full backup-link", () => {
         backupStatus.textContent = "";
         settings.showModal();
@@ -2844,7 +3045,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     hint.style.marginBottom = "0";
     if (view.bonus) hint.style.color = "var(--accent)";
     summary.append(
-      el("div", "task-title", `Выполнено ${done} из ${total}`),
+      el("div", "task-title", `План заданий: ${done} из ${total}`),
       progressBar(total ? Math.round(done / total * 100) : 0, 100, "План дня"),
       hint
     );
@@ -2853,6 +3054,8 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       screen.append(el("div", "empty",
         "План пока пуст. Отметь нужные задания в блоках."));
     }
+    const events = sortCalendar(state.calendarEntries.filter(x => x.date === today()));
+    section("Сегодня по календарю", events.filter(x => x.completionId === null), calendarCard);
     section("ЗАДАНИЯ", favorites(view.planned.filter(
       x => !view.todayTask.has(x.id))), taskCard);
 
@@ -2860,13 +3063,13 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     section("КВЕСТЫ", favorites(quests.filter(x => x.progress < x.target)),
       quest => questCard(quest, true));
 
-    const completed = favorites([
-      ...view.plannedDone.map(x => ({ ...x, kind: "task" })),
-      ...quests.filter(x => x.progress >= x.target)
-        .map(x => ({ ...x, kind: "quest" }))
-    ]);
+    const completed = [
+      ...events.filter(x => x.completionId !== null).map(x => ({ ...x, kind: "calendar" })),
+      ...favorites(view.plannedDone).map(x => ({ ...x, kind: "task" })),
+      ...favorites(quests.filter(x => x.progress >= x.target)).map(x => ({ ...x, kind: "quest" }))
+    ];
     section("ВЫПОЛНЕНО", completed, item =>
-      item.kind === "quest" ? questCard(item, true) : taskCard(item));
+      item.kind === "calendar" ? calendarCard(item) : item.kind === "quest" ? questCard(item, true) : taskCard(item));
   }
 
   function summaryRow(container, title, value, total = false) {
@@ -2886,7 +3089,8 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     );
     const records = view.recordsToday;
     const tasks = records.filter(x =>
-      !x.taskId.startsWith("quest:") && !x.taskId.startsWith("day-bonus:"));
+      !x.taskId.startsWith("quest:") && !x.taskId.startsWith("day-bonus:") && !x.taskId.startsWith("calendar:"));
+    const events = records.filter(x => x.taskId.startsWith("calendar:"));
     const steps = records.filter(x => x.taskId.startsWith("quest:step:"));
     const quests = records.filter(x =>
       x.taskId.startsWith("quest:") && !x.taskId.startsWith("quest:step:"));
@@ -2909,11 +3113,13 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     const activity = el("section", "card");
     const money = el("section", "card spaced");
     summaryRow(activity, "Выполнено заданий", tasks.length);
+    summaryRow(activity, "Выполнено событий и дел", state.calendarCompletions.filter(x => x.date === today()).length);
     summaryRow(activity, "План дня",
       `${view.plannedDone.length} из ${view.planned.length}`);
     summaryRow(activity, "Завершено квестов", quests.length);
     summaryRow(activity, "Достигнуто целей", diamonds.length);
     summaryRow(money, "За задания", `+${sum(tasks, "reward")}`);
+    summaryRow(money, "За события и дела", `+${sum(events, "reward")}`);
     summaryRow(money, "За достижение квестов", `+${sum(quests, "reward")}`);
     summaryRow(money, "За продвижение квестов", `+${sum(steps, "reward")}`);
     summaryRow(money, "Бонус дня", `+${sum(bonuses, "reward")}`);
@@ -2936,7 +3142,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     wallet.setAttribute("aria-label",
       `Монеты: ${view.money.balance}. Алмазы: ${view.money.diamonds}.`);
 
-    const active = ["day", "summary"].includes(page) ? "hero" : page;
+    const active = ["day", "summary", "calendar"].includes(page) ? "hero" : page;
     document.querySelectorAll(".nav-button").forEach(node => {
       const selected = node.dataset.page === active;
       node.classList.toggle("active", selected);
@@ -2945,7 +3151,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     });
     const screens = {
       hero: renderHero, blocks: renderBlocks, quests: renderQuests,
-      bonuses: renderBonuses, day: renderDay, summary: renderSummary
+      bonuses: renderBonuses, day: renderDay, summary: renderSummary, calendar: renderCalendar
     };
     (screens[page] || renderHero)();
   }
@@ -3026,7 +3232,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
   $("reset-data").addEventListener("click", () => {
     const answer = prompt(
       "Все данные LifeGame в этом браузере будут сброшены: " +
-      "задания, квесты, цели, покупки, планы, монеты и алмазы.\n\n" +
+      "задания, квесты, календарь, цели, покупки, планы, монеты и алмазы.\n\n" +
       "Вернутся восемь стартовых блоков. Внешние копии не изменятся.\n\n" +
       "Для подтверждения введи СБРОС:"
     );
