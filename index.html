@@ -109,6 +109,12 @@ h2 {
 }
 p { color: var(--muted); line-height: 1.45; }
 .hero { padding-top: 10px; text-align: center; }
+.motivation { margin: 0 0 20px; text-align: center; }
+.motivation-text { margin: 0; color: #c5c5ba; font-size: 14px; line-height: 20px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.motivation-text.collapsed { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; max-height: 60px; }
+.motivation-expand { min-height: 44px; border: 0; background: transparent; color: #c5c5ba; text-decoration: underline; }
+.motivation-measure { position: fixed; left: -10000px; visibility: hidden; pointer-events: none; }
+.motivation-preview { margin: 12px 0; }
 .avatar {
   display: grid;
   place-items: center;
@@ -476,6 +482,27 @@ input, select, textarea {
 }
 textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
 .menu-actions { display: grid; gap: 10px; margin-top: 18px; }
+.weekday-picker { min-width: 0; margin: 0; padding: 0; border: 0; }
+.weekday-picker legend { margin-bottom: 12px; font-size: 14px; }
+.weekday-presets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 12px; }
+.weekday-preset {
+  min-height: 44px; padding: 8px; border: 1px solid var(--border);
+  border-radius: 8px; background: #252524; color: var(--text); font-size: 13px;
+}
+.weekday-preset[aria-pressed="true"] { border-color: var(--accent); background: #ffda2918; color: var(--accent); }
+.weekday-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointer; }
+.weekday-tile input {
+  position: absolute; inset: 0; width: 100%; height: 100%; min-height: 44px;
+  margin: 0; padding: 0; opacity: 0; cursor: pointer;
+}
+.weekday-tile span {
+  display: flex; align-items: center; justify-content: center; min-height: 44px;
+  padding: 8px 4px; border: 1px solid var(--border); border-radius: 8px;
+  background: #252524; color: var(--text); font-size: 14px; font-weight: 700;
+}
+.weekday-tile input:checked + span { background: var(--accent); border-color: var(--accent); color: #090909; }
+.weekday-tile input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 3px; }
 #backup-dialog > p { font-size: 13px; }
 #backup-dialog .form-actions {
   display: grid;
@@ -507,6 +534,11 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
   padding: 0;
   accent-color: var(--accent);
   cursor: pointer;
+}
+.sound-state {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 12px;
 }
 .settings-danger {
   margin-top: 22px;
@@ -766,8 +798,11 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
   <h2 id="backup-title">Настройки</h2>
   <label class="check-label sound-setting" for="sound-enabled">
     <span>Звуки</span>
-    <input type="checkbox" role="switch" id="sound-enabled" checked>
+    <span class="sound-state" id="sound-state" aria-live="polite">Включены</span>
+    <input type="checkbox" role="switch" id="sound-enabled"
+           aria-describedby="sound-state" checked>
   </label>
+  <button type="button" class="button secondary full" id="edit-motivation">Личная мотивация</button>
   <p>
     Создай копию и сохрани весь текст вне приложения.
     Для восстановления вставь ранее сохранённую копию.
@@ -809,6 +844,8 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
   const MIN_DAY_TASKS = 3;
   const DAY_REWARD = 100;
   const LEVEL_COST = 1000;
+  const WEEKDAYS = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+  const DEFAULT_MOTIVATION = "Ради чего ты действуешь? Напиши свою мотивацию — или скрой этот текст в настройках.";
 
   const DEFAULT_NAMES = [
     "Душевное состояние",
@@ -831,6 +868,7 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
   const backupText = $("backup-text");
   const backupStatus = $("backup-status");
   const soundToggle = $("sound-enabled");
+  const soundState = $("sound-state");
 
   let state = emptyState();
   let snapshot = null;
@@ -847,6 +885,8 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
   function emptyState() {
     return {
       soundEnabled: true,
+      motivationEnabled: true,
+      motivationText: "",
       blocks: DEFAULT_NAMES.map((name, index) => ({
         id: "block-" + index, name
       })),
@@ -941,6 +981,12 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
     }
 
     const data = clone(raw);
+    if (data.motivationEnabled === undefined) data.motivationEnabled = true;
+    if (data.motivationText === undefined) data.motivationText = "";
+    if (typeof data.motivationEnabled !== "boolean" ||
+        typeof data.motivationText !== "string" || data.motivationText.length > 120) {
+      fail("Некорректная личная мотивация.");
+    }
     if (data.soundEnabled === undefined) data.soundEnabled = true;
     if (typeof data.soundEnabled !== "boolean") {
       fail("Некорректная настройка звуков.");
@@ -1010,6 +1056,16 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
         fail("Повреждены данные задания.");
       }
       bool(task, "favorite");
+      if (task.weekdays === undefined) {
+        task.weekdays = task.type === "daily" ? [1, 2, 3, 4, 5, 6, 7] : [];
+      }
+      if (!Array.isArray(task.weekdays) ||
+          !task.weekdays.every(day => integer(day, 1, 7)) ||
+          new Set(task.weekdays).size !== task.weekdays.length) {
+        fail("Повреждено расписание задания.");
+      }
+      task.weekdays.sort((a, b) => a - b);
+      task.type = task.weekdays.length ? "daily" : "once";
     }
 
     const recordKeys = new Set();
@@ -1157,6 +1213,16 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
     if (data.dayPlanDate !== null && !validDate(data.dayPlanDate)) {
       fail("Некорректная дата плана.");
     }
+    const planDates = Object.keys(data.dayPlans).filter(date => date <= today()).sort();
+    const migrationDate = Object.hasOwn(data.dayPlans, today()) ? today()
+      : planDates[planDates.length - 1];
+    const migrationIds = new Set(data.dayPlans[migrationDate] || []);
+    for (const task of data.tasks) {
+      if (task.inDayBuilder === undefined) {
+        task.inDayBuilder = task.type === "daily" && migrationIds.has(task.id);
+      }
+      bool(task, "inDayBuilder");
+    }
 
         const money = totals(data);
 
@@ -1203,20 +1269,19 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
 
   function ensureDay(data) {
     const date = today();
-    if (!Object.hasOwn(data.dayPlans, date)) {
-      const dates = Object.keys(data.dayPlans).filter(x => x < date).sort();
-      const previous = dates[dates.length - 1];
-      const ids = new Set(previous ? data.dayPlans[previous] : []);
-      data.dayPlans[date] = data.tasks
-        .filter(task => task.type === "daily" && ids.has(task.id))
-        .map(task => task.id);
-    }
+    const ids = new Set(data.dayPlans[date] || []);
+    data.dayPlans[date] = data.tasks.filter(task => task.type === "daily"
+      ? task.inDayBuilder && scheduledToday(task) : ids.has(task.id)).map(task => task.id);
     data.dayPlanDate = date;
+  }
+
+  function scheduledToday(task) {
+    return !task.weekdays.length || task.weekdays.includes(new Date().getDay() || 7);
   }
 
   function plannedTasks(data) {
     const ids = new Set(data.dayPlans[today()] || []);
-    return data.tasks.filter(task => ids.has(task.id));
+    return data.tasks.filter(task => ids.has(task.id) && scheduledToday(task));
   }
 
   function completion(data, task, todayOnly = false) {
@@ -1334,6 +1399,7 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
   // Звуки и последовательные уведомления.
   function syncSoundSetting() {
     soundToggle.checked = state.soundEnabled;
+    soundState.textContent = state.soundEnabled ? "Включены" : "Выключены";
     soundToggle.disabled = !healthy;
     if (state.soundEnabled) return;
     for (const [oscillator, gain] of activeSounds) {
@@ -1583,6 +1649,9 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
     if (!item) return;
     const actions = [];
 
+    if (collection === "tasks") actions.push({
+      text: "Изменить дни", run: () => editTaskDays(id)
+    });
     if (collection === "quests") {
       actions.push({
         text: "Настроить награду за продвижение",
@@ -1630,6 +1699,44 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
     const inputs = {};
 
     for (const field of fields) {
+      if (field.type === "weekdays") {
+        const group = el("fieldset", "weekday-picker");
+        group.append(el("legend", "", "Дни недели"));
+        const presets = el("div", "weekday-presets");
+        const grid = el("div", "weekday-grid");
+        const choices = [
+          ["Разовое", []], ["Каждый день", [1, 2, 3, 4, 5, 6, 7]],
+          ["По будням", [1, 2, 3, 4, 5]], ["Выходные", [6, 7]]
+        ];
+        const updatePresets = () => {
+          choices.forEach(([, days], index) => {
+            const matches = checks.every((input, day) =>
+              input.checked === days.includes(day + 1));
+            presets.children[index].setAttribute("aria-pressed", String(matches));
+          });
+        };
+        const checks = WEEKDAYS.map((text, index) => {
+          const label = el("label", "weekday-tile");
+          const input = el("input");
+          input.type = "checkbox";
+          input.checked = field.value.includes(index + 1);
+          input.addEventListener("change", updatePresets);
+          label.append(input, el("span", "", text));
+          grid.append(label);
+          return input;
+        });
+        choices.forEach(([text, days]) => {
+          presets.append(btn(text, "weekday-preset", () => {
+            checks.forEach((input, index) => { input.checked = days.includes(index + 1); });
+            updatePresets();
+          }));
+        });
+        updatePresets();
+        group.append(presets, grid);
+        inputs[field.key] = checks;
+        form.append(group, el("p", "meta", "Не выбраны дни — разовое задание"));
+        continue;
+      }
       const id = "edit-" + field.key;
       const label = el("label", "", field.label);
       label.htmlFor = id;
@@ -1666,6 +1773,11 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
       event.preventDefault();
       const values = {};
       for (const field of fields) {
+        if (field.type === "weekdays") {
+          values[field.key] = inputs[field.key].flatMap((input, index) =>
+            input.checked ? [index + 1] : []);
+          continue;
+        }
         values[field.key] = field.type === "number"
           ? Number(inputs[field.key].value)
           : inputs[field.key].value.trim();
@@ -1675,7 +1787,8 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
 
     editor.append(form);
     editor.showModal();
-    Object.values(inputs)[0]?.focus();
+    const firstInput = Object.values(inputs)[0];
+    (Array.isArray(firstInput) ? firstInput[0] : firstInput)?.focus();
   }
 
   const nameField = value => ({
@@ -2019,15 +2132,13 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
     const selectedBlock = blockId;
     openForm("Новое задание", [
       nameField(),
-      {
-        key: "type", label: "Тип задания", value: "once",
-        options: [["once", "Разовое"], ["daily", "Ежедневное"]]
-      },
+      { key: "weekdays", type: "weekdays", value: [] },
       numberField("reward", "Награда в монетах", 15)
     ], values => transact(data => {
       if (!data.blocks.some(x => x.id === selectedBlock)) fail("Блок не найден.");
       data.tasks.push({
-        id: uid(), ...values, block: selectedBlock, favorite: false
+        id: uid(), ...values, type: values.weekdays.length ? "daily" : "once",
+        inDayBuilder: false, block: selectedBlock, favorite: false
       });
     }, false));
   }
@@ -2049,6 +2160,23 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
     });
   }
 
+  function editTaskDays(id) {
+    const task = state.tasks.find(x => x.id === id);
+    if (!task) return;
+    openForm("Изменить дни", [
+      { key: "weekdays", type: "weekdays", value: task.weekdays }
+    ], values => transact(data => {
+      const actual = data.tasks.find(x => x.id === id);
+      if (!actual) fail("Задание не найдено.");
+      const selected = actual.type === "daily" ? actual.inDayBuilder
+        : data.dayPlans[today()].includes(id);
+      actual.weekdays = values.weekdays;
+      actual.type = values.weekdays.length ? "daily" : "once";
+      actual.inDayBuilder = actual.type === "daily" && selected;
+      ensureDay(data);
+    }, false), "Сохранить");
+  }
+
   function togglePlan(id, checked) {
     transact(data => {
       const task = data.tasks.find(x => x.id === id);
@@ -2058,8 +2186,10 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
         fail("Это задание выполнено в другой день.");
       }
       const ids = new Set(data.dayPlans[today()]);
+      if (task.type === "daily") task.inDayBuilder = checked;
       if (checked) ids.add(id); else ids.delete(id);
       data.dayPlans[today()] = [...ids];
+      ensureDay(data);
     });
   }
 
@@ -2070,7 +2200,9 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
     const card = el("article", "card" + (record ? " done" : ""));
     const details = el("div", "compact-details");
     details.append(
-      el("span", "detail-muted", task.type === "daily" ? "Ежедневно" : "Разовое"),
+      el("span", "detail-muted", !task.weekdays.length ? "Разовое"
+        : task.weekdays.length === 7 ? "Ежедневно"
+        : task.weekdays.map(day => WEEKDAYS[day - 1]).join(", ")),
       el("span", "detail-reward",
         record ? `✓ ${record.reward} монет` : `+${task.reward} монет`)
     );
@@ -2082,7 +2214,7 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
         "button full" + (record ? " secondary" : ""),
         () => toggleTask(task.id), true),
       checkbox(old ? "Выполнено в другой день" : "Конструктор дня",
-        view.planIds.has(task.id),
+        task.type === "daily" ? task.inDayBuilder : view.planIds.has(task.id),
         checked => togglePlan(task.id, checked), !!old)
     );
     return card;
@@ -2391,8 +2523,8 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
         recordsToday.push(record);
       }
     }
-    const planIds = new Set(state.dayPlans[date] || []);
-    const planned = state.tasks.filter(x => planIds.has(x.id));
+    const planned = plannedTasks(state);
+    const planIds = new Set(planned.map(task => task.id));
     return {
       anyTask, todayTask, recordsToday, planIds, planned,
       plannedDone: planned.filter(x => todayTask.has(x.id)),
@@ -2442,13 +2574,114 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
     return visual;
   }
   
+  function motivationWidth() {
+    const hero = screen.querySelector(".hero");
+    return hero ? hero.clientWidth : screen.clientWidth;
+  }
+
+  function motivationOverflows(text, width = motivationWidth()) {
+    const measure = el("p", "motivation-text motivation-measure", text);
+    measure.style.width = width + "px";
+    document.body.append(measure);
+    const overflow = measure.getBoundingClientRect().height > 60.5;
+    measure.remove();
+    return overflow;
+  }
+
+  function motivationBlock() {
+    const block = el("div", "motivation");
+    const text = el("p", "motivation-text collapsed",
+      state.motivationText.trim() || DEFAULT_MOTIVATION);
+    text.id = "hero-motivation";
+    let expanded = false;
+    const toggle = btn("Показать полностью", "motivation-expand", () => {
+      expanded = !expanded;
+      text.classList.toggle("collapsed", !expanded);
+      toggle.textContent = expanded ? "Свернуть" : "Показать полностью";
+      toggle.setAttribute("aria-expanded", String(expanded));
+    });
+    toggle.setAttribute("aria-controls", text.id);
+    toggle.setAttribute("aria-expanded", "false");
+    const update = () => { toggle.hidden = !motivationOverflows(text.textContent, block.clientWidth); };
+    block.append(text, toggle);
+    const observer = new ResizeObserver(update);
+    observer.observe(block);
+    motivationObserver?.disconnect();
+    motivationObserver = observer;
+    return block;
+  }
+
+  let motivationObserver = null;
+
+  function editMotivation() {
+    if (!healthy || !loadLatest()) return;
+    settings.close();
+    editor.replaceChildren();
+    const form = el("form");
+    form.append(el("h2", "", "Личная мотивация"));
+    const show = checkbox("Показывать мотивацию", state.motivationEnabled, () => {});
+    const enabled = show.querySelector("input");
+    const label = el("label", "", "Своя фраза");
+    label.htmlFor = "motivation-input";
+    const input = el("textarea");
+    input.id = label.htmlFor;
+    input.maxLength = 120;
+    input.value = state.motivationText;
+    const hint = el("p", "meta", "Пустое поле — текст по умолчанию.");
+    hint.id = "motivation-hint";
+    input.setAttribute("aria-describedby", hint.id + " motivation-count");
+    const count = el("div", "meta");
+    count.id = "motivation-count";
+    const preview = el("p", "motivation-text motivation-preview");
+    preview.setAttribute("aria-label", "Предпросмотр");
+    const error = el("p", "meta");
+    error.setAttribute("role", "alert");
+    const update = () => {
+      count.textContent = `${input.value.length} / 120`;
+      preview.textContent = input.value.trim() || DEFAULT_MOTIVATION;
+      preview.hidden = !enabled.checked;
+      error.textContent = "";
+    };
+    input.addEventListener("input", update);
+    enabled.addEventListener("change", update);
+    const reset = btn("Вернуть текст по умолчанию", "button secondary full", () => {
+      input.value = "";
+      update();
+    });
+    const actions = el("div", "form-actions");
+    const save = el("button", "button", "Сохранить");
+    save.type = "submit";
+    actions.append(btn("Отмена", "button secondary", () => editor.close()), save);
+    form.append(show, label, input, hint, count, preview, reset, error, actions);
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      const phrase = input.value.trim();
+      if (input.value.length > 120 || (enabled.checked && motivationOverflows(phrase || DEFAULT_MOTIVATION))) {
+        error.textContent = "Сократи текст: не больше 120 символов и 3 строк при текущей ширине главной.";
+        input.focus();
+        return;
+      }
+      if (transact(data => {
+        data.motivationEnabled = enabled.checked;
+        data.motivationText = phrase;
+      }, false)) editor.close();
+    });
+    editor.addEventListener("close", () => settings.showModal(), { once: true });
+    editor.append(form);
+    update();
+    editor.showModal();
+    input.focus();
+  }
+
+  $("edit-motivation").addEventListener("click", editMotivation);
+
   function renderHero() {
     const hero = el("section", "hero");
     const progress = view.money.earned % LEVEL_COST;
     hero.append(
             gameVisual(view.money.earned),
 
-      
+      ...(state.motivationEnabled ? [motivationBlock()] : []),
       el("div", "level", `УРОВЕНЬ ${Math.floor(view.money.earned / LEVEL_COST) + 1}`),
       progressBar(progress, LEVEL_COST, "Прогресс уровня"),
       el("div", "progress-label", `${progress} / ${LEVEL_COST} до следующего уровня`),
@@ -2684,6 +2917,7 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
   }
 
   function render() {
+    motivationObserver?.disconnect();
     syncSoundSetting();
     view = buildView();
     screen.replaceChildren();
