@@ -490,6 +490,24 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
   font-size: 13px;
 }
 #close-backup { grid-column: 1 / -1; }
+.sound-setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 48px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.sound-setting input {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  min-height: 0;
+  padding: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
 .settings-danger {
   margin-top: 22px;
   padding-top: 18px;
@@ -746,6 +764,10 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
 
 <dialog id="backup-dialog" aria-labelledby="backup-title">
   <h2 id="backup-title">Настройки</h2>
+  <label class="check-label sound-setting" for="sound-enabled">
+    <span>Звуки</span>
+    <input type="checkbox" role="switch" id="sound-enabled" checked>
+  </label>
   <p>
     Создай копию и сохрани весь текст вне приложения.
     Для восстановления вставь ранее сохранённую копию.
@@ -808,6 +830,7 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
   const settings = $("backup-dialog");
   const backupText = $("backup-text");
   const backupStatus = $("backup-status");
+  const soundToggle = $("sound-enabled");
 
   let state = emptyState();
   let snapshot = null;
@@ -816,12 +839,14 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
   let blockId = null;
   let view;
   let audioContext = null;
+  const activeSounds = new Map();
   const effects = [];
   let effectRunning = false;
   let effectTimer = null;
 
   function emptyState() {
     return {
+      soundEnabled: true,
       blocks: DEFAULT_NAMES.map((name, index) => ({
         id: "block-" + index, name
       })),
@@ -916,6 +941,10 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
     }
 
     const data = clone(raw);
+    if (data.soundEnabled === undefined) data.soundEnabled = true;
+    if (typeof data.soundEnabled !== "boolean") {
+      fail("Некорректная настройка звуков.");
+    }
 
     if (data.blocks === undefined) {
       data.blocks = emptyState().blocks;
@@ -1161,6 +1190,7 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
       if (raw !== snapshot) {
         const loaded = raw === null ? emptyState() : normalize(JSON.parse(raw));
         state = loaded;
+        syncSoundSetting();
         snapshot = raw;
       }
       return true;
@@ -1302,7 +1332,23 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
   }
 
   // Звуки и последовательные уведомления.
+  function syncSoundSetting() {
+    soundToggle.checked = state.soundEnabled;
+    soundToggle.disabled = !healthy;
+    if (state.soundEnabled) return;
+    for (const [oscillator, gain] of activeSounds) {
+      gain.disconnect();
+      try {
+        oscillator.stop();
+      } catch (error) {
+        console.warn("Остановка звука недоступна:", error);
+      }
+    }
+    activeSounds.clear();
+  }
+
   function primeAudio() {
+    if (!state.soundEnabled) return;
     try {
       const Audio = window.AudioContext || window.webkitAudioContext;
       if (!Audio) return;
@@ -1316,6 +1362,7 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
   }
 
   function tones(frequencies, interval = .12, duration = .25, volume = .12) {
+    if (!state.soundEnabled) return;
     try {
       primeAudio();
       if (!audioContext) return;
@@ -1331,7 +1378,9 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
         gain.gain.exponentialRampToValueAtTime(.0001, start + duration);
         oscillator.connect(gain);
         gain.connect(audioContext.destination);
+        activeSounds.set(oscillator, gain);
         oscillator.onended = () => {
+          activeSounds.delete(oscillator);
           oscillator.disconnect();
           gain.disconnect();
         };
@@ -2635,6 +2684,7 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
   }
 
   function render() {
+    syncSoundSetting();
     view = buildView();
     screen.replaceChildren();
     wallet.replaceChildren(
@@ -2659,6 +2709,17 @@ textarea { min-height: 160px; max-height: 30vh; resize: vertical; }
   }
 
   // Настройки и резервные копии.
+  soundToggle.addEventListener("change", () => {
+    const enabled = soundToggle.checked;
+    const saved = transact(data => {
+      data.soundEnabled = enabled;
+    }, false);
+    syncSoundSetting();
+    backupStatus.textContent = saved
+      ? (enabled ? "Звуки включены." : "Звуки выключены.")
+      : "Настройка звуков не сохранена.";
+  });
+
   $("generate-backup").addEventListener("click", () => {
     if (!healthy || !loadLatest()) {
       backupStatus.textContent = "Ошибка сохранения. Не заменяй прежнюю копию.";
