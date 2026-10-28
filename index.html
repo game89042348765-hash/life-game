@@ -617,6 +617,56 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     100% { opacity: 0; transform: translate(-50%, -50%); }
   }
 }
+
+
+/* Compact shared interface; no title truncation. */
+.home-primary {display:flex;flex-direction:column;gap:6px;min-height:76px;margin-top:10px;background:#211e0d;color:var(--accent);border:1px solid var(--accent)}
+.home-status{font-size:13px;font-weight:400;color:var(--muted)}
+.settings-link{margin-top:10px;min-height:44px}
+.hero{padding-top:0}.motivation{margin-bottom:12px}
+.card{position:relative}.card:has(.favorite-bar) .card-head{padding-right:44px}
+.meta,.card p{font-size:13px;line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere}
+.quest-plan-toggle{margin-top:6px}.quest-reward-line{margin-bottom:6px}
+dialog{max-height:calc(100dvh - 32px);overflow-y:auto;overscroll-behavior:contain;max-width:calc(100vw - 24px)}
+body:has(dialog[open]){overflow:hidden}
+dialog input,dialog select,dialog textarea{min-width:0;max-width:100%;width:100%;box-sizing:border-box;font-size:16px}
+dialog input[type=date],dialog input[type=time]{appearance:none;-webkit-appearance:none;display:block;min-height:44px}
+dialog textarea{min-height:76px;height:90px}
+.form-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form-actions button{width:100%;min-height:44px}
+.calendar-day.has-entries:after{content:"";position:absolute;inset:5px;border:1px solid var(--accent);border-radius:5px;pointer-events:none}
+.calendar-day.selected.has-entries:after{border-color:#25200a}
+.calendar-day.today{box-shadow:inset 0 0 0 2px var(--green)}
+button:active{filter:brightness(1.2)}
+dialog h2:focus{outline:none}
+
+
+.weekday-presets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.weekday-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.currency-picker{display:grid;grid-template-columns:1fr 1fr;gap:8px;border:0;padding:0;margin:14px 0}
+.currency-picker label{display:flex;align-items:center;gap:8px;min-height:44px;margin:0}
+.currency-picker input{width:auto}.currency-picker .coins{color:var(--accent)}.currency-picker .diamonds{color:var(--green)}
+details summary{min-height:44px;padding:12px 0;cursor:pointer}
+.card .favorite-bar{right:48px}.card:has(.favorite-bar) .task-head{padding-right:44px}
+.calendar-note{margin:6px 0}.game-visual{margin-bottom:14px}
+dialog input[type=checkbox],dialog input[type=radio]{width:auto}
+
+.card:has(.favorite-bar) .task-head{padding-right:0}
+.card:has(.favorite-bar) .task-title{padding-right:48px}
+.card .favorite-bar{right:60px;top:12px}
+.card:has(.favorite-bar) .task-head .more-button{flex-shrink:0}
+.today-feedback{box-shadow:inset 0 0 0 3px #fff8;transition:box-shadow .2s}
+@media(prefers-reduced-motion:reduce){.today-feedback{transition:none}}
+dialog label{margin-top:14px}dialog fieldset{min-width:0}
+
+.numeric-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
+.numeric-cell{min-width:0}.numeric-cell label{display:block;line-height:1.4}
+.stage-row{display:flex;align-items:center;gap:10px;min-height:44px;padding:10px 0;white-space:normal;overflow-wrap:anywhere;line-height:1.4}
+.stage-row input{flex-shrink:0;width:44px;height:44px;min-height:44px;margin:0}
+.stage-row.done{opacity:.55}
+.stage-editor-row{min-width:0;margin:12px 0;padding:10px;border:1px solid var(--border);border-radius:12px}
+.stage-editor-row .actions{margin-top:8px;display:grid;grid-template-columns:44px 44px minmax(0,1fr);gap:8px}
+.stage-editor-row button{min-height:44px;padding:8px}
+@media(max-width:350px){.numeric-row{grid-template-columns:minmax(0,1fr)}}
 </style>
 <style>
   .card.diamond-shop-card {
@@ -633,6 +683,8 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     background: #89bd9710;
     color: #c0e6ca;
   }
+
+
 </style>
 <style>
   /* Смысл — спокойный бордовый, не сигнальный красный. */
@@ -688,6 +740,8 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     font-size: 16px;
     line-height: 1.5;
   }
+
+
 </style>
 <style>
   .game-visual {
@@ -739,6 +793,8 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       transition: clip-path .5s ease;
     }
   }
+
+
 </style>
 <style>
   .game-visual {
@@ -763,8 +819,9 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     color: var(--accent);
     -webkit-text-stroke: 1.2px var(--accent);
   }
+
+
 </style>
-</head>
 <style>
 .calendar-grid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:3px; margin-top:12px; }
 .calendar-day { min-width:0; min-height:44px; border:1px solid var(--border); border-radius:7px; background:var(--card); color:var(--text); position:relative; padding:5px 0 10px; }
@@ -780,8 +837,27 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
 .calendar-month { min-width:0; text-align:center; white-space:nowrap; font-size:14px; }
 @media (max-width:340px) { .calendar-month { font-size:13px; } }
 .calendar-note { white-space:pre-wrap; overflow-wrap:anywhere; }
+
+
 </style>
 
+<style>
+.treat-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.treat-dialog .form-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+.treat-dialog .button { min-width:0; white-space:normal; overflow-wrap:anywhere; }
+.self-toast { position:fixed; z-index:110; bottom:110px; left:50%; transform:translateX(-50%); max-width:calc(100% - 32px); padding:12px 18px; border:1px solid var(--border); border-radius:12px; background:var(--card); color:var(--text); pointer-events:none; }
+</style>
+<style>
+.focus-clock { font-size:42px; font-weight:800; font-variant-numeric:tabular-nums; margin:12px 0; }
+.focus-options,.focus-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+.focus-card input { width:100%; min-width:0; margin:6px 0 12px; }
+.focus-card .button { min-width:0; white-space:normal; }
+.focus-mini { position:fixed; z-index:19; left:50%; transform:translateX(-50%); width:min(100%,480px); background:var(--card); padding:8px 16px; border-bottom:1px solid var(--accent); display:flex; gap:8px; align-items:center; }
+.focus-mini[hidden] { display:none; }
+.focus-mini button { min-width:0; min-height:44px; }
+.focus-mini-title { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; border:0; background:none; color:var(--text); text-align:left; }
+</style>
+</head>
 <body>
 <div class="app">
   <header class="topbar">
@@ -819,6 +895,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
            aria-describedby="sound-state" checked>
   </label>
   <button type="button" class="button secondary full" id="edit-motivation">Личная мотивация</button>
+  <details><summary>Резервная копия</summary>
   <p>
     Создай копию и сохрани весь текст вне приложения.
     Для восстановления вставь ранее сохранённую копию.
@@ -834,10 +911,10 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     <button type="button" class="button secondary" id="restore-backup">
       Восстановить
     </button>
-    <button type="button" class="button secondary" id="close-backup">
-      Закрыть
-    </button>
+
   </div>
+  <p id="backup-status" role="status"></p>
+  </details>
   <section class="settings-danger">
     <h3>Полный сброс</h3>
     <p>
@@ -849,7 +926,8 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       Сбросить все данные
     </button>
   </section>
-  <p id="backup-status" role="status"></p>
+
+<button type="button" class="button secondary full" id="close-backup">Закрыть</button>
 </dialog>
 
 <script>
@@ -860,6 +938,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
   const MIN_DAY_TASKS = 3;
   const DAY_REWARD = 100;
   const LEVEL_COST = 1000;
+  const TREAT_CATEGORIES = ["Движение", "Спокойствие", "Удовольствие", "Общение", "Другое"];
   const WEEKDAYS = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
   const DEFAULT_MOTIVATION = "Ради чего ты действуешь? Напиши свою мотивацию — или скрой этот текст в настройках.";
 
@@ -919,6 +998,9 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       calendarEntries: [],
       calendarCompletions: [],
       purchases: [],
+      treats: [],
+      treatUses: [],
+      focus: {status:"ready", id:null, minutes:15, name:"", remaining:900000, endsAt:null, notified:true, natural:false},
       dayPlans: {},
       dayPlanDate: null
     };
@@ -1022,14 +1104,14 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     }
 
     for (const key of [
-      "quests", "bonuses", "purchases", "goals", "diamondRecords", "calendarEntries", "calendarCompletions"
+      "quests", "bonuses", "purchases", "goals", "diamondRecords", "calendarEntries", "calendarCompletions", "treats", "treatUses"
     ]) {
       if (data[key] === undefined) data[key] = [];
     }
 
     for (const key of [
       "blocks", "tasks", "quests", "bonuses", "purchases",
-      "completions", "goals", "diamondRecords", "calendarEntries", "calendarCompletions"
+      "completions", "goals", "diamondRecords", "calendarEntries", "calendarCompletions", "treats", "treatUses"
     ]) {
       if (!Array.isArray(data[key])) fail("Повреждён список: " + key);
       const ids = new Set();
@@ -1042,6 +1124,32 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       }
     }
 
+    for (const item of data.treats) {
+      // Validation of treats remains independent of the focus timer.
+      if (!validName(item.name) || typeof item.description !== "string" ||
+          item.description.length > 500 ||
+          (item.duration !== null && !integer(item.duration, 1, 180)) ||
+          !TREAT_CATEGORIES.includes(item.category) || typeof item.favorite !== "boolean") {
+        fail("Повреждены данные ништяка.");
+      }
+    }
+    for (const use of data.treatUses) {
+      if (!validId(use.treatId) || !validName(use.name) ||
+          typeof use.usedAt !== "string" || !Number.isFinite(Date.parse(use.usedAt))) {
+        fail("Повреждена история ништяков.");
+      }
+    }
+    if (data.focus === undefined) data.focus = emptyState().focus;
+    const f = data.focus;
+    if (!f || typeof f !== "object" || !["ready","running","paused","completed"].includes(f.status) ||
+        !integer(f.minutes,1,180) || typeof f.name !== "string" || f.name.length > 120 ||
+        !integer(f.remaining,0,f.minutes*60000) || typeof f.notified !== "boolean" || typeof f.natural !== "boolean" ||
+        (f.status === "ready" ? f.id !== null : !validId(f.id)) ||
+        (f.status === "running" ? !integer(f.endsAt,1,8640000000000000) : f.endsAt !== null) ||
+        (f.status === "paused" && f.remaining === 0) ||
+        (f.status === "ready" && (f.remaining !== f.minutes*60000 || !f.notified || f.natural)) ||
+        (["running","paused"].includes(f.status) && f.natural) ||
+        (f.status === "completed" && (f.remaining !== 0 || (!f.natural && !f.notified)))) fail("Повреждены данные таймера.");
         const blocks = new Set();
 
     for (const item of data.blocks) {
@@ -1092,6 +1200,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
 
     const recordKeys = new Set();
     for (const record of data.completions) {
+      if (record.taskType !== undefined && !["once", "daily", "legacy"].includes(record.taskType)) fail("Повреждён тип выполнения задания.");
       if (!validId(record.taskId) || !validDate(record.date) ||
           !integer(record.reward, 1, 100000)) {
         fail("Повреждена история монет.");
@@ -1127,6 +1236,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       }
     }
     for (const entry of data.calendarEntries) {
+      bool(entry, "favorite");
       if (!validName(entry.name) || !validCalendarDate(entry.date) ||
           typeof entry.time !== "string" || (entry.time !== "" && !/^([01]\d|2[0-3]):[0-5]\d$/.test(entry.time)) ||
           typeof entry.note !== "string" || entry.note.length > 1000 || !integer(entry.reward, 0, 100000)) fail("Повреждена запись календаря.");
@@ -1139,6 +1249,12 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     }
 
     for (const quest of data.quests) {
+      if (quest.type === undefined) quest.type = "counter";
+      if (!["counter", "stages"].includes(quest.type)) fail("Неизвестный тип квеста.");
+      if (quest.type === "stages") {
+        normalizeStages(quest, data);
+        continue;
+      }
       if (!validName(quest.name) ||
           !integer(quest.target, 1, 1000000) ||
           !integer(quest.progress, 0, quest.target) ||
@@ -1150,6 +1266,10 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       bool(quest, "showInDay");
       if (quest.stepReward === undefined) quest.stepReward = 0;
       if (quest.stepHistory === undefined) quest.stepHistory = [];
+      if (quest.legacyProgress === undefined) quest.legacyProgress = quest.stepHistory.length ? quest.stepHistory[0].from : quest.progress;
+      if (quest.started === undefined) quest.started = quest.progress > 0 || quest.stepHistory.length > 0 || data.completions.some(x => x.taskId === "quest:" + quest.id || x.taskId.startsWith("quest:step:" + quest.id + ":"));
+      bool(quest, "started");
+      if (!integer(quest.legacyProgress, 0, quest.target)) fail("Повреждена граница истории квеста.");
       if (!integer(quest.stepReward, 0, 100000) ||
           !Array.isArray(quest.stepHistory)) fail("Повреждена история квеста.");
 
@@ -1334,14 +1454,17 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
   }
 
   function completion(data, task, todayOnly = false) {
-    return data.completions.find(record =>
+    if (task.historySeparated !== undefined && typeof task.historySeparated !== "boolean") fail("Повреждена граница истории задания.");
+    return [...data.completions].reverse().find(record =>
       record.taskId === task.id &&
-      ((!todayOnly && task.type === "once") || record.date === today())
+      (record.date === today() || (!todayOnly && task.type === "once" &&
+        (record.taskType === "once" || (record.taskType === undefined && task.historySeparated !== true))))
     );
   }
 
   function addRecord(data, taskId, reward, extra = {}) {
-    const record = { id: uid(), taskId, date: today(), reward, ...extra };
+    const now = new Date();
+    const record = { id: uid(), taskId, date: dateKey(now), completedAt: now.toISOString(), reward, ...extra };
     data.completions.push(record);
     return record;
   }
@@ -1365,7 +1488,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     });
   }
 
-  function transact(change, awardDayBonus = true) {
+  function transact(change, awardDayBonus = true, selfCare = false) {
     if (!healthy) {
       alert("Изменения отключены из-за ошибки хранилища.");
       return false;
@@ -1390,7 +1513,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
 
     try {
       const draft = clone(state);
-      ensureDay(draft);
+      if (!selfCare) ensureDay(draft);
       change(draft);
       if (awardDayBonus) reconcileDayBonus(draft);
             const money = totals(draft);
@@ -1431,7 +1554,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     // Ошибки эффектов не должны объявлять успешную запись неудачной.
     render();
     try {
-      celebrateChanges(before, beforeIds);
+      if (!selfCare) celebrateChanges(before, beforeIds);
     } catch (error) {
       console.warn("Эффект награды недоступен:", error);
     }
@@ -1634,6 +1757,13 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     return panel;
   }
 
+  const expandedHistories=new Set();
+  function historySection(key,title,items,builder) {
+    const stamp=x=>{const item=x.item||x; const kind=x.kind||(state.quests.includes(item)?"quest":state.calendarEntries.includes(item)?"calendar":"task"); const record=kind==="goal"?item:kind==="calendar"?state.calendarCompletions.find(r=>r.id===item.completionId):[...state.completions].reverse().find(r=>r.taskId===(kind==="quest"?"quest:":"")+item.id && (kind==="quest"||item.type==="once"||r.date===today()));return record?.completedAt||record?.date||item.completedAt||item.completedDate||item.createdAt||"";};
+    const sorted=[...items].sort((a,b)=>stamp(b).localeCompare(stamp(a)));
+    section(title,expandedHistories.has(key)?sorted:sorted.slice(0,5),builder);
+    if(items.length>5)screen.append(btn(expandedHistories.has(key)?"Свернуть историю":`Показать историю · ещё ${items.length-5}`,"button secondary full",()=>{if(expandedHistories.has(key))expandedHistories.delete(key);else expandedHistories.add(key);render();}));
+  }
   function section(title, items, builder) {
     if (!items.length) return;
     if (title) screen.append(el("div", "section-label", title));
@@ -1694,7 +1824,8 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     });
     list.append(btn("Закрыть", "button full", () => menu.close()));
     menu.append(heading, list);
-    menu.showModal();
+    heading.tabIndex = -1; heading.autofocus = true;
+    menu.showModal(); heading.focus();
   }
 
   function openCardMenu(collection, id, allowDelete = true) {
@@ -1703,14 +1834,15 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     const actions = [];
 
     if (collection === "tasks") actions.push({
-      text: "Изменить дни", run: () => editTaskDays(id)
+      text: "Редактировать", run: () => editTaskDays(id)
     });
     if (collection === "quests") {
       actions.push({
-        text: "Настроить награду за продвижение",
-        run: () => configureStepReward(id)
+        text: "Редактировать",
+        run: () => editQuest(id)
       });
     }
+    if (collection === "bonuses") actions.push({text:"Редактировать", run:() => editBonus(id)});
     if (allowDelete) actions.push({
       text: "Удалить",
       danger: true,
@@ -1754,7 +1886,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     for (const field of fields) {
       if (field.type === "weekdays") {
         const group = el("fieldset", "weekday-picker");
-        group.append(el("legend", "", "Дни недели"));
+        group.append(el("legend", "", "Повторение"));
         const presets = el("div", "weekday-presets");
         const grid = el("div", "weekday-grid");
         const choices = [
@@ -1790,6 +1922,14 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
         form.append(group, el("p", "meta", "Не выбраны дни — разовое задание"));
         continue;
       }
+      if(field.key === "currency") {
+        const group=el("fieldset","currency-picker");group.append(el("legend","",field.label));
+        const select=el("select");select.hidden=true;select.id="edit-currency";
+        for(const [value,text] of field.options){const option=el("option","",text);option.value=value;select.append(option);
+          const label=el("label",value);const radio=el("input");radio.type="radio";radio.name="currency";radio.value=value;radio.checked=value===field.value;
+          radio.addEventListener("change",()=>select.value=value);label.append(radio,el("span","",text));group.append(label);}
+        select.value=field.value;inputs[field.key]=select;group.append(select);form.append(group);continue;
+      }
       const id = "edit-" + field.key;
       const label = el("label", "", field.label);
       label.htmlFor = id;
@@ -1811,8 +1951,11 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       input.disabled = !!field.disabled;
       input.value = String(field.value ?? "");
       inputs[field.key] = input;
-      form.append(label, input);
-      if (field.hint) form.append(el("p", "meta", field.hint));
+      if(field.type === "number") {
+        let row=form.lastElementChild;
+        if(!row?.classList.contains("numeric-row")||row.children.length===2){row=el("div","numeric-row");form.append(row);}
+        const cell=el("div","numeric-cell");cell.append(label,input);if(field.hint)cell.append(el("p","meta",field.hint));row.append(cell);
+      } else {form.append(label,input);if(field.hint)form.append(el("p","meta",field.hint));}
     }
 
     const actions = el("div", "form-actions");
@@ -1833,7 +1976,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
           continue;
         }
         values[field.key] = field.type === "number"
-          ? Number(inputs[field.key].value)
+          ? (field.required === false && inputs[field.key].value === "" ? null : Number(inputs[field.key].value))
           : inputs[field.key].value.trim();
       }
       if (submit(values)) editor.close();
@@ -1842,7 +1985,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     editor.append(form);
     editor.showModal();
     const firstInput = Object.values(inputs)[0];
-    (Array.isArray(firstInput) ? firstInput[0] : firstInput)?.focus();
+    heading.tabIndex=-1; heading.focus();
   }
 
   const nameField = value => ({
@@ -2143,7 +2286,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
         if (data.diamondRecords.some(x => x.goalId === id)) {
           fail("Награда уже начислена.");
         }
-        actual.completedDate = today();
+        actual.completedDate = today(); actual.completedAt = new Date().toISOString();
         data.diamondRecords.push({
           id: uid(), goalId: id,
           amount: actual.diamonds,
@@ -2193,7 +2336,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       value.slice(0, 4) !== "0000" && dateKey(localCalendarDate(value)) === value;
   }
   function sortCalendar(entries) {
-    return [...entries].sort((a, b) => (a.time || "99:99").localeCompare(b.time || "99:99"));
+    return [...entries].sort((a,b)=>Number(!!a.completionId)-Number(!!b.completionId) || Number(!!b.favorite)-Number(!!a.favorite) || (a.time||"99:99").localeCompare(b.time||"99:99"));
   }
   function calendarLabel(value) {
     return localCalendarDate(value).toLocaleDateString("ru-RU", {day:"numeric", month:"long", year:"numeric"});
@@ -2210,7 +2353,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       {...numberField("reward", "Награда в монетах", entry?.reward || 0, 100000, 0), disabled:locked,
         hint:locked ? "0 — без награды. Для изменения даты, времени и награды сначала отмени выполнение." : "0 — без награды"}
     ], values => transact(data => {
-      if (!id) data.calendarEntries.push({id:uid(), ...values, completionId:null});
+      if (!id) data.calendarEntries.push({id:uid(), ...values, completionId:null, favorite:false});
       else {
         const actual = data.calendarEntries.find(x => x.id === id);
         if (!actual) fail("Запись не найдена.");
@@ -2227,7 +2370,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       if ((entry.completionId !== null) === done) return;
       if (done) {
         const payment = entry.reward > 0 ? addRecord(data, "calendar:" + id, entry.reward) : null;
-        const fact = {id:uid(), entryId:id, date:today(), reward:entry.reward, coinRecordId:payment?.id || null};
+        const fact = {completedAt:new Date().toISOString(), id:uid(), entryId:id, date:today(), reward:entry.reward, coinRecordId:payment?.id || null};
         data.calendarCompletions.push(fact);
         entry.completionId = fact.id;
       } else {
@@ -2243,7 +2386,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     const entry = state.calendarEntries.find(x => x.id === id);
     if (!entry) return;
     const actions = [{text:"Изменить", run:() => editCalendar(id)}];
-    if (entry.completionId === null) actions.push({text:"Перенести на сегодня", run:() => transact(data => {
+    if (entry.completionId === null && entry.date !== today()) actions.push({text:"Перенести на сегодня", run:() => transact(data => {
       const actual = data.calendarEntries.find(x => x.id === id);
       if (!actual || actual.completionId !== null) fail("Перенос недоступен.");
       actual.date = today();
@@ -2257,14 +2400,14 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     openMenu(entry.name, actions);
   }
   function calendarCard(entry) {
-    const card = el("article", "card");
+    const card = el("article", "card" + (entry.completionId !== null ? " done" : ""));
     const head = el("div", "task-head");
     const more = btn("⋯", "more-button", () => calendarMenu(entry.id));
     more.setAttribute("aria-label", "Действия: " + entry.name);
     head.append(el("div", "task-title", entry.name), more);
-    card.append(head, el("div", "meta", calendarLabel(entry.date) + (entry.time ? " · " + entry.time : "")));
+    card.append(favoriteBar("calendarEntries", entry),head, el("div", "meta", entry.time || "Без времени"));
     if (entry.note) card.append(el("p", "calendar-note", entry.note));
-    card.append(el("div", "reward", entry.reward ? `+${entry.reward} монет` : "Без награды"));
+    if (entry.reward) card.append(el("div", "reward", `+${entry.reward} монет`));
     const done = entry.completionId !== null;
     if (done) {
       const fact = state.calendarCompletions.find(x => x.id === entry.completionId);
@@ -2306,11 +2449,11 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       day.setAttribute("aria-label", calendarLabel(key) + (dates.has(key) ? ", есть записи" : ""));
       day.setAttribute("aria-pressed", String(key === calendarDate));
       if (key === today()) day.setAttribute("aria-current", "date");
-      if (dates.has(key)) day.append(el("span", "calendar-dot"));
+      if (dates.has(key)) day.classList.add("has-entries");
       grid.append(day);
     }
     while (grid.children.length < WEEKDAYS.length + 42) grid.append(placeholder());
-    screen.append(grid, btn("Сегодня", "button secondary full", () => {calendarDate=today(); calendarMonth=today().slice(0,7); render();}));
+    screen.append(grid, btn("Сегодня", "button full"+(calendarMode==="days"&&calendarDate===today()&&calendarMonth===today().slice(0,7)?"":" secondary"), () => {calendarMode="days";calendarDate=today(); calendarMonth=today().slice(0,7); render();const b=screen.querySelector(".calendar-grid").nextElementSibling;b.classList.add("today-feedback");setTimeout(()=>b.classList.remove("today-feedback"),220);}));
     const modes = el("div", "calendar-tools");
     for (const [key,label] of [["days","По дням"],["all","Все"]]) {
       const button = btn(label, "button" + (calendarMode === key ? "" : " secondary"), () => {calendarMode=key; render();});
@@ -2353,15 +2496,19 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       if (!actual) fail("Задание не найдено.");
       const record = completion(data, actual);
       if (record) {
+        if (actual.type === "once" && record.taskType !== "once") fail("Выполнение относится к прежнему расписанию или старой истории. Отмена через разовую карточку недоступна.");
         data.completions = data.completions.filter(x => x.id !== record.id);
-      } else addRecord(data, id, actual.reward);
+      } else addRecord(data, id, actual.reward, {taskType: actual.type});
     });
   }
 
   function editTaskDays(id) {
     const task = state.tasks.find(x => x.id === id);
     if (!task) return;
-    openForm("Изменить дни", [
+    openForm("Редактировать задание", [
+      nameField(task.name),
+      numberField("reward", "Награда в монетах", task.reward),
+      { key: "block", label: "Блок", value: task.block, options: state.blocks.map(x => [x.id, x.name]) },
       { key: "weekdays", type: "weekdays", value: task.weekdays }
     ], values => transact(data => {
       const actual = data.tasks.find(x => x.id === id);
@@ -2369,7 +2516,17 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       const selected = actual.type === "daily" ? actual.inDayBuilder
         : data.dayPlans[today()].includes(id);
       actual.weekdays = values.weekdays;
-      actual.type = values.weekdays.length ? "daily" : "once";
+      actual.name = values.name;
+      actual.reward = values.reward;
+      actual.block = values.block;
+      const nextType = values.weekdays.length ? "daily" : "once";
+      if (nextType !== actual.type) {
+        for (const record of data.completions.filter(x => x.taskId === id)) {
+          if (record.taskType === undefined) record.taskType = "legacy";
+        }
+        actual.historySeparated = true;
+      }
+      actual.type = nextType;
       actual.inDayBuilder = actual.type === "daily" && selected;
       ensureDay(data);
     }, false), "Сохранить");
@@ -2392,8 +2549,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
   }
 
   function taskCard(task) {
-    const record = task.type === "once"
-      ? view.anyTask.get(task.id) : view.todayTask.get(task.id);
+    const record = completion(state, task);
     const old = task.type === "once" && record && record.date !== today();
     const card = el("article", "card" + (record ? " done" : ""));
     const details = el("div", "compact-details");
@@ -2415,28 +2571,131 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
         task.type === "daily" ? task.inDayBuilder : view.planIds.has(task.id),
         checked => togglePlan(task.id, checked), !!old)
     );
+    if (task.type === "once" && record && record.taskType !== "once") card.append(el("p", "meta", "Выполнение относится к прежнему расписанию или старой истории. Отмена через разовую карточку недоступна."));
     return card;
   }
 
   // Квесты.
-  function createQuest() {
+  const expandedStages = new Set();
+  function normalizeStages(q, data) {
+    if (!validName(q.name) || !Array.isArray(q.stages) || q.stages.length < 2 || q.stages.length > 50 ||
+        !integer(q.stepReward,0,100000) || !integer(q.reward,1,100000) ||
+        typeof q.started !== "boolean" || typeof q.favorite !== "boolean" || typeof q.showInDay !== "boolean") fail("Повреждён квест с этапами.");
+    const ids=new Set(), payments=new Set();
+    const timestamp=v=>typeof v==="string" && Number.isFinite(Date.parse(v)) && new Date(v).toISOString()===v;
+    for(const stage of q.stages) {
+      if(!validId(stage.id)||ids.has(stage.id)||!validName(stage.name)||typeof stage.done!=="boolean") fail("Повреждён этап.");
+      ids.add(stage.id);
+      if(stage.done) {
+        if(!q.started||!timestamp(stage.completedAt)) fail("Повреждено время этапа.");
+        if(!integer(stage.paidReward,0,100000))fail("Повреждена сумма этапа.");
+        if(stage.paidReward===0 ? stage.completionId!==null : !validId(stage.completionId))fail("Повреждена связь оплаты этапа.");
+        if(stage.completionId!==null) {
+          const r=data.completions.find(x=>x.id===stage.completionId);
+          if (stage.completedDate === undefined && r) stage.completedDate = r.date;
+          if(!r||payments.has(r.id)||r.reward!==stage.paidReward||r.date!==stage.completedDate||r.taskId!==`quest:step:stage:${q.id}:${stage.id}`||r.completedAt!==stage.completedAt) fail("Повреждена награда этапа.");
+          payments.add(r.id);
+        }
+        if (stage.completedDate === undefined) stage.completedDate = null;
+        if (stage.completedDate !== null && !validCalendarDate(stage.completedDate)) fail("Повреждена дата этапа.");
+      } else if(stage.completedAt!==null||stage.completionId!==null||stage.paidReward!=null||stage.completedDate!=null) fail("У невыполненного этапа есть история.");
+    }
+    for(const r of data.completions) if(r.taskId.startsWith(`quest:step:stage:${q.id}:`)&&!payments.has(r.id)) fail("Повторная оплата этапа.");
+    q.target=q.stages.length; q.progress=q.stages.filter(x=>x.done).length;
+    const finals=data.completions.filter(x=>x.taskId===`quest:${q.id}`);
+    if (q.completedDate === undefined) q.completedDate = finals[0]?.date || null;
+    if(finals.length && (q.completedAt!==q.stages.map(x=>x.completedAt).sort().at(-1)||finals[0].date!==q.completedDate||q.stages.some(x=>x.completedAt===q.completedAt&&x.completedDate!==null&&x.completedDate!==q.completedDate)))fail("Время завершения не соответствует этапам.");
+    if(finals.length!==(q.progress===q.target?1:0)|| (finals.length && (q.finalCompletionId!==finals[0].id||q.completedAt!==finals[0].completedAt||!timestamp(q.completedAt)))) fail("Повреждена финальная награда.");
+    if(!finals.length&&(q.finalCompletionId!==null||q.completedAt!==null||q.completedDate!==null)) fail("Повреждён статус квеста.");
+  }
+  function setStage(id, stageId, expectedDone) {
+    const current=state.quests.find(x=>x.id===id)?.stages?.find(x=>x.id===stageId);
+    if(!current||current.done===expectedDone)return false;
+    if(!expectedDone&&!confirm("Отменить этап? Его награда и награда за достижение будут убраны.")){render();return false;}
+    return transact(data=>{
+      const q=data.quests.find(x=>x.id===id);const stage=q?.stages?.find(x=>x.id===stageId);
+      if(!stage||stage.done===expectedDone)return;
+      if(expectedDone) {
+        const now=new Date(), time={date:dateKey(now),completedAt:now.toISOString()};
+        q.started=true;stage.done=true;stage.completedAt=time.completedAt;stage.completedDate=time.date;stage.paidReward=q.stepReward;
+        stage.completionId=q.stepReward?addRecord(data,`quest:step:stage:${id}:${stageId}`,q.stepReward,time).id:null;
+        if(q.stages.every(x=>x.done)) {const r=addRecord(data,`quest:${id}`,q.reward,time);q.finalCompletionId=r.id;q.completedAt=r.completedAt;q.completedDate=r.date;}
+      } else {
+        const remove=new Set([stage.completionId,q.finalCompletionId]);
+        data.completions=data.completions.filter(x=>!remove.has(x.id));
+        stage.done=false;stage.completedAt=null;stage.completedDate=null;stage.completionId=null;stage.paidReward=null;q.finalCompletionId=null;q.completedAt=null;q.completedDate=null;
+      }
+    },false);
+  }
+  function stagesCard(q) {
+    const done=q.progress===q.target, card=el("article","card"+(done?" done":""));
+    card.append(favoriteBar("quests",q),cardHead(q,"quests"));
+    if(q.stepReward)card.append(el("div","detail-reward",`За этап: +${q.stepReward} монет`));
+    const final=state.completions.find(x=>x.id===q.finalCompletionId);
+    card.append(el("div","detail-reward",`За достижение: +${final?.reward??q.reward} монет`),progressBar(q.progress,q.target,q.name),el("div","progress-label",`Выполнено ${q.progress} из ${q.target} · ${Math.round(q.progress/q.target*100)}%`));
+    if(expandedStages.has(q.id))for(const stage of q.stages){const row=checkbox(stage.name,stage.done,()=>setStage(q.id,stage.id,!stage.done));row.classList.add("stage-row");row.classList.toggle("done",stage.done);card.append(row);}
+    card.append(btn(expandedStages.has(q.id)?"Свернуть этапы":`Показать этапы · ${q.target}`,"button secondary full",()=>{if(expandedStages.has(q.id))expandedStages.delete(q.id);else expandedStages.add(q.id);render();}),checkbox("Конструктор дня",q.showInDay,checked=>transact(d=>{d.quests.find(x=>x.id===q.id).showInDay=checked;},false)));
+    return card;
+  }
+  function stageForm(id=null, session=null) {
+    const original=state.quests.find(x=>x.id===id);
+    const draft=original?clone(original):session?.stages||{name:"",stepReward:0,reward:200,stages:[{id:uid(),name:""},{id:uid(),name:""}]};
+    if(session)Object.assign(draft,session.common);
+    editor.replaceChildren();const form=el("form"),heading=el("h2","",original?"Редактировать квест":"Новый квест");heading.id="editor-title";heading.tabIndex=-1;form.append(heading);
+    const field=(label,value,type="text",min=0)=>{const wrap=el("label","",label),input=el("input");input.type=type;input.value=value;input.required=true;if(type==="text")input.maxLength=120;else {input.min=min;input.max=100000;input.step=1;}wrap.append(input);form.append(wrap);return input;};
+    const name=field("Название",draft.name),list=el("div");form.append(list);
+    if(!original){const picker=el("fieldset");picker.append(el("legend","","Тип квеста"));for(const [value,text] of [["counter","Счётчик"],["stages","Этапы"]]){const label=el("label","",text),radio=el("input");radio.type="radio";radio.name="quest-type";radio.value=value;radio.checked=value==="stages";radio.onchange=()=>{if(value==="counter"){const saved=session||{};saved.stages=draft;saved.common={name:name.value,stepReward:stepReward.value,reward:reward.value};editor.close();createQuest(saved);}};label.prepend(radio);picker.append(label);}heading.after(picker);}
+    const draw=()=>{list.replaceChildren();draft.stages.forEach((stage,i)=>{const row=el("div","stage-editor-row"),input=el("input");input.type="text";input.value=stage.name;input.required=true;input.maxLength=120;input.setAttribute("aria-label",`Название этапа ${i+1}`);input.oninput=()=>stage.name=input.value;row.append(input);
+      if(!draft.started){const controls=el("div","actions");for(const [text,delta] of [["↑",-1],["↓",1],["Удалить",0]]){const b=btn(text,"button secondary",()=>{if(delta){const j=i+delta;[draft.stages[i],draft.stages[j]]=[draft.stages[j],draft.stages[i]];}else draft.stages.splice(i,1);draw();});b.disabled=delta?i+delta<0||i+delta>=draft.stages.length:draft.stages.length<=2;controls.append(b);}row.append(controls);}list.append(row);});};draw();
+    if(!draft.started){const add=btn("+ Добавить этап","button secondary full",()=>{if(draft.stages.length<50){draft.stages.push({id:uid(),name:""});draw();}});form.append(add);}else form.append(el("p","meta","Квест начат: состав и порядок этапов заблокированы."));
+    const stepReward=field("Монеты за каждый этап",draft.stepReward,"number"),reward=field("Монеты за достижение",draft.reward,"number",1),error=el("p","meta");error.setAttribute("role","alert");form.append(error);
+    const actions=el("div","form-actions"),save=el("button","button",original?"Сохранить":"Создать");save.type="submit";actions.append(btn("Отмена","button secondary",()=>editor.close()),save);form.append(actions);
+    form.onsubmit=e=>{e.preventDefault();if(!name.value.trim()||draft.stages.some(x=>!x.name.trim())){error.textContent="Заполни название квеста и всех этапов.";return;}
+      if(transact(d=>{let q=d.quests.find(x=>x.id===id);if(id&&!q)fail("Квест не найден.");if(q?.started&&(q.stages.length!==draft.stages.length||q.stages.some((x,i)=>x.id!==draft.stages[i].id)))fail("Состав этапов заблокирован.");
+        if(!q){q={id:uid(),type:"stages",started:false,favorite:false,showInDay:false,finalCompletionId:null,completedAt:null,stages:draft.stages.map(x=>({id:x.id,name:x.name.trim(),done:false,completedAt:null,completionId:null}))};d.quests.push(q);}else q.stages.forEach(x=>{x.name=draft.stages.find(y=>y.id===x.id)?.name.trim()||x.name;});
+        if(!q.started)q.stages=draft.stages.map(x=>({...x,name:x.name.trim(),done:false,completedAt:null,completionId:null}));q.name=name.value.trim();q.stepReward=Number(stepReward.value);q.reward=Number(reward.value);
+      },false))editor.close();};editor.append(form);editor.showModal();heading.focus();
+  }
+  function createQuest(session={}) {
     openForm("Новый квест", [
       nameField(),
-      numberField("target", "Целевое значение", 100, 1000000),
-      numberField("step", "Шаг нажатия", 1, 1000000),
-      numberField("reward", "Награда за достижение в монетах", 200),
+      {...numberField("target", "Сколько нужно выполнить", 100, 1000000),hint:"Например: 20 глав — укажи 20"},
+      {...numberField("step", "Прибавлять за нажатие", 1, 1000000),hint:"Например: +1 глава за нажатие"},
       {
-        ...numberField("stepReward", "Монет за продвижение", 0, 100000, 0),
+        ...numberField("stepReward", "Монеты за продвижение", 0, 100000, 0),
         hint: "За одно нажатие «+». 0 — без награды."
-      }
+      },
+      numberField("reward", "Монеты за достижение", 200)
     ], values => transact(data => {
       data.quests.push({
-        id: uid(), ...values, progress: 0, stepHistory: [],
+        id: uid(), ...values, progress: 0, stepHistory: [], started:false, legacyProgress:0,
         favorite: false, showInDay: false
       });
     }, false));
+    const fields=editor.querySelectorAll('input:not([type=radio])');
+    const keys=["name","target","step","stepReward","reward"];
+    const saved={...session.counter,...session.common};
+    fields.forEach((input,i)=>{if(saved[keys[i]]!==undefined)input.value=saved[keys[i]];});
+    const picker=el("fieldset"),legend=el("legend","","Тип квеста");picker.append(legend);
+    for(const [value,text] of [["counter","Счётчик"],["stages","Этапы"]]){const label=el("label","",text),radio=el("input");radio.type="radio";radio.name="quest-type";radio.value=value;radio.checked=value==="counter";radio.onchange=()=>{if(value==="stages"){session.counter=Object.fromEntries([...fields].map((input,i)=>[keys[i],input.value]));session.common={name:fields[0].value,stepReward:fields[3].value,reward:fields[4].value};editor.close();stageForm(null,session);}};label.prepend(radio);picker.append(label);}editor.querySelector("h2").after(picker);
   }
 
+  function editQuest(id) {
+    const q=state.quests.find(x=>x.id===id); if(!q)return;
+    if(q.type==="stages")return stageForm(id);
+    openForm("Редактировать квест", [nameField(q.name),
+      {...numberField("target","Сколько нужно выполнить",q.target,1000000),disabled:q.started,hint:q.started?"Квест уже начат: цель не меняется.":"Например: 20 глав — укажи 20"},
+      {...numberField("step","Прибавлять за нажатие",q.step,1000000),hint:"Например: +1 глава за нажатие"},
+      numberField("stepReward","Монеты за продвижение",q.stepReward,100000,0),
+      numberField("reward","Монеты за достижение",q.reward)
+    ],v=>transact(d=>{const a=d.quests.find(x=>x.id===id);if(!a)fail("Квест не найден.");if(a.started&&a.target!==v.target)fail("Квест уже начат.");Object.assign(a,v);},false),"Сохранить");
+  }
+  function editBonus(id) {
+    const b=state.bonuses.find(x=>x.id===id);if(!b)return;
+    openForm("Редактировать бонус",[nameField(b.name),{key:"description",label:"Описание",type:"textarea",value:b.description,required:false,maxLength:300},
+      {key:"currency",label:"Валюта",value:b.currency,options:[["coins","● Монеты"],["diamonds","◆ Алмазы"]]},numberField("price","Цена",b.price,1000000)],
+      v=>transact(d=>{const a=d.bonuses.find(x=>x.id===id);if(!a)fail("Бонус не найден.");Object.assign(a,v);},false),"Сохранить");
+  }
   function configureStepReward(id) {
     const quest = state.quests.find(x => x.id === id);
     if (!quest) return;
@@ -2454,6 +2713,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
   }
 
   function moveQuest(id, direction) {
+    if(state.quests.find(x=>x.id===id)?.type==="stages")return;
     if (direction < 0 && !confirm(
       "Отменить последнее продвижение? Его награда, а при необходимости " +
       "и награда за достижение, будут убраны."
@@ -2463,6 +2723,8 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       const quest = data.quests.find(x => x.id === id);
       if (!quest) fail("Квест не найден.");
       const last = quest.stepHistory[quest.stepHistory.length - 1];
+      if(direction < 0 && !last && quest.progress > 0) fail("Для старого прогресса история шагов не сохранена. Отменить можно только новые продвижения");
+      if(direction > 0) quest.started = true;
       const next = direction > 0
         ? Math.min(quest.target, quest.progress + quest.step)
         : last && last.to === quest.progress
@@ -2478,7 +2740,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
             quest.stepReward, { id: paymentId });
         }
         quest.stepHistory.push({
-          from: quest.progress, to: next, completionId: paymentId
+          from: quest.progress, to: next, completionId: paymentId, completedAt: new Date().toISOString()
         });
       } else if (last && last.to === quest.progress) {
         quest.stepHistory.pop();
@@ -2499,6 +2761,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
   }
 
   function questCard(quest, inDay = false) {
+    if(quest.type==="stages")return stagesCard(quest);
     const done = quest.progress >= quest.target;
     const card = el("article", "card" + (done ? " done" : ""));
     const rewards = el("div", "compact-details");
@@ -2507,7 +2770,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
         `За продвижение: +${quest.stepReward} монет`));
     }
     rewards.append(el("span", "detail-reward", done
-      ? `✓ Достижение получено: +${quest.reward} монет`
+      ? `✓ Достижение получено: +${state.completions.find(x => x.taskId === "quest:" + quest.id)?.reward ?? quest.reward} монет`
       : `За достижение: +${quest.reward} монет`));
 
     const plan = checkbox("Конструктор дня", quest.showInDay,
@@ -2519,7 +2782,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     plan.classList.add("quest-plan-toggle");
 
     const line = el("div", "quest-reward-line");
-    line.append(rewards, plan);
+    line.append(rewards);
 
     const minus = btn(`−${quest.step}`, "button secondary",
       () => moveQuest(quest.id, -1), true);
@@ -2532,12 +2795,12 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
 
     card.append(
       favoriteBar("quests", quest),
-      cardHead(quest, "quests", !inDay),
+      cardHead(quest, "quests"),
       line,
       progressBar(quest.progress, quest.target, quest.name),
       el("div", "progress-label",
         `${quest.progress} / ${quest.target}` + (done ? " · Завершён" : "")),
-      actions
+      actions, plan
     );
     return card;
   }
@@ -2548,7 +2811,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       nameField(),
       {
         key: "description",
-        label: "Описание — необязательно",
+        label: "Описание — необязательно", type: "textarea",
         maxLength: 300,
         required: false
       },
@@ -2561,7 +2824,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
           ["diamonds", "Алмазы ◆"]
         ]
       },
-      numberField("price", "Цена в выбранной валюте", 5, 1000000)
+      numberField("price", "Цена", 5, 1000000)
     ], values => transact(data => {
       data.bonuses.push({
         id: uid(),
@@ -2575,6 +2838,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     const ok = transact(data => {
       const bonus = data.bonuses.find(x => x.id === id);
 
+      if (data.purchases.some(x=>x.bonusId===id)) fail("Бонус уже куплен.");
       if (!bonus) {
         fail("Бонус не найден.");
       }
@@ -2715,7 +2979,8 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     const todayTask = new Map();
     const recordsToday = [];
     for (const record of state.completions) {
-      if (!anyTask.has(record.taskId)) anyTask.set(record.taskId, record);
+      const task = state.tasks.find(x => x.id === record.taskId);
+      if (!task || completion(state, task)?.id === record.id) anyTask.set(record.taskId, record);
       if (record.date === date) {
         todayTask.set(record.taskId, record);
         recordsToday.push(record);
@@ -2730,48 +2995,14 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       money: totals(state)
     };
   }
-  function gameVisual(earned) {
-    const target = 10000;
-
-    const percent = Math.min(
-      100,
-      Math.max(0, earned / target * 100)
-    );
-
-    const visual = el("div", "game-visual");
-
-    visual.setAttribute("role", "img");
-    visual.setAttribute(
-      "aria-label",
-      `GAME: заполнено на ${Math.round(percent)} процентов. ` +
-      `Заработано ${earned} из ${target} монет.`
-    );
-
-    const outline = el(
-      "span",
-      "game-word game-outline",
-      "GAME"
-    );
-
-    const fill = el(
-      "span",
-      "game-word game-fill",
-      "GAME"
-    );
-
-    outline.setAttribute("aria-hidden", "true");
-    fill.setAttribute("aria-hidden", "true");
-
-    fill.style.setProperty(
-      "--game-unfilled",
-      `${100 - percent}%`
-    );
-
-    visual.append(outline, fill);
-
-    return visual;
+  function gameVisual() {
+    const visual=el("div","game-visual");visual.setAttribute("aria-label","GAME");
+    visual.append(el("span","game-word game-outline","GAME"));return visual;
   }
-  
+  function blockCounts(id) {
+    const tasks=state.tasks.filter(x=>x.block===id);
+    return `Заданий: ${tasks.filter(x=>x.type!=="once"||!completion(state,x)).length} · На сегодня: ${tasks.filter(x=>view.planIds.has(x.id)&&!completion(state,x)&&scheduledToday(x)).length}`;
+  }
   function motivationWidth() {
     const hero = screen.querySelector(".hero");
     return Math.min(360, Math.max(0, (hero ? hero.clientWidth : screen.clientWidth) - 48));
@@ -2893,35 +3124,27 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       el("div", "progress-label", `${progress} / ${LEVEL_COST} до следующего уровня`),
       balancesPanel()
     );
-    screen.append(
-      hero,
-      btn("Конструктор дня →", "button full hero-link", () => go("day")),
-      el("div", "progress-label center", view.planned.length
-        ? `План заданий: ${view.plannedDone.length} из ${view.planned.length}` +
-          (view.bonus ? ` · Бонус +${view.bonus.reward} получен` : "")
-        : "Выбери действия на сегодня"),
-      btn("Календарь", "button secondary full backup-link", () => go("calendar")),
-      ...(state.calendarEntries.some(x => x.date === today()) ? [el("div", "progress-label center",
-        `Сегодня записей: ${state.calendarEntries.filter(x => x.date === today()).length}`)] : []),
-      btn("Настройки", "button secondary full backup-link", () => {
-        backupStatus.textContent = "";
-        settings.showModal();
-      }),
-      btn("Итоги дня", "button secondary full summary-link", () => go("summary"))
-    );
+    const primary=(title,status,action)=>{const b=btn("","button full home-primary",action);b.append(el("span","",title));if(status)b.append(el("span","home-status",status));return b;};
+    const count=state.calendarEntries.filter(x=>x.date===today()).length;
+    screen.append(hero,
+      primary("Конструктор дня →",`План заданий: ${view.plannedDone.length} из ${view.planned.length}`,()=>go("day")),
+      primary("Календарь",count?`Сегодня записей: ${count}`:"",()=>go("calendar")),
+      btn("Ништяки","button secondary full spaced",()=>go("treats")),
+      btn("Итоги дня","button secondary full spaced",()=>go("summary")),
+      btn("⚙ Настройки","button secondary full settings-link",()=>settings.showModal()));
   }
 
   function renderBlocks() {
     if (blockId === null) {
       screen.append(
-        el("h1", "", "БЛОКИ"),
-        el("p", "", "Выбери, чему посвятить время."),
+        el("h1", "", "БЛОКИ ВРЕМЕНИ"),
+        el("p", "", "Выбери, чем наполнить жизнь"),
         btn("+ Добавить блок", "button full", createBlock, true)
       );
       const list = el("div", "list");
       for (const block of state.blocks) {
         const open = btn("", "block", () => go("blocks", block.id));
-        open.append(el("span", "", block.name), el("span", "arrow", "›"));
+        const info=el("span");info.append(el("span","",block.name),el("div","meta",blockCounts(block.id)));open.append(info,el("span","arrow","›"));
         list.append(open);
       }
       screen.append(list);
@@ -2938,12 +3161,12 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       return;
     }
 
-    screen.append(btn("← Все блоки", "back", () => go("blocks")));
+    screen.append(btn("← Все блоки времени", "back", () => go("blocks")));
     const heading = el("div", "block-heading");
     const more = btn("⋯", "more-button", () => blockMenu(selected.id));
     more.setAttribute("aria-label", "Настройки блока");
         heading.append(el("h1", "", selected.name), more);
-    screen.append(heading);
+    screen.append(heading,el("div","meta",blockCounts(selected.id)));
 
     // Смысл всегда расположен над целью и заданиями.
     screen.append(meaningCard(selected));
@@ -2985,11 +3208,11 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     section("", favorites(tasks.filter(x => !done(x))), taskCard);
 
     const completed = [
-      ...favorites(tasks.filter(done)).map(item => ({ kind: "task", item })),
+      ...tasks.filter(done).map(item => ({ kind: "task", item })),
       ...goals.filter(x => x.completedDate !== null).reverse()
         .map(item => ({ kind: "goal", item }))
     ];
-    section("ВЫПОЛНЕНО", completed, entry =>
+    historySection(page==="day"?"day":"block:"+blockId,"ВЫПОЛНЕНО", completed, entry =>
       entry.kind === "goal" ? goalCard(entry.item) : taskCard(entry.item));
 
     if (!tasks.length) {
@@ -3005,8 +3228,8 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     );
     section("", favorites(state.quests.filter(x => x.progress < x.target)),
       quest => questCard(quest));
-    section("ЗАВЕРШЁННЫЕ",
-      favorites(state.quests.filter(x => x.progress >= x.target)),
+    historySection("quests","ЗАВЕРШЁННЫЕ",
+      state.quests.filter(x => x.progress >= x.target),
       quest => questCard(quest));
     if (!state.quests.length) {
       screen.append(el("div", "empty", "Добавь первый квест."));
@@ -3025,7 +3248,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     if (!available.length) {
       screen.append(el("div", "empty", "Добавь награду и назначь ей цену."));
     }
-    section("ИСТОРИЯ ПОКУПОК", [...state.purchases].reverse(), purchaseCard);
+    historySection("purchases","ИСТОРИЯ ПОКУПОК", [...state.purchases].reverse(), purchaseCard);
   }
 
   function renderDay() {
@@ -3042,20 +3265,21 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       : total < MIN_DAY_TASKS
         ? `Для бонуса нужно минимум ${MIN_DAY_TASKS} задания`
         : `Выполни весь план: +${DAY_REWARD} монет`);
-    hint.style.marginBottom = "0";
+    hint.style.marginBottom = "0"; hint.style.fontSize="13px"; hint.style.marginTop="8px";
     if (view.bonus) hint.style.color = "var(--accent)";
     summary.append(
       el("div", "task-title", `План заданий: ${done} из ${total}`),
-      progressBar(total ? Math.round(done / total * 100) : 0, 100, "План дня"),
+      progressBar(total ? Math.round(done / total * 100) : 0, 100, "План заданий"),
       hint
     );
     screen.append(summary);
+    screen.append(focusCard());
     if (!total) {
       screen.append(el("div", "empty",
         "План пока пуст. Отметь нужные задания в блоках."));
     }
-    const events = sortCalendar(state.calendarEntries.filter(x => x.date === today()));
-    section("Сегодня по календарю", events.filter(x => x.completionId === null), calendarCard);
+    const events = state.calendarEntries.filter(x => x.date === today());
+    section("СЕГОДНЯ ПО КАЛЕНДАРЮ", sortCalendar(events.filter(x => x.completionId === null)), calendarCard);
     section("ЗАДАНИЯ", favorites(view.planned.filter(
       x => !view.todayTask.has(x.id))), taskCard);
 
@@ -3065,10 +3289,10 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
 
     const completed = [
       ...events.filter(x => x.completionId !== null).map(x => ({ ...x, kind: "calendar" })),
-      ...favorites(view.plannedDone).map(x => ({ ...x, kind: "task" })),
-      ...favorites(quests.filter(x => x.progress >= x.target)).map(x => ({ ...x, kind: "quest" }))
+      ...view.plannedDone.map(x => ({ ...x, kind: "task" })),
+      ...quests.filter(x => x.progress >= x.target).map(x => ({ ...x, kind: "quest" }))
     ];
-    section("ВЫПОЛНЕНО", completed, item =>
+    historySection(page==="day"?"day":"block:"+blockId,"ВЫПОЛНЕНО", completed, item =>
       item.kind === "calendar" ? calendarCard(item) : item.kind === "quest" ? questCard(item, true) : taskCard(item));
   }
 
@@ -3114,7 +3338,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     const money = el("section", "card spaced");
     summaryRow(activity, "Выполнено заданий", tasks.length);
     summaryRow(activity, "Выполнено событий и дел", state.calendarCompletions.filter(x => x.date === today()).length);
-    summaryRow(activity, "План дня",
+    summaryRow(activity, "План заданий",
       `${view.plannedDone.length} из ${view.planned.length}`);
     summaryRow(activity, "Завершено квестов", quests.length);
     summaryRow(activity, "Достигнуто целей", diamonds.length);
@@ -3127,6 +3351,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     summaryRow(money, "Потрачено монет", `${spent} ●`);
     summaryRow(money, "Потрачено алмазов", `${diamondsSpent} ◆`);
     summaryRow(money, "Алмазы за цели", `+${sum(diamonds, "amount")} ◆`, true);
+    for(const row of money.children)row.lastElementChild.style.color=row.textContent.includes("◆")?"var(--green)":"var(--accent)";
     screen.append(activity, money);
   }
 
@@ -3142,7 +3367,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     wallet.setAttribute("aria-label",
       `Монеты: ${view.money.balance}. Алмазы: ${view.money.diamonds}.`);
 
-    const active = ["day", "summary", "calendar"].includes(page) ? "hero" : page;
+    const active = ["day", "summary", "calendar", "treats"].includes(page) ? "hero" : page;
     document.querySelectorAll(".nav-button").forEach(node => {
       const selected = node.dataset.page === active;
       node.classList.toggle("active", selected);
@@ -3151,9 +3376,10 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
     });
     const screens = {
       hero: renderHero, blocks: renderBlocks, quests: renderQuests,
-      bonuses: renderBonuses, day: renderDay, summary: renderSummary, calendar: renderCalendar
+      bonuses: renderBonuses, day: renderDay, summary: renderSummary, calendar: renderCalendar, treats: renderTreats
     };
     (screens[page] || renderHero)();
+    updateFocusMini();
   }
 
   // Настройки и резервные копии.
@@ -3210,6 +3436,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       )) return;
       ensureDay(restored);
       const checked = normalize(restored);
+      checked.focus.notified = true;
       const serialized = JSON.stringify(checked);
       localStorage.setItem(STORAGE_KEY, serialized);
       clearEffects();
@@ -3270,6 +3497,244 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
       refreshVisible();
     }
   }, 30000);
+
+  // Ништяки не участвуют в плане, наградах и пересчёте бонуса.
+  const treatDialog = el("dialog", "treat-dialog");
+  treatDialog.setAttribute("aria-labelledby", "treat-dialog-title");
+  document.body.append(treatDialog);
+  let treatSession = null;
+  const treatChange = change => transact(change, false, true);
+  function closeTreatDialogs() {
+    treatSession = null;
+    for (const dialog of [treatDialog, menu, editor]) if (dialog.open) dialog.close();
+  }
+  treatDialog.addEventListener("cancel", () => { treatSession = null; });
+  function treatDetails(container, item) {
+    if (item.description) container.append(el("p", "treat-text", item.description));
+    if (item.duration !== null) container.append(el("p", "meta", `Примерно ${item.duration} мин`));
+  }
+  function treatForm(id = null) {
+    const item = state.treats.find(x => x.id === id);
+    if (id && !item) return;
+    closeTreatDialogs();
+    openForm(item ? "Редактировать ништяк" : "Новый ништяк", [
+      nameField(item?.name),
+      {key:"description", label:"Описание (необязательно)", type:"textarea", maxLength:500, required:false, value:item?.description || ""},
+      {...numberField("duration", "Примерная длительность, мин (необязательно)", item?.duration ?? "", 180), required:false},
+      {key:"category", label:"Категория", value:item?.category || "Другое", options:TREAT_CATEGORIES.map(x => [x,x])}
+    ], values => treatChange(data => {
+      if (id) {
+        const actual = data.treats.find(x => x.id === id);
+        if (!actual) fail("Ништяк уже удалён.");
+        Object.assign(actual, values);
+      } else data.treats.push({id:uid(), ...values, favorite:false});
+    }), item ? "Сохранить" : "Создать");
+  }
+  function chooseTreat(id) {
+    const item = state.treats.find(x => x.id === id);
+    if (!item) return;
+    closeTreatDialogs();
+    const session = {};
+    treatSession = session;
+    const title = el("h2", "treat-text", item.name);
+    title.id = "treat-dialog-title";
+    treatDialog.replaceChildren(title);
+    treatDetails(treatDialog, item);
+    treatDialog.append(btn("Сделал для себя", "button full", () => {
+      if (treatSession !== session || !treatDialog.open) return;
+      treatSession = null;
+      if (!treatChange(data => {
+        const actual = data.treats.find(x => x.id === id);
+        if (!actual) fail("Ништяк уже удалён.");
+        data.treatUses.push({id:uid(), treatId:id, name:actual.name, usedAt:new Date().toISOString()});
+      })) return;
+      treatDialog.close();
+      document.querySelectorAll(".self-toast").forEach(x => x.remove());
+      const toast = el("div", "self-toast", "Момент для себя ✓");
+      toast.setAttribute("role", "status");
+      document.body.append(toast);
+      setTimeout(() => toast.remove(), 2200);
+    }, true), btn("Закрыть", "button secondary full", closeTreatDialogs));
+    treatDialog.showModal();
+  }
+  function suggestTreat() {
+    closeTreatDialogs();
+    const title = el("h2", "", "Предложи ништяк"); title.id = "treat-dialog-title";
+    const label = el("label", "", "Категория"); label.htmlFor = "treat-category";
+    const select = el("select"); select.id = "treat-category";
+    for (const category of ["Все", ...TREAT_CATEGORIES]) {
+      const option = el("option", "", category); option.value = category; select.append(option);
+    }
+    const preview = el("div"); preview.setAttribute("aria-live", "polite");
+    let selected = null;
+    const choose = btn("Выбираю", "button full", () => { if (selected) chooseTreat(selected); });
+    const another = btn("Другой вариант", "button secondary full", () => draw());
+    function draw() {
+      const pool = state.treats.filter(x => select.value === "Все" || x.category === select.value);
+      const alternatives = pool.length > 1 ? pool.filter(x => x.id !== selected) : pool;
+      const item = alternatives[Math.floor(Math.random() * alternatives.length)];
+      selected = item?.id || null;
+      preview.replaceChildren();
+      if (item) { preview.append(el("h3", "treat-text", item.name)); treatDetails(preview,item); }
+      else preview.append(el("p", "empty", "Здесь пока нет ништяков. Добавь свой или выбери другую категорию."));
+      choose.disabled = !item; another.disabled = !item;
+    }
+    select.addEventListener("change", () => { selected = null; draw(); });
+    treatDialog.replaceChildren(title, label, select, preview, another, choose, btn("Закрыть", "button secondary full", closeTreatDialogs));
+    draw(); treatDialog.showModal();
+  }
+  function treatCard(item) {
+    const card = el("article", "card");
+    const bar = el("div", "favorite-bar");
+    const star = btn(item.favorite ? "★" : "☆", "favorite-button" + (item.favorite ? " is-favorite" : ""), () => treatChange(data => {
+      const actual = data.treats.find(x => x.id === item.id);
+      if (actual) actual.favorite = !actual.favorite;
+    }), true);
+    star.setAttribute("aria-label", "Избранное: " + item.name);
+    star.setAttribute("aria-pressed", String(item.favorite)); bar.append(star);
+    const head = el("div", "task-head");
+    const more = btn("⋯", "more-button", () => {
+      closeTreatDialogs();
+      openMenu(item.name, [
+        {text:"Редактировать", run:() => treatForm(item.id)},
+        {text:"Удалить", danger:true, run:() => {
+          if (confirm("Удалить ништяк «" + item.name + "»? История использований сохранится."))
+            treatChange(data => { data.treats = data.treats.filter(x => x.id !== item.id); });
+        }}
+      ]);
+    });
+    more.setAttribute("aria-label", "Действия: " + item.name);
+    head.append(el("div", "task-title treat-text", item.name), more);
+    card.append(bar,head); treatDetails(card,item);
+    card.append(el("p", "meta", item.category),btn("Выбрать", "button secondary full", () => chooseTreat(item.id)));
+    return card;
+  }
+  function renderTreats() {
+    screen.append(btn("← На главную", "back", () => go("hero")),
+      el("h1", "", "НИШТЯКИ"),el("p", "", "Маленькие радости и передышки. Не нужно заслуживать."),
+      btn("Предложи ништяк", "button secondary full", suggestTreat),
+      btn("+ Добавить", "button full spaced", () => treatForm(), true));
+    section("", favorites(state.treats), treatCard);
+    if (!state.treats.length) screen.append(el("div", "empty", "Добавь свой первый ништяк — что-то приятное только для себя."));
+  }
+
+  const focusMini = el("div", "focus-mini"); focusMini.hidden = true; document.body.append(focusMini);
+  let focusNow = () => Date.now();
+  const focusLeft = f => f.status === "running" ? Math.max(0,f.endsAt-focusNow()) : f.remaining;
+  function focusTime(ms) { const s=Math.ceil(ms/1000); return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0"); }
+  function focusSave(change) {
+    if (!healthy) return false;
+    try {
+      const raw=localStorage.getItem(STORAGE_KEY);
+      if(raw!==snapshot) { loadLatest(); render(); return false; }
+      const draft=clone(state); change(draft.focus); normalize(draft);
+      const text=JSON.stringify(draft); localStorage.setItem(STORAGE_KEY,text); state=draft; snapshot=text;
+      return true;
+    } catch(error) { storageError("Таймер не сохранён: "+error.message); return false; }
+  }
+  function redrawFocus() { const old=$("focus-card"); if(old) old.replaceWith(focusCard()); updateFocusMini(); }
+  function focusAction(action,id) {
+    const f=state.focus;
+    if(f.id!==id) return;
+    if(action==="start" && f.status!=="ready") return;
+    if(action==="pause" && f.status!=="running") return;
+    if(action==="resume" && f.status!=="paused") return;
+    if(action==="reset" && f.status!=="completed") return;
+    if(action==="stop" && !["running","paused"].includes(f.status)) return;
+    if(action==="stop" && !confirm("Завершить подход сейчас? Можно вернуться позже.")) return;
+    if(action==="pause" && focusLeft(f)===0) { focusTick(); return; }
+    if(focusSave(x=>{
+      if(action==="start") { x.id=uid(); x.status="running"; x.remaining=x.minutes*60000; x.endsAt=focusNow()+x.remaining; x.notified=false; x.natural=false; }
+      if(action==="pause") { x.remaining=focusLeft(x); x.endsAt=null; x.status="paused"; }
+      if(action==="resume") { x.endsAt=focusNow()+x.remaining; x.status="running"; }
+      if(action==="stop") { x.status="completed"; x.remaining=0; x.endsAt=null; x.natural=false; x.notified=true; }
+      if(action==="reset") { x.status="ready"; x.id=null; x.endsAt=null; x.remaining=x.minutes*60000; x.notified=true; x.natural=false; }
+    })) redrawFocus();
+  }
+  function focusCard() {
+    const f=state.focus, card=el("section","card spaced focus-card"); card.id="focus-card";
+    card.append(el("h2","","Время для важного"));
+    if(f.status==="ready") {
+      const options=el("div","focus-options");
+      const label=el("label","","Своё время, 1–180 минут"); label.htmlFor="focus-minutes";
+      const input=el("input"); input.id="focus-minutes"; input.type="number"; input.min=1; input.max=180; input.step=1; input.value=f.minutes;
+      const saveMinutes=()=>{const n=Number(input.value); input.setCustomValidity(Number.isInteger(n)&&n>=1&&n<=180?"":"Введи целое число от 1 до 180"); if(!input.reportValidity())return; if(focusSave(x=>{if(x.status==="ready"){x.minutes=n;x.remaining=n*60000;}})) card.querySelector('.focus-clock').textContent=focusTime(n*60000);};
+      for(const n of [5,15,25]) options.append(btn(n+" мин","button secondary",()=>{input.value=n;saveMinutes();}));
+      options.append(btn("Своё","button secondary",()=>input.focus()));
+      input.addEventListener("change",saveMinutes);
+      const nameLabel=el("label","","Название подхода (необязательно)"); nameLabel.htmlFor="focus-name";
+      const name=el("input"); name.id="focus-name"; name.maxLength=120; name.value=f.name;
+      name.addEventListener("change",()=>focusSave(x=>{if(x.status==="ready")x.name=name.value.trim();}));
+      card.append(options,label,input,nameLabel,name,el("div","focus-clock",focusTime(f.remaining)),btn("Начать","button full",()=>{
+        if(!card.isConnected || state.focus.status!=="ready")return;
+        saveMinutes(); if(!input.checkValidity())return;
+        if(!focusSave(x=>{if(x.status==="ready")x.name=name.value.trim();}))return;
+        primeAudio();focusAction("start",null);
+      }),el("p","","Не обязательно закончить всё. Просто начни с этого времени"));
+    } else {
+      if(f.name) card.append(el("p","treat-text",f.name));
+      card.append(el("div","focus-clock",focusTime(focusLeft(f))));
+      const actions=el("div","focus-actions");
+      if(f.status==="completed") {
+        card.append(el("h3","",f.natural?"Время завершено ✓":"Подход завершён. Можно вернуться позже"));
+        if(f.natural)card.append(el("p","",`Ты выделил ${f.minutes} минут на важное`));
+        for(const text of ["Ещё подход","Закрыть"])actions.append(btn(text,"button secondary",()=>focusAction("reset",f.id)));
+      } else {
+        card.append(el("p","",f.status==="paused"?"На паузе":"Сейчас — только одно дело"));
+        actions.append(btn(f.status==="paused"?"Продолжить":"Пауза","button secondary",()=>focusAction(f.status==="paused"?"resume":"pause",f.id)),btn("Завершить","button secondary",()=>focusAction("stop",f.id)));
+      }
+      card.append(actions);
+    }
+    return card;
+  }
+  function updateFocusMini() {
+    const card=$("focus-card"), top=document.querySelector('.topbar').getBoundingClientRect().bottom;
+    const active=["running","paused"].includes(state.focus.status);
+    const shifted=screen.style.transform ? 70 : 0;
+    const show=page==="day"&&card&&active&&card.getBoundingClientRect().bottom-shifted<=top;
+    focusMini.hidden=!show; focusMini.style.top=top+"px";
+    // Push the visible content below both fixed panels, without changing layout height.
+    screen.style.transform=show?"translateY(70px)":"";
+    // Reserve vertical room while scrolling so the bar cannot cover controls.
+    screen.style.scrollMarginTop=(top+(show?70:12))+"px";
+    if(!show)return;
+    const f=state.focus;
+    const title=btn(f.name||"Время для важного","focus-mini-title",()=>card.scrollIntoView({block:"center"}));
+    const time=el("span","focus-mini-time",focusTime(focusLeft(f)));
+    focusMini.replaceChildren(title,time,btn(f.status==="paused"?"▶":"Ⅱ","button secondary",()=>focusAction(f.status==="paused"?"resume":"pause",f.id)));
+    focusMini.lastChild.setAttribute("aria-label",f.status==="paused"?"Продолжить":"Пауза");
+  }
+  function focusTick() {
+    if(!healthy)return;
+    let f=state.focus;
+    if(f.status==="running"&&focusLeft(f)===0) {
+      if(!focusSave(x=>{x.status="completed";x.remaining=0;x.endsAt=null;x.natural=true;}))return;
+      redrawFocus(); f=state.focus;
+    }
+    if(f.status==="completed"&&!f.notified&&!document.hidden) {
+      if(focusSave(x=>{x.notified=true;})) {
+        tones([392,523.25],.22,.45,.045);
+        if(page!=="day") {
+          document.querySelectorAll('.focus-result').forEach(x=>x.remove());
+          const toast=el("div","self-toast focus-result");
+          toast.style.pointerEvents="auto";
+          toast.append(el("strong","","Время завершено ✓"),el("p","",`Ты выделил ${f.minutes} минут на важное`));
+          for(const text of ["Ещё подход","Закрыть"])toast.append(btn(text,"button secondary",()=>{
+            focusAction("reset",f.id);toast.remove();if(text==="Ещё подход")go("day");
+          }));
+          toast.setAttribute("role","status");document.body.append(toast);
+        }
+      }
+    }
+    const clock=$("focus-card")?.querySelector('.focus-clock');
+    if(clock && state.focus.status!=="ready")clock.textContent=focusTime(focusLeft(state.focus));
+    const miniTime=focusMini.querySelector('.focus-mini-time'); if(miniTime)miniTime.textContent=focusTime(focusLeft(state.focus));
+  }
+  window.addEventListener("scroll",updateFocusMini,{passive:true});
+  window.addEventListener("resize",updateFocusMini);
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden)focusTick();});
+  window.addEventListener("pageshow",focusTick);
+  setInterval(focusTick,1000);
 
   // Инициализация только после объявления всех переменных.
   if (loadLatest()) syncDay();
