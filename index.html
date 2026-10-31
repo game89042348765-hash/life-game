@@ -848,14 +848,315 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
 .self-toast { position:fixed; z-index:110; bottom:110px; left:50%; transform:translateX(-50%); max-width:calc(100% - 32px); padding:12px 18px; border:1px solid var(--border); border-radius:12px; background:var(--card); color:var(--text); pointer-events:none; }
 </style>
 <style>
-.focus-clock { font-size:42px; font-weight:800; font-variant-numeric:tabular-nums; margin:12px 0; }
+.focus-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px 12px; }
+.focus-header h2 { margin:0; font-size:18px; }
+.focus-status { padding:4px 8px; border:1px solid var(--border); border-radius:20px; color:var(--muted); font-size:12px; }
+.focus-main { display:grid; grid-template-columns:minmax(0,1fr) minmax(132px,1fr); gap:12px; align-items:center; margin:12px 0; }
+.focus-clock { min-width:0; font-size:clamp(36px,10vw,42px); font-weight:800; font-variant-numeric:tabular-nums; line-height:1.15; }
 .focus-options,.focus-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
-.focus-card input { width:100%; min-width:0; margin:6px 0 12px; }
-.focus-card .button { min-width:0; white-space:normal; }
+.focus-options .button { min-height:44px; padding:8px 6px; font-size:13px; }
+.focus-options [aria-pressed="true"] { border-color:var(--accent); color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent); }
+.focus-card input { width:100%; min-width:0; margin:6px 0 12px; font-size:16px; }
+.focus-card .button { min-width:0; white-space:normal; overflow-wrap:anywhere; }
+.focus-settings { margin:0 0 12px; }
+.focus-settings label { margin:8px 0 4px; }
+.focus-settings label:first-child { margin-top:0; }
+.focus-minutes-row { display:flex; align-items:center; gap:8px; }
+.focus-minutes-row input { width:96px; max-width:calc(100% - 40px); margin:0; }
+.focus-minutes-row span { flex-shrink:0; color:var(--muted); font-size:14px; }
+.focus-settings textarea { display:block; width:100%; min-width:0; min-height:48px; max-height:none; margin:0; padding:10px 12px; overflow-wrap:anywhere; }
+.focus-name { margin:8px 0; font-size:14px; white-space:pre-wrap; overflow-wrap:anywhere; }
+.focus-name:empty { display:none; }
+.focus-hint { margin:8px 0 0; font-size:12px; line-height:1.4; }
+.focus-result-text { margin:8px 0; overflow-wrap:anywhere; }
+.focus-progress { width:100%; height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+.focus-progress-fill { height:100%; background:var(--accent); }
+.focus-actions-completed { grid-template-columns:minmax(0,1fr); }
+@media (max-width:340px) {
+  .focus-main { grid-template-columns:minmax(0,1fr); }
+}
 .focus-mini { position:fixed; z-index:19; left:50%; transform:translateX(-50%); width:min(100%,480px); background:var(--card); padding:8px 16px; border-bottom:1px solid var(--accent); display:flex; gap:8px; align-items:center; }
 .focus-mini[hidden] { display:none; }
 .focus-mini button { min-width:0; min-height:44px; }
 .focus-mini-title { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; border:0; background:none; color:var(--text); text-align:left; }
+</style>
+<style>
+.treat-machine {
+  margin: 16px 0 12px;
+  padding: 16px;
+  overflow: hidden;
+  border: 1px solid #ffda2960;
+  border-radius: 16px;
+  background: linear-gradient(160deg, #24210f, #141413 45%);
+  box-shadow: inset 0 1px 0 #ffffff10;
+}
+.treat-machine-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.treat-machine-title {
+  margin: 0;
+  color: var(--accent);
+  font-size: 17px;
+}
+.treat-machine-lamp {
+  flex: 0 0 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px #ffda2960;
+}
+.treat-machine-caption {
+  margin: 6px 0 14px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.treat-machine-window {
+  display: grid;
+  align-content: center;
+  min-height: 150px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #090909;
+}
+.treat-machine-idle {
+  text-align: center;
+}
+.treat-machine-symbol {
+  margin-bottom: 10px;
+  color: var(--accent);
+  font-size: 30px;
+}
+.treat-machine-message {
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.treat-machine-note {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.treat-machine-filter {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  margin: 14px 0 10px;
+}
+.treat-machine .treat-machine-filter label {
+  margin: 0;
+  font-size: 12px;
+}
+.treat-machine-filter select {
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px 10px;
+}
+.treat-machine-ticket {
+  min-width: 0;
+  padding: 14px;
+  border: 1px dashed #ffda2970;
+  border-radius: 8px;
+  background: #1c1a10;
+}
+.treat-machine-ticket-label {
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+.treat-machine-ticket h3 {
+  margin: 10px 0 8px;
+  font-size: 18px;
+  line-height: 1.35;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.treat-machine-description {
+  margin: 0 0 12px;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.treat-machine-meta {
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.treat-machine-slot {
+  width: 58%;
+  height: 7px;
+  margin: 16px auto 9px;
+  border-radius: 8px;
+  background: #050505;
+  box-shadow: 0 1px 0 #ffffff15;
+}
+.treat-machine-footer {
+  color: var(--muted);
+  text-align: center;
+  font-size: 11px;
+}
+.treat-machine .button {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.treat-machine-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #111108;
+}
+.treat-machine-primary:active:not(:disabled) {
+  background: #ebc817;
+}
+.treat-machine-announcement {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .treat-machine-ticket.is-new {
+    animation: treat-machine-deliver .3s ease-out;
+  }
+  @keyframes treat-machine-deliver {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+</style>
+<style>
+.treat-machine-search {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  text-align: center;
+}
+.treat-machine-reels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+  max-width: 304px;
+  margin: 0 auto;
+}
+.treat-machine-reel {
+  position: relative;
+  min-width: 0;
+  height: 104px;
+  overflow: hidden;
+  border: 1px solid #ffda2955;
+  border-radius: 10px;
+  background: #1c1a10;
+}
+.treat-machine-ticket-reels {
+  margin-bottom: 14px;
+}
+.treat-machine-idle > .treat-machine-reels {
+  margin-bottom: 14px;
+}
+.treat-machine-reel::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    #090909aa,
+    transparent 30%,
+    transparent 70%,
+    #090909aa
+  );
+}
+.treat-machine-reel-strip {
+  color: var(--accent);
+}
+.treat-machine-reel-item {
+  display: grid;
+  place-items: center;
+  height: 104px;
+  font-family: "Segoe UI Symbol", sans-serif;
+  font-size: clamp(36px, 12vw, 56px);
+  line-height: 1;
+}
+.treat-machine-search-text {
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.treat-machine-reels.is-spinning .treat-machine-reel-strip {
+  animation: treat-machine-reel-roll .48s linear infinite;
+}
+.treat-machine-reels.is-spinning .treat-machine-reel:nth-child(2) .treat-machine-reel-strip {
+  animation-duration: .57s;
+  animation-delay: -.19s;
+}
+.treat-machine-reels.is-spinning .treat-machine-reel:nth-child(3) .treat-machine-reel-strip {
+  animation-duration: .42s;
+  animation-delay: -.28s;
+}
+@keyframes treat-machine-reel-roll {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+
+/* Отдельный класс: остальные .self-toast не меняются. */
+.self-toast.treat-success-toast {
+  z-index: 110;
+  top: 50%;
+  bottom: auto;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  width: max-content;
+  min-width: min(250px, calc(100vw - 40px));
+  max-width: calc(100vw - 40px);
+  min-height: 110px;
+  padding: 20px 24px;
+  border: 2px solid #96caa4;
+  border-radius: 14px;
+  background: #15271b;
+  color: #c0e6ca;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+  transform: translate(-50%, -50%);
+  box-shadow:
+    0 0 0 9999px #0006,
+    0 0 35px #79a98533;
+  pointer-events: none;
+  animation: reward-popup 2200ms ease-out forwards;
+}
+.treat-success-symbol {
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+}
+.treat-success-text {
+  font-size: clamp(18px, 5vw, 23px);
+  font-weight: 800;
+}
+@media (prefers-reduced-motion: reduce) {
+  .self-toast.treat-success-toast {
+    animation: none;
+  }
+}
 </style>
 </head>
 <body>
@@ -1000,7 +1301,7 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
       purchases: [],
       treats: [],
       treatUses: [],
-      focus: {status:"ready", id:null, minutes:15, name:"", remaining:900000, endsAt:null, notified:true, natural:false},
+      focus: {status:"ready", id:null, minutes:5, name:"", remaining:300000, endsAt:null, notified:true, natural:false},
       dayPlans: {},
       dayPlanDate: null
     };
@@ -3549,11 +3850,6 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
         data.treatUses.push({id:uid(), treatId:id, name:actual.name, usedAt:new Date().toISOString()});
       })) return;
       treatDialog.close();
-      document.querySelectorAll(".self-toast").forEach(x => x.remove());
-      const toast = el("div", "self-toast", "Момент для себя ✓");
-      toast.setAttribute("role", "status");
-      document.body.append(toast);
-      setTimeout(() => toast.remove(), 2200);
     }, true), btn("Закрыть", "button secondary full", closeTreatDialogs));
     treatDialog.showModal();
   }
@@ -3609,13 +3905,480 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
     card.append(el("p", "meta", item.category),btn("Выбрать", "button secondary full", () => chooseTreat(item.id)));
     return card;
   }
+  let treatListCategory = "Все";
+  let treatListFavoritesOnly = false;
+  let treatMachineSelectedId = null;
+  const treatReelSymbols = ["☕", "♪", "♥", "☀"];
+  let treatMachineReelResult = ["☕", "♪", "♥"];
+
+  function buildTreatReels(spinning = false) {
+    const reels = el(
+      "div",
+      "treat-machine-reels" + (spinning ? " is-spinning" : "")
+    );
+    reels.setAttribute("aria-hidden", "true");
+
+    for (let index = 0; index < 3; index++) {
+      const reel = el("div", "treat-machine-reel");
+      const strip = el("div", "treat-machine-reel-strip");
+
+      if (spinning) {
+        for (let repeat = 0; repeat < 2; repeat++) {
+          for (let offset = 0; offset < treatReelSymbols.length; offset++) {
+            strip.append(el(
+              "div",
+              "treat-machine-reel-item",
+              treatReelSymbols[
+                (offset + index) % treatReelSymbols.length
+              ]
+            ));
+          }
+        }
+      } else {
+        strip.append(el(
+          "div",
+          "treat-machine-reel-item",
+          treatMachineReelResult[index]
+        ));
+      }
+
+      reel.append(strip);
+      reels.append(reel);
+    }
+
+    return reels;
+  }
+
+  function rollTreatReelResult() {
+    const symbols = [...treatReelSymbols];
+
+    for (let index = symbols.length - 1; index > 0; index--) {
+      const other = Math.floor(Math.random() * (index + 1));
+      [symbols[index], symbols[other]] =
+        [symbols[other], symbols[index]];
+    }
+
+    const result = symbols.slice(0, 3);
+
+    // Не повторяем точно ту же комбинацию подряд.
+    if (result.every(
+      (symbol, index) => symbol === treatMachineReelResult[index]
+    )) {
+      [result[0], result[1]] = [result[1], result[0]];
+    }
+
+    treatMachineReelResult = result;
+  }
+
+  function treatMachineCard() {
+    const machine = el("section", "treat-machine");
+    machine.setAttribute("aria-label", "Автомат ништяков");
+
+    const head = el("div", "treat-machine-head");
+    const lamp = el("span", "treat-machine-lamp");
+    lamp.setAttribute("aria-hidden", "true");
+
+    head.append(
+      el("h2", "treat-machine-title", "Автомат ништяков"),
+      lamp
+    );
+
+    const display = el("div", "treat-machine-window");
+
+    const announcement = el(
+      "div",
+      "treat-machine-announcement"
+    );
+    announcement.setAttribute("role", "status");
+    announcement.setAttribute("aria-atomic", "true");
+
+    // Фильтры ручного списка не влияют на автомат.
+    const pool = () => state.treats;
+
+    let issuing = false;
+    let reelSoundTimer = null;
+
+    function stopReelSound() {
+      window.clearTimeout(reelSoundTimer);
+      reelSoundTimer = null;
+    }
+
+    function startReelSound() {
+      stopReelSound();
+      if (!state.soundEnabled || document.hidden) return;
+
+      primeAudio();
+      const startedAt = performance.now();
+      let tickIndex = 0;
+
+      const tick = () => {
+        reelSoundTimer = null;
+
+        if (
+          !issuing ||
+          !machine.isConnected ||
+          page !== "treats" ||
+          document.hidden ||
+          !state.soundEnabled
+        ) return;
+
+        const elapsed = performance.now() - startedAt;
+        if (elapsed >= 3000) return;
+
+        // Короткие мягкие тики, не очередь звуков на три секунды.
+        tones(
+          [tickIndex % 2 === 0 ? 440 : 554.37],
+          .01,
+          .045,
+          .025
+        );
+        tickIndex++;
+
+        // Ближе к выдаче ритм немного замедляется.
+        const delay = elapsed < 2100 ? 125 : 210;
+        reelSoundTimer = window.setTimeout(tick, delay);
+      };
+
+      tick();
+    }
+
+    const issue = btn(
+      "Выдать ништяк",
+      "button full treat-machine-primary spaced",
+      () => {
+        if (issuing || !machine.isConnected) return;
+
+        const items = pool();
+        if (!items.length) return;
+
+        const alternatives = items.length > 1
+          ? items.filter(
+              item => item.id !== treatMachineSelectedId
+            )
+          : items;
+
+        const chosen = alternatives[
+          Math.floor(Math.random() * alternatives.length)
+        ];
+        const showResult = () => {
+          stopReelSound();
+
+          // После ухода со страницы или общей перерисовки
+          // старая карточка не должна менять новый экран.
+          if (
+            !machine.isConnected ||
+            page !== "treats"
+          ) return;
+
+          issuing = false;
+
+          // За время анимации запись могла быть удалена
+          // или отредактирована. Используем актуальный список.
+          const actual = pool().find(
+            item => item.id === chosen.id
+          );
+
+          treatMachineSelectedId = actual ? actual.id : null;
+          if (actual) rollTreatReelResult();
+          draw(true);
+
+          if (actual && !document.hidden) {
+            tones(
+              [523.25, 783.99, 1046.5, 1318.51],
+              .09,
+              .28,
+              .055
+            );
+          }
+
+          announcement.textContent = actual
+            ? "Твой ништяк: " + actual.name
+            : "Ништяк больше недоступен. Попробуй ещё раз.";
+        };
+
+        issuing = true;
+        issue.disabled = true;
+        issue.textContent = "Выдаём…";
+        announcement.textContent = "";
+
+        const search = el("div", "treat-machine-search");
+        search.setAttribute("aria-hidden", "true");
+
+        search.append(
+          buildTreatReels(true),
+          el(
+            "div",
+            "treat-machine-search-text",
+            "Ищем маленькую радость…"
+          )
+        );
+
+        display.replaceChildren(search);
+        startReelSound();
+
+        // Единственная короткая задержка.
+        // Callback выше проверяет живость именно этой карточки.
+        window.setTimeout(showResult, 3000);
+      }
+    );
+
+    function draw(animate = false) {
+      const items = pool();
+      const selected = items.find(
+        item => item.id === treatMachineSelectedId
+      );
+
+      if (!selected) treatMachineSelectedId = null;
+
+      display.replaceChildren();
+      issue.hidden = state.treats.length === 0;
+      issue.disabled = items.length === 0;
+      issue.textContent = selected
+        ? "Другой вариант"
+        : "Выдать ништяк";
+
+      if (selected) {
+        const ticket = el(
+          "div",
+          "treat-machine-ticket" +
+            (animate ? " is-new" : "")
+        );
+
+        ticket.append(
+          el(
+            "div",
+            "treat-machine-ticket-label",
+            "ТВОЙ НИШТЯК"
+          ),
+          el("h3", "", selected.name)
+        );
+
+        if (selected.description) {
+          ticket.append(el(
+            "p",
+            "treat-machine-description",
+            selected.description
+          ));
+        }
+
+        const meta = [selected.category];
+        if (selected.duration !== null) {
+          meta.push(selected.duration + " мин");
+        }
+
+        ticket.append(
+          el(
+            "div",
+            "treat-machine-meta",
+            meta.join(" · ")
+          ),
+          btn("Выбрать", "button full", () => {
+            const chosenId = selected.id;
+
+            if (!state.treats.some(
+              item => item.id === chosenId
+            )) {
+              treatMachineSelectedId = null;
+              announcement.textContent = "";
+              draw();
+              return;
+            }
+
+            treatMachineSelectedId = null;
+            draw();
+            announcement.textContent = "Ништяк выбран. Приятного отдыха!";
+
+            tones(
+              [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5],
+              .11,
+              .32,
+              .065
+            );
+          })
+        );
+
+        display.append(ticket);
+        return;
+      }
+
+      const idle = el("div", "treat-machine-idle");
+      const symbol = buildTreatReels();
+
+      idle.append(
+        symbol,
+        el(
+          "div",
+          "treat-machine-message",
+          !state.treats.length
+            ? "Автомат пока пуст"
+            : "Что приятного сегодня?"
+        )
+      );
+
+      if (!state.treats.length) {
+        idle.append(
+          el(
+            "p",
+            "treat-machine-note",
+            "Наполни его тем, что радует именно тебя."
+          ),
+          btn(
+            "Добавить первый ништяк",
+            "button full spaced",
+            () => treatForm(),
+            true
+          )
+        );
+      }
+
+      display.append(idle);
+    }
+
+    const slot = el("div", "treat-machine-slot");
+    slot.setAttribute("aria-hidden", "true");
+
+    machine.append(
+      head,
+      el(
+        "p",
+        "treat-machine-caption",
+        "Радость без повода"
+      ),
+      display,
+      announcement,
+      issue,
+      slot,
+      el(
+        "div",
+        "treat-machine-footer",
+        "Монетки не нужны"
+      )
+    );
+
+    draw();
+    return machine;
+  }
+
   function renderTreats() {
-    screen.append(btn("← На главную", "back", () => go("hero")),
-      el("h1", "", "НИШТЯКИ"),el("p", "", "Маленькие радости и передышки. Не нужно заслуживать."),
-      btn("Предложи ништяк", "button secondary full", suggestTreat),
-      btn("+ Добавить", "button full spaced", () => treatForm(), true));
-    section("", favorites(state.treats), treatCard);
-    if (!state.treats.length) screen.append(el("div", "empty", "Добавь свой первый ништяк — что-то приятное только для себя."));
+    screen.append(
+      btn("← На главную", "back", () => go("hero")),
+      el("h1", "", "НИШТЯКИ"),
+      el(
+        "p",
+        "",
+        "Маленькие радости и передышки. Не нужно заслуживать."
+      ),
+      treatMachineCard()
+    );
+
+    const manual = el("section", "spaced");
+    manual.setAttribute("aria-labelledby", "treat-manual-title");
+
+    const heading = el("h2", "", "Выбрать самому");
+    heading.id = "treat-manual-title";
+
+    const add = btn(
+      "+ Добавить",
+      "button full",
+      () => treatForm(),
+      true
+    );
+
+    const filters = el("div");
+    const label = el("label", "", "Категория");
+    label.htmlFor = "treat-list-category";
+
+    const select = el("select");
+    select.id = label.htmlFor;
+    select.setAttribute("aria-controls", "treat-manual-results");
+
+    for (const category of ["Все", ...TREAT_CATEGORIES]) {
+      const option = el("option", "", category);
+      option.value = category;
+      select.append(option);
+    }
+    select.value = treatListCategory;
+
+    // Это фильтр интерфейса, а не изменение прогресса:
+    // не используем общий checkbox(), блокируемый при !healthy.
+    const favoriteLabel = el("label", "check-label");
+    const favoriteInput = el("input");
+    favoriteInput.type = "checkbox";
+    favoriteInput.checked = treatListFavoritesOnly;
+    favoriteInput.setAttribute(
+      "aria-controls",
+      "treat-manual-results"
+    );
+    favoriteLabel.append(
+      favoriteInput,
+      el("span", "", "Только избранные")
+    );
+
+    const hint = el(
+      "p",
+      "meta",
+      "Фильтры — только для списка. Автомат выбирает из всех ништяков."
+    );
+
+    const count = el("div", "meta");
+    count.setAttribute("role", "status");
+    count.setAttribute("aria-atomic", "true");
+
+    const results = el("div");
+    results.id = "treat-manual-results";
+
+    function drawManualList() {
+      const items = state.treats.filter(item =>
+        (treatListCategory === "Все" ||
+          item.category === treatListCategory) &&
+        (!treatListFavoritesOnly || item.favorite)
+      );
+
+      items.sort((a, b) =>
+        Number(b.favorite) - Number(a.favorite) ||
+        a.name.localeCompare(b.name, "ru", {
+          sensitivity: "base",
+          numeric: true
+        }) ||
+        a.id.localeCompare(b.id)
+      );
+
+      results.replaceChildren();
+      count.textContent = "Показано: " + items.length;
+      filters.hidden = state.treats.length === 0;
+
+      if (!items.length) {
+        results.append(el(
+          "div",
+          "empty",
+          !state.treats.length
+            ? "Добавь свой первый ништяк — что-то приятное только для себя."
+            : "Здесь пока нет ништяков. Измени фильтры или добавь свой."
+        ));
+        return;
+      }
+
+      const list = el("div", "list");
+      for (const item of items) {
+        list.append(treatCard(item));
+      }
+      results.append(list);
+    }
+
+    select.addEventListener("change", () => {
+      treatListCategory = select.value;
+      drawManualList();
+    });
+
+    favoriteInput.addEventListener("change", () => {
+      treatListFavoritesOnly = favoriteInput.checked;
+      drawManualList();
+    });
+
+    filters.append(label, select, favoriteLabel, hint);
+    manual.append(heading, add, filters, count, results);
+    screen.append(manual);
+    drawManualList();
   }
 
   const focusMini = el("div", "focus-mini"); focusMini.hidden = true; document.body.append(focusMini);
@@ -3626,11 +4389,15 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
     if (!healthy) return false;
     try {
       const raw=localStorage.getItem(STORAGE_KEY);
-      if(raw!==snapshot) { loadLatest(); render(); return false; }
-      const draft=clone(state); change(draft.focus); normalize(draft);
-      const text=JSON.stringify(draft); localStorage.setItem(STORAGE_KEY,text); state=draft; snapshot=text;
+      if(raw!==snapshot) {
+        if(loadLatest()) alert("Данные изменились в другой вкладке. Повтори действие.");
+        render(); return false;
+      }
+      const draft=clone(state); change(draft.focus);
+      const next=normalize(draft);
+      const text=JSON.stringify(next); localStorage.setItem(STORAGE_KEY,text); state=next; snapshot=text;
       return true;
-    } catch(error) { storageError("Таймер не сохранён: "+error.message); return false; }
+    } catch(error) { storageError("Таймер не сохранён: "+error.message); render(); return false; }
   }
   function redrawFocus() { const old=$("focus-card"); if(old) old.replaceWith(focusCard()); updateFocusMini(); }
   function focusAction(action,id) {
@@ -3647,40 +4414,82 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
       if(action==="start") { x.id=uid(); x.status="running"; x.remaining=x.minutes*60000; x.endsAt=focusNow()+x.remaining; x.notified=false; x.natural=false; }
       if(action==="pause") { x.remaining=focusLeft(x); x.endsAt=null; x.status="paused"; }
       if(action==="resume") { x.endsAt=focusNow()+x.remaining; x.status="running"; }
-      if(action==="stop") { x.status="completed"; x.remaining=0; x.endsAt=null; x.natural=false; x.notified=true; }
-      if(action==="reset") { x.status="ready"; x.id=null; x.endsAt=null; x.remaining=x.minutes*60000; x.notified=true; x.natural=false; }
-    })) redrawFocus();
+      if(action==="stop" || action==="reset") { x.status="ready"; x.id=null; x.minutes=5; x.name=""; x.endsAt=null; x.remaining=300000; x.notified=true; x.natural=false; }
+    })) {
+      if(action==="stop" || action==="reset") focusCustomMode=false;
+      redrawFocus();
+    }
+  }
+  let focusCustomMode = false;
+  function updateFocusProgress(progress,f) {
+    const total=f.minutes*60000, value=Math.max(0,Math.min(100,(total-focusLeft(f))/total*100));
+    progress.firstChild.style.width=value+"%";
+    progress.setAttribute("aria-valuenow",String(value));
   }
   function focusCard() {
     const f=state.focus, card=el("section","card spaced focus-card"); card.id="focus-card";
-    card.append(el("h2","","Время для важного"));
+    const header=el("div","focus-header");
+    header.append(el("h2","","Время для важного"));
+    if(f.status!=="ready")header.append(el("span","focus-status",{running:"В процессе",paused:"Пауза",completed:"Завершён"}[f.status]));
+    const main=el("div","focus-main"), clock=el("div","focus-clock",focusTime(focusLeft(f)));
+    card.append(header);
+    if(f.status!=="ready")card.append(el("p","focus-name",f.name));
+    main.append(clock); card.append(main);
+    if(["running","paused"].includes(f.status)) {
+      const progress=el("div","focus-progress");
+      progress.setAttribute("role","progressbar");
+      progress.setAttribute("aria-label","Прошедшее время подхода");
+      progress.setAttribute("aria-valuemin","0"); progress.setAttribute("aria-valuemax","100");
+      progress.append(el("div","focus-progress-fill"));
+      updateFocusProgress(progress,f); card.append(progress);
+    }
     if(f.status==="ready") {
       const options=el("div","focus-options");
-      const label=el("label","","Своё время, 1–180 минут"); label.htmlFor="focus-minutes";
-      const input=el("input"); input.id="focus-minutes"; input.type="number"; input.min=1; input.max=180; input.step=1; input.value=f.minutes;
-      const saveMinutes=()=>{const n=Number(input.value); input.setCustomValidity(Number.isInteger(n)&&n>=1&&n<=180?"":"Введи целое число от 1 до 180"); if(!input.reportValidity())return; if(focusSave(x=>{if(x.status==="ready"){x.minutes=n;x.remaining=n*60000;}})) card.querySelector('.focus-clock').textContent=focusTime(n*60000);};
-      for(const n of [5,15,25]) options.append(btn(n+" мин","button secondary",()=>{input.value=n;saveMinutes();}));
-      options.append(btn("Своё","button secondary",()=>input.focus()));
-      input.addEventListener("change",saveMinutes);
-      const nameLabel=el("label","","Название подхода (необязательно)"); nameLabel.htmlFor="focus-name";
-      const name=el("input"); name.id="focus-name"; name.maxLength=120; name.value=f.name;
-      name.addEventListener("change",()=>focusSave(x=>{if(x.status==="ready")x.name=name.value.trim();}));
-      card.append(options,label,input,nameLabel,name,el("div","focus-clock",focusTime(f.remaining)),btn("Начать","button full",()=>{
+      const label=el("label","","Своя длительность"); label.htmlFor="focus-minutes";
+      const input=el("input"); input.id="focus-minutes"; input.type="number"; input.min="1"; input.max="180"; input.step="1"; input.inputMode="numeric"; input.value=f.minutes;
+      input.addEventListener("focus",()=>input.select());
+      const settings=el("div","focus-settings"); settings.hidden=!(focusCustomMode || ![5,15,25].includes(f.minutes));
+      const updatePresets=()=>options.querySelectorAll("button").forEach((button,i)=>{
+        const custom=focusCustomMode || ![5,15,25].includes(state.focus.minutes);
+        button.setAttribute("aria-pressed",String(i===3?custom:!custom&&state.focus.minutes===[5,15,25][i]));
+      });
+      const saveMinutes=()=>{
+        const n=Number(input.value);
+        input.setCustomValidity(/^\d+$/.test(input.value)&&Number.isInteger(n)&&n>=1&&n<=180?"":"Введи целое число от 1 до 180");
+        if(!input.checkValidity()) { settings.hidden=false; input.reportValidity(); return false; }
+        if(!focusSave(x=>{if(x.status==="ready"){x.minutes=n;x.remaining=n*60000;}}))return false;
+        clock.textContent=focusTime(n*60000); updatePresets(); return true;
+      };
+      for(const n of [5,15,25]) options.append(btn(n+" мин","button secondary",()=>{focusCustomMode=false;input.value=n;if(saveMinutes())settings.hidden=true;}));
+      options.append(btn("Своё","button secondary",()=>{focusCustomMode=true;input.value=state.focus.minutes;input.setCustomValidity("");updatePresets();settings.hidden=false;resizeName();input.focus();input.select();}));
+      updatePresets(); main.append(options);
+      input.addEventListener("input",()=>input.setCustomValidity(""));
+      const commitMinutes=()=>{focusCustomMode=true;settings.hidden=false;saveMinutes();updatePresets();};
+      input.addEventListener("change",commitMinutes);
+      input.addEventListener("blur",commitMinutes);
+      const nameLabel=el("label","","Название подхода · необязательно"); nameLabel.htmlFor="focus-name";
+      const name=el("textarea"); name.id="focus-name"; name.rows=1; name.maxLength=120; name.value=f.name; name.placeholder="Например: чтение, спорт, важный звонок";
+      const resizeName=()=>{if(!settings.hidden&&name.isConnected){name.style.height="auto";name.style.height=(name.scrollHeight+2)+"px";}};
+      name.addEventListener("input",resizeName);
+      requestAnimationFrame(resizeName);
+      name.addEventListener("change",()=>{focusSave(x=>{if(x.status==="ready")x.name=name.value.trim();});});
+      const minutesRow=el("div","focus-minutes-row"); minutesRow.append(input,el("span","","мин"));
+      settings.append(label,minutesRow,nameLabel,name);
+      card.append(settings,btn("Начать","button full",()=>{
         if(!card.isConnected || state.focus.status!=="ready")return;
-        saveMinutes(); if(!input.checkValidity())return;
+        if(!saveMinutes() || !card.isConnected)return;
         if(!focusSave(x=>{if(x.status==="ready")x.name=name.value.trim();}))return;
         primeAudio();focusAction("start",null);
-      }),el("p","","Не обязательно закончить всё. Просто начни с этого времени"));
+      }),el("p","focus-hint","Не обязательно закончить всё. Просто начни с этого времени"));
     } else {
-      if(f.name) card.append(el("p","treat-text",f.name));
-      card.append(el("div","focus-clock",focusTime(focusLeft(f))));
       const actions=el("div","focus-actions");
       if(f.status==="completed") {
-        card.append(el("h3","",f.natural?"Время завершено ✓":"Подход завершён. Можно вернуться позже"));
-        if(f.natural)card.append(el("p","",`Ты выделил ${f.minutes} минут на важное`));
-        for(const text of ["Ещё подход","Закрыть"])actions.append(btn(text,"button secondary",()=>focusAction("reset",f.id)));
+        card.append(el("h3","focus-result-text",f.natural?"Подход завершён":"Подход завершён. Можно вернуться позже"));
+        if(f.natural)card.append(el("p","focus-result-text",`Ты выделил ${f.minutes} минут на важное`));
+        actions.classList.add("focus-actions-completed");
+        actions.append(btn("Ещё подход","button secondary full",()=>focusAction("reset",f.id)));
       } else {
-        card.append(el("p","",f.status==="paused"?"На паузе":"Сейчас — только одно дело"));
+        card.append(el("p","focus-hint",f.status==="paused"?"На паузе":"Сейчас — только одно дело"));
         actions.append(btn(f.status==="paused"?"Продолжить":"Пауза","button secondary",()=>focusAction(f.status==="paused"?"resume":"pause",f.id)),btn("Завершить","button secondary",()=>focusAction("stop",f.id)));
       }
       card.append(actions);
@@ -3690,37 +4499,39 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
   function updateFocusMini() {
     const card=$("focus-card"), top=document.querySelector('.topbar').getBoundingClientRect().bottom;
     const active=["running","paused"].includes(state.focus.status);
-    const shifted=screen.style.transform ? 70 : 0;
-    const show=page==="day"&&card&&active&&card.getBoundingClientRect().bottom-shifted<=top;
+    const show=page==="day"&&card&&active&&card.getBoundingClientRect().bottom<=top;
     focusMini.hidden=!show; focusMini.style.top=top+"px";
-    // Push the visible content below both fixed panels, without changing layout height.
-    screen.style.transform=show?"translateY(70px)":"";
-    // Reserve vertical room while scrolling so the bar cannot cover controls.
-    screen.style.scrollMarginTop=(top+(show?70:12))+"px";
-    if(!show)return;
+    if(!show) {
+      document.documentElement.style.scrollPaddingTop=(top+12)+"px";
+      focusMini.replaceChildren();
+      return;
+    }
     const f=state.focus;
     const title=btn(f.name||"Время для важного","focus-mini-title",()=>card.scrollIntoView({block:"center"}));
     const time=el("span","focus-mini-time",focusTime(focusLeft(f)));
     focusMini.replaceChildren(title,time,btn(f.status==="paused"?"▶":"Ⅱ","button secondary",()=>focusAction(f.status==="paused"?"resume":"pause",f.id)));
     focusMini.lastChild.setAttribute("aria-label",f.status==="paused"?"Продолжить":"Пауза");
+    document.documentElement.style.scrollPaddingTop=(top+focusMini.getBoundingClientRect().height+12)+"px";
   }
   function focusTick() {
     if(!healthy)return;
     let f=state.focus;
     if(f.status==="running"&&focusLeft(f)===0) {
-      if(!focusSave(x=>{x.status="completed";x.remaining=0;x.endsAt=null;x.natural=true;}))return;
+      if(!focusSave(x=>{x.status="completed";x.remaining=0;x.endsAt=null;x.natural=true;x.name="";}))return;
       redrawFocus(); f=state.focus;
     }
     if(f.status==="completed"&&!f.notified&&!document.hidden) {
       if(focusSave(x=>{x.notified=true;})) {
-        tones([392,523.25],.22,.45,.045);
+        try { tones([392,523.25],.22,.45,.045); }
+        catch(error) { console.warn("Звук таймера недоступен:",error); }
         if(page!=="day") {
           document.querySelectorAll('.focus-result').forEach(x=>x.remove());
           const toast=el("div","self-toast focus-result");
           toast.style.pointerEvents="auto";
           toast.append(el("strong","","Время завершено ✓"),el("p","",`Ты выделил ${f.minutes} минут на важное`));
           for(const text of ["Ещё подход","Закрыть"])toast.append(btn(text,"button secondary",()=>{
-            focusAction("reset",f.id);toast.remove();if(text==="Ещё подход")go("day");
+            toast.remove();
+            if(text==="Ещё подход") { focusAction("reset",f.id); go("day"); }
           }));
           toast.setAttribute("role","status");document.body.append(toast);
         }
@@ -3728,6 +4539,8 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
     }
     const clock=$("focus-card")?.querySelector('.focus-clock');
     if(clock && state.focus.status!=="ready")clock.textContent=focusTime(focusLeft(state.focus));
+    const progress=$("focus-card")?.querySelector('.focus-progress');
+    if(progress)updateFocusProgress(progress,state.focus);
     const miniTime=focusMini.querySelector('.focus-mini-time'); if(miniTime)miniTime.textContent=focusTime(focusLeft(state.focus));
   }
   window.addEventListener("scroll",updateFocusMini,{passive:true});
@@ -3736,8 +4549,176 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
   window.addEventListener("pageshow",focusTick);
   setInterval(focusTick,1000);
 
+  function seedDemoTreatsOnce() {
+    const markerKey = "lifegame-demo-treats-v1";
+
+    if (!healthy) return;
+
+    try {
+      if (localStorage.getItem(markerKey) === "done") {
+        return;
+      }
+    } catch (error) {
+      console.warn(
+        "Демонстрационные ништяки не добавлены: " +
+        "не удалось прочитать служебную отметку.",
+        error
+      );
+      return;
+    }
+
+    const examples = [
+      {
+        id: "lifegame-demo-treat-v1-01",
+        name: "Прогулка без телефона",
+        description:
+          "Выйди ненадолго на улицу. Посмотри на небо, " +
+          "деревья и дома. Никуда не нужно успевать.",
+        duration: 15,
+        category: "Движение",
+        favorite: false
+      },
+      {
+        id: "lifegame-demo-treat-v1-02",
+        name: "Потанцевать под любимую песню",
+        description:
+          "Включи трек, от которого хочется двигаться. " +
+          "Танцуй как получается — зрителей и оценок нет.",
+        duration: 5,
+        category: "Движение",
+        favorite: false
+      },
+      {
+        id: "lifegame-demo-treat-v1-03",
+        name: "Чай в тишине",
+        description:
+          "Приготовь любимый чай или другой напиток. " +
+          "Побудь с ним без ленты новостей и рабочих дел.",
+        duration: 10,
+        category: "Спокойствие",
+        favorite: false
+      },
+      {
+        id: "lifegame-demo-treat-v1-04",
+        name: "Посидеть у окна и ничего не решать",
+        description:
+          "Устройся поудобнее и просто посмотри наружу. " +
+          "Эту паузу не нужно превращать в полезное занятие.",
+        duration: 5,
+        category: "Спокойствие",
+        favorite: false
+      },
+      {
+        id: "lifegame-demo-treat-v1-05",
+        name: "Послушать любимый альбом",
+        description:
+          "Выбери музыку под настроение. Можно закрыть " +
+          "глаза, полежать или подпевать.",
+        duration: null,
+        category: "Удовольствие",
+        favorite: false
+      },
+      {
+        id: "lifegame-demo-treat-v1-06",
+        name: "Почитать что-нибудь для удовольствия",
+        description:
+          "Открой рассказ, комикс или любимую книгу. " +
+          "Без нормы страниц, конспекта и обязательств.",
+        duration: 20,
+        category: "Удовольствие",
+        favorite: false
+      },
+      {
+        id: "lifegame-demo-treat-v1-07",
+        name: "Написать близкому человеку",
+        description:
+          "Отправь тёплое сообщение, смешную картинку " +
+          "или простое «Как ты?». Не требуй немедленного ответа.",
+        duration: 5,
+        category: "Общение",
+        favorite: false
+      },
+      {
+        id: "lifegame-demo-treat-v1-08",
+        name: "Позвонить тому, с кем хорошо",
+        description:
+          "Если обоим удобно, поболтайте без повестки " +
+          "и необходимости решать какие-то вопросы.",
+        duration: 15,
+        category: "Общение",
+        favorite: false
+      },
+      {
+        id: "lifegame-demo-treat-v1-09",
+        name: "Порисовать без цели",
+        description:
+          "Возьми бумагу и ручку. Рисуй линии, узоры " +
+          "или забавных существ. Красиво получаться не обязано.",
+        duration: 10,
+        category: "Другое",
+        favorite: false
+      },
+      {
+        id: "lifegame-demo-treat-v1-10",
+        name: "Посмотреть фотографии приятного дня",
+        description:
+          "Найди несколько снимков, с которыми связаны " +
+          "хорошие воспоминания. Побудь в этом настроении.",
+        duration: 10,
+        category: "Другое",
+        favorite: false
+      }
+    ];
+
+    // Стабильные ID предотвращают дубли даже при повторном
+    // запуске после ошибки записи служебной отметки.
+    // Использованные, но удалённые примеры не восстанавливаем.
+    const knownIds = new Set([
+      ...state.treats.map(item => item.id),
+      ...state.treatUses.map(use => use.treatId)
+    ]);
+
+    const missing = examples.filter(
+      item => !knownIds.has(item.id)
+    );
+
+    let saved = true;
+
+    if (missing.length) {
+      saved = treatChange(data => {
+        const existing = new Set([
+          ...data.treats.map(item => item.id),
+          ...data.treatUses.map(use => use.treatId)
+        ]);
+
+        for (const item of missing) {
+          if (!existing.has(item.id)) {
+            data.treats.push({ ...item });
+            existing.add(item.id);
+          }
+        }
+      });
+    }
+
+    // Отметку ставим только после успешного сохранения.
+    if (!saved) return;
+
+    try {
+      localStorage.setItem(markerKey, "done");
+    } catch (error) {
+      console.warn(
+        "Не удалось сохранить служебную отметку " +
+        "демонстрационных ништяков.",
+        error
+      );
+    }
+  }
+
   // Инициализация только после объявления всех переменных.
-  if (loadLatest()) syncDay();
+  if (loadLatest()) {
+    syncDay();
+    seedDemoTreatsOnce();
+  }
   render();
 })();
 </script>
