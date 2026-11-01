@@ -620,7 +620,7 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
 
 
 /* Compact shared interface; no title truncation. */
-.home-primary {display:flex;flex-direction:column;gap:6px;min-height:76px;margin-top:10px;background:#211e0d;color:var(--accent);border:1px solid var(--accent)}
+.home-primary {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:100%;min-width:0;min-height:76px;margin-top:10px;background:#211e0d;color:var(--accent);border:1px solid var(--accent);text-align:center}
 .home-status{font-size:13px;font-weight:400;color:var(--muted)}
 .settings-link{margin-top:10px;min-height:44px}
 .hero{padding-top:0}.motivation{margin-bottom:12px}
@@ -1158,6 +1158,368 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
   }
 }
 </style>
+<style>
+.widgets-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 18px 0 12px;
+}
+.widgets-toolbar h2 {
+  margin: 0;
+  font-size: 17px;
+}
+.widgets-count {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.widgets-empty {
+  margin-top: 16px;
+  padding: 26px 18px;
+  border: 1px dashed #ffda2945;
+  border-radius: 16px;
+  background: linear-gradient(150deg, #211e0f, #141413 65%);
+  text-align: center;
+}
+.widgets-empty-symbol {
+  color: var(--accent);
+  font-size: 36px;
+  line-height: 1;
+}
+.widgets-empty h2 {
+  margin: 16px 0 8px;
+  font-size: 20px;
+}
+.widgets-empty p {
+  margin: 0 0 18px;
+  font-size: 14px;
+}
+.widget-catalog-card {
+  padding: 18px;
+  border: 1px solid #ffda2945;
+  border-radius: 16px;
+  background: linear-gradient(150deg, #24200f, #141413 65%);
+}
+.widget-catalog-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.widget-symbol {
+  display: grid;
+  place-items: center;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  border: 1px solid #ffda2938;
+  border-radius: 12px;
+  background: #ffda290a;
+  color: var(--accent);
+  font-size: 25px;
+}
+.widget-catalog-title {
+  flex: 1;
+  min-width: 0;
+}
+.widget-catalog-title h2 {
+  margin: 0 0 5px;
+  font-size: 18px;
+}
+.widget-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.widget-catalog-description {
+  margin: 14px 0 8px;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.45;
+}
+.widget-catalog-note {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.widget-primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #111108;
+}
+.widget-primary:active:not(:disabled) {
+  background: #ebc817;
+}
+.widget-instance {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--card);
+}
+.widget-instance-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.widget-instance-head h2 {
+  min-width: 0;
+  margin: 0;
+  font-size: 17px;
+}
+.widget-controls {
+  display: grid;
+  grid-template-columns: 44px 44px minmax(0, 1fr);
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.widget-controls .button {
+  min-width: 0;
+  padding: 8px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.widget-instance, .widget-catalog-card { overflow-wrap: anywhere; }
+.widget-instance-head, .widget-catalog-head { flex-wrap: wrap; }
+.widget-instance .widget-focus-content { border: 0; background: transparent; padding: 0; margin: 0; box-shadow: none; }
+.widget-instance .widget-key-content { border: 0; background: transparent; padding: 0; margin: 0; }
+.widget-instance-head h2 .key-heading { padding: 0; font-size: inherit; }
+.widget-day-toggle { display: flex; align-items: center; gap: 10px; min-height: 44px; margin-top: 12px; }
+.widget-day-toggle input, .widget-catalog-filters input { width: 22px; height: 22px; flex-shrink: 0; }
+.widget-catalog-filters { display: grid; gap: 10px; margin: 16px 0; min-width: 0; }
+.widget-catalog-filters select { min-width: 0; width: 100%; min-height: 44px; }
+.widget-catalog-filters label { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.widget-instance button, .widget-catalog-card button { min-height: 44px; min-width: 44px; white-space: normal; overflow-wrap: anywhere; }
+</style>
+<style>
+.key-actions { background: var(--card); border: 1px solid #ffda2970; padding: 14px; border-radius: 12px; margin-bottom: 18px; min-width: 0; overflow-wrap: anywhere; }
+.key-panel { min-width: 0; overflow-wrap: anywhere; }
+.key-panel button, .key-panel summary { min-height: 44px; }
+.key-panel .button { white-space: normal; max-width: 100%; }
+.key-panel summary { cursor: pointer; padding: 12px 0; }
+.key-heading, .key-row { color: inherit; background: transparent; border: 0; width: 100%; text-align: left; cursor: pointer; padding: 10px 0; }
+.key-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--accent); font: inherit; font-weight: 700; }
+.key-total { font-size: 30px; font-weight: 700; margin: 10px 0 0; }
+.key-caption { color: var(--muted); margin: 4px 0 14px; }
+.key-row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 6px 12px; font: inherit; border-top: 1px solid #ffffff12; }
+.key-row-name { min-width: 0; overflow-wrap: anywhere; }
+.key-row-meta { color: var(--muted); grid-column: 1; }
+.key-arrow { grid-column: 2; grid-row: 1 / 3; align-self: center; color: var(--accent); }
+.key-progress { grid-column: 1 / -1; width: 100%; height: 3px; border: 0; appearance: none; background: #ffffff18; accent-color: var(--accent); }
+.key-progress::-webkit-progress-bar { background: #ffffff18; border-radius: 3px; }
+.key-progress::-webkit-progress-value { background: var(--accent); border-radius: 3px; }
+.key-progress::-moz-progress-bar { background: var(--accent); }
+.key-dialog { background: var(--card); color: var(--text); border: 1px solid #ffda2970; border-radius: 12px; width: min(520px, calc(100% - 32px)); box-sizing: border-box; }
+.key-title-row, .key-entry { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-width: 0; }
+.key-title-row h2 { min-width: 0; overflow-wrap: anywhere; }
+.key-more { flex: 0 0 44px; min-width: 44px; min-height: 44px; }
+.key-panel button:focus-visible, .key-panel summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.key-total-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin: 4px 0 12px;
+}
+.key-total-label {
+  color: var(--muted);
+  font-size: 13px;
+}
+.key-total-value {
+  color: var(--accent);
+  font-size: 20px;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.key-quick-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  align-items: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px 0;
+  border-top: 1px solid #ffffff12;
+}
+.key-quick-row .key-quick-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+  gap: 5px;
+  padding: 0;
+  border: 0;
+}
+.key-quick-main .key-row-name {
+  font-weight: 650;
+  line-height: 1.35;
+}
+.key-quick-main .key-row-meta {
+  font-size: 13px;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+}
+.key-quick-row .key-quick-add {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  font-size: 23px;
+  line-height: 1;
+}
+.key-manage-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  border-top: 1px solid #ffffff12;
+}
+.key-manage-row > .key-row {
+  min-width: 0;
+  border-top: 0;
+}
+.key-order-controls {
+  display: grid;
+  grid-template-columns: 44px 44px;
+  gap: 4px;
+}
+.key-order-controls .button {
+  width: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  font-size: 20px;
+}
+@media (max-width: 350px) {
+  .key-order-controls {
+    grid-template-columns: 44px;
+  }
+}
+</style>
+<style>
+.ai-preview-entry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  margin-top: 10px;
+  border-color: var(--border);
+  background: var(--card);
+  color: var(--text);
+  text-align: left;
+}
+.ai-preview-symbol {
+  color: var(--accent);
+  font-size: 21px;
+}
+.ai-preview-entry-title {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.ai-preview-badge {
+  display: inline-block;
+  flex-shrink: 0;
+  padding: 4px 8px;
+  border: 1px solid #ffda2940;
+  border-radius: 20px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.ai-preview-arrow {
+  color: var(--muted);
+  font-size: 21px;
+}
+.ai-preview-page {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.ai-preview-intro {
+  padding: 16px 0 20px;
+}
+.ai-preview-headline {
+  margin: 18px 0 12px;
+  font-size: 24px;
+  line-height: 1.25;
+}
+.ai-preview-intro > p {
+  font-size: 14px;
+}
+.ai-preview-page .ai-preview-notice {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.ai-preview-demo {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+.ai-preview-demo-title {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.ai-preview-message {
+  width: fit-content;
+  max-width: 92%;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+}
+.ai-preview-message-user {
+  justify-self: end;
+  border-color: #ffda2940;
+  background: #ffda290b;
+}
+.ai-preview-message-assistant {
+  justify-self: start;
+}
+.ai-preview-message-author {
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+.ai-preview-message p {
+  margin: 0;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+.ai-preview-footer {
+  margin-top: 20px;
+}
+.ai-preview-placeholder {
+  padding: 14px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
+}
+</style>
 </head>
 <body>
 <div class="app">
@@ -1282,11 +1644,67 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
   let effectRunning = false;
   let effectTimer = null;
 
+  // Реестр содержит описание и рендереры, но не пользовательские данные.
+  // Для готового виджета: available=true и render — функция,
+  // возвращающая DOM-узел. Сохранение содержит только его стабильный ID.
+  const WIDGET_REGISTRY = Object.freeze({
+    keyActions: Object.freeze({
+      id: "keyActions",
+      title: "Ключевые действия",
+      symbol: "◎",
+      description: "До трёх главных действий и время, уделённое им.",
+      note: "Ручной учёт времени. Действия сохраняются до завершения.",
+      category: "Фокус и время",
+      system: true,
+      available: true,
+      placements: Object.freeze(["widgets", "day"]),
+      render: () => keySection(true)
+    }),
+    focus: Object.freeze({
+      id: "focus",
+      title: "Время для важного",
+      symbol: "⏱",
+      description: "Самостоятельный таймер для подходов к важному.",
+      note: "Без наград и автоматического учёта ключевых действий.",
+      category: "Фокус и время",
+      system: true,
+      available: true,
+      placements: Object.freeze(["widgets", "day"]),
+      render: () => focusCard(true)
+    }),
+    challenge: Object.freeze({
+      id: "challenge",
+      title: "Вызов себе",
+      symbol: "🔥",
+      description: "Один вызов. Один срок. Твой ход.",
+      note: "Дело, срок и добровольная ставка на своё решение.",
+      category: "Вызовы и цели",
+      system: false,
+      available: false,
+      placements: Object.freeze(["widgets"]),
+      render: null
+    })
+  });
+
+  function widgetDefinition(id) {
+    return Object.hasOwn(WIDGET_REGISTRY, id)
+      ? WIDGET_REGISTRY[id]
+      : null;
+  }
+
+  function widgetAvailable(definition) {
+    return !!definition &&
+      definition.available === true &&
+      typeof definition.render === "function";
+  }
+
   function emptyState() {
     return {
       soundEnabled: true,
       motivationEnabled: true,
       motivationText: "",
+      widgets: { version: 3, items: [{ id: "keyActions", placement: "widgets", showInDay: true }, { id: "focus", placement: "widgets", showInDay: true }], favorites: [] },
+      keyActions: { version: 1, actions: [], conditions: [], entries: [] },
       blocks: DEFAULT_NAMES.map((name, index) => ({
         id: "block-" + index, name
       })),
@@ -1386,6 +1804,9 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
     }
 
     const data = clone(raw);
+    normalizeKeyActions(data);
+
+    normalizeWidgets(data);
     if (data.motivationEnabled === undefined) data.motivationEnabled = true;
     if (data.motivationText === undefined) data.motivationText = "";
     if (typeof data.motivationEnabled !== "boolean" ||
@@ -3413,6 +3834,119 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
 
   $("edit-motivation").addEventListener("click", editMotivation);
 
+  function aiPreviewEntry() {
+    const button = btn(
+      "",
+      "button full ai-preview-entry",
+      () => go("aiPreview")
+    );
+    const symbol = el("span", "ai-preview-symbol", "✦");
+    symbol.setAttribute("aria-hidden", "true");
+    const arrow = el("span", "ai-preview-arrow", "›");
+    arrow.setAttribute("aria-hidden", "true");
+    button.append(
+      symbol,
+      el("span", "ai-preview-entry-title", "ИИ-помощник"),
+      el("span", "ai-preview-badge", "Скоро"),
+      arrow
+    );
+    button.setAttribute(
+      "aria-label",
+      "ИИ-помощник — скоро. Посмотреть анонс"
+    );
+    return button;
+  }
+
+  function renderAiPreview() {
+    screen.append(
+      btn("← Герой", "back", () => go("hero")),
+      el("h1", "", "ИИ-ПОМОЩНИК")
+    );
+
+    const intro = el("section", "ai-preview-intro");
+    intro.append(
+      el("span", "ai-preview-badge", "Скоро в LifeGame"),
+      el(
+        "h2",
+        "ai-preview-headline",
+        "Твои цели, планы и следующий шаг — в одном месте."
+      ),
+      el(
+        "p",
+        "",
+        "Мы готовим ИИ-помощника для организации жизни. " +
+        "Здесь можно будет обсудить, что важно, и превратить мысли " +
+        "в понятный план действий."
+      ),
+      el(
+        "p",
+        "ai-preview-notice",
+        "ИИ пока не подключён. Ниже — только демонстрационный " +
+        "пример, а не настоящая переписка."
+      )
+    );
+
+    const demo = el("section", "ai-preview-demo");
+    const heading = el("h2", "ai-preview-demo-title", "Пример будущего диалога");
+    heading.id = "ai-preview-demo-title";
+    demo.setAttribute("aria-labelledby", heading.id);
+    demo.append(heading);
+
+    const messages = [
+      {
+        role: "user",
+        text: "У меня много планов, но я не понимаю, за что взяться."
+      },
+      {
+        role: "assistant",
+        text: "Давай начнём с главного. Что сейчас важнее: " +
+          "закончить срочное дело, продвинуть большую цель " +
+          "или восстановить силы?"
+      },
+      {
+        role: "user",
+        text: "Хочу продвинуть свою книгу, но на неё не остаётся времени."
+      },
+      {
+        role: "assistant",
+        text: "Как насчёт одного конкретного шага: написать сцену " +
+          "знакомства героев? Выбери посильный подход, а время можно " +
+          "отметить в «Ключевых действиях»."
+      }
+    ];
+
+    for (const message of messages) {
+      const bubble = el(
+        "div",
+        "ai-preview-message ai-preview-message-" + message.role
+      );
+      bubble.append(
+        el(
+          "div",
+          "ai-preview-message-author",
+          message.role === "user" ? "Ты · пример" : "ИИ-помощник · пример"
+        ),
+        el("p", "", message.text)
+      );
+      demo.append(bubble);
+    }
+
+    const footer = el("div", "ai-preview-footer");
+    footer.append(
+      el(
+        "p",
+        "ai-preview-notice",
+        "Это демонстрация. Сообщения не отправляются. " +
+        "Функция ещё не доступна."
+      ),
+      el("div", "ai-preview-placeholder", "Чат появится позже")
+    );
+
+    const content = el("div", "ai-preview-page");
+    content.append(intro, demo, footer);
+    screen.append(content);
+  }
+
   function renderHero() {
     const hero = el("section", "hero");
     const progress = view.money.earned % LEVEL_COST;
@@ -3428,11 +3962,916 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
     const primary=(title,status,action)=>{const b=btn("","button full home-primary",action);b.append(el("span","",title));if(status)b.append(el("span","home-status",status));return b;};
     const count=state.calendarEntries.filter(x=>x.date===today()).length;
     screen.append(hero,
-      primary("Конструктор дня →",`План заданий: ${view.plannedDone.length} из ${view.planned.length}`,()=>go("day")),
+      primary("Конструктор дня","",()=>go("day")),
       primary("Календарь",count?`Сегодня записей: ${count}`:"",()=>go("calendar")),
+      aiPreviewEntry(),
       btn("Ништяки","button secondary full spaced",()=>go("treats")),
+      btn("Мои виджеты","button secondary full spaced",()=>go("widgets")),
       btn("Итоги дня","button secondary full spaced",()=>go("summary")),
-      btn("⚙ Настройки","button secondary full settings-link",()=>settings.showModal()));
+      btn("Настройки","button secondary full settings-link",()=>settings.showModal()));
+  }
+
+  function keyMinutes(data, id, date) {
+    return sum(data.keyActions.entries.filter(x =>
+      (id === null || x.actionId === id) && (date === undefined || x.date === date)), "minutes");
+  }
+
+  function keyCondition(data, action, date, save = false) {
+    const found = data.keyActions.conditions.find(x => x.actionId === action.id && x.date === date);
+    if (found) return found;
+    const value = { actionId: action.id, date, minutes: action.minutes, reward: action.reward };
+    if (save) data.keyActions.conditions.push(value);
+    return value;
+  }
+
+  function normalizeKeyActions(data) {
+    if (data.keyActions === undefined) data.keyActions = { version: 1, actions: [], conditions: [], entries: [] };
+    const k = data.keyActions;
+    const bad = () => fail("Повреждены данные ключевых действий. Данные не очищены.");
+    const object = x => x && typeof x === "object" && !Array.isArray(x);
+    const iso = x => typeof x === "string" && Number.isFinite(Date.parse(x)) && new Date(x).toISOString() === x;
+    const local = x => typeof x === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(x) && validDate(x.slice(0, 10)) && +x.slice(11, 13) < 24 && +x.slice(14, 16) < 60 && +x.slice(17) < 60;
+    if (!object(k) || k.version !== 1 || ![k.actions, k.conditions, k.entries].every(Array.isArray)) bad();
+    const actions = new Map(), ids = new Set(), conditions = new Map(), minutes = new Map();
+    for (const a of k.actions) {
+      if (!object(a) || !validId(a.id) || actions.has(a.id) || !validName(a.name) ||
+          typeof a.meaning !== "string" || a.meaning.length > 300 ||
+          typeof a.criterion !== "string" || !a.criterion.trim() || a.criterion.length > 300 ||
+          !integer(a.minutes, 1, 180) || !integer(a.reward, 0, 100000) || !iso(a.createdAt) ||
+          !local(a.createdLocal) || !["active", "completed", "archived"].includes(a.status) ||
+          (a.deleted !== undefined && typeof a.deleted !== "boolean") ||
+          (a.deleted === true && a.status === "active") ||
+          (a.status === "active" ? a.closedAt !== null : !local(a.closedAt))) bad();
+      actions.set(a.id, a);
+    }
+    if (k.actions.filter(x => x.status === "active").length > 3) bad();
+    const pair = (id, date) => JSON.stringify([id, date]);
+    // Местные даты не задают надёжную хронологию при смене часов/пояса.
+    // Статус и доступность записи проверяются внутри пользовательских транзакций.
+    const inLifetime = (a, date) => !!a && validDate(date);
+    for (const c of k.conditions) {
+      if (!object(c) || !inLifetime(actions.get(c.actionId), c.date) ||
+          !integer(c.minutes, 1, 180) || !integer(c.reward, 0, 100000)) bad();
+      const key = pair(c.actionId, c.date);
+      if (conditions.has(key)) bad();
+      conditions.set(key, c);
+    }
+    let total = 0;
+    for (const e of k.entries) {
+      if (!object(e) || !validId(e.id) || ids.has(e.id) || !inLifetime(actions.get(e.actionId), e.date) ||
+          !integer(e.minutes, 1, 180) || !iso(e.createdAt) || !conditions.has(pair(e.actionId, e.date))) bad();
+      ids.add(e.id);
+      total += e.minutes;
+      if (!Number.isSafeInteger(total)) bad();
+      if (actions.get(e.actionId).deleted === true) continue;
+      const key = pair(e.actionId, e.date);
+      minutes.set(key, (minutes.get(key) || 0) + e.minutes);
+    }
+    const paid = new Set();
+    let rewards = 0;
+    for (const r of data.completions) {
+      if (!r || (r.keyActionId === undefined && r.keyActionDate === undefined &&
+          !(typeof r.taskId === "string" && r.taskId.startsWith("key-action-day:")))) continue;
+      const key = pair(r.keyActionId, r.keyActionDate), c = conditions.get(key);
+      if (!c || r.taskId !== `key-action-day:${r.keyActionId}:${r.keyActionDate}` ||
+          r.date !== r.keyActionDate || r.reward !== c.reward || c.reward === 0 ||
+          (actions.get(c.actionId).deleted !== true && (minutes.get(key) || 0) < c.minutes) || paid.has(key)) bad();
+      paid.add(key);
+      rewards += r.reward;
+      if (!Number.isSafeInteger(rewards)) bad();
+    }
+    for (const [key, c] of conditions) {
+      if (actions.get(c.actionId).deleted === true) continue;
+      if (((minutes.get(key) || 0) >= c.minutes && c.reward > 0) !== paid.has(key)) bad();
+    }
+    // Согласованная миграция прежнего скрытия: время удаляется, выплаты не меняются.
+    k.entries = k.entries.filter(e => actions.get(e.actionId).deleted !== true);
+  }
+
+  function keyLocalNow() {
+    const d = new Date();
+    return dateKey(d) + "T" + [d.getHours(), d.getMinutes(), d.getSeconds()].map(x => String(x).padStart(2, "0")).join(":");
+  }
+
+  function keyActive(data, id) {
+    const a = data.keyActions.actions.find(x => x.id === id);
+    if (!a || a.deleted === true || a.status !== "active") fail("Действие уже закрыто или недоступно.");
+    return a;
+  }
+
+  function keyReconcile(data, a, date) {
+    keyActive(data, a.id);
+    const c = keyCondition(data, a, date, true);
+    const taskId = `key-action-day:${a.id}:${date}`;
+    if (keyMinutes(data, a.id, date) >= c.minutes && c.reward > 0) {
+      if (!data.completions.some(x => x.taskId === taskId)) addRecord(data, taskId, c.reward, { keyActionId: a.id, keyActionDate: date, date });
+    } else data.completions = data.completions.filter(x => x.taskId !== taskId);
+  }
+
+  function keyEdit(id = null) {
+    const a = id === null ? null : state.keyActions.actions.find(x => x.id === id && x.deleted !== true && x.status === "active");
+    if (id !== null && !a) return;
+    keySuspend(editor);
+    openForm(a ? "Редактировать действие" : "Ключевое действие", [
+      { key: "name", label: "Название", maxLength: 120, value: a?.name },
+      { key: "meaning", label: "Ради чего", type: "textarea", required: false, maxLength: 300, value: a?.meaning },
+      { key: "criterion", label: "Завершено, когда", type: "textarea", maxLength: 300, value: a?.criterion },
+      { key: "minutes", label: "Дневной ориентир, мин", type: "number", min: 1, max: 180, step: 1, value: a?.minutes ?? 45 },
+      { key: "reward", label: "Награда, монет", type: "number", min: 0, max: 100000, step: 1, value: a?.reward ?? 0,
+        hint: a ? "Ориентир и награда изменятся со следующего дня." : "" }
+    ], values => transact(data => {
+      if (id !== null) {
+        const current = keyActive(data, id);
+        keyCondition(data, current, today(), true);
+        Object.assign(current, values);
+      } else {
+        if (data.keyActions.actions.filter(x => x.status === "active").length >= 3) fail("Можно выбрать не больше трёх активных действий.");
+        data.keyActions.actions.push({ ...values, id: uid(), createdAt: new Date().toISOString(), createdLocal: keyLocalNow(), status: "active", closedAt: null });
+      }
+    }, false), a ? "Сохранить" : "Создать");
+  }
+
+  function keyTime(id, entryId = null) {
+    const date = today();
+    const entry = state.keyActions.entries.find(x => x.id === entryId);
+    const selected = state.keyActions.actions.find(
+      x => x.id === id && x.deleted !== true && x.status === "active"
+    );
+    if (!selected) return;
+    keySuspend(editor);
+    openForm("Записать время — " + selected.name, [
+      { key: "minutes", label: "Минуты", type: "number", min: 1, max: 180, step: 1, value: entry?.minutes ?? 25 }
+    ], values => transact(data => {
+      const a = keyActive(data, id);
+      if (today() !== date) fail("Наступил новый день. Открой форму заново.");
+      keyCondition(data, a, date, true);
+      if (entryId !== null) {
+        const e = data.keyActions.entries.find(x => x.id === entryId && x.actionId === id && x.date === date);
+        if (!e) fail("Запись больше недоступна.");
+        e.minutes = values.minutes;
+      } else data.keyActions.entries.push({ id: uid(), actionId: id, date, minutes: values.minutes, createdAt: new Date().toISOString() });
+      keyReconcile(data, a, date);
+    }, false), "Сохранить");
+  }
+
+  function keyClose(id, status) {
+    if (!confirm(status === "completed"
+      ? "Результат достигнут? Действие уйдёт в историю, а место освободится."
+      : "Убрать без завершения? Записанное время и полученные монеты сохранятся.")) return;
+    const saved = transact(data => { const a = keyActive(data, id); a.status = status; a.closedAt = keyLocalNow(); }, false);
+    if (saved) keyRoute = { id: null };
+  }
+
+  function keyDuration(n) {
+    return n < 60 ? `${n} мин` : `${Math.floor(n / 60)} ч` + (n % 60 ? ` ${n % 60} мин` : "");
+  }
+
+  function keyDelete(id) {
+    const a = state.keyActions.actions.find(x => x.id === id && x.deleted !== true);
+    if (!a) return;
+    if (!confirm(`Удалить „${a.name}“ и всё записанное для него время?\nДействие исчезнет из списка и истории.\nЗаработанные монеты сохранятся.\nВернуть действие и время через интерфейс будет нельзя.`)) return;
+    const saved = transact(data => {
+      const current = data.keyActions.actions.find(x => x.id === id && x.deleted !== true);
+      if (!current) fail("Действие уже удалено или недоступно.");
+      current.deleted = true;
+      if (current.status === "active") {
+        current.status = "archived";
+        current.closedAt = keyLocalNow();
+      }
+      data.keyActions.entries = data.keyActions.entries.filter(x => x.actionId !== id);
+    }, false);
+    if (saved) keyShow();
+  }
+
+  function keyDeleteAll() {
+    if (prompt("Будут удалены все ключевые действия из активных и истории,\nа также всё записанное для них время за все дни.\nЗаработанные монеты и остальные данные LifeGame сохранятся.\nДля подтверждения введи УДАЛИТЬ:") !== "УДАЛИТЬ") return;
+    const saved = transact(data => {
+      for (const a of data.keyActions.actions) {
+        a.deleted = true;
+        if (a.status === "active") {
+          a.status = "archived";
+          a.closedAt = keyLocalNow();
+        }
+      }
+      data.keyActions.entries = [];
+    }, false);
+    if (saved) keyShow();
+  }
+
+  const keyExpanded = new Set();
+  let keyDialog = null, keyRoute = null, keyPending = null, keyFocus = null;
+
+  function keySuspend(target) {
+    if (!keyRoute) return;
+    keyPending = { target, route: { ...keyRoute } };
+    if (keyDialog?.open) keyDialog.close();
+    if (!healthy && target === editor) { keyPending = null; keyShow(keyRoute.id); }
+  }
+
+  function keyReturn(event) {
+    if (!keyPending || keyPending.target !== event.target || event.target.open) return;
+    const route = keyRoute || keyPending.route;
+    keyPending = null;
+    keyShow(route.id);
+  }
+
+  function keyMenu(title, actions) {
+    keySuspend(menu);
+    openMenu(title, actions.map(action => ({ ...action, run: () => {
+      keyPending = null;
+      action.run();
+      if (!editor.open && !menu.open && keyRoute) keyShow(keyRoute.id);
+    } })));
+  }
+
+  function keyShow(id = null) {
+    if (!keyDialog) {
+      keyDialog = el("dialog", "key-dialog key-panel");
+      keyDialog.setAttribute("aria-labelledby", "key-dialog-title");
+      document.body.append(keyDialog);
+      keyDialog.addEventListener("cancel", () => { keyRoute = null; keyPending = null; });
+      keyDialog.addEventListener("close", () => {
+        if (keyDialog.open || keyPending || keyRoute) return;
+        if (keyFocus?.isConnected) keyFocus.focus();
+        else document.querySelector(".key-manage-button")?.focus();
+      });
+      editor.addEventListener("close", keyReturn);
+      menu.addEventListener("close", keyReturn);
+    }
+    if (!keyRoute) keyFocus = document.activeElement;
+    keyRoute = { id };
+    keySync();
+    if (!keyDialog.open) keyDialog.showModal();
+    keyDialog.querySelector("h2")?.focus();
+  }
+
+  function keyExit() {
+    keyRoute = null;
+    keyPending = null;
+    keyDialog.close();
+  }
+
+  function keyProgress(n, minutes) {
+    const p = el("progress", "key-progress");
+    p.max = 100; p.value = Math.max(0, Math.min(100, n / minutes * 100));
+    p.setAttribute("aria-label", "Дневной ориентир");
+    return p;
+  }
+
+  function keyRow(a, quick = false) {
+    const row = btn("", "key-row", () => keyShow(a.id));
+    row.append(el("span", "key-row-name", a.name));
+
+    if (a.status === "active") {
+      const c = keyCondition(state, a, today());
+      const n = keyMinutes(state, a.id, today());
+      const meta = el(
+        "span",
+        "key-row-meta",
+        `${keyDuration(n)} / ${keyDuration(c.minutes)}`
+      );
+
+      if (n >= c.minutes) {
+        const check = el("span", "", " ✓");
+        check.setAttribute("aria-label", "Ориентир выполнен");
+        check.title = "Ориентир выполнен";
+        meta.append(check);
+      }
+
+      row.append(meta, keyProgress(n, c.minutes));
+    } else {
+      row.append(el(
+        "span",
+        "key-row-meta",
+        `${a.status === "completed" ? "Завершено" : "Убрано без завершения"} · ${a.closedAt.replace("T", " ")} · Всего: ${keyDuration(keyMinutes(state, a.id))}`
+      ));
+    }
+
+    if (!quick || a.status !== "active") {
+      const arrow = el("span", "key-arrow", "›");
+      arrow.setAttribute("aria-hidden", "true");
+      row.append(arrow);
+      return row;
+    }
+
+    row.classList.add("key-quick-main");
+    row.setAttribute("aria-label", "Открыть действие: " + a.name);
+
+    const add = btn(
+      "＋",
+      "button key-quick-add",
+      () => {
+        // Прямой ввод из Конструктора не имеет маршрута
+        // возврата во внутренние окна раздела.
+        keyRoute = null;
+        keyPending = null;
+        keyTime(a.id);
+      },
+      true
+    );
+    add.setAttribute("aria-label", "Записать время: " + a.name);
+    add.title = "Записать время";
+
+    const wrap = el("div", "key-quick-row");
+    wrap.append(row, add);
+    return wrap;
+  }
+
+  function keyMove(id, direction) {
+    if (direction !== -1 && direction !== 1) return false;
+
+    return transact(data => {
+      keyActive(data, id);
+
+      const indexes = [];
+      data.keyActions.actions.forEach((a, index) => {
+        if (a.deleted !== true && a.status === "active") {
+          indexes.push(index);
+        }
+      });
+
+      const position = indexes.findIndex(
+        index => data.keyActions.actions[index].id === id
+      );
+      if (position < 0) fail("Активное действие не найдено.");
+
+      const target = position + direction;
+      if (target < 0 || target >= indexes.length) return;
+
+      const fromIndex = indexes[position];
+      const toIndex = indexes[target];
+      [data.keyActions.actions[fromIndex], data.keyActions.actions[toIndex]] =
+        [data.keyActions.actions[toIndex], data.keyActions.actions[fromIndex]];
+    }, false, true);
+  }
+
+  function keyManageRow(a, index, total) {
+    const wrap = el("div", "key-manage-row");
+    const controls = el("div", "key-order-controls");
+
+    const up = btn(
+      "↑",
+      "button secondary key-more",
+      () => keyMove(a.id, -1),
+      true
+    );
+    up.disabled = !healthy || index === 0;
+    up.setAttribute("aria-label", "Выше: " + a.name);
+
+    const down = btn(
+      "↓",
+      "button secondary key-more",
+      () => keyMove(a.id, 1),
+      true
+    );
+    down.disabled = !healthy || index === total - 1;
+    down.setAttribute("aria-label", "Ниже: " + a.name);
+
+    controls.append(up, down);
+    wrap.append(keyRow(a), controls);
+    return wrap;
+  }
+
+  function keySync() {
+    if (!keyDialog || !keyRoute) return;
+    const restoreFocus = keyDialog.open && keyDialog.contains(document.activeElement);
+    const a = state.keyActions.actions.find(x => x.id === keyRoute.id && x.deleted !== true);
+    if (keyRoute.id !== null && !a) keyRoute = { id: null };
+    if (keyRoute.id !== null && (!a || a.status !== "active") && keyPending) keyRoute = { id: null };
+    const content = el("div", "key-panel");
+    if (keyRoute.id !== null && a) content.append(keyCard(a));
+    else {
+      const heading = el("h2", "", "Ключевые действия"); heading.id = "key-dialog-title"; heading.tabIndex = -1;
+      content.append(heading, el("p", "", "Главному сегодня: " + keyDuration(keyMinutes(state, null, today()))));
+      const active = state.keyActions.actions.filter(x => x.deleted !== true && x.status === "active");
+      active.forEach((x, index) =>
+        content.append(keyManageRow(x, index, active.length)));
+      if (active.length < 3) content.append(btn("＋ Добавить действие", "button full", () => keyEdit(), true));
+      const closed = state.keyActions.actions.filter(x => x.deleted !== true && x.status !== "active").slice().reverse();
+      if (closed.length) {
+        const history = keyDetails("История действий · " + closed.length, "actions");
+        closed.forEach(x => history.append(keyRow(x))); content.append(history);
+      }
+      if (active.length || closed.length || state.keyActions.entries.length) content.append(
+        btn("Удалить все ключевые действия", "button secondary danger full", keyDeleteAll, true));
+    }
+    if (keyRoute.id !== null) content.append(btn("Ко всем действиям", "button secondary full", () => keyShow()));
+    content.append(btn("Закрыть", "button full", keyExit));
+    keyDialog.replaceChildren(content);
+    if (restoreFocus) keyDialog.querySelector("h2")?.focus();
+  }
+
+  function keyDetails(label, key) {
+    const d = el("details");
+    d.open = keyExpanded.has(key);
+    d.append(el("summary", "", label));
+    d.addEventListener("toggle", () => { if (!d.isConnected) return; if (d.open) keyExpanded.add(key); else keyExpanded.delete(key); });
+    return d;
+  }
+
+  function keyHistory(a) {
+    const box = keyDetails("История времени", "time:" + a.id);
+    let total = 0;
+    for (let offset = 0; offset < 7; offset++) {
+      const d = new Date();
+      d.setHours(12, 0, 0, 0); d.setDate(d.getDate() - offset);
+      const date = dateKey(d);
+      const hasSavedDay =
+        state.keyActions.entries.some(x => x.actionId === a.id && x.date === date) ||
+        state.keyActions.conditions.some(x => x.actionId === a.id && x.date === date);
+      const withinDisplayedLifetime =
+        date >= a.createdLocal.slice(0, 10) &&
+        (a.closedAt === null || date <= a.closedAt.slice(0, 10));
+      // Вне срока не рисуем пустые дни, но реально сохранённые дни не скрываем.
+      if (!withinDisplayedLifetime && !hasSavedDay) continue;
+      const n = keyMinutes(state, a.id, date);
+      total += n;
+      const c = state.keyActions.conditions.find(x => x.actionId === a.id && x.date === date);
+      box.append(el("p", "meta", `${date}: ${keyDuration(n)}` + (c ? ` / ориентир ${c.minutes} мин` : "")));
+    }
+    box.append(el("p", "meta", "За семь дней: " + keyDuration(total)));
+    for (const e of state.keyActions.entries.filter(x => x.actionId === a.id && x.date === today())) {
+      const row = el("div", "key-entry");
+      row.append(el("p", "meta", `Сегодня: ${e.minutes} мин`));
+      if (a.status === "active") row.append(
+        btn("⋯", "button secondary key-more", () => keyMenu("Запись: " + e.minutes + " мин", [
+        { text: "Исправить", run: () => keyTime(a.id, e.id) },
+        { text: "Удалить", run: () => {
+          if (!confirm("Удалить запись времени? Дневная награда может быть отменена.")) return;
+          transact(data => {
+            const current = keyActive(data, a.id);
+            const found = data.keyActions.entries.find(x => x.id === e.id && x.actionId === a.id && x.date === today());
+            if (!found) fail("Сегодняшняя запись больше недоступна.");
+            data.keyActions.entries = data.keyActions.entries.filter(x => x.id !== e.id);
+            keyReconcile(data, current, today());
+          }, false);
+        } }
+        ]), true));
+      row.querySelector("button")?.setAttribute("aria-label", "Управление записью: " + e.minutes + " мин");
+      box.append(row);
+    }
+    return box;
+  }
+
+  function keyCard(a) {
+    const card = el("article", "key-panel");
+    const head = el("div", "key-title-row"), title = el("h2", "", a.name);
+    title.id = "key-dialog-title"; title.tabIndex = -1; head.append(title);
+    {
+      const actions = a.status === "active" ? [
+        { text: "Редактировать", run: () => keyEdit(a.id) },
+        { text: "Завершить действие", run: () => keyClose(a.id, "completed") },
+        { text: "Убрать без завершения", run: () => keyClose(a.id, "archived") }
+      ] : [];
+      actions.push({ text: "Удалить действие", danger: true, run: () => keyDelete(a.id) });
+      const more = btn("⋯", "button secondary key-more", () => keyMenu(a.name, actions), true);
+      more.setAttribute("aria-label", "Действия: " + a.name); head.append(more);
+    }
+    card.append(head);
+    if (a.status === "active") {
+      const c = keyCondition(state, a, today()), n = keyMinutes(state, a.id, today());
+      card.append(
+        el("p", "", `Сегодня: ${n} / ${c.minutes} мин`),
+        keyProgress(n, c.minutes),
+        el("p", "meta", c.reward ? `За ориентир дня: +${c.reward} монет` : "Без награды"));
+      if (n >= c.minutes) card.append(el("p", "", "✓ Ориентир выполнен"));
+      card.append(btn("＋ Записать время", "button full", () => keyTime(a.id), true));
+    } else card.append(el("p", "meta", (a.status === "completed" ? "Завершено" : "Убрано без завершения") + " · " + a.closedAt.replace("T", " ")));
+    if (a.meaning) card.append(el("p", "meta", "Ради чего: " + a.meaning));
+    card.append(el("p", "meta", "Завершено, когда: " + a.criterion));
+    card.append(el("p", "meta", "Всего: " + keyDuration(keyMinutes(state, a.id))), keyHistory(a));
+    return card;
+  }
+
+  function keySection(embedded = false) {
+    const box = el("section", "key-actions key-panel");
+    if (embedded) box.classList.add("widget-key-content");
+    const heading = btn("", "key-heading", () => keyShow());
+    const arrow = el("span", "", "›");
+    arrow.setAttribute("aria-hidden", "true");
+    heading.append(
+      el("span", "", "КЛЮЧЕВЫЕ ДЕЙСТВИЯ"),
+      arrow
+    );
+
+    const total = el("div", "key-total-line");
+    total.append(
+      el("span", "key-total-label", "Главному сегодня"),
+      el(
+        "strong",
+        "key-total-value",
+        keyDuration(keyMinutes(state, null, today()))
+      )
+    );
+    if (!embedded) box.append(heading);
+    box.append(total);
+
+    const active = state.keyActions.actions.filter(
+      x => x.deleted !== true && x.status === "active"
+    );
+
+    if (!active.length) {
+      box.append(
+        el("p", "", "Выбери действие, которому хочешь уделять время."),
+        btn(
+          "＋ Добавить действие",
+          "button full",
+          () => {
+            if (embedded) { keyRoute = null; keyPending = null; }
+            else keyShow();
+            keyEdit();
+          },
+          true
+        )
+      );
+    }
+
+    active.forEach(a => box.append(keyRow(a, true)));
+    const manage = btn(
+      "Управление действиями →",
+      "button secondary full spaced key-manage-button",
+      () => keyShow()
+    );
+    box.append(manage);
+    return box;
+  }
+
+  // Настройка отображения не затрагивает план дня и награды.
+  function widgetChange(change) {
+    return transact(change, false, true);
+  }
+
+  let widgetCategory = "Все";
+  let widgetFavoritesOnly = false;
+  let widgetSystemOnly = false;
+
+  function normalizeWidgets(data) {
+    if (data.widgets === undefined) data.widgets = emptyState().widgets;
+    const widgets = data.widgets;
+    if (!widgets || typeof widgets !== "object" || Array.isArray(widgets) ||
+        ![1, 2, 3].includes(widgets.version) || !Array.isArray(widgets.items)) {
+      fail("Повреждены настройки виджетов.");
+    }
+    const ids = new Set();
+    const isId = id => typeof id === "string" && id.trim().length > 0;
+    for (const item of widgets.items) {
+      if (!item || typeof item !== "object" || Array.isArray(item) ||
+          !isId(item.id) || ids.has(item.id) || item.placement !== "widgets" ||
+          (widgets.version !== 1 && typeof item.showInDay !== "boolean")) {
+        fail("Повреждено размещение виджетов.");
+      }
+      ids.add(item.id);
+    }
+    if (widgets.version === 1) {
+      widgets.items.forEach(item => { item.showInDay = item.id === "focus"; });
+      if (!ids.has("focus")) widgets.items.unshift({ id: "focus", placement: "widgets", showInDay: true });
+      widgets.favorites = [];
+      widgets.version = 2;
+    }
+    if (!Array.isArray(widgets.favorites)) fail("Повреждено избранное виджетов.");
+    const favorites = new Set();
+    for (const id of widgets.favorites) {
+      if (!isId(id) || favorites.has(id)) fail("Повреждено избранное виджетов.");
+      favorites.add(id);
+    }
+    if (widgets.version === 2) {
+      if (!ids.has("keyActions")) widgets.items.unshift({ id: "keyActions", placement: "widgets", showInDay: true });
+      widgets.version = 3;
+    }
+  }
+
+  function setWidgetDay(id, show) {
+    return widgetChange(data => {
+      const item = data.widgets.items.find(item => item.id === id);
+      const definition = widgetDefinition(id);
+      if (!item || !widgetAvailable(definition) || !definition.placements.includes("day") ||
+          typeof show !== "boolean") fail("Размещение недоступно.");
+      item.showInDay = show;
+    });
+  }
+
+  function renderDayWidgets() {
+    for (const item of state.widgets.items) {
+      const definition = widgetDefinition(item.id);
+      if (!item.showInDay || !widgetAvailable(definition) || !definition.placements.includes("day")) continue;
+      const card = el("section", "widget-instance spaced");
+      const heading = el("div", "widget-instance-head");
+      heading.append(el("h2", "", definition.title));
+      if (definition.system) heading.append(el("span", "widget-badge", "Системный"));
+      const menuButton = btn("⋯", "button secondary", () => openMenu(definition.title, [{
+        text: "Убрать из Конструктора",
+        run: () => setWidgetDay(item.id, false)
+      }]));
+      menuButton.setAttribute("aria-label", "Меню: " + definition.title);
+      heading.append(menuButton);
+      card.append(heading, definition.render());
+      screen.append(card);
+    }
+  }
+
+  function addWidget(id) {
+    return widgetChange(data => {
+      const definition = widgetDefinition(id);
+
+      if (!widgetAvailable(definition) ||
+          !definition.placements.includes("widgets")) {
+        fail("Этот виджет пока недоступен.");
+      }
+
+      if (data.widgets.items.some(item => item.id === id)) {
+        fail("Этот виджет уже добавлен.");
+      }
+
+      data.widgets.items.push({ id, placement: "widgets", showInDay: false });
+    });
+  }
+
+  function removeWidget(id) {
+    if (!confirm(
+      id === "keyActions"
+        ? "Убрать ключевые действия из моей сборки и Конструктора? " +
+          "Действия, записанное время и заработанные монеты сохранятся. " +
+          "Виджет можно вернуть через каталог."
+        : "Убрать виджет из моей сборки и Конструктора? Данные сохранятся." +
+          (id === "focus" ? " Работающий таймер продолжится." : "")
+    )) return;
+
+    return widgetChange(data => {
+      if (!data.widgets.items.some(item => item.id === id)) {
+        fail("Виджет уже убран.");
+      }
+
+      data.widgets.items = data.widgets.items.filter(
+        item => item.id !== id
+      );
+    });
+  }
+
+  function moveWidget(id, direction) {
+    if (direction !== -1 && direction !== 1) return false;
+
+    return widgetChange(data => {
+      const items = data.widgets.items;
+      const index = items.findIndex(item => item.id === id);
+      if (index < 0) fail("Виджет не найден.");
+
+      const target = index + direction;
+      if (target < 0 || target >= items.length) return;
+
+      [items[index], items[target]] = [items[target], items[index]];
+    });
+  }
+
+  function widgetControls(item, index, total) {
+    const controls = el("div", "widget-controls");
+    const definition = widgetDefinition(item.id);
+    const title = definition?.title || "Недоступный виджет";
+
+    const up = btn(
+      "↑",
+      "button secondary",
+      () => moveWidget(item.id, -1),
+      true
+    );
+    up.disabled = !healthy || index === 0;
+    up.setAttribute("aria-label", "Выше: " + title);
+
+    const down = btn(
+      "↓",
+      "button secondary",
+      () => moveWidget(item.id, 1),
+      true
+    );
+    down.disabled = !healthy || index === total - 1;
+    down.setAttribute("aria-label", "Ниже: " + title);
+
+    controls.append(
+      up,
+      down,
+      btn(
+        "Убрать из моих виджетов",
+        "button secondary",
+        () => removeWidget(item.id),
+        true
+      )
+    );
+
+    return controls;
+  }
+
+  function widgetInstance(item, index, total) {
+    const definition = widgetDefinition(item.id);
+    const card = el("section", "widget-instance");
+
+    const heading = el("div", "widget-instance-head");
+    heading.append(el(
+      "h2",
+      "",
+      definition?.title || "Недоступный виджет"
+    ));
+    card.append(heading);
+
+    if (definition?.system) heading.append(el("span", "widget-badge", "Системный"));
+
+    if (widgetAvailable(definition) &&
+        definition.placements.includes(item.placement)) {
+      // Рендерер только строит интерфейс.
+      // Изменения данных выполняются отдельными действиями функции.
+      card.append(definition.render());
+    } else {
+      card.append(el(
+        "p",
+        "meta",
+        "Этот виджет пока недоступен в текущей версии. " +
+        "Его место сохранено. Можно оставить его или убрать с экрана."
+      ));
+    }
+
+    if (widgetAvailable(definition) && definition.placements.includes("day")) {
+      const label = el("label", "widget-day-toggle");
+      const input = el("input"); input.type = "checkbox";
+      input.checked = item.showInDay; input.disabled = !healthy;
+      input.addEventListener("change", () => setWidgetDay(item.id, input.checked));
+      label.append(input, document.createTextNode("Показывать в Конструкторе дня"));
+      card.append(label);
+    }
+    card.append(widgetControls(item, index, total));
+    return card;
+  }
+
+  function renderWidgets() {
+    screen.append(
+      btn("← На главную", "back", () => go("hero")),
+      el("h1", "", "МОИ ВИДЖЕТЫ"),
+      el("p", "", "Твои инструменты для своей игры.")
+    );
+
+    const items = state.widgets.items;
+
+    if (!items.length) {
+      const empty = el("section", "widgets-empty");
+      const symbol = el("div", "widgets-empty-symbol", "✧");
+      symbol.setAttribute("aria-hidden", "true");
+
+      empty.append(
+        symbol,
+        el("h2", "", "Здесь будет твоя сборка"),
+        el(
+          "p",
+          "",
+          "Выбирай виджеты в каталоге. " +
+          "Добавленные инструменты появятся на этом экране."
+        ),
+        btn(
+          "Открыть каталог",
+          "button full widget-primary",
+          () => go("widgetCatalog")
+        )
+      );
+
+      screen.append(empty);
+      return;
+    }
+
+    screen.append(btn(
+      "+ Добавить виджет",
+      "button full widget-primary",
+      () => go("widgetCatalog")
+    ));
+
+    const toolbar = el("div", "widgets-toolbar");
+    toolbar.append(
+      el("h2", "", "Моя сборка"),
+      el("span", "widgets-count", "Виджетов: " + items.length)
+    );
+
+    const list = el("div", "list");
+    items.forEach((item, index) => {
+      list.append(widgetInstance(item, index, items.length));
+    });
+
+    screen.append(toolbar, list);
+  }
+
+  function widgetCatalogCard(definition) {
+    const card = el("article", "widget-catalog-card");
+    const head = el("div", "widget-catalog-head");
+    const symbol = el("div", "widget-symbol", definition.symbol);
+    symbol.setAttribute("aria-hidden", "true");
+
+    const title = el("div", "widget-catalog-title");
+    const added = state.widgets.items.some(
+      item => item.id === definition.id
+    );
+    const available = widgetAvailable(definition) &&
+      definition.placements.includes("widgets");
+
+    title.append(
+      el("h2", "", definition.title),
+      el(
+        "span",
+        "widget-badge",
+        !available ? "Скоро" : added ? "В моей сборке" : "Доступен"
+      )
+    );
+
+    head.append(symbol, title);
+    title.append(el("div", "meta", definition.category));
+    if (definition.system) title.append(el("span", "widget-badge", "Системный"));
+    const favorite = state.widgets.favorites.includes(definition.id);
+    const star = btn(favorite ? "★" : "☆", "button secondary", () => widgetChange(data => {
+      const favorites = data.widgets.favorites;
+      if (favorites.includes(definition.id)) {
+        data.widgets.favorites = favorites.filter(id => id !== definition.id);
+      } else {
+        favorites.push(definition.id);
+      }
+    }), true);
+    star.setAttribute("aria-pressed", String(favorite));
+    star.setAttribute("aria-label", (favorite ? "Убрать из избранного: " : "В избранное: ") + definition.title);
+    head.append(star);
+    card.append(
+      head,
+      el("p", "widget-catalog-description", definition.description),
+      el("p", "widget-catalog-note", definition.note)
+    );
+
+    if (!available) {
+      card.append(el(
+        "p",
+        "meta",
+        "Появится после подключения функции. " +
+        "Добавление пока недоступно."
+      ));
+    } else if (added) {
+      card.append(btn(
+        "Открыть мои виджеты",
+        "button secondary full",
+        () => go("widgets")
+      ));
+    } else {
+      card.append(btn(
+        "Добавить в мои виджеты",
+        "button full widget-primary",
+        () => addWidget(definition.id),
+        true
+      ));
+    }
+
+    return card;
+  }
+
+  function renderWidgetCatalog() {
+    screen.append(
+      btn("← Мои виджеты", "back", () => go("widgets")),
+      el("h1", "", "СОБЕРИ СВОЮ ИГРУ"),
+      el("p", "", "Выбирай то, что помогает именно тебе.")
+    );
+
+    const filters = el("div", "widget-catalog-filters");
+    const label = el("label", "", "Категория");
+    const select = el("select"); select.id = "widget-category"; label.htmlFor = select.id;
+    for (const category of ["Все", "Фокус и время", "Вызовы и цели"]) {
+      const option = el("option", "", category); option.value = category; select.append(option);
+    }
+    select.value = widgetCategory;
+    const systemLabel = el("label");
+    const systemInput = el("input");
+    systemInput.type = "checkbox";
+    systemInput.checked = widgetSystemOnly;
+    systemLabel.append(
+      systemInput,
+      document.createTextNode("Только системные")
+    );
+    const favoriteLabel = el("label");
+    const input = el("input"); input.type = "checkbox"; input.checked = widgetFavoritesOnly;
+    favoriteLabel.append(input, document.createTextNode("Только избранные"));
+    const count = el("div", "meta"); count.setAttribute("role", "status");
+    const list = el("div", "list");
+    const draw = () => {
+      const favorites = new Set(state.widgets.favorites);
+      const definitions = Object.values(WIDGET_REGISTRY).filter(definition =>
+        (widgetCategory === "Все" || definition.category === widgetCategory) &&
+        (!widgetSystemOnly || definition.system === true) &&
+        (!widgetFavoritesOnly || favorites.has(definition.id))
+      );
+      definitions.sort((a, b) => Number(b.system) - Number(a.system) ||
+        Number(favorites.has(b.id)) - Number(favorites.has(a.id)) ||
+        a.title.localeCompare(b.title, "ru") || a.id.localeCompare(b.id));
+      count.textContent = "Показано: " + definitions.length;
+      list.replaceChildren();
+      if (!definitions.length) list.append(el("div", "empty", "Нет подходящих виджетов. Попробуй изменить фильтры."));
+      definitions.forEach(definition => list.append(widgetCatalogCard(definition)));
+    };
+    select.addEventListener("change", () => { widgetCategory = select.value; draw(); });
+    systemInput.addEventListener("change", () => {
+      widgetSystemOnly = systemInput.checked;
+      draw();
+    });
+    input.addEventListener("change", () => { widgetFavoritesOnly = input.checked; draw(); });
+    filters.append(label, select, systemLabel, favoriteLabel);
+    screen.append(filters, count, list);
+    draw();
   }
 
   function renderBlocks() {
@@ -3574,7 +5013,7 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
       hint
     );
     screen.append(summary);
-    screen.append(focusCard());
+    renderDayWidgets();
     if (!total) {
       screen.append(el("div", "empty",
         "План пока пуст. Отметь нужные задания в блоках."));
@@ -3614,7 +5053,8 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
     );
     const records = view.recordsToday;
     const tasks = records.filter(x =>
-      !x.taskId.startsWith("quest:") && !x.taskId.startsWith("day-bonus:") && !x.taskId.startsWith("calendar:"));
+      !x.taskId.startsWith("key-action-day:") && !x.taskId.startsWith("quest:") && !x.taskId.startsWith("day-bonus:") && !x.taskId.startsWith("calendar:"));
+    const keyPayments = records.filter(x => x.taskId.startsWith("key-action-day:"));
     const events = records.filter(x => x.taskId.startsWith("calendar:"));
     const steps = records.filter(x => x.taskId.startsWith("quest:step:"));
     const quests = records.filter(x =>
@@ -3638,6 +5078,11 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
     const activity = el("section", "card");
     const money = el("section", "card spaced");
     summaryRow(activity, "Выполнено заданий", tasks.length);
+    summaryRow(activity, "Время для главного", keyDuration(keyMinutes(state, null, today())));
+    summaryRow(activity, "Дневных ориентиров достигнуто", state.keyActions.conditions.filter(c =>
+      c.date === today() && state.keyActions.actions.some(a => a.id === c.actionId && a.deleted !== true) &&
+      keyMinutes(state, c.actionId, c.date) >= c.minutes).length);
+    summaryRow(money, "За ключевые действия", `+${sum(keyPayments, "reward")}`);
     summaryRow(activity, "Выполнено событий и дел", state.calendarCompletions.filter(x => x.date === today()).length);
     summaryRow(activity, "План заданий",
       `${view.plannedDone.length} из ${view.planned.length}`);
@@ -3668,7 +5113,7 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
     wallet.setAttribute("aria-label",
       `Монеты: ${view.money.balance}. Алмазы: ${view.money.diamonds}.`);
 
-    const active = ["day", "summary", "calendar", "treats"].includes(page) ? "hero" : page;
+    const active = ["day", "summary", "calendar", "treats", "widgets", "widgetCatalog", "aiPreview"].includes(page) ? "hero" : page;
     document.querySelectorAll(".nav-button").forEach(node => {
       const selected = node.dataset.page === active;
       node.classList.toggle("active", selected);
@@ -3677,10 +5122,13 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
     });
     const screens = {
       hero: renderHero, blocks: renderBlocks, quests: renderQuests,
-      bonuses: renderBonuses, day: renderDay, summary: renderSummary, calendar: renderCalendar, treats: renderTreats
+      bonuses: renderBonuses, day: renderDay, summary: renderSummary, calendar: renderCalendar, treats: renderTreats,
+      widgets: renderWidgets, widgetCatalog: renderWidgetCatalog,
+      aiPreview: renderAiPreview
     };
     (screens[page] || renderHero)();
     updateFocusMini();
+    if (keyDialog?.open) keySync();
   }
 
   // Настройки и резервные копии.
@@ -4399,7 +5847,7 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
       return true;
     } catch(error) { storageError("Таймер не сохранён: "+error.message); render(); return false; }
   }
-  function redrawFocus() { const old=$("focus-card"); if(old) old.replaceWith(focusCard()); updateFocusMini(); }
+  function redrawFocus() { const old=$("focus-card"); if(old) old.replaceWith(focusCard(old.classList.contains("widget-focus-content"))); updateFocusMini(); }
   function focusAction(action,id) {
     const f=state.focus;
     if(f.id!==id) return;
@@ -4418,6 +5866,7 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
     })) {
       if(action==="stop" || action==="reset") focusCustomMode=false;
       redrawFocus();
+      return true;
     }
   }
   let focusCustomMode = false;
@@ -4426,10 +5875,11 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
     progress.firstChild.style.width=value+"%";
     progress.setAttribute("aria-valuenow",String(value));
   }
-  function focusCard() {
+  function focusCard(embedded = false) {
     const f=state.focus, card=el("section","card spaced focus-card"); card.id="focus-card";
+    if(embedded) card.classList.add("widget-focus-content");
     const header=el("div","focus-header");
-    header.append(el("h2","","Время для важного"));
+    if(!embedded) header.append(el("h2","","Время для важного"));
     if(f.status!=="ready")header.append(el("span","focus-status",{running:"В процессе",paused:"Пауза",completed:"Завершён"}[f.status]));
     const main=el("div","focus-main"), clock=el("div","focus-clock",focusTime(focusLeft(f)));
     card.append(header);
@@ -4499,7 +5949,8 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
   function updateFocusMini() {
     const card=$("focus-card"), top=document.querySelector('.topbar').getBoundingClientRect().bottom;
     const active=["running","paused"].includes(state.focus.status);
-    const show=page==="day"&&card&&active&&card.getBoundingClientRect().bottom<=top;
+    const placed=state.widgets.items.some(item=>item.id==="focus"&&item.showInDay);
+    const show=page==="day"&&placed&&card&&active&&card.getBoundingClientRect().bottom<=top;
     focusMini.hidden=!show; focusMini.style.top=top+"px";
     if(!show) {
       document.documentElement.style.scrollPaddingTop=(top+12)+"px";
@@ -4524,14 +5975,20 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
       if(focusSave(x=>{x.notified=true;})) {
         try { tones([392,523.25],.22,.45,.045); }
         catch(error) { console.warn("Звук таймера недоступен:",error); }
-        if(page!=="day") {
+        if(!$("focus-card")) {
           document.querySelectorAll('.focus-result').forEach(x=>x.remove());
           const toast=el("div","self-toast focus-result");
           toast.style.pointerEvents="auto";
           toast.append(el("strong","","Время завершено ✓"),el("p","",`Ты выделил ${f.minutes} минут на важное`));
           for(const text of ["Ещё подход","Закрыть"])toast.append(btn(text,"button secondary",()=>{
+            if(text==="Ещё подход") {
+              if(state.focus.id!==f.id || state.focus.status!=="completed") return;
+              if(!state.widgets.items.some(item=>item.id==="focus") && !addWidget("focus")) return;
+              if(!focusAction("reset",f.id)) return;
+              const item=state.widgets.items.find(item=>item.id==="focus");
+              go(item.showInDay?"day":"widgets");
+            }
             toast.remove();
-            if(text==="Ещё подход") { focusAction("reset",f.id); go("day"); }
           }));
           toast.setAttribute("role","status");document.body.append(toast);
         }
