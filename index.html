@@ -2082,7 +2082,7 @@ p { line-height: 1.6; }
   .home-tool:hover .design-icon-tile { background: #ffda291c; }
   .button.home-calendar:hover:not(:disabled) { color: var(--text); background: #242d20; border-color: #737e60; }
   .button.home-route:hover:not(:disabled) { color: var(--text); background: linear-gradient(120deg,#372a35,#211f24); border-color: #846275; }
-  .button.ai-preview-entry:hover:not(:disabled) { color: var(--text); background: linear-gradient(90deg,#1d3027f5,#1d3027b8),url("assets/images/quiet-focus.png") 65% center/cover; border-color: #779782; }
+  .button.ai-preview-entry:hover:not(:disabled) { color: var(--text); background: linear-gradient(90deg,#1d3027f5,#1d3027b8),image-set(url("assets/images/quiet-focus.webp") type("image/webp"),url("assets/images/quiet-focus.png") type("image/png")) 65% center/cover; border-color: #779782; }
   .button.goal-button:hover:not(:disabled), .goal-card .button:hover:not(:disabled) { color: #d8f4e3; background: #304635; border-color: #7baf8b; }
   .button.meaning-button:hover:not(:disabled) { color: #f4dce7; background: #482c3c; border-color: #ae7b94; }
 
@@ -2188,7 +2188,7 @@ p { line-height: 1.6; }
 .settings-link { margin-top: 12px; background: transparent !important; border-color: transparent !important; color: #aeb9a4 !important; font-size: 12px; font-weight: 500; }
 .ai-preview-entry {
   margin: 17px 0 0; padding: 19px 17px; min-height: 102px; gap: 12px; border: 1px solid #455447; border-radius: 19px;
-  background: linear-gradient(90deg,#13201cf5,#13201cb8),url("assets/images/quiet-focus.png") 65% center/cover;
+  background: linear-gradient(90deg,#13201cf5,#13201cb8),image-set(url("assets/images/quiet-focus.webp") type("image/webp"),url("assets/images/quiet-focus.png") type("image/png")) 65% center/cover;
   color: var(--text); text-align: left;
 }
 .ai-preview-entry .ai-entry-icon { width: 42px; height: 42px; color: var(--green); display: grid; place-items: center; background: #a4d9bd12; border: 1px solid #a4d9bd24; border-radius: 14px; flex-shrink: 0; }
@@ -2294,7 +2294,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
 .ai-chat > section { border-radius: 18px; border-color: #3d4836; padding: 17px; }
 .ai-chat-permission { padding-block: 6px; }
 .ai-chat-permission input:checked { background-image: linear-gradient(#bfa839,#bfa839); }
-.ai-empty { position: relative; isolation: isolate; overflow: hidden; border-radius: 20px; min-height: 235px; display: flex; flex-direction: column; justify-content: flex-end; padding: 22px; margin: auto 0; background: linear-gradient(0deg,#10180ff5,#10180f22),url("assets/images/quiet-focus.png") 65% center/cover; }
+.ai-empty { position: relative; isolation: isolate; overflow: hidden; border-radius: 20px; min-height: 235px; display: flex; flex-direction: column; justify-content: flex-end; padding: 22px; margin: auto 0; background: linear-gradient(0deg,#10180ff5,#10180f22),image-set(url("assets/images/quiet-focus.webp") type("image/webp"),url("assets/images/quiet-focus.png") type("image/png")) 65% center/cover; }
 .ai-empty .design-icon { color: var(--green); margin-bottom: 16px; }
 .ai-empty h2 { font-size: 27px; line-height: 1.2; font-weight: 550; letter-spacing: -.7px; max-width: 210px; margin: 0; }
 .ai-empty p { color: #bdcdb3; max-width: 250px; font-size: 12px; }
@@ -2336,6 +2336,61 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
   .happiness-dots { animation: none; opacity: 1; }
+}
+
+</style>
+<style id="lifegame-audit-improvements">
+/* Audit improvements: readable controls, clear form actions and visible results. */
+html { scroll-padding-bottom:110px; }
+[data-ui-key] { scroll-margin-block:90px 120px; }
+.ui-feedback { pointer-events:none; }
+.ui-feedback button { pointer-events:auto; }
+.ui-required-note,.ui-field-hint,.ui-autosave,.ui-setup-help { font-size:12px;line-height:1.5;color:var(--muted);margin:8px 0 14px; }
+.ui-required-mark { color:var(--accent); }
+.ui-stage-label { margin:12px 0 6px!important; }
+h3.task-title { margin:0; }
+.ui-result-highlight { outline:2px solid #ffda29;outline-offset:5px;scroll-margin-block:100px; }
+.ui-feedback { position:fixed;z-index:45;left:50%;transform:translateX(-50%);top:calc(72px + env(safe-area-inset-top,0px));bottom:auto;width:min(440px,calc(100% - 32px));display:flex;align-items:center;gap:12px;padding:13px 14px;background:#283323f5;border:1px solid #71835a;border-radius:16px;color:var(--text);box-shadow:0 10px 35px #0005;font-size:13px;line-height:1.5; }
+.ui-feedback>span { flex:1;min-width:0;overflow-wrap:anywhere; }
+.ui-feedback .button { min-width:0;flex-shrink:0;font-size:12px;padding:9px 12px; }
+.ui-toast-close { border:0;background:transparent;color:var(--text);width:32px;min-height:44px;flex-shrink:0;font-size:23px;padding:0; }
+.ui-dialog-error { border:1px solid #ad6957;border-radius:12px;padding:12px;background:#38251e;color:#ffe2cb;font-size:13px;line-height:1.5; }
+[aria-invalid="true"] { border-color:#e49b83!important; }
+#editor { max-height:calc(100dvh - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));scroll-padding:18px 0 95px; }
+#editor form { min-width:0;padding-bottom:1px; }
+#editor .form-actions { position:sticky;z-index:3;bottom:-23px;padding:14px 0 16px;margin-top:18px;background:#171c18;box-shadow:0 -9px 12px #171c18; }
+#editor input,#editor textarea,#editor select { scroll-margin-block:70px 110px; }
+#editor label.task-goal-toggle { display:flex;align-items:center;gap:10px;margin:8px 0;min-height:44px; }
+#editor .task-goal-toggle input { flex:0 0 22px;width:22px;height:22px;min-height:22px;margin:0;padding:0; }
+.task-goal-link { padding:12px;border-radius:14px; }
+.task-goal-link legend { font-size:13px; }
+.ui-backup-files { padding-top:18px;margin-top:18px;border-top:1px solid var(--border); }
+.ui-backup-files h3 { margin:0 0 8px;font-size:16px; }
+.ui-file-picker { padding:12px 0; }
+.ui-file-picker { display:block;position:relative; }
+.ui-file-picker input { position:absolute;width:1px;height:1px;opacity:0;overflow:hidden; }
+.ui-file-picker .button { display:block;text-align:center;margin:8px 0;cursor:pointer; }
+.ui-file-picker:focus-within .button { outline:2px solid var(--accent);outline-offset:3px; }
+.ui-file-name { display:block;font-size:12px;line-height:1.5;overflow-wrap:anywhere;color:var(--muted); }
+.ui-message-label { margin:0!important;font-size:12px!important;color:#bccab3!important; }
+.ui-collection-link { border:0;background:transparent;text-decoration:underline;text-underline-offset:4px;color:var(--green);font-size:12px;min-height:44px;padding:0;text-align:left; }
+.ui-list-management { margin:12px 0 16px;border-block:1px solid #ffffff0c; }
+.ui-list-management>summary { font-size:12px;color:#b9c4ae;min-height:44px; }
+.ui-list-management>.button { margin:0 0 8px; }
+.ui-readable,.widget-badge { font-size:12px;line-height:1.4; }
+.hero .progress-label,.home-status,.balance .label,.ai-preview-entry .ai-preview-badge { font-size:12px; }
+.compact-task-card .compact-details,.compact-task-controls .check-label,.quest-plan-toggle { font-size:12px; }
+.nav-button { font-size:11px; }
+.calendar-grid .calendar-day { min-height:44px; }
+.day-graph-editor .day-graph-tag { min-height:44px; }
+.happiness-play-header .button .design-icon,.ai-messenger-header .button .design-icon { width:21px;height:21px; }
+.happiness-play-dialog .ui-message-label { flex:0 0 auto; }
+@media(max-width:370px) {
+  #editor .form-actions { bottom:-18px; }
+  .ui-feedback { width:calc(100% - 24px);padding:10px;font-size:12px;gap:6px; }
+  .ui-feedback .button { padding:8px; }
+  .widget-instance-head { gap:7px; }
+  .widget-instance-head .widget-badge { font-size:11px; }
 }
 
 </style>
@@ -2407,7 +2462,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     <h3>Полный сброс</h3>
     <p>
       Удалит задания, квесты, цели, покупки, монеты и алмазы, а также коллекцию и историю «Игры в счастье».
-      Вернёт восемь стартовых блоков.
+      Вернёт восемь стартовых блоков. Личные списки станут пустыми; демо-ништяки повторно не добавляются.
       Сначала сохрани резервную копию вне приложения.
     </p>
     <button type="button" class="button danger" id="reset-data">
@@ -2762,7 +2817,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
       dialog.replaceChildren(title, modes, clock, progress, note, tags, actions);
     };
     try {
-      dialog.showModal();
+      uiShowDialog(dialog);
       redraw();
     } catch (error) {
       dayGraphEditing = false;
@@ -2889,7 +2944,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     ]);
     dialog.setAttribute("aria-labelledby", "first-step-title");
     try {
-      dialog.showModal();
+      uiShowDialog(dialog);
     } catch (error) {
       finished = true;
       clearCountdown();
@@ -3348,6 +3403,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     healthy = false;
     warning.hidden = false;
     warning.textContent = message;
+    uiFeedback(message);
   }
 
   function loadLatest() {
@@ -3421,7 +3477,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
 
   function transact(change, awardDayBonus = true, selfCare = false) {
     if (!healthy) {
-      alert("Изменения отключены из-за ошибки хранилища.");
+      uiFeedback("Изменения временно отключены. Скачай копию последнего исправного сохранения в настройках и проверь доступность хранилища.");
       return false;
     }
 
@@ -3465,7 +3521,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
 
       next = normalize(draft);
     } catch (error) {
-      alert(error.message);
+      uiFeedback(error.message);
       render();
       return false;
     }
@@ -3633,9 +3689,9 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
 
   // Общие элементы интерфейса.
   function el(tag, className = "", text) {
-    const node = document.createElement(tag);
+    const node = document.createElement(tag === "div" && /(^|\s)task-title(\s|$)/.test(className) ? "h3" : tag);
     if (className) node.className = className;
-    if (text !== undefined) node.textContent = text;
+    if (text !== undefined) node.textContent = uiGeneratedText(text, className);
     return node;
   }
 
@@ -3662,7 +3718,10 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
   "minus": "<path d=\"M5 12h14\"/>",
   "clock": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l4 2\"/>",
   "play": "<path d=\"m8 4 12 8-12 8Z\"/>",
-  "flag": "<path d=\"M5 22V3c5-4 9 4 15 0v11c-6 4-10-4-15 0\"/>"
+  "flag": "<path d=\"M5 22V3c5-4 9 4 15 0v11c-6 4-10-4-15 0\"/>",
+  "close": "<path d=\"m6 6 12 12M6 18 18 6\"/>",
+  "more": "<circle cx=\"5\" cy=\"12\" r=\"1\"/><circle cx=\"12\" cy=\"12\" r=\"1\"/><circle cx=\"19\" cy=\"12\" r=\"1\"/>",
+  "star": "<path d=\"m12 2 3.1 6.3 7 .9-5.1 5 1.2 7-6.2-3.3L5.8 21 7 14.2l-5-5 7-.9Z\"/>"
 });
   const DESIGN_WIDGET_ICONS = Object.freeze({ keyActions: "flag", focus: "clock", dayGraph: "chart", firstStep: "play", happiness: "heart", challenge: "quest" });
   function designIcon(name) {
@@ -3686,17 +3745,245 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     node.type = "button";
     node.disabled = mutating && !healthy;
     node.addEventListener("click", action);
+    const glyph = { "⚙": "gear", "✕": "close", "⋯": "more", "★": "star", "☆": "star" }[text];
+    if (glyph && DESIGN_ICON_PATHS[glyph]) { node.replaceChildren(designIcon(glyph)); if (!node.hasAttribute("aria-label")) node.setAttribute("aria-label", ({gear:"Настройки",close:"Закрыть",more:"Действия",star:"Избранное"})[glyph]); }
     return node;
   }
 
-  function go(nextPage, selectedBlock = null, fromDayTask = false) {
+  // Interface state only: never included in saved progress or exported data.
+  const uiPositions = new Map();
+  const uiDialogs = new Set();
+  let uiDialogSerial = 0, uiFormSession = null, uiRenderSerial = 0;
+  let uiPendingNavigation = null, uiHistoryIndex = 0, uiHistorySync = false, uiPopClosing = false;
+  let uiToastTimer = null;
+  const uiEntityCollections = { blocks: "block", goals: "goal", tasks: "task", quests: "quest", bonuses: "bonus", calendarEntries: "calendar", treats: "treat", purchases: "purchase" };
+  const uiViewKey = () => page + ":" + (blockId || "");
+  function uiEntity(node, kind, id) { node.dataset.uiKey = kind + ":" + id; return node; }
+  function uiFind(key) { return [...screen.querySelectorAll('[data-ui-key]')].find(node => node.dataset.uiKey === key); }
+  function uiControlName(node) { return node?.getAttribute("aria-label") || node?.getAttribute("data-ui-action") || (node?.labels?.length ? [...node.labels].map(l=>l.textContent.trim()).join(" ") : "") || node?.textContent?.trim() || ""; }
+  function uiCapture() {
+    const active = document.activeElement, card = active?.closest('[data-ui-key]');
+    const controls = card ? [...card.querySelectorAll('button,input,select,textarea,a')] : [];
+    const result = { y: scrollY, key: card?.dataset.uiKey || "", control: screen.contains(active) ? active.tagName : "", name: screen.contains(active) ? uiControlName(active) : "", cardIndex: [...screen.querySelectorAll('[data-ui-key]')].indexOf(card), controlIndex: controls.indexOf(active), id: screen.contains(active) ? active.id : "" };
+    uiPositions.set(screen.dataset.uiView || uiViewKey(), result);
+    return result;
+  }
+  function uiTarget(key, focus = true) {
+    const node = uiFind(key); if (!node) return false;
+    const top = document.querySelector('.topbar').getBoundingClientRect().bottom + 18;
+    const bottom = document.querySelector('nav[aria-label="Главное меню"]').getBoundingClientRect().top - 18;
+    const rect = node.getBoundingClientRect();
+    const y = rect.height > bottom - top ? rect.top - top : rect.top - top - Math.max(0, (bottom - top - rect.height) / 2);
+    window.scrollBy({ top: y, behavior: "instant" });
+    node.classList.remove('ui-result-highlight'); void node.offsetWidth; node.classList.add('ui-result-highlight');
+    setTimeout(() => node.classList.remove('ui-result-highlight'), 1800);
+    if (focus && !document.querySelector('dialog[open]')) { const target = node.querySelector('.task-title,h2,h3') || node; target.tabIndex = -1; target.focus({ preventScroll: true }); }
+    return true;
+  }
+  function uiRestore(position) {
+    if (!position) { window.scrollTo(0, 0); return; }
+    window.scrollTo({ top: position.y, behavior: "instant" });
+    if (document.querySelector('dialog[open]')) return;
+    let target = position.id ? document.getElementById(position.id) : null;
+    const card = position.key ? uiFind(position.key) : null;
+    if (!target && card) {
+      const controls = [...card.querySelectorAll('button,input,select,textarea,a')];
+      target = controls.find(n => n.tagName === position.control && uiControlName(n) === position.name) || controls[position.controlIndex];
+      if (target?.disabled) target = controls.find(n => !n.disabled);
+    }
+    if (!target && !position.key && position.control && position.name) target = [...screen.querySelectorAll('button,input,select,textarea,a')].find(n => n.tagName === position.control && uiControlName(n) === position.name);
+    if (!target && position.key && !card) { const cards = [...screen.querySelectorAll('[data-ui-key]')]; const next = cards[Math.min(Math.max(0, position.cardIndex || 0), cards.length - 1)]; target = next?.querySelector('button:not(:disabled),h2,h3') || screen.querySelector('.widget-catalog-filters select') || screen.querySelector('h1'); if (target?.matches('h1,h2,h3')) target.tabIndex = -1; if (target) uiToast('Список обновлён с учётом выбранного фильтра.'); }
+    if (target?.isConnected && !target.disabled) { target.focus({ preventScroll: true });
+      if (position.name.includes('избран') && card) uiTarget(position.key, false);
+      else { const r = target.getBoundingClientRect(), top = document.querySelector('.topbar').getBoundingClientRect().bottom + 12, bottom = document.querySelector('nav[aria-label="Главное меню"]').getBoundingClientRect().top - 12; if (r.top < top) scrollBy(0,r.top-top); else if(r.bottom>bottom)scrollBy(0,r.bottom-bottom); } }
+  }
+  function uiToast(text, label = "", action = null) {
+    let toast = document.getElementById('ui-feedback');
+    if (!toast) { toast = el('div', 'ui-feedback'); toast.id = 'ui-feedback'; document.body.append(toast); }
+    clearTimeout(uiToastTimer); toast.replaceChildren(); toast.hidden = false;
+    const message = el('span', '', text); message.setAttribute('role', 'status'); message.setAttribute('aria-live', 'polite'); toast.append(message);
+    if (label && action) toast.append(btn(label, 'button secondary', () => { toast.hidden = true; action(); }));
+    const close = btn('×', 'ui-toast-close', () => { toast.hidden = true; }); close.setAttribute('aria-label', 'Закрыть уведомление'); toast.append(close);
+    uiToastTimer = setTimeout(() => { if (!toast.contains(document.activeElement)) toast.hidden = true; }, 7000);
+  }
+  function uiTopDialog() { return [...uiDialogs].filter(d => d.open).sort((a,b) => Number(b.dataset.uiDialogOrder) - Number(a.dataset.uiDialogOrder))[0]; }
+  function uiFeedback(message) {
+    const dialog = uiTopDialog() || document.querySelector('dialog[open]');
+    if (dialog) {
+      let error = dialog.querySelector('.ui-dialog-error');
+      if (!error) { error = el('p', 'ui-dialog-error'); error.setAttribute('role', 'alert'); (dialog.querySelector('form') || dialog).prepend(error); }
+      error.textContent = message; error.hidden = false; error.scrollIntoView({ block: 'nearest' });
+    } else uiToast(message);
+  }
+  function uiHistoryState(modal = false) { return { lifeGameUI: 1, page, blockId, index: uiHistoryIndex, modal }; }
+  function uiWriteHistory(mode = 'push', modal = false) {
+    try {
+      if (mode === 'push') { uiHistoryIndex++; history.pushState(uiHistoryState(modal), '', location.href); }
+      else history.replaceState(uiHistoryState(modal), '', location.href);
+    } catch { /* Local file contexts may restrict History API. Navigation remains usable. */ }
+  }
+  function uiSyncDialogs() {
+    if (uiHistorySync || uiPopClosing) return;
+    const open = uiTopDialog();
+    if (open && !history.state?.modal && !open.dataset.uiNoHistory) uiWriteHistory('push', true);
+    else if (!open && history.state?.lifeGameUI && history.state.modal) { uiHistorySync = true; history.back(); }
+  }
+  function uiShowDialog(dialog) {
+    if (dialog === editor) uiPrepareForm();
+    if (!uiDialogs.has(dialog)) { uiDialogs.add(dialog); dialog.addEventListener('close', () => { if (!dialog.isConnected) uiDialogs.delete(dialog); setTimeout(uiSyncDialogs, 0); }); }
+    dialog.dataset.uiDialogOrder = ++uiDialogSerial;
+    if (dialog.classList.contains('day-graph-editor') && !dialog.querySelector('.ui-autosave')) { const note = el('p', 'ui-autosave', 'Каждый выбранный час сохраняется сразу. «Готово» закрывает редактор.'); dialog.querySelector('h2')?.after(note); }
+    if (!dialog.open) dialog.showModal();
+    setTimeout(uiSyncDialogs, 0);
+  }
+  function uiInitHistory() {
+    uiHistoryIndex = Number.isInteger(history.state?.index) ? history.state.index : 0;
+    uiWriteHistory('replace');
+    window.addEventListener('popstate', event => {
+      const target = event.state;
+      if (uiHistorySync) { uiHistorySync = false; if (target?.lifeGameUI) uiHistoryIndex = target.index; return; }
+      const dialog = uiTopDialog();
+      if (dialog) {
+        if (dialog === editor && uiFormDirty() && !confirm('В форме есть несохранённые изменения. Закрыть её без сохранения?')) { uiWriteHistory('push', true); return; }
+        uiPopClosing = true; dialog.close();
+        setTimeout(() => { uiPopClosing = false; if (target?.lifeGameUI) uiHistoryIndex = target.index; uiSyncDialogs(); }, 0);
+        return;
+      }
+      if (!target?.lifeGameUI) return;
+      if (target.page === page && target.blockId === blockId) { uiHistoryIndex = target.index; if(target.modal) uiWriteHistory('replace'); return; }
+      if (page === 'myRoute' && routeDraft?.history.length && routeDraft.step !== 'done') { uiHistoryIndex = target.index; uiWriteHistory('push'); routeBack(); return; }
+      if (page === 'myRoute' && routeDraft && routeDraft.step !== 'done') {
+        const current = uiHistoryIndex;
+        if (!confirm(routeExitMessage())) { uiHistorySync = true; history.go(current - target.index); return; }
+        routeDraft = null;
+      }
+      uiHistoryIndex = target.index;
+      go(target.page, target.blockId, false, { history: 'none', restore: true });
+      if (target.modal) uiWriteHistory('replace');
+    });
+  }
+  function uiFormSignature(form) { return JSON.stringify([...form.querySelectorAll('input,textarea,select')].filter(n => n.type !== 'file').map(n => [n.id || n.name || n.type, n.value, n.checked])); }
+  function uiFormDirty() { return uiFormSession?.form?.isConnected && uiFormSignature(uiFormSession.form) !== uiFormSession.initial; }
+  function uiPrepareForm() {
+    const form = editor.querySelector('form'); if (!form) return;
+    const heading = form.querySelector('h2'); if (heading) { heading.id = 'editor-title'; editor.setAttribute('aria-labelledby', heading.id); }
+    const session = { form, initial: uiFormSignature(form), view: uiViewKey(), input: false, ids: Object.fromEntries(Object.entries(uiEntityCollections).map(([name]) => [name, new Set(state[name].map(x=>x.id))])) };
+    uiFormSession = session;
+    requestAnimationFrame(() => { if (uiFormSession === session && !session.input) session.initial = uiFormSignature(form); });
+    if (form.dataset.uiPrepared) return; form.dataset.uiPrepared = 'true';
+    const note = el('p', 'ui-required-note', 'Поля со звёздочкой обязательны.'); heading?.after(note);
+    for (const input of form.querySelectorAll('input:not([type=checkbox]):not([type=radio]),textarea,select')) {
+      if (input.required) for (const label of input.labels || []) { const star = el('span', 'ui-required-mark', ' *'); star.setAttribute('aria-hidden', 'true'); if (label.contains(input)) label.insertBefore(star, input); else label.append(star); }
+      let hint = input.closest('.numeric-cell')?.querySelector('.meta') || (input.nextElementSibling?.matches('p.meta') ? input.nextElementSibling : null);
+      if (!hint && input.type === 'number' && (input.min || input.max)) { hint = el('p', 'ui-field-hint', `Целое число${input.min ? ' от ' + input.min : ''}${input.max ? ' до ' + input.max : ''}.`); input.after(hint); }
+      if (hint && !hint.contains(input)) { hint.id ||= 'ui-hint-' + (++uiDialogSerial); input.setAttribute('aria-describedby', ((input.getAttribute('aria-describedby') || '') + ' ' + hint.id).trim()); }
+    }
+    form.addEventListener('input', e => { if (uiFormSession?.form === form) uiFormSession.input = true; e.target.removeAttribute('aria-invalid'); form.querySelector('.ui-dialog-error')?.setAttribute('hidden', ''); });
+    form.addEventListener('invalid', e => { e.preventDefault(); e.target.setAttribute('aria-invalid', 'true'); uiFeedback(e.target.validationMessage); if (!form.querySelector(':invalid') || form.querySelector(':invalid') === e.target) e.target.focus(); }, true);
+    form.addEventListener('submit', () => {
+      const current = uiFormSession;
+      setTimeout(() => {
+        if (editor.open || !current || uiViewKey() !== current.view || page === 'myRoute') return;
+        for (const [collection, kind] of Object.entries(uiEntityCollections)) {
+          const added = state[collection].find(x => !current.ids[collection].has(x.id));
+          if (added) { uiShowCreated(collection, kind, added); break; }
+        }
+      });
+    }, true);
+  }
+  editor.addEventListener('cancel', event => { if (uiFormDirty() && !confirm('В форме есть несохранённые изменения. Закрыть её без сохранения?')) event.preventDefault(); });
+  function uiShowCreated(collection, kind, item) {
+    if (collection === 'calendarEntries') { calendarDate = item.date; calendarMonth = item.date.slice(0,7); calendarMode = 'days'; render(); }
+    requestAnimationFrame(() => {
+      const key = kind + ':' + item.id;
+      if (uiTarget(key)) uiToast('Добавлено: ' + item.name);
+      else uiToast('Добавлено: ' + item.name, 'Показать', () => {
+        if (kind === 'task' || kind === 'goal') go('blocks', item.block || item.blockId, false, { target: key });
+        else go(({ block:'blocks', quest:'quests', bonus:'bonuses', calendar:'calendar', treat:'treats', purchase:'bonuses' })[kind] || page, null, false, { target: key });
+      });
+    });
+  }
+  function uiDecorate() {
+    screen.dataset.uiView = uiViewKey();
+    for (const card of screen.querySelectorAll('[data-ui-key]')) {
+      const title = card.querySelector('.task-title,h2,h3,.block-info > span');
+      if (title) { title.id ||= 'ui-title-' + card.dataset.uiKey.split('').map(c => c.charCodeAt(0).toString(16)).join('-'); if (card.tagName !== 'BUTTON') card.setAttribute('aria-labelledby', title.id); }
+      for (const button of card.querySelectorAll('button')) {
+        if (!button.hasAttribute('aria-label') && /^(Выполнить|Отменить выполнение|Купить|Перейти к виджету)$/.test(button.textContent.trim()) && title) button.setAttribute('aria-label', button.textContent.trim() + ': ' + title.textContent);
+      }
+    }
+    for (const hint of screen.querySelectorAll('.widget-badge')) hint.classList.add('ui-readable');
+    const filters = screen.querySelector('.widget-catalog-filters'); if(filters && (widgetCategory !== 'Все' || widgetFavoritesOnly || widgetSystemOnly)) filters.append(btn('Сбросить фильтры','button secondary',()=>{widgetCategory='Все';widgetFavoritesOnly=false;widgetSystemOnly=false;render();requestAnimationFrame(()=>screen.querySelector('.widget-catalog-filters select')?.focus());}));
+    const managementButtons = [...screen.children].filter(n => n.tagName === 'BUTTON' && /^(Выбрать для удаления|Изменить порядок|Готово)$/.test(n.textContent.trim()) && !n.classList.contains('calendar-day'));
+    if (managementButtons.length) {
+      const details = el('details','ui-list-management'); details.append(el('summary','','Управление списком'));
+      details.open = blockReorderMode || taskReorderMode || questReorderMode || !!bulkSelection;
+      managementButtons[0].before(details); details.append(...managementButtons);
+    }
+
+  }
+  function uiAfterRender(previous, doneBefore = null) {
+    uiDecorate();
+    const serial = ++uiRenderSerial, pending = uiPendingNavigation; uiPendingNavigation = null;
+    if (doneBefore) { const completed = [...screen.querySelectorAll('[data-ui-key].done')].find(n=>doneBefore.get(n.dataset.uiKey) === false); if(completed) uiToast('Выполнено: ' + (completed.querySelector('.task-title')?.textContent || 'дело'), 'Показать', () => uiTarget(completed.dataset.uiKey)); }
+    requestAnimationFrame(() => {
+      if (serial !== uiRenderSerial) return;
+      if (pending?.target && uiTarget(pending.target)) return;
+      uiRestore(pending ? (pending.top ? null : uiPositions.get(uiViewKey())) : previous);
+    });
+  }
+  function uiPlural(value, forms) { const n = Math.abs(Number(value)), x = n % 100; return forms[(x >= 11 && x <= 14) || !Number.isInteger(n) ? 2 : n % 10 === 1 ? 0 : n % 10 >= 2 && n % 10 <= 4 ? 1 : 2]; }
+  function uiAmount(value, forms) { return value + ' ' + uiPlural(value, forms); }
+  function uiGeneratedText(text, className) {
+    if (typeof text !== 'string' || !/(^|\s)(detail-reward|reward|compact-goal-reward|focus-result-text)(\s|$)/.test(className)) return text;
+    return text.replace(/(\d+) (монет|алмазов|минут)(?=[\s.,!?:;]|$)/g, (_, n, word) => uiAmount(n, ({монет:['монета','монеты','монет'],алмазов:['алмаз','алмаза','алмазов'],минут:['минута','минуты','минут']})[word]));
+  }
+  function uiDownload(filename, text) {
+    const url = URL.createObjectURL(new Blob([text], { type: 'application/json;charset=utf-8' }));
+    const link = el('a'); link.href = url; link.download = filename; document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  function uiCreateBackup() {
+    try {
+      let data;
+      if (healthy) { if (!loadLatest()) throw new Error('Не удалось прочитать сохранение.'); data = state; }
+      else { if (snapshot === null) throw new Error('Нет подтверждённой исправной копии в памяти. Не очищай хранилище; восстанови свою прежнюю JSON-копию.'); data = normalize(JSON.parse(snapshot)); }
+      backupText.value = exportProgress(data);
+      backupStatus.textContent = healthy ? 'Копия готова. Сохрани её вне приложения.' : 'Копия последнего исправного сохранения готова. Последнее неуспешное действие в неё не вошло.';
+      return backupText.value;
+    } catch (error) { backupStatus.textContent = 'Копия не создана: ' + error.message; return null; }
+  }
+  function uiBackupSummary(parsed) {
+    const d = parsed.data;
+    return `Дата копии: ${parsed.createdAt ? new Date(parsed.createdAt).toLocaleString('ru-RU') : 'не указана'}.\nБлоков: ${d.blocks?.length || 0}; заданий: ${d.tasks?.length || 0}; целей: ${d.goals?.length || 0}; квестов: ${d.quests?.length || 0}; моментов счастья: ${d.happiness?.collection?.length || 0}.`;
+  }
+  function uiSetupBackupFiles() {
+    const group = el('section', 'ui-backup-files');
+    group.append(el('h3', '', 'Резервная копия прогресса'), el('p', 'meta', 'Сохрани JSON-файл, чтобы перенести данные или восстановить их позже.'));
+    group.append(btn('Скачать JSON-копию', 'button full', () => { const value = uiCreateBackup(); if (value) uiDownload('LifeGame-progress-' + today() + '.json', value); }));
+    const label = el('label', 'ui-file-picker'); const input = el('input'); input.type = 'file'; input.accept = '.json,application/json'; input.setAttribute('aria-label','Выбрать JSON-файл резервной копии');
+    const fileName = el('span', 'ui-file-name', 'Файл не выбран'); let selectedBackup = null;
+    label.append(input, el('span', 'button secondary full', 'Выбрать JSON-файл'), fileName);
+    const preview = el('p', 'meta'); preview.setAttribute('role','status');
+    input.addEventListener('change', async () => {
+      const file = input.files?.[0]; if (!file) return;
+      try { const text = await file.text(), parsed = JSON.parse(text); if (!parsed || parsed.app !== 'LifeGame' || parsed.version !== 1) throw new Error('Нужна JSON-копия LifeGame версии 1.'); normalize(parsed.data); selectedBackup = text; fileName.textContent = file.name; preview.textContent = uiBackupSummary(parsed); restore.hidden = false; }
+      catch (e) { selectedBackup = null; fileName.textContent = 'Файл не выбран'; preview.textContent = 'Файл не выбран для восстановления: ' + e.message; restore.hidden = true; } input.value = '';
+    }); group.append(label, preview);
+    const restore = btn('Восстановить из выбранной копии', 'button secondary full', () => { if (selectedBackup) { backupText.value = selectedBackup; document.getElementById('restore-backup').click(); } }); restore.hidden = true; group.append(restore);
+    settings.querySelector('details').before(group); settings.querySelector('summary').textContent = 'Копия текстом · дополнительный способ';
+  }
+
+  function go(nextPage, selectedBlock = null, fromDayTask = false, options = {}) {
     if (page === "myRoute" && nextPage !== "myRoute" && routeDraft) {
       if (routeDraft.step !== "done") {
-        routeConfirmExit(() => go(nextPage, selectedBlock, fromDayTask));
+        routeConfirmExit(() => go(nextPage, selectedBlock, fromDayTask, options));
         return;
       }
       routeDraft = null;
     }
+    document.getElementById("ui-feedback")?.setAttribute("hidden", "");
+    uiCapture();
+    const sameRoot = nextPage === page && selectedBlock === blockId;
     if (page === "aiPreview" && nextPage !== page) aiCancel();
     resetBulkSelection();
     if (nextPage !== "blocks" || selectedBlock !== blockId) taskReorderMode = false;
@@ -3708,15 +3995,12 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
           ? dayBlockReturn
           : null;
     if (nextPage !== "myRoute") syncDay();
-    if (nextPage === "calendar") {
-      calendarDate = today(); calendarMonth = today().slice(0, 7);
-      calendarMode = "days"; calendarPast = false;
-    }
     dayBlockReturn = returnPosition;
     page = nextPage;
     blockId = selectedBlock;
+    uiPendingNavigation = { target: options.target || "", top: options.top || nextPage === "hero" || sameRoot && !options.restore && !options.target };
+    if (options.history !== 'none' && !sameRoot) uiWriteHistory(history.state?.modal ? 'replace' : 'push');
     render();
-    window.scrollTo(0, 0);
   }
 
   function pageLinks(...buttons) {
@@ -3824,7 +4108,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     list.append(btn("Закрыть", "button full", () => menu.close()));
     menu.append(heading, list);
     heading.tabIndex = -1; heading.autofocus = true;
-    menu.showModal(); heading.focus();
+    uiShowDialog(menu); heading.focus();
   }
 
   function openCardMenu(collection, id, allowDelete = true) {
@@ -3895,7 +4179,10 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
           ["Разовое", []], ["Каждый день", [1, 2, 3, 4, 5, 6, 7]],
           ["По будням", [1, 2, 3, 4, 5]], ["Выходные", [6, 7]]
         ];
+        const repeatHint = el("p", "meta"); repeatHint.setAttribute("role", "status");
         const updatePresets = () => {
+          const selected = checks.flatMap((input, i) => input.checked ? [i + 1] : []);
+          repeatHint.textContent = !selected.length ? "Разовое задание · без повторения" : selected.length === 7 ? "Повторяется каждый день" : "Повторение: " + selected.map(n => WEEKDAYS[n - 1]).join(", ");
           choices.forEach(([, days], index) => {
             const matches = checks.every((input, day) =>
               input.checked === days.includes(day + 1));
@@ -3921,7 +4208,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
         updatePresets();
         group.append(presets, grid);
         inputs[field.key] = checks;
-        form.append(group, el("p", "meta", "Не выбраны дни — разовое задание"));
+        form.append(group, repeatHint);
         continue;
       }
       if(field.key === "currency") {
@@ -3988,7 +4275,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     });
 
     editor.append(form);
-    editor.showModal();
+    uiShowDialog(editor);
     const firstInput = Object.values(inputs)[0];
     heading.tabIndex=-1; heading.focus();
   }
@@ -4086,7 +4373,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     });
 
     editor.append(form);
-    editor.showModal();
+    uiShowDialog(editor);
     input.focus();
   }
 
@@ -4304,7 +4591,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
       next.disabled = true;
       dialog.append(heading, message, download, saved, next, btn("Отмена", "button secondary full spaced", () => dialog.close()));
       dialog.addEventListener("close", () => { bulkProcedure = null; if (bulkSelection) bulkSelection.ids.clear(); dialog.remove(); render(); }, { once: true });
-      document.body.append(dialog); dialog.showModal(); heading.tabIndex = -1; heading.focus();
+      document.body.append(dialog); uiShowDialog(dialog); heading.tabIndex = -1; heading.focus();
     } catch (error) {
       bulkProcedure = null;
       if (bulkSelection) bulkSelection.ids.clear();
@@ -4523,8 +4810,8 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     const done = goal.completedDate !== null;
 
     if (!confirm(done
-      ? `Отменить выполнение и убрать ${goal.diamonds} алмазов?`
-      : `Цель достигнута? Начислить ${goal.diamonds} алмазов?`
+      ? `Отменить выполнение и убрать ${uiAmount(goal.diamonds,["алмаз","алмаза","алмазов"])}?`
+      : `Цель достигнута? Начислить ${uiAmount(goal.diamonds,["алмаз","алмаза","алмазов"])}?`
     )) return;
 
     transact(data => {
@@ -4551,6 +4838,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
   function goalCard(goal) {
     const done = goal.completedDate !== null;
     const card = el("article", "card goal-card compact-goal-card" + (done ? " done" : " active-goal"));
+    uiEntity(card, "goal", goal.id);
     const head = el("div", "task-head");
     head.append(el("div", "task-title", goal.name));
     if (!done) {
@@ -4650,6 +4938,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
   }
   function calendarCard(entry) {
     const card = el("article", "card" + (entry.completionId !== null ? " done" : ""));
+    uiEntity(card, "calendar", entry.id);
     const head = el("div", "task-head");
     const more = btn("⋯", "more-button", () => calendarMenu(entry.id));
     more.setAttribute("aria-label", "Действия: " + entry.name);
@@ -4869,7 +5158,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
           alert("Задание или его блок больше недоступны.");
           return;
         }
-        go("blocks", actual.block, true);
+        go("blocks", actual.block, true, { target: "task:" + actual.id });
       }
     );
     badge.setAttribute("aria-label", "Открыть блок: " + block.name);
@@ -4891,6 +5180,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     const record = completion(state, task);
     const old = task.type === "once" && record && record.date !== today();
     const card = el("article", "card compact-task-card" + (record ? " done" : ""));
+    uiEntity(card, "task", task.id);
     const details = el("div", "compact-details");
     details.append(
       el("span", "detail-muted", !task.weekdays.length ? "Разовое"
@@ -4976,6 +5266,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
   }
   function stagesCard(q) {
     const done=q.progress===q.target, card=el("article","card"+(done?" done":""));
+    uiEntity(card, "quest", q.id);
     card.append(favoriteBar("quests",q),cardHead(q,"quests"));
     if(q.stepReward)card.append(el("div","detail-reward",`За этап: +${q.stepReward} монет`));
     const final=state.completions.find(x=>x.id===q.finalCompletionId);
@@ -4998,7 +5289,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     const field=(label,value,type="text",min=0)=>{const wrap=el("label","",label),input=el("input");input.type=type;input.value=value;input.required=true;if(type==="text")input.maxLength=120;else {input.min=min;input.max=100000;input.step=1;}wrap.append(input);form.append(wrap);return input;};
     const name=field("Название",draft.name),list=el("div");form.append(list);
     if(!original){const picker=el("fieldset","quest-type-picker"),segments=el("div","quest-type-segments");picker.append(el("legend","","Тип квеста"),segments);for(const [value,text] of [["counter","Счётчик"],["stages","Этапы"]]){const label=el("label","quest-type-option"),radio=el("input");radio.type="radio";radio.name="quest-type";radio.value=value;radio.checked=value==="stages";radio.onchange=()=>{if(value==="counter"){const saved=session||{};saved.stages=draft;saved.common={name:name.value,stepReward:stepReward.value,reward:reward.value};editor.close();createQuest(saved);}};label.append(radio,el("span","",text));segments.append(label);}heading.after(picker);}
-    const draw=()=>{list.replaceChildren();draft.stages.forEach((stage,i)=>{const row=el("div","stage-editor-row"),input=el("input");input.type="text";input.value=stage.name;input.required=true;input.maxLength=120;input.setAttribute("aria-label",`Название этапа ${i+1}`);input.oninput=()=>stage.name=input.value;row.append(input);
+    const draw=()=>{list.replaceChildren();draft.stages.forEach((stage,i)=>{const row=el("div","stage-editor-row"),input=el("input");input.type="text";input.value=stage.name;input.required=true;input.maxLength=120;input.setAttribute("aria-label",`Название этапа ${i+1}`);input.id="ui-stage-"+i;input.placeholder=i===0?"Например: подготовить первый черновик":"Что нужно сделать на этом этапе?";const label=el("label","ui-stage-label",`Этап ${i+1}`);label.htmlFor=input.id;input.oninput=()=>stage.name=input.value;row.append(label,input);
       if(!draft.started){const controls=el("div","actions");for(const [text,delta] of [["↑",-1],["↓",1],["Удалить",0]]){const b=btn(text,"button secondary",()=>{if(delta){const j=i+delta;[draft.stages[i],draft.stages[j]]=[draft.stages[j],draft.stages[i]];}else draft.stages.splice(i,1);draw();});const updateLabel=()=>b.setAttribute("aria-label",`${delta<0?"Переместить вверх":delta>0?"Переместить вниз":"Удалить"}: этап ${i+1}${stage.name?" — "+stage.name:""}`);updateLabel();input.addEventListener("input",updateLabel);b.disabled=delta?i+delta<0||i+delta>=draft.stages.length:draft.stages.length<=2;controls.append(b);}row.append(controls);}list.append(row);});};draw();
     if(!draft.started){const add=btn("+ Добавить этап","button secondary full",()=>{if(draft.stages.length<50){draft.stages.push({id:uid(),name:""});draw();}});form.append(add);}else form.append(el("p","meta","Квест начат: состав и порядок этапов заблокированы."));
     const stepReward=field("Монеты за каждый этап",draft.stepReward,"number"),reward=field("Монеты за достижение",draft.reward,"number",1),error=el("p","meta");error.setAttribute("role","alert");form.append(error);
@@ -5007,7 +5298,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
       if(transact(d=>{let q=d.quests.find(x=>x.id===id);if(id&&!q)fail("Квест не найден.");if(q?.started&&(q.stages.length!==draft.stages.length||q.stages.some((x,i)=>x.id!==draft.stages[i].id)))fail("Состав этапов заблокирован.");
         if(!q){q={id:uid(),type:"stages",started:false,favorite:false,showInDay:false,finalCompletionId:null,completedAt:null,stages:draft.stages.map(x=>({id:x.id,name:x.name.trim(),done:false,completedAt:null,completionId:null}))};d.quests.push(q);}else q.stages.forEach(x=>{x.name=draft.stages.find(y=>y.id===x.id)?.name.trim()||x.name;});
         if(!q.started)q.stages=draft.stages.map(x=>({...x,name:x.name.trim(),done:false,completedAt:null,completionId:null}));q.name=name.value.trim();q.stepReward=Number(stepReward.value);q.reward=Number(reward.value);
-      },false))editor.close();};editor.append(form);editor.showModal();heading.focus();
+      },false))editor.close();};editor.append(form);uiShowDialog(editor);heading.focus();
   }
   function createQuest(session={}) {
     openForm("Новый квест", [
@@ -5117,6 +5408,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     if(quest.type==="stages")return stagesCard(quest);
     const done = quest.progress >= quest.target;
     const card = el("article", "card" + (done ? " done" : ""));
+    uiEntity(card, "quest", quest.id);
     const rewards = el("div", "compact-details");
     if (quest.stepReward > 0) {
       rewards.append(el("span", "detail-reward",
@@ -5270,6 +5562,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
       "article",
       "card" + (isDiamonds ? " diamond-shop-card" : "")
     );
+    uiEntity(card, "bonus", bonus.id);
 
     card.append(
       favoriteBar("bonuses", bonus),
@@ -5307,6 +5600,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
       "article",
       "card" + (isDiamonds ? " diamond-shop-card" : "")
     );
+    uiEntity(card, "purchase", purchase.id);
 
     card.append(
       el("div", "task-title", purchase.name),
@@ -5377,7 +5671,8 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
   function gameVisual() {
     const visual = el("div", "game-visual");
     const image = el("img", "hero-landscape");
-    image.src = "assets/images/journey.png";
+    image.src = "assets/images/journey.webp";
+    image.onerror = () => { image.onerror = null; image.src = "assets/images/journey.png"; };
     image.alt = "";
     image.width = 1939;
     image.height = 811;
@@ -5493,11 +5788,11 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     });
     editor.addEventListener("close", () => {
       previewObserver.disconnect();
-      settings.showModal();
+      uiShowDialog(settings);
     }, { once: true });
     editor.append(form);
     update();
-    editor.showModal();
+    uiShowDialog(editor);
     input.focus();
   }
 
@@ -5516,13 +5811,13 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     arrow.setAttribute("aria-hidden", "true");
     button.append(
       symbol,
-      el("span", "ai-preview-entry-title", "ИИ-помощник"),
+      el("span", "ai-preview-entry-title", "LifeGame AI"),
       el("span", "ai-preview-badge", "Тестовая версия"),
       arrow
     );
     button.setAttribute(
       "aria-label",
-      "ИИ-помощник — тестовая версия. Открыть чат"
+      "LifeGame AI — тестовая версия. Открыть чат"
     );
     return button;
   }
@@ -5635,7 +5930,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
       const current = serializeAiContext(buildAiContext());
       if (current !== ai.preview) {
         ai.preview = current; ai.confirmedContext = null;
-        ai.error = "Данные изменились. Проверьте обновлённый JSON и подтвердите его ещё раз."; aiDraw(); return;
+        ai.error = "Данные изменились. Проверь обновлённый JSON и подтвердите его ещё раз."; aiDraw(); return;
       }
       ai.confirmedContext = current; aiUiContextRequired = false; ai.error = "";
       aiUiOpen("chat");
@@ -5669,18 +5964,18 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
 
   function aiError(code) {
     const errors = {
-      400: "Модель не поддерживает этот текстовый запрос или параметры. Выберите другую модель.",
-      401: "Неверный API-ключ. Проверьте ключ выбранного провайдера.",
-      403: "Нет доступа к API или модели. Проверьте права ключа и доступность региона.",
+      400: "Модель не поддерживает этот текстовый запрос или параметры. Выбери другую модель.",
+      401: "Неверный API-ключ. Проверь ключ выбранного провайдера.",
+      403: "Нет доступа к API или модели. Проверь права ключа и доступность региона.",
       404: "Модель недоступна. Получите список заново или выберите другую модель.",
-      429: "Квота исчерпана или превышен лимит запросов. Проверьте баланс и повторите позже.",
+      429: "Квота исчерпана или превышен лимит запросов. Проверь баланс и повторите позже.",
       timeout: "Время ожидания истекло. Текст сохранён; можно повторить запрос.",
       network: "Нет соединения с API. Возможны сбой сети или ограничение CORS браузера. Обход защиты не используется.",
-      response: "Провайдер вернул ответ в неожиданном формате. Попробуйте другую модель или повторите запрос позже.",
-      blocked: "Генерация заблокирована или не завершена. Измените сообщение или выберите другую модель.",
-      empty: "Модель не вернула текст. Возможно, она не поддерживает текстовый чат. Выберите другую модель."
+      response: "Провайдер вернул ответ в неожиданном формате. Попробуй другую модель или повторите запрос позже.",
+      blocked: "Генерация заблокирована или не завершена. Измени сообщение или выберите другую модель.",
+      empty: "Модель не вернула текст. Возможно, она не поддерживает текстовый чат. Выбери другую модель."
     };
-    return errors[code] || "API временно недоступен. Повторите позже или выберите другую модель.";
+    return errors[code] || "API временно недоступен. Повтори позже или выберите другую модель.";
   }
 
   async function aiJson(url, key, signal, body, gemini = false) {
@@ -5890,7 +6185,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     history.setAttribute("aria-label", "История текущего диалога"); history.tabIndex = 0;
     for (const message of ai.messages) {
       const bubble = el("article", "ai-preview-message ai-preview-message-" + message.role);
-      bubble.append(el("div", "ai-preview-message-author", message.role === "user" ? "Вы" : "LifeGame AI"),
+      bubble.append(el("div", "ai-preview-message-author", message.role === "user" ? "Ты" : "LifeGame AI"),
         message.role === "assistant" ? aiFormattedText(message.content) : el("p", "", message.content));
       if (message.truncated) bubble.append(el("p", "ai-answer-warning", "Ответ может быть неполным: достигнут лимит генерации."));
       if (message.localTruncated) bubble.append(el("p", "ai-answer-warning", "Ответ сокращён из-за ограничения длины."));
@@ -5958,7 +6253,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
       const label = el("label", "", "API-ключ " + provider.name), input = el("input");
       input.type = "password"; input.autocomplete = "off"; input.spellcheck = false; input.value = ai.key;
       input.oninput = () => { aiCancel(); ai.key = input.value; ai.models = []; ai.model = ""; ai.error = "";
-        modelSelect.replaceChildren(el("option", "", "Сначала получите модели")); connect.disabled = true;
+        modelSelect.replaceChildren(el("option", "", "Сначала получи модели")); connect.disabled = true;
         load.disabled = !ai.key.trim() || !ai.adult; status.textContent = "Не подключён"; };
       label.append(input); setup.append(label);
       const adultLabel = el("label", "ai-chat-permission"), adult = el("input"); adult.type = "checkbox"; adult.checked = ai.adult;
@@ -5968,7 +6263,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
       const load = btn("Получить модели", "button secondary", aiLoadModels);
       load.disabled = !ai.key.trim() || !ai.adult || !!ai.busy; setup.append(load);
       const modelLabel = el("label", "", "Модель"), modelSelect = el("select");
-      const placeholder = el("option", "", "Выберите модель самостоятельно"); placeholder.value = ""; modelSelect.append(placeholder);
+      const placeholder = el("option", "", "Выбери модель самостоятельно"); placeholder.value = ""; modelSelect.append(placeholder);
       for (const m of ai.models) { const option = el("option", "", m.name); option.value = m.id; modelSelect.append(option); }
       modelSelect.value = ai.model;
       modelSelect.onchange = () => { aiCancel(); ai.messages = []; ai.draft = ""; aiClearContext(); ai.verified = false; ai.model = modelSelect.value; aiDraw(); };
@@ -5987,11 +6282,16 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
         btn("Другой провайдер / модель", "button secondary", () => aiReset()));
       setup.append(actions);
     }
+    if (ai.connected) setup.append(btn("Перейти в чат", "button full spaced", () => aiUiOpen("chat")));
+    else {
+      const help = el("p", "ui-setup-help", !ai.key.trim() ? "Чтобы получить модели, введи API-ключ выбранного провайдера и подтверди возраст." : !ai.adult ? "Подтверди возраст, чтобы получить список моделей." : !ai.models.length ? "Получи список моделей, затем выбери одну и подключись." : !ai.model ? "Выбери модель из полученного списка." : "Всё готово: нажми «Подключить».");
+      help.setAttribute("role", "status"); setup.append(help);
+    }
     const privacy = el("details");
     privacy.append(el("summary", "", "Конфиденциальность и ограничения"),
-      el("p", "meta", "Запросы оплачиваются по вашему ключу. Лимиты не гарантируют отсутствие расходов. Скрипты страницы, расширения и заражённое устройство могут получить доступ к ключу. CORS на GitHub Pages пока не проверен."),
-      el("p", "meta", "Без разрешений отправляются только сообщения и временная переписка с системной инструкцией LifeGame AI. Не вводите секреты. До 2000 символов в сообщении, 12 завершённых пар истории и 1024 токенов ответа."));
-    setup.append(el("p", "meta", "Ключи, переписка и разрешения хранятся только в памяти текущей вкладки. Разрешённый контекст отправляется выбранному API-провайдеру. Запросы расходуют средства по вашему ключу."), privacy);
+      el("p", "meta", "Запросы оплачиваются по твоему ключу. Лимиты не гарантируют отсутствие расходов. Скрипты страницы, расширения и заражённое устройство могут получить доступ к ключу. Доступность подключения зависит от браузера, провайдера и региона. При ошибке появится подсказка."),
+      el("p", "meta", "Без разрешений отправляются только сообщения и временная переписка с системной инструкцией LifeGame AI. Не вводи секреты. До 2000 символов в сообщении, 12 завершённых пар истории и 1024 токенов ответа."));
+    setup.append(el("p", "meta", "Ключи, переписка и разрешения хранятся только в памяти текущей вкладки. Разрешённый контекст отправляется выбранному API-провайдеру. Запросы расходуют средства по твоему ключу."), privacy);
     const controls = el("div", "ai-chat-actions");
     if (ai.busy) controls.append(btn("Отменить запрос", "button secondary", () => { aiCancel(); ai.error = "Запрос отменён. Отмена не гарантирует отмену списаний провайдером."; aiDraw(); }));
     controls.append(btn("Отключиться", "button secondary", () => aiReset())); setup.append(controls);
@@ -6065,7 +6365,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     }
     const summary = btn("", "home-summary", () => go("summary"));
     summary.append(designIconTile("chart", "mint"), el("span", "", "Итоги дня"), designIcon("chevron"));
-    const settingsLink = btn("", "button secondary full settings-link", () => settings.showModal());
+    const settingsLink = btn("", "button secondary full settings-link", () => uiShowDialog(settings));
     settingsLink.append(designIcon("gear"), document.createTextNode("Настройки"));
     const count = state.calendarEntries.filter(x => x.date === today()).length;
     screen.append(hero, caption,
@@ -6101,7 +6401,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
       btn("Выйти", "button", () => { routeDraft = null; dialog.close(); action(); }));
     dialog.append(actions);
     dialog.addEventListener("close", () => dialog.remove(), { once: true });
-    document.body.append(dialog); dialog.showModal();
+    document.body.append(dialog); uiShowDialog(dialog);
   }
 
   function routeFinish() {
@@ -6420,7 +6720,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
       if (goal) { card("Цель: " + goal.name); button("Открыть блок с целью", () => go("blocks", goal.blockId)); }
       if (task) {
         card("Задание: " + task.name + (completion(state, task) ? " · выполнено" : " · не выполнено"));
-        button("Открыть блок с заданием", () => go("blocks", task.block));
+        button("Открыть задание в блоке", () => go("blocks", task.block, false, { target: "task:" + task.id }));
         button("Перейти в Конструктор дня", () => go("day"));
       }
       button("Вернуться к Герою", () => go("hero"));
@@ -6674,7 +6974,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     if (!keyRoute) keyFocus = document.activeElement;
     keyRoute = { id };
     keySync();
-    if (!keyDialog.open) keyDialog.showModal();
+    if (!keyDialog.open) uiShowDialog(keyDialog);
     keyDialog.querySelector("h2")?.focus();
   }
 
@@ -7184,6 +7484,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     dialog.setAttribute("aria-labelledby", title.id);
     const label = el("label", "", entry.source === "virtual" ? "Сохранено от: " + entry.author : "Мой момент");
     const area = el("textarea", "happiness-edit-text");
+    area.id = "happiness-edit-value"; label.htmlFor = area.id;
     area.maxLength = 1000; area.value = entry.text;
     const actions = el("div", "happiness-edit-actions");
     const save = btn("Сохранить", "button", () => {
@@ -7207,7 +7508,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     dialog.append(title, label, area, actions);
     dialog.addEventListener("close", () => dialog.remove(), { once: true });
     document.body.append(dialog);
-    try { dialog.showModal(); } catch { dialog.remove(); }
+    try { uiShowDialog(dialog); } catch { dialog.remove(); }
   }
 
   function happinessShowRules() {
@@ -7256,7 +7557,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     dialog.append(title, body, btn("Закрыть", "button full", () => dialog.close()));
     dialog.addEventListener("close", () => dialog.remove(), { once: true });
     document.body.append(dialog);
-    try { dialog.showModal(); } catch { dialog.remove(); }
+    try { uiShowDialog(dialog); } catch { dialog.remove(); }
   }
 
   function happinessShowSettings() {
@@ -7303,7 +7604,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     updateStatus();
     dialog.addEventListener("close", () => dialog.remove(), { once: true });
     document.body.append(dialog);
-    try { dialog.showModal(); } catch { dialog.remove(); }
+    try { uiShowDialog(dialog); } catch { dialog.remove(); }
   }
 
   function happinessOpenMenu(inDay) {
@@ -7367,7 +7668,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
       dialog.remove();
     }, { once: true });
     document.body.append(dialog);
-    try { dialog.showModal(); happinessDrawCollection(); }
+    try { uiShowDialog(dialog); happinessDrawCollection(); }
     catch { happinessCollectionDialog = null; dialog.remove(); }
   }
 
@@ -7415,6 +7716,9 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     if (h.pending) root.append(el("p", "happiness-turn", "Сейчас ход виртуального игрока. Твой следующий ход — после второго ответа."));
     else root.append(el("p", "happiness-turn", "Твой ход: что сегодня подарило тебе радость?"));
     const textarea = el("textarea", "happiness-input");
+    textarea.id = "happiness-message-value";
+    const messageLabel = el("label", "ui-message-label", "Твой счастливый момент"); messageLabel.htmlFor = textarea.id;
+    textarea.setAttribute("aria-label", "Твой счастливый момент");
     textarea.placeholder = "Я кайфую, когда…";
     textarea.maxLength = 1000;
     textarea.value = happinessDraft;
@@ -7422,7 +7726,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     textarea.addEventListener("input", () => { happinessDraft = textarea.value; });
     const send = btn("+ Добавить счастливый момент", "button full widget-primary", happinessSend, true);
     send.disabled = !healthy || Boolean(h.pending) || (h.mode === "virtual" && happinessLibrary.status !== "ready");
-    root.append(textarea, send);
+    root.append(messageLabel, textarea, send);
     root.append(btn("Моя коллекция счастья · " + h.collection.length + " ›",
       "button secondary full happiness-collection-launch", happinessOpenCollection));
     return root;
@@ -7459,7 +7763,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     }, { once: true });
     document.body.append(dialog);
     try {
-      dialog.showModal();
+      uiShowDialog(dialog);
       happinessChatAtBottom = true;
       happinessDrawPlay();
     } catch {
@@ -7474,7 +7778,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     const root = el("div", "happiness-mini");
     root.append(el("p", "happiness-mini-prompt", "Что хорошего сегодня? ❤️"));
     const actions = el("div", "happiness-mini-actions");
-    actions.append(el("span", "happiness-mini-count", "♥ В коллекции: " + h.collection.length));
+    actions.append(btn("Коллекция · " + h.collection.length, "happiness-mini-count ui-collection-link", happinessOpenCollection));
     actions.append(btn("Играть", "button widget-primary happiness-mini-launch", happinessOpenPlay, true));
     root.append(actions);
     if (h.mode === "virtual" && h.pending) {
@@ -7537,7 +7841,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     for (const item of state.widgets.items) {
       const definition = widgetDefinition(item.id);
       if (!item.showInDay || !widgetAvailable(definition) || !definition.placements.includes("day")) continue;
-      const card = el("section", "widget-instance spaced");
+      const card = uiEntity(el("section", "widget-instance spaced"), "widget", item.id);
       const heading = el("div", "widget-instance-head");
       heading.append(designIcon(DESIGN_WIDGET_ICONS[item.id]), el("h2", "", definition.title));
       if (definition.system) heading.append(el("span", "widget-badge", "Системный"));
@@ -7556,7 +7860,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
   }
 
   function addWidget(id) {
-    return widgetChange(data => {
+    const saved = widgetChange(data => {
       const definition = widgetDefinition(id);
 
       if (!widgetAvailable(definition) ||
@@ -7570,6 +7874,8 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
 
       data.widgets.items.push({ id, placement: "widgets", showInDay: false });
     });
+    if (saved) uiToast("Добавлен виджет «" + widgetDefinition(id).title + "»", "Перейти", () => go("widgets", null, false, { target: "widget:" + id }));
+    return saved;
   }
 
   function removeWidget(id) {
@@ -7648,6 +7954,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
   function widgetInstance(item, index, total) {
     const definition = widgetDefinition(item.id);
     const card = el("section", "widget-instance");
+    uiEntity(card, "widget", item.id);
 
     const heading = el("div", "widget-instance-head");
     heading.append(designIcon(DESIGN_WIDGET_ICONS[item.id]));
@@ -7747,6 +8054,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
 
   function widgetCatalogCard(definition) {
     const card = el("article", "widget-catalog-card");
+    uiEntity(card, "catalog", definition.id);
     const head = el("div", "widget-catalog-head");
     const symbol = el("div", "widget-symbol");
     symbol.setAttribute("aria-hidden", "true");
@@ -7793,14 +8101,13 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
       card.append(el(
         "p",
         "meta",
-        "Появится после подключения функции. " +
-        "Добавление пока недоступно."
+        "Этот виджет ещё не готов. Ничего подключать не нужно — добавление появится в будущей версии."
       ));
     } else if (added) {
       card.append(btn(
-        "Открыть мои виджеты",
+        "Перейти к виджету",
         "button secondary full",
-        () => go("widgets")
+        () => go("widgets", null, false, { target: "widget:" + definition.id })
       ));
     } else {
       card.append(btn(
@@ -7856,12 +8163,12 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
       if (!definitions.length) list.append(el("div", "empty", "Нет подходящих виджетов. Попробуй изменить фильтры."));
       definitions.forEach(definition => list.append(widgetCatalogCard(definition)));
     };
-    select.addEventListener("change", () => { widgetCategory = select.value; draw(); });
+    select.addEventListener("change", () => { widgetCategory = select.value; render(); });
     systemInput.addEventListener("change", () => {
       widgetSystemOnly = systemInput.checked;
-      draw();
+      render();
     });
-    input.addEventListener("change", () => { widgetFavoritesOnly = input.checked; draw(); });
+    input.addEventListener("change", () => { widgetFavoritesOnly = input.checked; render(); });
     filters.append(label, select, systemLabel, favoriteLabel);
     screen.append(filters, count, list);
     draw();
@@ -7920,11 +8227,12 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
           list.append(row);
           continue;
         }
-        const open = btn("", "block", () => go("blocks", block.id));
+        const open = uiEntity(btn("", "block", () => go("blocks", block.id)), "block", block.id);
         const info = el("span", "block-info");
         info.append(el("span", "", block.name), el("div", "meta", blockCounts(block.id)));
         const blockIcons = ["heart", "body", "book", "wallet", "people", "compass", "cloud", "minus"];
-        const iconIndex = DEFAULT_NAMES.indexOf(block.name);
+        const starterIndex = /^block-([0-7])$/.exec(block.id);
+        const iconIndex = starterIndex ? Number(starterIndex[1]) : DEFAULT_NAMES.indexOf(block.name);
         const tone = iconIndex === 0 || iconIndex === 4 ? "rose" : iconIndex === 1 || iconIndex === 6 ? "mint" : "";
         open.append(designIconTile(blockIcons[iconIndex] || "grid", tone), info, designIcon("chevron"));
         list.append(open);
@@ -8087,7 +8395,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     renderDayWidgets();
     if (!total) {
       screen.append(el("div", "empty",
-        "План пока пуст. Отметь нужные задания в блоках."));
+        "План пока пуст. Выбери задания в блоках и включи для них «Конструктор дня». Таймер и виджеты не считаются заданиями для бонуса."));
     }
     const events = state.calendarEntries.filter(x => x.date === today());
     section("СЕГОДНЯ ПО КАЛЕНДАРЮ", sortCalendar(events.filter(x => x.completionId === null)), calendarCard);
@@ -8173,6 +8481,8 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
   }
 
   function render() {
+    const uiPrevious = uiPendingNavigation ? null : uiCapture();
+    const uiDoneBefore = uiPendingNavigation ? null : new Map([...screen.querySelectorAll("[data-ui-key]")].map(n=>[n.dataset.uiKey,n.classList.contains("done")]));
     motivationObserver?.disconnect();
     syncSoundSetting();
     view = buildView();
@@ -8204,6 +8514,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     happinessSchedule();
     if (happinessCollectionDialog?.open) happinessDrawCollection();
     if (happinessPlayDialog?.open) happinessDrawPlay();
+    uiAfterRender(uiPrevious, uiDoneBefore);
   }
 
   // Настройки и резервные копии.
@@ -8232,15 +8543,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
       : "Настройка звуков не сохранена.";
   });
 
-  $("generate-backup").addEventListener("click", () => {
-    if (!healthy || !loadLatest()) {
-      backupStatus.textContent = "Ошибка сохранения. Не заменяй прежнюю копию.";
-      return;
-    }
-    backupText.value = exportProgress(state);
-    render();
-    backupStatus.textContent = "Копия готова. Сохрани весь текст вне приложения.";
-  });
+  $("generate-backup").addEventListener("click", () => { uiCreateBackup(); });
 
   $("copy-backup").addEventListener("click", async () => {
     if (!backupText.value.trim()) {
@@ -8265,7 +8568,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
       }
       const restored = normalize(parsed.data);
       if (!confirm(
-        "Заменить текущие данные этой копией? Данные не объединяются."
+        uiBackupSummary(parsed) + "\n\nЗаменить текущий прогресс этой копией? Данные не объединяются. Сначала сохрани текущую копию, если она нужна."
       )) return;
       ensureDay(restored);
       const checked = normalize(restored);
@@ -8384,7 +8687,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
       })) return;
       treatDialog.close();
     }, true), btn("Закрыть", "button secondary full", closeTreatDialogs));
-    treatDialog.showModal();
+    uiShowDialog(treatDialog);
   }
   function suggestTreat() {
     closeTreatDialogs();
@@ -8410,10 +8713,11 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
     }
     select.addEventListener("change", () => { selected = null; draw(); });
     treatDialog.replaceChildren(title, label, select, preview, another, choose, btn("Закрыть", "button secondary full", closeTreatDialogs));
-    draw(); treatDialog.showModal();
+    draw(); uiShowDialog(treatDialog);
   }
   function treatCard(item) {
     const card = el("article", "card");
+    uiEntity(card, "treat", item.id);
     const bar = el("div", "favorite-bar");
     const star = btn(item.favorite ? "★" : "☆", "favorite-button" + (item.favorite ? " is-favorite" : ""), () => treatChange(data => {
       const actual = data.treats.find(x => x.id === item.id);
@@ -8979,6 +9283,8 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
       updateFocusProgress(progress,f); card.append(progress);
     }
     if(f.status==="ready") {
+      const autoNote = el("p", "ui-autosave", "Настройки сохраняются автоматически.");
+      card.append(autoNote);
       const options=el("div","focus-options");
       const label=el("label","","Своя длительность"); label.htmlFor="focus-minutes";
       const input=el("input"); input.id="focus-minutes"; input.type="number"; input.min="1"; input.max="180"; input.step="1"; input.inputMode="numeric"; input.value=f.minutes;
@@ -9257,6 +9563,8 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
   }
 
   // Инициализация только после объявления всех переменных.
+  uiInitHistory();
+  uiSetupBackupFiles();
   if (loadLatest()) {
     syncDay();
     seedDemoTreatsOnce();

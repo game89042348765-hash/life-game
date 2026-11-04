@@ -1,0 +1,22 @@
+{
+  "same_fixture": true,
+  "source_before_commit": "06286bc34b9b8779ab791aba05b74fbaa35ea986",
+  "pairs": [
+    "01-home",
+    "02-home-tools",
+    "03-blocks",
+    "04-block",
+    "05-task-form",
+    "06-task-goal",
+    "07-stages",
+    "08-widgets",
+    "09-catalog",
+    "10-widget-target",
+    "11-happiness",
+    "12-calendar",
+    "13-backup",
+    "14-ai",
+    "15-small-form",
+    "16-desktop"
+  ]
+}

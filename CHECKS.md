@@ -1,26 +1,61 @@
-# Проверки обновлённого LifeGame
+# LifeGame — фактические проверки исправлений аудита
 
-Проверено 4 ноября 2026 года в Chromium 155, Playwright 1.62 и изолированных временных профилях. Личный браузер и прогресс пользователя не использовались.
+4 ноября 2026 года, Москва. Chromium 155 / Playwright 1.62; отдельные временные профили с искусственными данными. Личные данные, настоящие ключи и платные API не использовались.
 
-Успешно проверены:
+## Основная регрессия
 
-1. Открытие существующего сохранения без изменения его содержимого.
-2. Основные переходы главного экрана и нижняя навигация.
-3. Цель, привязка задания, три задания в плане: 45 монет за задания и бонус дня 100; достижение цели даёт 5 алмазов; сохранение после перезагрузки.
-4. Событие календаря с нулевой наградой: выполнение без начислений.
-5. Два шага квеста, финальная награда и отмена последнего шага с пересчётом истории.
-6. Создание и покупка бонусов за монеты и алмазы.
-7. Таймер: запуск, пауза, перезагрузка, продолжение и остановка; он не записывает минуты ключевых действий.
-8. Ключевое действие: создание, ручная запись времени и награда за дневной ориентир.
-9. Каталог, добавление виджетов, размещение в Конструкторе, независимые шаблоны графика дня; отсчёт «Первого шага» без изменения данных.
-10. «Игра в счастье»: загрузка всех 200 реплик, собственное сообщение, ответы двух вымышленных игроков с исходными задержками, лайк, фильтр коллекции и сохранение.
-11. ИИ: настройка, выбор модели, отправка и форматирование ответа на ЛОКАЛЬНЫХ ЗАГЛУШКАХ. Реальных запросов, ключей, расходов и проверки доступности API не было.
-12. Экспорт/импорт JSON версии 1, сохранение настроек и коллекции; чтение сохранения исходным HTML и обратно.
-13. Отсутствие горизонтальной прокрутки на ширинах 320, 390, 480 и 1440 px, включая окно «Игры в счастье».
-14. Отсутствие необработанных ошибок JavaScript в перечисленных сценариях.
+- PASS: existing save opens unchanged; eight blocks and ten starter treats
+- PASS: all main navigation destinations open
+- PASS: goal link, three planned tasks, 45 coins + 100 day bonus, five diamonds, reload
+- PASS: calendar event creation and completion without a monetary reward
+- PASS: quest steps, final reward and undo use the actual accounting history
+- PASS: purchases in both currencies, balances and purchase history
+- PASS: focus timer: start, pause, reload, resume, stop; no invented minutes or coins
+- PASS: key action, manual minutes and a single reward for the daily target
+- PASS: day graph editing, independent templates, day placement; first-step countdown without data changes
+- PASS: happiness: JSON library, own moment, two timed virtual replies, likes, collection, reload
+- PASS: AI settings, model selection, send and formatted reply with local mocks; key absent from storage
+- PASS: full JSON export/import, settings, happiness data and original-version compatibility
+- PASS: 320/390/480/1440 px: content and dialogs have no horizontal overflow
+- PASS: no uncaught JavaScript errors in completed scenarios
 
-Дополнительно: JavaScript проходит `node --check`, `git diff --check` не выдаёт замечаний; на четырёх ширинах иллюстрация загружается, заголовок главной занимает две строки; проверены цвета кнопок после завершения анимации наведения.
+## Новые сценарии
 
-Сравнены 231 раздел функций с актуальным исходным HTML: 212 не изменены; 19 изменений относятся к представлению. Схема состояния, миграции, транзакции, расчёты, таймер, механика виджетов и отправка запросов ИИ сохранены. Резервная копия побайтово совпадает с исходным HTML; JSON реплик также сохранён без изменений.
+- PASS: catalogue batch-add stays open; target widget is visible and focused; data survives removal
+- PASS: widget placement and reorder preserve the keyboard control
+- PASS: return to long collection restores its scroll position
+- PASS: calendar remembers the selected month; Today resets it explicitly
+- PASS: Escape protects a changed form and allows explicit discard
+- PASS: saved task is addressed and focused; weekday hint and singular reward are correct
+- PASS: browser Back and Forward follow internal page transitions
+- PASS: browser Back closes a modal before leaving its page
+- PASS: named motivation dialog returns to Settings; direct collection and nested modal Back work
+- PASS: stage quest creation, two completions and history-safe undo still work
+- PASS: JSON download round-trip and invalid file selection leave progress intact
+- PASS: quota error is visible in the editor; the last valid save can still be downloaded exactly
+- PASS: no uncaught JavaScript errors in the new scenarios
 
-Это проверка основных сценариев, а не гарантия всех возможных состояний. Safari/iOS, реальные API, публичная публикация и их сетевые ограничения в этом прогоне не проверялись. Конечную визуальную приёмку удобно выполнить на своём телефоне.
+## Дополнительные сценарии
+
+- PASS: catalogue reset is available immediately; removing the last favourite leaves focus on filters
+- PASS: bulk selection and block ordering remain accessible through list management
+- PASS: required fields remain validated; browser Back can keep or discard an edited form
+- PASS: browser Back follows route steps, protects exit, and repeated active-tab taps do not add history
+- PASS: file preview and replacement confirmation work; a subsequent download cannot replace the selected restore file
+- PASS: corrupt saved JSON is kept untouched and is never exported as a valid backup
+- PASS: synthetic 100/500/1000-task lists load and save without data loss; timings recorded as environment-specific
+- PASS: no uncaught JavaScript errors in the additional scenarios
+
+## Размер и задержки искусственных списков
+
+| Заданий | JSON, байт | Открыть блок, мс | Выполнить, мс |
+| ---: | ---: | ---: | ---: |
+| 100 | 26853 | 421 | 314 |
+| 500 | 112053 | 704 | 587 |
+| 1000 | 218553 | 1569 | 848 |
+
+Это единичные сквозные измерения Playwright, включая ожидания интерфейса, а не гарантия скорости телефона. 1000 видимых заданий уже дают заметную задержку. Большие коллекции/чаты отдельно не измерены.
+
+16 пар финальных снимков: одинаковое сохранение в каждой паре. WebP декодируются в те же RGBA-пиксели, что PNG. Проверка кода: node --check и git diff --check; результат записан в FINAL_MANIFEST.json.
+
+Реальные Safari/iOS/Android, клавиатура, таймер заблокированного телефона, платные API и CORS GitHub Pages не проверены. Все 16 пар пересняты по финальному HTML, включая резервное копирование. Публикация выполняется через GitHub Pages; развёртывание и скачивание проверяются отдельно от локальной функциональной регрессии.

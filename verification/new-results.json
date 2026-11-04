@@ -1,0 +1,24 @@
+{
+  "passed": [
+    "catalogue batch-add stays open; target widget is visible and focused; data survives removal",
+    "widget placement and reorder preserve the keyboard control",
+    "return to long collection restores its scroll position",
+    "calendar remembers the selected month; Today resets it explicitly",
+    "Escape protects a changed form and allows explicit discard",
+    "saved task is addressed and focused; weekday hint and singular reward are correct",
+    "browser Back and Forward follow internal page transitions",
+    "browser Back closes a modal before leaving its page",
+    "named motivation dialog returns to Settings; direct collection and nested modal Back work",
+    "stage quest creation, two completions and history-safe undo still work",
+    "JSON download round-trip and invalid file selection leave progress intact",
+    "quota error is visible in the editor; the last valid save can still be downloaded exactly",
+    "no uncaught JavaScript errors in the new scenarios"
+  ],
+  "errors": [],
+  "dialogs": [
+    "Убрать виджет из моей сборки и Конструктора? Данные сохранятся.",
+    "В форме есть несохранённые изменения. Закрыть её без сохранения?",
+    "В форме есть несохранённые изменения. Закрыть её без сохранения?",
+    "Отменить этап? Его награда и награда за достижение будут убраны."
+  ]
+}

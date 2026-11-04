@@ -1,0 +1,51 @@
+{
+  "release": "2026-11-04-audit-fixes",
+  "app_html_bytes": 466818,
+  "app_html_sha256": "6c8a8eab86e70cce81c711904758b31135f09888a008b1684f984453e3126794",
+  "baseline_commit": "06286bc34b9b8779ab791aba05b74fbaa35ea986",
+  "test_groups": {
+    "results.json": 14,
+    "new-results.json": 13,
+    "extra-results.json": 8
+  },
+  "screenshot_pairs": 16,
+  "same_fixture_per_pair": true,
+  "documents_revision": 9,
+  "user_acceptance_pending": true,
+  "syntax_check": "passed: node --check",
+  "diff_check": "passed: git diff --check",
+  "files": {
+    "index.html": {
+      "bytes": 466818,
+      "sha256": "6c8a8eab86e70cce81c711904758b31135f09888a008b1684f984453e3126794"
+    },
+    "lifegame_happiness_200_messages.json": {
+      "bytes": 65568,
+      "sha256": "0d9ef49d02101cd51177b8a3b6963f1e811c0d448bbc19e427c3bf7a4c88d3ce"
+    },
+    "assets/images/journey.png": {
+      "bytes": 2231849,
+      "sha256": "ba66742c46f01a3f894687d1a903da503696abaf04ca7628e444a3919ce37bf2"
+    },
+    "assets/images/journey.webp": {
+      "bytes": 1656876,
+      "sha256": "b2d712d035acd9461e0bb2f80d7b4e07a7792aa0fe8fc7436816febc09fed5ca"
+    },
+    "assets/images/quiet-focus.png": {
+      "bytes": 1898704,
+      "sha256": "92868956e06a041617446cd57eaad35efc225d9d406c4f5e6995b08307729cf6"
+    },
+    "assets/images/quiet-focus.webp": {
+      "bytes": 1357924,
+      "sha256": "51cb9ebdd9e2b9bdfa089bff47a8f12e7cb10cb2f277c838c3eb6dfea543b097"
+    },
+    "backups/index-2026-11-04-16-33-40.html": {
+      "bytes": 406376,
+      "sha256": "c537f4fa00f888607692a2c5301ed0fae12e7badbedf94400466c1832e71a8f9"
+    },
+    "backups/index-2026-11-04-18-12-52.html": {
+      "bytes": 437121,
+      "sha256": "24c6b6c23784346ebcb108be1ba9fa243aa2d71ccb4bfb19213b240c8f37a30e"
+    }
+  }
+}

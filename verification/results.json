@@ -1,0 +1,23 @@
+{
+  "passed": [
+    "existing save opens unchanged; eight blocks and ten starter treats",
+    "all main navigation destinations open",
+    "goal link, three planned tasks, 45 coins + 100 day bonus, five diamonds, reload",
+    "calendar event creation and completion without a monetary reward",
+    "quest steps, final reward and undo use the actual accounting history",
+    "purchases in both currencies, balances and purchase history",
+    "focus timer: start, pause, reload, resume, stop; no invented minutes or coins",
+    "key action, manual minutes and a single reward for the daily target",
+    "day graph editing, independent templates, day placement; first-step countdown without data changes",
+    "happiness: JSON library, own moment, two timed virtual replies, likes, collection, reload",
+    "AI settings, model selection, send and formatted reply with local mocks; key absent from storage",
+    "full JSON export/import, settings, happiness data and original-version compatibility",
+    "320/390/480/1440 px: content and dialogs have no horizontal overflow",
+    "no uncaught JavaScript errors in completed scenarios"
+  ],
+  "errors": [],
+  "mock_calls": [
+    "models",
+    "chat"
+  ]
+}
