@@ -47,5 +47,7 @@
       "bytes": 437121,
       "sha256": "24c6b6c23784346ebcb108be1ba9fa243aa2d71ccb4bfb19213b240c8f37a30e"
     }
-  }
+  },
+  "application_commit": "a12e038d869755cef370992f8b947c8fb9d996b1",
+  "verified_application_deployment": "https://github.com/game89042348765-hash/life-game/actions/runs/41889044726"
 }

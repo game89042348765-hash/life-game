@@ -1,0 +1,48 @@
+{
+  "application_commit": "a12e038d869755cef370992f8b947c8fb9d996b1",
+  "html_sha256": "6c8a8eab86e70cce81c711904758b31135f09888a008b1684f984453e3126794",
+  "github_pages_run": "https://github.com/game89042348765-hash/life-game/actions/runs/41889044726",
+  "github_pages_status": "Success",
+  "github_pages_status_source": "public GitHub Actions HTML",
+  "direct_github_io_request": "not performed: destination outside managed network policy",
+  "verified_public_files": [
+    {
+      "file": "index.html",
+      "http": 200,
+      "bytes": 466818,
+      "identical": true
+    },
+    {
+      "file": "CHECKLIST.html",
+      "http": 200,
+      "bytes": 5694,
+      "identical": true
+    },
+    {
+      "file": "review/index.html",
+      "http": 200,
+      "bytes": 13343,
+      "identical": true
+    },
+    {
+      "file": "LifeGame_CURRENT_WORK.md",
+      "http": 200,
+      "bytes": 25901,
+      "identical": true
+    },
+    {
+      "file": "LifeGame_PROJECT_CONTEXT.md",
+      "http": 200,
+      "bytes": 129875,
+      "identical": true
+    },
+    {
+      "file": "lifegame-design.zip",
+      "http": 200,
+      "bytes": 10290379,
+      "identical": true
+    }
+  ],
+  "user_acceptance_pending": true,
+  "archive_verification_scope": "The final package checksum is in DOWNLOADS.sha256; final download is verified separately after documentation publication."
+}
