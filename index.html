@@ -2378,6 +2378,8 @@ h3.task-title { margin:0; }
 .ui-list-management>summary { font-size:12px;color:#b9c4ae;min-height:44px; }
 .ui-list-management>.button { margin:0 0 8px; }
 .blocks-nav { display:flex; flex-wrap:nowrap; align-items:center; gap:6px; width:100%; min-width:0; }
+.blocks-nav.lg-block-detail-nav { flex-wrap:wrap; }
+.blocks-nav.lg-block-detail-nav .page-link { flex-shrink:0; }
 .blocks-nav .page-link { min-width:0; flex:0 1 auto; padding:7px 8px; gap:4px; border:1px solid #ffda2940; border-radius:12px; background:#ffda2908; color:#ffda29; font-size:11px; white-space:nowrap; overflow-wrap:normal; }
 .blocks-nav .page-link .design-icon { flex:0 0 13px; width:13px; height:13px; }
 .blocks-manage-toggle { margin-left:auto; flex:0 0 40px; width:40px; height:44px; display:inline-flex; align-items:center; justify-content:center; border:1px solid #ffda2940; border-radius:12px; background:#ffda2908; color:#ffda29; cursor:pointer; }
@@ -2386,6 +2388,77 @@ h3.task-title { margin:0; }
 .blocks-list-management > summary { display:none; }
 .blocks-list-management:not([open]) { display:none; }
 .blocks-list-management[open] { display:block; padding:8px 0 2px; }
+/* UX-06: одинаковые отступы кнопок двух панелей настроек */
+.blocks-list-management > .button { margin: 0 0 8px; width: 100%; }
+.blocks-list-management > .button:last-child { margin-bottom: 0; }
+.blocks-list-management > .button.lg-settings-close {
+  color: #ffda29; background: #171812; border-color: #665921;
+}
+.blocks-list-management > .button.lg-settings-close:hover:not(:disabled) {
+  color: #ffda29; background: #242116; border-color: #a48d30;
+}
+/* Корневая панель «Блоки времени»: вариант №3 */
+#blocks-list-management-panel[open] {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 8px 0 2px;
+  margin: 0 0 14px;
+}
+#blocks-list-management-panel > .lg-blocks-root-management-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 0 8px;
+  padding: 8px 0;
+  color: #899188;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: .04em;
+  text-align: center;
+  white-space: nowrap;
+}
+#blocks-list-management-panel > .lg-blocks-root-management-divider::before,
+#blocks-list-management-panel > .lg-blocks-root-management-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1 1 0;
+  min-width: 12px;
+  background: #a28d38;
+}
+#blocks-list-management-panel > .button.lg-settings-close {
+  margin-top: 0;
+}
+.lg-block-subtitle { margin: 0 0 12px; color: #bcbcbc; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
+.button.lg-block-add-meaning,
+.button.lg-block-add-goal,
+.button.lg-block-add-task { display:flex; width:100%; min-height:46px; justify-content:center; margin:12px 0; }
+.button.lg-block-add-meaning { background:#754251; border-color:#754251; color:#fff; }
+.button.lg-block-add-goal { background:#254b3a; border-color:#376c52; color:#c5f0d5; }
+.button.lg-block-add-task { background:#ffda29; border-color:#ffda29; color:#090909; }
+.button.lg-block-add-meaning:hover:not(:disabled) { background:#895164; border-color:#895164; color:#fff; }
+.button.lg-block-add-goal:hover:not(:disabled) { background:#305e49; border-color:#478969; color:#e0f8e9; }
+.button.lg-block-add-task:hover:not(:disabled) { background:#ffe669; border-color:#ffe669; color:#090909; }
+.card.lg-block-meaning-preview,
+.card.goal-card.compact-goal-card.lg-block-goal-preview {
+  width:100%; min-width:0; min-height:82px; box-sizing:border-box;
+  margin:0 0 8px; padding:16px; border:1px solid var(--border); border-radius:17px;
+  background:#191d1a; box-shadow:none;
+}
+.card.lg-block-meaning-preview { display:flex; align-items:center; gap:14px; }
+.lg-block-preview-text { flex:1; min-width:0; overflow-wrap:anywhere; }
+.lg-block-preview-title { font-size:14px; font-weight:600; line-height:1.4; }
+.lg-block-meaning-text {
+  display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden;
+  margin-top:4px; color:#bcbcbc; font-size:13px; line-height:1.5;
+  white-space:pre-wrap; overflow-wrap:anywhere;
+}
+.lg-block-meaning-preview > .more-button { flex:0 0 44px; min-width:44px; min-height:44px; }
+.lg-block-goal-preview .task-head { gap:14px; min-width:0; }
+.lg-block-goal-preview .task-title { flex:1; min-width:0; overflow-wrap:anywhere; }
+.lg-block-goal-preview .compact-goal-footer { margin-top:10px; min-width:0; }
 .ui-readable,.widget-badge { font-size:12px;line-height:1.4; }
 .hero .progress-label,.home-status,.balance .label,.ai-preview-entry .ai-preview-badge { font-size:12px; }
 .compact-task-card .compact-details,.compact-task-controls .check-label,.quest-plan-toggle { font-size:12px; }
@@ -2524,6 +2597,22 @@ h3.task-title { margin:0; }
     "Исключить"
   ];
 
+  const DEFAULT_BLOCK_SUBTITLES = Object.freeze([
+    "Заботься о внутреннем спокойствии и эмоциональном равновесии.",
+    "Поддерживай здоровье, энергию и силу каждый день.",
+    "Учись новому, развивай навыки и применяй свой опыт.",
+    "Создавай материальную устойчивость и разумно управляй ресурсами.",
+    "Укрепляй важные отношения и окружай себя близкими по духу людьми.",
+    "Создавай порядок и наполняй жизнь тем, что тебе важно.",
+    "Меняй то, что можешь, и находи опору в любых обстоятельствах.",
+    "Освобождай жизнь от лишнего и сохраняй место для важного."
+  ]);
+
+  function defaultBlockSubtitle(id) {
+    const match = /^block-([0-7])$/.exec(id);
+    return match ? DEFAULT_BLOCK_SUBTITLES[Number(match[1])] : "";
+  }
+
   const $ = id => document.getElementById(id);
   const screen = $("screen");
   const wallet = $("wallet");
@@ -2568,6 +2657,7 @@ h3.task-title { margin:0; }
   let bonusCurrencyFilter = "all";
   let blockReorderMode = false;
   let taskReorderMode = false;
+  let blockSettingsOpen = false;
   let questReorderMode = false;
   let bulkSelection = null;
   let bulkProcedure = null;
@@ -2991,7 +3081,7 @@ h3.task-title { margin:0; }
       happiness: happinessDefaults(),
       keyActions: { version: 1, actions: [], conditions: [], entries: [] },
       blocks: DEFAULT_NAMES.map((name, index) => ({
-        id: "block-" + index, name
+        id: "block-" + index, name, subtitle: DEFAULT_BLOCK_SUBTITLES[index]
       })),
       goals: [],
       diamondRecords: [],
@@ -3193,6 +3283,12 @@ h3.task-title { margin:0; }
       }
 
       item.meaning = item.meaning.trim();
+
+      if (item.subtitle === undefined) item.subtitle = defaultBlockSubtitle(item.id);
+      if (typeof item.subtitle !== "string" || item.subtitle.length > 120) {
+        fail("Некорректная краткая подпись блока.");
+      }
+      item.subtitle = item.subtitle.trim();
 
       blocks.add(item.id);
     }
@@ -3973,6 +4069,13 @@ h3.task-title { margin:0; }
       details.append(...managementButtons);
       if (isBlocksRoot) {
         details.classList.add('blocks-list-management');
+        const addBlockButton = [...screen.children].find(node =>
+          node.tagName === 'BUTTON' && node.textContent.trim() === 'Добавить блок');
+        if (addBlockButton) details.querySelector('summary').after(addBlockButton);
+        if (addBlockButton) {
+          const managementDivider = el('div', 'lg-blocks-root-management-divider', 'УПРАВЛЕНИЕ БЛОКАМИ');
+          addBlockButton.after(managementDivider);
+        }
         const toggle = screen.querySelector('.blocks-manage-toggle');
         if (toggle) {
           toggle.setAttribute('aria-expanded', String(details.open));
@@ -3980,7 +4083,15 @@ h3.task-title { margin:0; }
           details.id = 'blocks-list-management-panel';
           details.querySelector('summary').setAttribute('aria-label', 'Управление списком блоков');
         }
+        details.append(bulkEntry("tasks"));
         details.append(btn('Архив', 'button secondary full spaced', openArchiveOverview));
+        details.append(btn('Закрыть', 'button full lg-settings-close', () => {
+          details.open = false;
+          if (toggle) {
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.focus({ preventScroll: true });
+          }
+        }));
       }
     }
 
@@ -4050,6 +4161,7 @@ h3.task-title { margin:0; }
     if (page === "aiPreview" && nextPage !== page) aiCancel();
     resetBulkSelection();
     if (nextPage !== "blocks" || selectedBlock !== blockId) taskReorderMode = false;
+    if (nextPage !== "blocks" || selectedBlock !== blockId) blockSettingsOpen = false;
     const returnPosition =
       fromDayTask && page === "day" && nextPage === "blocks" &&
       selectedBlock !== null
@@ -4607,14 +4719,14 @@ h3.task-title { margin:0; }
     if (!selected.meaning) {
       return btn(
         "+ Добавить смысл",
-        "button full meaning-button spaced",
+        "button full meaning-button spaced lg-block-add-meaning",
         () => editMeaning(selected.id),
         true
       );
     }
 
-    const card = el("article", "card meaning-card");
-    const heading = el("div", "meaning-heading");
+    const card = el("article", "card meaning-card lg-block-meaning-preview");
+    const text = el("div", "lg-block-preview-text");
 
     const more = btn(
       "⋯",
@@ -4627,14 +4739,15 @@ h3.task-title { margin:0; }
       "Изменить или удалить смысл блока"
     );
 
-    heading.append(
-      el("div", "meaning-label", "СМЫСЛ"),
-      more
+    text.append(
+      el("div", "lg-block-preview-title", "Смысл блока"),
+      el("div", "lg-block-meaning-text", selected.meaning)
     );
 
     card.append(
-      heading,
-      el("div", "meaning-text", selected.meaning)
+      designIconTile("heart", "rose"),
+      text,
+      more
     );
 
     return card;
@@ -5193,9 +5306,10 @@ h3.task-title { margin:0; }
     ];
     openForm("Новый блок", [
       nameField(),
-      { key: "icon", label: "Выбери иконку", options: iconChoices.map(([id, label]) => [id, label]), value: "heart" }
+      { key: "icon", label: "Выбери иконку", options: iconChoices.map(([id, label]) => [id, label]), value: "heart" },
+      { key: "subtitle", label: "Краткая подпись", type: "text", value: "", required: false, maxLength: 120, hint: "Необязательно, до 120 символов." }
     ], values => transact(data => {
-      data.blocks.push({ id: uid(), name: values.name, icon: values.icon });
+      data.blocks.push({ id: uid(), name: values.name, icon: values.icon, subtitle: values.subtitle });
     }, false));
     if (!editor.open) return;
     const form = editor.querySelector("form");
@@ -5262,18 +5376,33 @@ h3.task-title { margin:0; }
     }, false, true); // Neither ensureDay nor reconcileDayBonus nor award effects.
   }
 
-  function blockMenu(id) {
+  function blockSettingsPanel(id) {
     const item = state.blocks.find(x => x.id === id);
-    if (!item || item.archivedAt !== null) return;
-    openMenu(item.name, [
+    if (!item || item.archivedAt !== null) return null;
+    const actions = [
       {
         text: "Переименовать",
-        run: () => openForm("Название блока", [nameField(item.name)],
+        run: () => openForm("Название блока", [nameField(item.name),
+          { key: "subtitle", label: "Краткая подпись", type: "text",
+            value: item.subtitle ?? "", required: false,
+            maxLength: 120, hint: "Необязательно, до 120 символов." }],
           values => transact(data => {
             const actual = data.blocks.find(x => x.id === id);
             if (!actual || actual.archivedAt !== null) fail("Блок недоступен в архиве.");
             actual.name = values.name;
+            actual.subtitle = values.subtitle;
           }, false), "Сохранить")
+      },
+      {
+        text: taskReorderMode ? "Готово" : "Изменить порядок",
+        run: () => {
+          taskReorderMode = !taskReorderMode;
+          render();
+        }
+      },
+      {
+        text: "Выбрать для архива",
+        run: () => bulkEntry("tasks", id).click()
       },
       {
         text: "В архив",
@@ -5294,7 +5423,33 @@ h3.task-title { margin:0; }
           }
         }
       }
-    ]);
+    ];
+    const panel = el("details", "blocks-list-management block-settings-panel");
+    panel.id = "block-settings-panel";
+    panel.open = blockSettingsOpen;
+    const summary = el("summary", "", "Управление блоком");
+    summary.setAttribute("aria-label", "Управление блоком");
+    panel.append(summary);
+    for (const action of actions) {
+      const orderAction = action.text === "Изменить порядок" || action.text === "Готово";
+      const control = btn(
+        action.text,
+        "button " + (action.danger ? "danger" : "secondary") + " full spaced" + (orderAction ? " block-settings-order-toggle" : ""),
+        () => {
+          action.run();
+          if (orderAction) screen.querySelector(".block-settings-order-toggle")?.focus({ preventScroll: true });
+        },
+        true
+      );
+      if (orderAction) control.setAttribute("aria-pressed", String(taskReorderMode));
+      panel.append(control);
+    }
+    panel.append(btn("Закрыть", "button full spaced lg-settings-close", () => {
+      blockSettingsOpen = false;
+      render();
+      screen.querySelector(".block-settings-toggle")?.focus({ preventScroll: true });
+    }));
+    return panel;
   }
 
   // Цели и алмазы.
@@ -8815,7 +8970,10 @@ h3.task-title { margin:0; }
     }
     if (blockId === null) {
       const activeBlocks = state.blocks.filter(block => block.archivedAt === null);
-      const blocksNav = pageLinks(
+      const blocksNav = el("div", "page-links");
+      blocksNav.setAttribute("role", "group");
+      blocksNav.setAttribute("aria-label", "Переходы раздела");
+      blocksNav.append(
         btn("Главная", "page-link page-link-accent", () => go("hero")),
         btn("Конструктор дня", "page-link page-link-accent", returnToDayPlan)
       );
@@ -8833,7 +8991,7 @@ h3.task-title { margin:0; }
         blocksNav,
         el("h1", "", "Блоки времени"),
         el("p", "", "Выбери, чем наполнить жизнь"),
-        btn("+ Добавить блок", "button full", createBlock, true)
+        btn("Добавить блок", "button full", createBlock, true)
       );
       if (activeBlocks.length > 1) {
         const toggle = btn(blockReorderMode ? "Готово" : "Изменить порядок",
@@ -8885,7 +9043,6 @@ h3.task-title { margin:0; }
         list.append(open);
       }
       screen.append(list);
-      screen.append(bulkEntry("tasks"));
       if (!activeBlocks.length) {
         screen.append(el("div", "empty", "Создай первый блок."));
       }
@@ -8894,48 +9051,63 @@ h3.task-title { margin:0; }
 
     const selected = state.blocks.find(x => x.id === blockId && x.archivedAt === null);
     if (!selected) {
+      blockSettingsOpen = false;
       blockId = null;
       renderBlocks();
       return;
     }
 
-    screen.append(pageLinks(
-      btn("Все блоки", "page-link", () => go("blocks")),
+    const blockNav = el("div", "page-links");
+    blockNav.setAttribute("role", "group");
+    blockNav.setAttribute("aria-label", "Переходы раздела");
+    blockNav.append(
+      btn("Главная", "page-link page-link-accent", () => go("hero")),
+      btn("Блоки времени", "page-link", () => go("blocks")),
       btn(
         "Конструктор дня",
         "page-link page-link-accent",
         returnToDayPlan
       )
-    ));
+    );
+    blockNav.classList.add("blocks-nav", "lg-block-detail-nav");
+    const settingsToggle = btn("⚙", "blocks-manage-toggle block-settings-toggle", () => {
+      blockSettingsOpen = !blockSettingsOpen;
+      render();
+      screen.querySelector(".block-settings-toggle")?.focus({ preventScroll: true });
+    });
+    settingsToggle.setAttribute("aria-label", "Настройки блока");
+    settingsToggle.setAttribute("aria-expanded", String(blockSettingsOpen));
+    settingsToggle.setAttribute("aria-controls", "block-settings-panel");
+    blockNav.append(settingsToggle);
+    screen.append(blockNav);
     const heading = el("div", "block-heading");
-    const more = btn("⋯", "more-button", () => blockMenu(selected.id));
-    more.setAttribute("aria-label", "Настройки блока");
-        heading.append(el("h1", "", selected.name), more);
+    heading.append(el("h1", "", selected.name));
     screen.append(heading);
+    if (selected.subtitle) screen.append(el("p", "lg-block-subtitle", selected.subtitle));
+    screen.append(blockSettingsPanel(selected.id));
 
     // Смысл всегда расположен над целью и заданиями.
     screen.append(meaningCard(selected));
 
     const goals = state.goals.filter(x => x.blockId === blockId);
     const activeGoals = goals.filter(x => x.completedDate === null);
-    const goalsHeading = el("div", "compact-section-heading");
-    const addGoalButton = btn("+ Добавить", "button goal-button compact-add-button", () => goalForm(), true);
+    for (const goal of activeGoals) {
+      const card = goalCard(goal);
+      card.classList.add("lg-block-goal-preview");
+      card.querySelector(".task-head").prepend(designIconTile("compass", "mint"));
+      screen.append(card);
+    }
+    const addGoalButton = btn("+ Добавить цель", "button lg-block-add-goal", () => goalForm(), true);
     addGoalButton.setAttribute("aria-label", "Добавить цель");
-    goalsHeading.append(el("h2", "", "ЦЕЛИ"), addGoalButton);
-    screen.append(goalsHeading);
-    for (const goal of activeGoals) screen.append(goalCard(goal));
+    screen.append(addGoalButton);
 
     const tasks = state.tasks.filter(x => x.block === blockId && x.archivedAt === null);
-    const tasksHeading = el("div", "compact-section-heading");
-    const addTaskButton = btn("+ Добавить", "button compact-add-button", createTask, true);
+    const addTaskButton = btn("+ Добавить задание", "button lg-block-add-task", createTask, true);
     addTaskButton.setAttribute("aria-label", "Добавить задание");
-    tasksHeading.append(el("h2", "", "ЗАДАНИЯ"), addTaskButton);
-    screen.append(tasksHeading);
-    screen.append(bulkEntry("tasks", blockId));
+    screen.append(addTaskButton);
     const done = task => task.type === "once"
       ? view.anyTask.has(task.id) : view.todayTask.has(task.id);
 
-    if (tasks.length) screen.append(itemOrderToggle("tasks"));
     if (taskReorderMode) renderItemOrder("tasks", tasks.filter(x => !done(x)), done);
     else section("", favorites(tasks.filter(x => !done(x))), taskCard);
 
