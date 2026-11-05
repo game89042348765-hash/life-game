@@ -1768,23 +1768,6 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
 .page-link:active {
   background: #ffda2918;
 }
-.my-route { min-width: 0; overflow-wrap: anywhere; }
-.my-route .route-card { padding: 16px; margin: 14px 0; background: var(--card); border: 1px solid var(--border); border-radius: 14px; white-space: pre-wrap; }
-.my-route .route-actions { display: grid; gap: 10px; margin: 16px 0; }
-.my-route .button { min-height: 44px; min-width: 0; max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
-.my-route .route-choice { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: #191918; border: 1px solid var(--border); color: var(--text); }
-.my-route .route-choice::before { content: ""; display: grid; place-items: center; flex: 0 0 22px; width: 22px; height: 22px; border: 1px solid #99998c; border-radius: 50%; }
-.my-route .route-choice > span { min-width: 0; overflow-wrap: anywhere; }
-.my-route .route-choice.route-selected { border-color: #ffda29; background: #ffda2914; color: var(--text); font-weight: 650; }
-.my-route .route-choice.route-selected::before { content: "✓"; border-color: #ffda29; color: #ffda29; }
-.my-route .route-primary { background: #ffda29; border-color: #ffda29; color: #111108; font-weight: 700; }
-.my-route .button:focus-visible, .my-route .route-day:focus-within { outline: 2px solid #ffda29; outline-offset: 3px; }
-.my-route .route-stage { margin: 0 0 16px; font-size: 13px; }
-.my-route textarea { width: 100%; min-width: 0; min-height: 120px; resize: vertical; }
-.my-route label { display: block; margin: 12px 0; }
-.my-route .route-day { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: #191918; }
-.my-route .route-day.route-selected { border-color: #ffda29; background: #ffda2914; font-weight: 650; }
-.my-route .route-day input { width: 22px; height: 22px; flex-shrink: 0; accent-color: #ffda29; }
 </style>
 <style>
 /* LifeGame: точечное уплотнение карточек целей и заданий, без изменения логики. */
@@ -2078,10 +2061,10 @@ p { line-height: 1.6; }
   .button:hover:not(:disabled) { background: #ffe669; border-color: #ffe669; }
   .button.secondary:hover:not(:disabled) { background: #252c24; border-color: #626c57; }
   .button.danger:hover:not(:disabled) { background: #482724; border-color: #c1746a; }
-  .block:hover, .home-tool:hover, .home-calendar:hover, .home-route:hover { border-color: #747b61; background-color: #20261d; }
+  .block:hover, .home-tool:hover, .home-calendar:hover { border-color: #747b61; background-color: #20261d; }
   .home-tool:hover .design-icon-tile { background: #ffda291c; }
   .button.home-calendar:hover:not(:disabled) { color: var(--text); background: #242d20; border-color: #737e60; }
-  .button.home-route:hover:not(:disabled) { color: var(--text); background: linear-gradient(120deg,#372a35,#211f24); border-color: #846275; }
+
   .button.ai-preview-entry:hover:not(:disabled) { color: var(--text); background: linear-gradient(90deg,#1d3027f5,#1d3027b8),image-set(url("assets/images/quiet-focus.webp") type("image/webp"),url("assets/images/quiet-focus.png") type("image/png")) 65% center/cover; border-color: #779782; }
   .button.goal-button:hover:not(:disabled), .goal-card .button:hover:not(:disabled) { color: #d8f4e3; background: #304635; border-color: #7baf8b; }
   .button.meaning-button:hover:not(:disabled) { color: #f4dce7; background: #482c3c; border-color: #ae7b94; }
@@ -2161,7 +2144,7 @@ p { line-height: 1.6; }
 .home-section-caption { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 27px 0 12px; }
 .home-section-caption h2 { color: #b9c4ac; margin: 0; font-size: 10px; letter-spacing: 1.8px; font-weight: 600; }
 .home-section-caption time { color: #8e9c85; font-size: 11px; }
-.home-primary, .home-calendar, .home-route {
+.home-primary, .home-calendar {
   display: flex; flex-direction: row; align-items: center; justify-content: flex-start;
   gap: 13px; padding: 16px; width: 100%; margin: 10px 0 0; min-height: 76px; text-align: left; border-radius: 17px;
 }
@@ -2171,10 +2154,9 @@ p { line-height: 1.6; }
 .home-button-title { font-size: 15px; font-weight: 650; line-height: 1.35; }
 .home-status { color: #a8b29e; font-size: 11px; font-weight: 400; line-height: 1.4; }
 .home-primary .home-status { color: #504b20; }
-.home-primary > .design-icon:last-child, .home-calendar > .design-icon:last-child, .home-route > .design-icon:last-child { width: 17px; height: 17px; }
+.home-primary > .design-icon:last-child, .home-calendar > .design-icon:last-child { width: 17px; height: 17px; }
 .button.home-calendar { color: var(--text); background: #181d17; border-color: var(--border); }
-.button.home-route { color: var(--text); background: linear-gradient(120deg,#261f27,#171819); border-color: #4d3a47; }
-.home-route .design-icon-tile { color: #d6acbc; background: #d6acbc0c; border-color: #d6acbc20; }
+
 .home-tools { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px; margin-top: 12px; }
 .home-tool {
   min-width: 0; min-height: 118px; padding: 16px; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 15px;
@@ -2239,12 +2221,11 @@ label:not(.check-label) { color: #c0c9b7; font-size: 13px; }
 .widget-badge { background: #20291d; border: 1px solid #3b4832; border-radius: 6px; color: #b7c5a8; font-size: 9px; padding: 3px 6px; }
 .widget-controls { border-top-color: #ffffff0c; }
 label.widget-day-toggle { display: flex; align-items: center; gap: 10px; margin: 14px 0 0; color: #b5c3a8; font-size: 12px; }
-.widget-day-toggle input, .widget-catalog-filters input, .route-day input { min-height: 20px; padding: 0; }
+.widget-day-toggle input, .widget-catalog-filters input { min-height: 20px; padding: 0; }
 .widget-catalog-filters { gap: 8px; padding: 15px; background: #141b12; border: 1px solid var(--border); border-radius: 17px; }
 .widget-catalog-filters label { margin: 0; font-size: 12px; }
 .widget-catalog-filters > label:first-child { min-height: 22px; color: #a7b49b; font-size: 11px; }
-.my-route .route-card { border-radius: 20px; border-color: #3d4835; background: #151d13; }
-.my-route .route-choice { background: #182015; }
+
 
 .widget-catalog-card { padding: 17px; }
 .widget-catalog-card .widget-symbol { border-radius: 14px; width: 46px; height: 46px; background: #ffda290d; border-color: #ffda2926; color: var(--accent); }
@@ -2276,11 +2257,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
 .happiness-play-header { padding-bottom: 10px; border-bottom: 1px solid var(--border); }
 .happiness-play-game .happiness-input { border-radius: 14px; }
 .happiness-collection-entry, .happiness-library-info { border-radius: 13px; background: #121a11; }
-.my-route { border-radius: 22px; }
-.route-card { border-radius: 20px; border-color: #3d4835; background: #151d13; }
-.route-choice { min-height: 54px; border-radius: 14px; }
-.route-primary { background: var(--accent); color: #272609; }
-.route-choice[aria-pressed="true"], .route-selected { border-color: #ac963d; background: #302e16; }
+
 .ai-messenger-header { padding-bottom: 13px; border-bottom: 1px solid var(--border); }
 .ai-messenger-title h1 { font-weight: 600; letter-spacing: -.4px; }
 .ai-messenger-history { padding: 16px 0; gap: 14px; }
@@ -2323,7 +2300,7 @@ dialog.happiness-play-dialog { padding: 16px; border-radius: 23px; }
   #wallet > span { padding: 5px 7px; }
   .game-visual { min-height: 212px; padding: 20px; }
   .game-visual .game-word { font-size: 40px; }
-  .home-primary, .home-calendar, .home-route { padding: 13px; gap: 10px; }
+  .home-primary, .home-calendar { padding: 13px; gap: 10px; }
   .home-button-title { font-size: 14px; }
   .card, .widget-instance { padding: 14px; }
   .widget-instance-head { flex-wrap: wrap; }
@@ -2377,11 +2354,28 @@ h3.task-title { margin:0; }
 .ui-list-management { margin:12px 0 16px;border-block:1px solid #ffffff0c; }
 .ui-list-management>summary { font-size:12px;color:#b9c4ae;min-height:44px; }
 .ui-list-management>.button { margin:0 0 8px; }
-.blocks-nav { display:flex; flex-wrap:nowrap; align-items:center; gap:6px; width:100%; min-width:0; }
-.blocks-nav.lg-block-detail-nav { flex-wrap:wrap; }
+.blocks-nav { display:flex; flex-wrap:nowrap; align-items:center; gap:4px; width:100%; min-width:0; }
+.blocks-nav.lg-block-detail-nav { flex-wrap:nowrap; }
 .blocks-nav.lg-block-detail-nav .page-link { flex-shrink:0; }
-.blocks-nav .page-link { min-width:0; flex:0 1 auto; padding:7px 8px; gap:4px; border:1px solid #ffda2940; border-radius:12px; background:#ffda2908; color:#ffda29; font-size:11px; white-space:nowrap; overflow-wrap:normal; }
+.blocks-nav.lg-block-detail-nav .blocks-manage-toggle { margin-left:auto; width:40px; }
+.blocks-nav .page-link { min-width:44px; flex:0 0 auto; align-items:center; justify-content:center; text-align:center; padding:7px 6px; gap:4px; border:1px solid #ffda2940; border-radius:12px; background:#ffda2908; color:#ffda29; font-size:11px; white-space:nowrap; overflow-wrap:normal; }
 .blocks-nav .page-link .design-icon { flex:0 0 13px; width:13px; height:13px; }
+.blocks-nav.lg-day-nav { display:grid; grid-template-columns:minmax(0,1fr) 40px; align-items:start; column-gap:8px; }
+.lg-day-nav-links { display:flex; flex-wrap:wrap; align-items:center; gap:4px; min-width:0; }
+.blocks-nav.lg-day-nav .page-link { flex-shrink:0; }
+.blocks-nav.lg-day-nav .blocks-manage-toggle { margin-left:0; }
+.lg-day-settings-placeholder:disabled { opacity:1; cursor:default; }
+.blocks-nav.lg-section-nav { flex-wrap:nowrap; }
+.blocks-nav.lg-section-nav .page-link { flex-shrink:0; }
+.lg-section-nav .lg-section-settings-placeholder:disabled { opacity:1; cursor:default; }
+/* Конструктор дня: отдельные сворачиваемые секции, без влияния на другие экраны. */
+.lg-day-fold { margin-top:24px; }
+.lg-day-fold-toggle { display:flex; align-items:center; gap:9px; width:100%; min-height:44px; margin:0 0 10px; padding:5px 0; border:0; background:transparent; color:#c0c6ba; cursor:pointer; }
+.lg-day-fold-rule { flex:1 1 0; min-width:8px; height:1px; background:#ffda29; }
+.lg-day-fold-title { flex:0 1 auto; min-width:0; font-size:10px; font-weight:600; letter-spacing:1.2px; white-space:nowrap; }
+.lg-day-fold-indicator { flex:0 0 24px; box-sizing:border-box; display:grid; place-items:center; width:24px; height:24px; border:1px solid #ffda29; border-radius:7px; color:#ffda29; font-size:18px; font-weight:600; line-height:1; }
+.lg-day-fold-body[hidden] { display:none!important; }
+.lg-day-fold-toggle:focus-visible { outline:2px solid #ffda29; outline-offset:3px; border-radius:6px; }
 .blocks-manage-toggle { margin-left:auto; flex:0 0 40px; width:40px; height:44px; display:inline-flex; align-items:center; justify-content:center; border:1px solid #ffda2940; border-radius:12px; background:#ffda2908; color:#ffda29; cursor:pointer; }
 .blocks-manage-toggle .design-icon { width:19px; height:19px; }
 .blocks-list-management { margin:0 0 12px; border:0; }
@@ -2493,7 +2487,6 @@ h3.task-title { margin:0; }
 #editor .lg-block-icon-option[aria-pressed="true"] { color:#ffda29;border-color:#ffda29;background:#302b13;box-shadow:0 0 0 1px #ffda2940; }
 #editor .lg-new-block-form .form-actions { margin-top:14px; }
 @media (max-width:350px) { #editor .lg-block-icon-grid { gap:6px; } }
-.blocks-nav .page-link { padding-left:12px; }
 </style>
 </head>
 <body>
@@ -2508,7 +2501,7 @@ h3.task-title { margin:0; }
 
 <nav aria-label="Главное меню">
   <button type="button" class="nav-button" data-page="hero">
-    <span class="nav-icon" aria-hidden="true"><svg class="design-icon" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="5"/></svg></span>Герой
+    <span class="nav-icon" aria-hidden="true"><svg class="design-icon" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="5"/></svg></span>Главная
   </button>
   <button type="button" class="nav-button" data-page="blocks">
     <span class="nav-icon" aria-hidden="true"><svg class="design-icon" viewBox="0 0 24 24" focusable="false"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M4 15h16M9 4v16M15 4v16"/></svg></span>Блоки
@@ -2533,12 +2526,7 @@ h3.task-title { margin:0; }
            aria-describedby="sound-state" checked>
   </label>
   <button type="button" class="button secondary full" id="edit-motivation">Личная мотивация</button>
-  <label class="check-label" for="route-entry-visible">
-    <input type="checkbox" role="switch" id="route-entry-visible" aria-describedby="route-entry-hint" checked>
-    <span>Показывать «Мой маршрут» на главной</span>
-  </label>
-  <p id="route-entry-hint">Скрывает только кнопку на главной. Данные приложения не удаляются</p>
-  <p id="route-entry-status" role="status"></p>
+
   <details><summary>Резервная копия</summary>
   <p>
     Создай копию и сохрани весь текст вне приложения.
@@ -2624,17 +2612,13 @@ h3.task-title { margin:0; }
   const backupStatus = $("backup-status");
   const soundToggle = $("sound-enabled");
   const soundState = $("sound-state");
-  const ROUTE_ENTRY_KEY = "lifegame-route-entry-visible-v1";
-  const routeEntryToggle = $("route-entry-visible");
-  let routeEntryVisible = true;
-  try { routeEntryVisible = localStorage.getItem(ROUTE_ENTRY_KEY) !== "false"; } catch {}
-  routeEntryToggle.checked = routeEntryVisible;
+
 
   let state = emptyState();
   let snapshot = null;
   let healthy = true;
   let page = "hero";
-  let routeDraft = null; // Только память страницы; не часть прогресса.
+
   let happinessLibrary = { status: "idle", messages: [], error: "" };
   let happinessLoadToken = 0;
   let happinessTimer = null;
@@ -3899,7 +3883,7 @@ h3.task-title { margin:0; }
   const uiPositions = new Map();
   const uiDialogs = new Set();
   let uiDialogSerial = 0, uiFormSession = null, uiRenderSerial = 0;
-  let uiPendingNavigation = null, uiHistoryIndex = 0, uiHistorySync = false, uiPopClosing = false;
+  let uiPendingNavigation = null, uiHistoryIndex = 0, uiNavStartIndex = 0, uiHistorySync = false, uiPopClosing = false;
   let uiToastTimer = null;
   const uiEntityCollections = { blocks: "block", goals: "goal", tasks: "task", quests: "quest", bonuses: "bonus", calendarEntries: "calendar", treats: "treat", purchases: "purchase" };
   const uiViewKey = () => page + ":" + (blockId || "");
@@ -3983,6 +3967,7 @@ h3.task-title { margin:0; }
   }
   function uiInitHistory() {
     uiHistoryIndex = Number.isInteger(history.state?.index) ? history.state.index : 0;
+    uiNavStartIndex = uiHistoryIndex;
     uiWriteHistory('replace');
     window.addEventListener('popstate', event => {
       const target = event.state;
@@ -3996,12 +3981,7 @@ h3.task-title { margin:0; }
       }
       if (!target?.lifeGameUI) return;
       if (target.page === page && target.blockId === blockId) { uiHistoryIndex = target.index; if(target.modal) uiWriteHistory('replace'); return; }
-      if (page === 'myRoute' && routeDraft?.history.length && routeDraft.step !== 'done') { uiHistoryIndex = target.index; uiWriteHistory('push'); routeBack(); return; }
-      if (page === 'myRoute' && routeDraft && routeDraft.step !== 'done') {
-        const current = uiHistoryIndex;
-        if (!confirm(routeExitMessage())) { uiHistorySync = true; history.go(current - target.index); return; }
-        routeDraft = null;
-      }
+
       uiHistoryIndex = target.index;
       go(target.page, target.blockId, false, { history: 'none', restore: true });
       if (target.modal) uiWriteHistory('replace');
@@ -4028,7 +4008,7 @@ h3.task-title { margin:0; }
     form.addEventListener('submit', () => {
       const current = uiFormSession;
       setTimeout(() => {
-        if (editor.open || !current || uiViewKey() !== current.view || page === 'myRoute') return;
+        if (editor.open || !current || uiViewKey() !== current.view) return;
         for (const [collection, kind] of Object.entries(uiEntityCollections)) {
           const added = state[collection].find(x => !current.ids[collection].has(x.id));
           if (added) { uiShowCreated(collection, kind, added); break; }
@@ -4148,13 +4128,8 @@ h3.task-title { margin:0; }
   }
 
   function go(nextPage, selectedBlock = null, fromDayTask = false, options = {}) {
-    if (page === "myRoute" && nextPage !== "myRoute" && routeDraft) {
-      if (routeDraft.step !== "done") {
-        routeConfirmExit(() => go(nextPage, selectedBlock, fromDayTask, options));
-        return;
-      }
-      routeDraft = null;
-    }
+    if (nextPage === "myRoute") nextPage = "hero"; // Старые записи браузерной истории, без восстановления удалённого экрана.
+
     document.getElementById("ui-feedback")?.setAttribute("hidden", "");
     uiCapture();
     const sameRoot = nextPage === page && selectedBlock === blockId;
@@ -4169,7 +4144,7 @@ h3.task-title { margin:0; }
         : page === "blocks" && nextPage === "blocks"
           ? dayBlockReturn
           : null;
-    if (nextPage !== "myRoute") syncDay();
+    syncDay();
     dayBlockReturn = returnPosition;
     page = nextPage;
     blockId = selectedBlock;
@@ -4184,6 +4159,35 @@ h3.task-title { margin:0; }
     group.setAttribute("aria-label", "Переходы раздела");
     for (const button of buttons) button.prepend(designIcon("back"));
     group.append(...buttons);
+    return group;
+  }
+
+  // Возврат по существующей истории UI, без выхода за начальную запись текущего открытия.
+  function lgNavBack() {
+    const current = history.state;
+    if (current?.lifeGameUI && current.index === uiHistoryIndex &&
+        !current.modal && uiHistoryIndex > uiNavStartIndex) {
+      history.back();
+    } else if (page !== "hero" || blockId !== null) {
+      go("hero");
+    }
+  }
+
+  // Единая навигация обычных экранов; ничего не записывает в прогресс.
+  function lgSectionNav(title) {
+    const group = el("div", "page-links blocks-nav lg-section-nav");
+    group.setAttribute("role", "group");
+    group.setAttribute("aria-label", "Переходы раздела");
+    group.append(
+      btn("Главная", "page-link page-link-accent", () => go("hero")),
+      btn("Конструктор", "page-link page-link-accent", () => go("day")),
+      btn("Назад", "page-link page-link-accent", lgNavBack)
+    );
+    const settings = btn("⚙", "blocks-manage-toggle lg-section-settings-placeholder", () => {});
+    settings.disabled = true;
+    settings.setAttribute("aria-label", `Настройки раздела «${title}» (скоро)`);
+    settings.setAttribute("title", `Настройки раздела «${title}» — скоро`);
+    group.append(settings);
     return group;
   }
 
@@ -4216,18 +4220,18 @@ h3.task-title { margin:0; }
   }
 
   const expandedHistories=new Set();
-  function historySection(key,title,items,builder) {
+  function historySection(key,title,items,builder,target=screen) {
     const stamp=x=>{const item=x.item||x; const kind=x.kind||(state.quests.includes(item)?"quest":state.calendarEntries.includes(item)?"calendar":"task"); const record=kind==="goal"?item:kind==="calendar"?state.calendarCompletions.find(r=>r.id===item.completionId):[...state.completions].reverse().find(r=>r.taskId===(kind==="quest"?"quest:":"")+item.id && (kind==="quest"||item.type==="once"||r.date===today()));return record?.completedAt||record?.date||item.completedAt||item.completedDate||item.createdAt||"";};
     const sorted=[...items].sort((a,b)=>stamp(b).localeCompare(stamp(a)));
-    section(title,expandedHistories.has(key)?sorted:sorted.slice(0,5),builder);
-    if(items.length>5)screen.append(btn(expandedHistories.has(key)?"Свернуть историю":`Показать историю · ещё ${items.length-5}`,"button secondary full",()=>{if(expandedHistories.has(key))expandedHistories.delete(key);else expandedHistories.add(key);render();}));
+    section(title,expandedHistories.has(key)?sorted:sorted.slice(0,5),builder,target);
+    if(items.length>5)target.append(btn(expandedHistories.has(key)?"Свернуть историю":`Показать историю · ещё ${items.length-5}`,"button secondary full",()=>{if(expandedHistories.has(key))expandedHistories.delete(key);else expandedHistories.add(key);render();}));
   }
-  function section(title, items, builder) {
+  function section(title, items, builder, target=screen) {
     if (!items.length) return;
-    if (title) screen.append(el("div", "section-label", title));
+    if (title) target.append(el("div", "section-label", title));
     const list = el("div", "list");
     for (const item of items) list.append(builder(item));
-    screen.append(list);
+    target.append(list);
   }
 
   function favorites(items) {
@@ -5659,7 +5663,7 @@ h3.task-title { margin:0; }
     return card;
   }
   function renderCalendar() {
-    screen.append(pageLinks(btn("Герой", "page-link", () => go("hero"))), el("h1", "", "Календарь"),
+    screen.append(lgSectionNav("Календарь"), el("h1", "", "Календарь"),
       btn("+ Добавить", "button full", () => editCalendar(), true));
     const tools = el("div", "calendar-tools calendar-month-nav");
     const shift = delta => {
@@ -7086,378 +7090,8 @@ h3.task-title { margin:0; }
     screen.append(hero, caption,
       primary("Конструктор дня", "Собери свой сегодняшний день", "plan", "home-primary", () => go("day")),
       primary("Календарь", count ? `Сегодня записей: ${count}` : "Планы и события", "calendar", "home-calendar", () => go("calendar")),
-      ...(routeEntryVisible ? [primary("Мой маршрут", "От желания к первому шагу", "compass", "home-route", () => go("myRoute"))] : []),
+
       aiPreviewEntry(), tools, summary, settingsLink);
-  }
-
-  // «Мой маршрут»: UI-черновик не входит в state и не сериализуется.
-  function newRouteDraft() {
-    return { step: "start", history: [], entry: "", feeling: "", customFeeling: "",
-      memory: "", desire: "", importance: "", importanceText: "", meaning: "",
-      blockId: null, meaningPlan: false, goalId: null, goalPlan: "none", goalName: "",
-      taskId: null, taskPlan: "none", taskName: "", weekdays: [], aiText: "",
-      saved: { meaning: null, goal: null, task: null }, choices: {}, notice: "" };
-  }
-
-  function routeExitMessage() {
-    return Object.values(routeDraft.saved).some(Boolean)
-      ? "Созданные цели, смыслы и задания останутся в LifeGame. Несохранённые ответы будут потеряны. Выйти?"
-      : "Твои ответы пока не сохранены. Выйти без сохранения?";
-  }
-
-  function routeConfirmExit(action) {
-    const dialog = el("dialog", "my-route");
-    const heading = el("h2", "", "Выйти из маршрута?");
-    heading.id = "route-exit-title";
-    dialog.setAttribute("aria-labelledby", heading.id);
-    dialog.append(heading, el("p", "", routeExitMessage()));
-    const actions = el("div", "route-actions");
-    actions.append(btn("Остаться", "button secondary", () => dialog.close()),
-      btn("Выйти", "button", () => { routeDraft = null; dialog.close(); action(); }));
-    dialog.append(actions);
-    dialog.addEventListener("close", () => dialog.remove(), { once: true });
-    document.body.append(dialog); uiShowDialog(dialog);
-  }
-
-  function routeFinish() {
-    if (Object.values(routeDraft.saved).some(Boolean)) {
-      routeConfirmExit(() => { routeDraft = null; go("hero"); });
-      return;
-    }
-    routeDraft = null;
-    go("hero");
-  }
-
-  function routeStep(step) {
-    routeDraft.history.push(routeDraft.step);
-    routeDraft.step = step;
-    render(); window.scrollTo(0, 0);
-    const heading = screen.querySelector("h2");
-    if (heading) { heading.tabIndex = -1; heading.focus(); }
-  }
-
-  function routeBack() {
-    routeDraft.step = routeDraft.history.pop() || "start";
-    render();
-    screen.querySelector('.route-choice[aria-pressed="true"]')?.focus();
-  }
-
-  function routeBlock() { return state.blocks.find(x => x.id === routeDraft.blockId && x.archivedAt === null); }
-  function routeGoal() {
-    return routeBlock() && state.goals.find(x => x.id === routeDraft.goalId &&
-      x.blockId === routeDraft.blockId && x.completedDate === null);
-  }
-  function routeTask() {
-    return routeBlock() && state.tasks.find(x => x.id === routeDraft.taskId &&
-      x.block === routeDraft.blockId && x.archivedAt === null);
-  }
-  function routePlans() {
-    const d = routeDraft, block = routeBlock(), plans = [];
-    if (block && d.meaningPlan && !d.saved.meaning) plans.push(["meaning", "Смысл блока — стандартная форма"]);
-    if (block && !d.saved.goal && (d.goalPlan === "new" || d.goalPlan === "edit")) {
-      const goal = routeGoal();
-      if (d.goalPlan === "edit" && goal?.id === d.goalId) plans.push(["goal", "Редактирование цели — стандартная форма"]);
-      if (d.goalPlan === "new" && d.goalName.trim()) plans.push(["goal", "Новая цель — стандартная форма"]);
-    }
-    if (block && d.taskPlan === "new" && d.taskName.trim() && !d.saved.task) plans.push(["task", "Новое задание — стандартная форма"]);
-    return plans;
-  }
-
-  function routeSave(kind) {
-    if (!healthy || !loadLatest()) return;
-    const d = routeDraft;
-    if (!routePlans().some(([key]) => key === kind)) {
-      d.notice = "Данные изменились. Проверь блок, цель и запланированные действия."; render(); return;
-    }
-    const done = id => {
-      if (routeDraft !== d) return;
-      d.saved[kind] = id;
-      if (kind === "goal") { d.goalId = id; d.goalPlan = "none"; }
-      if (kind === "task") { d.taskId = id; d.taskPlan = "existing"; }
-      d.notice = "Сохранено через стандартную форму. Остальные действия ещё не выполнены.";
-      render();
-    };
-    if (kind === "meaning") editMeaning(d.blockId, { text: d.meaning, onSaved: done });
-    if (kind === "goal") goalForm(d.goalPlan === "edit" ? routeGoal() : null,
-      { blockId: d.blockId, name: d.goalName, onSaved: done });
-    if (kind === "task") createTask({ blockId: d.blockId, name: d.taskName,
-      weekdays: d.weekdays.slice(), goalId: d.goalId, onSaved: done });
-  }
-
-  function routeAi(topic) {
-    routeDraft.aiText = [routeDraft.desire, routeDraft.meaning, topic].filter(Boolean).join(". ");
-    routeStep("ai");
-  }
-
-  function renderMyRoute() {
-    if (!routeDraft) routeDraft = newRouteDraft();
-    const d = routeDraft, root = el("section", "my-route"), actions = el("div", "route-actions");
-    root.append(el("h1", "", "Мой маршрут")); screen.append(root);
-    const stages = { start: "Начало", feeling: "Поиск желания", memory: "Поиск желания", desire: "Поиск желания", unsure: "Поиск желания", importance: "Личный смысл", meaning: "Личный смысл", blocks: "Направление жизни", blockMeaning: "Направление жизни", goals: "Цель", continueGoal: "Цель", goal: "Цель", action: "Первый шаг", tasks: "Первый шаг", taskDraft: "Первый шаг", preview: "Проверка маршрута", save: "Сохранение", done: "Результат", ai: "Разговор с ИИ" };
-    root.append(el("p", "route-stage", "Текущий этап: " + (stages[d.step] || "Начало")));
-    const title = text => root.append(el("h2", "", text));
-    const note = text => root.append(el("p", "", text));
-    const card = text => root.append(el("div", "route-card", text));
-    const button = (text, action, selected) => {
-      if (selected !== undefined) return choice(text, action, selected);
-      const node = btn(text, "button secondary", action);
-      actions.append(node); return node;
-    };
-    const primary = (text, action) => {
-      const node = button(text, action); node.classList.add("route-primary"); return node;
-    };
-    const choice = (text, action, selected = d.choices[d.step] === text) => {
-      const step = d.step;
-      const node = btn("", "button secondary route-choice" + (selected ? " route-selected" : ""), () => {
-        d.choices[step] = text;
-        action();
-        if (routeDraft === d && d.step === step) {
-          [...screen.querySelectorAll('.route-choice[aria-pressed="true"]')].find(x => x.textContent === text)?.focus();
-        }
-      });
-      node.append(el("span", "", text));
-      node.setAttribute("aria-pressed", String(selected));
-      actions.append(node); return node;
-    };
-    const input = (key, labelText, max = 2000) => {
-      const label = el("label", "", labelText), node = el("textarea");
-      node.value = d[key]; node.maxLength = max; node.rows = 4;
-      node.addEventListener("input", () => { d[key] = node.value; });
-      label.append(node); root.append(label); return node;
-    };
-    const needText = (key, step) => {
-      if (!d[key].trim()) { alert("Сначала напиши свою формулировку или выбери возврат / выход."); return; }
-      routeStep(step);
-    };
-    const selectBlock = id => {
-      if (id !== d.blockId) {
-        if (Object.values(d.saved).some(Boolean)) { alert("Часть маршрута уже сохранена. Заверши его и начни новый для другого блока."); return; }
-        d.blockId = id; d.meaningPlan = false; d.goalId = null; d.goalPlan = "none";
-        d.taskId = null; d.taskPlan = "none";
-        for (const step of ["blockMeaning", "goal", "action", "tasks"]) delete d.choices[step];
-      }
-      render();
-    };
-    if (d.notice) { const status = el("p", "", d.notice); status.setAttribute("role", "status"); root.append(status); }
-    if (d.step === "start") {
-      title("С чего начнём?");
-      note("Необязательно знать свой путь заранее. Достаточно начать с того, что важно для тебя сейчас");
-      for (const [entry, text, step] of [
-        ["unknown", "Я пока не знаю, чего хочу\nРазобраться в своих желаниях", "feeling"],
-        ["want", "Я знаю, чего хочу\nПревратить желание в движение", "desire"],
-        ["goal", "У меня уже есть цель\nПродолжить начатый путь", "goals"]]) {
-        button(text, () => {
-          if (d.entry && d.entry !== entry) {
-            routeConfirmExit(() => {
-              routeDraft = newRouteDraft(); routeDraft.entry = entry; routeStep(step);
-            });
-            return;
-          }
-          d.entry = entry; routeStep(step);
-        }, d.entry === entry);
-      }
-    } else if (d.step === "feeling") {
-      title("Чего тебе сейчас хотелось бы больше?");
-      for (const text of ["Спокойствия и отдыха", "Интереса и новых впечатлений", "Близости и общения", "Свободы и возможностей", "Пока даже не знаю", "Свой ответ"]) {
-        button(text, () => { d.feeling = text; render(); }, d.feeling === text);
-      }
-      if (d.feeling === "Свой ответ") input("customFeeling", "Свой ответ (необязательно)");
-      primary("Продолжить", () => {
-        if (!d.feeling) { alert("Выбери вариант, включая «Пока даже не знаю»."); return; }
-        routeStep("memory");
-      });
-    } else if (d.step === "memory") {
-      title("Вспомни момент, когда тебе было хорошо или интересно. Что тогда происходило?");
-      input("memory", "Воспоминание (необязательно)");
-      for (const text of ["Продолжить", "Пропустить"]) (text === "Продолжить" ? primary : button)(text, () => {
-        if (!d.desire) d.desire = ({
-          "Спокойствия и отдыха": "Хочу больше спокойствия",
-          "Интереса и новых впечатлений": "Хочу больше интересных впечатлений",
-          "Близости и общения": "Хочу чаще общаться с близкими",
-          "Свободы и возможностей": "Хочу больше свободы в повседневной жизни"
-        })[d.feeling] || d.customFeeling;
-        routeStep("desire");
-      });
-    } else if (d.step === "desire") {
-      title(d.entry === "unknown" ? "Есть ли что-то, чему ты хотел бы дать немного больше места в своей жизни?" : "Чего тебе действительно хочется?");
-      note(d.entry === "unknown" ? "Это только редактируемый шаблон, а не психологический вывод." : "Например: больше путешествовать, научиться играть на гитаре, чаще видеться с друзьями");
-      const field = input("desire", "Моё желание");
-      primary(d.entry === "unknown" ? "Продолжить с этим желанием" : "Продолжить", () => needText("desire", "meaning"));
-      button("Изменить", () => field.focus());
-      button("Обсудить с ИИ", () => routeAi("Помоги разобраться в моём желании"));
-      if (d.entry === "unknown") button("Пока не знаю", () => routeStep("unsure"));
-      button("Завершить без сохранения", routeFinish);
-    } else if (d.step === "unsure") {
-      title("Необязательно находить ответ сегодня. Ты можешь вернуться к этому позже");
-      button("Вернуться к Герою", routeFinish);
-    } else if (d.step === "goals") {
-      title("Выбери активную цель");
-      const goals = state.goals.filter(x => x.completedDate === null && blockIsActive(state, x.blockId));
-      for (const goal of goals) button(goal.name + "\n" + (state.blocks.find(x => x.id === goal.blockId)?.name || "Блок недоступен") + " · Активная цель", () => {
-        if (Object.values(d.saved).some(Boolean) && (d.goalId !== goal.id || d.blockId !== goal.blockId)) {
-          alert("Часть маршрута уже сохранена. Заверши его перед выбором другой цели."); return;
-        }
-        d.goalId = goal.id; d.blockId = goal.blockId; d.goalPlan = "none"; routeStep("continueGoal");
-      }, d.goalId === goal.id);
-      if (!goals.length) note("Пока нет активной цели. Можно начать с желания или создать новый ориентир");
-      button("Начать с желания", () => { d.entry = "want"; routeStep("desire"); });
-      button("Открыть Блоки", () => go("blocks"));
-    } else if (d.step === "continueGoal") {
-      title("Что сейчас больше всего поможет приблизиться к этой цели?");
-      const goal = routeGoal();
-      if (!goal || goal.id !== d.goalId) note("Выбранная цель больше не активна. Вернись к выбору цели.");
-      else {
-        card(goal.name);
-        primary("Выбрать первый шаг", () => routeStep("action"));
-        button("Хочу пересмотреть цель", () => { d.goalPlan = "edit"; routeStep("action"); });
-        button("Хочу обсудить это с ИИ", () => routeAi("Моя цель: " + goal.name + ". Помоги найти следующий шаг"));
-      }
-    } else if (d.step === "meaning") {
-      title("Почему для тебя это важно?");
-      note("Не нужно искать красивый ответ. Напиши то, что действительно чувствуешь");
-      input("meaning", "Личный смысл (необязательно)");
-      primary("Продолжить", () => routeStep("blocks"));
-      button("Пропустить", () => { d.meaning = ""; routeStep("blocks"); });
-    } else if (d.step === "blocks") {
-      title("С какой частью твоей жизни это связано больше всего?");
-      for (const block of state.blocks.filter(x => x.archivedAt === null)) button(block.name, () => selectBlock(block.id), block.id === d.blockId);
-      if (!state.blocks.some(x => x.archivedAt === null)) note("Блоков пока нет. Создай подходящий блок в штатном разделе «Блоки».");
-      primary("Выбрать блок", () => { if (routeBlock()) routeStep("blockMeaning"); else alert("Выбери существующий блок."); });
-      note("Для создания или изменения блоков открой управление. При выходе несохранённый черновик будет потерян.");
-      button("Открыть управление блоками", () => go("blocks"));
-    } else if (d.step === "blockMeaning") {
-      title("Смысл жизненного блока");
-      const block = routeBlock();
-      if (!block) note("Блок больше не существует. Вернись и выбери другой.");
-      else {
-        card(block.name + (block.meaning ? "\nТекущий смысл: " + block.meaning : "\nСмысл пока не указан"));
-        if (block.meaning) choice("Оставить прежний смысл", () => { d.meaningPlan = false; routeStep("goal"); }, !d.meaningPlan && d.choices.blockMeaning === "Оставить прежний смысл");
-        choice(block.meaning ? "Предложить новую редакцию" : "Сохранить мою формулировку как смысл блока", () => { d.meaningPlan = true; routeStep("goal"); }, d.meaningPlan);
-        note("Изменение будет предложено только после предпросмотра, в штатной форме.");
-        if (!block.meaning) choice("Пока не менять", () => { d.meaningPlan = false; routeStep("goal"); }, !d.meaningPlan && d.choices.blockMeaning === "Пока не менять");
-      }
-    } else if (d.step === "goal") {
-      title("Какая цель связана с твоим желанием?");
-      const goals = state.goals.filter(x => x.blockId === d.blockId && x.completedDate === null && blockIsActive(state, x.blockId));
-      for (const goal of goals) {
-        choice("Выбрать цель: " + goal.name, () => {
-          d.goalId = goal.id; d.goalPlan = "none"; routeStep("action");
-        }, d.goalId === goal.id && d.goalPlan === "none");
-      }
-      const selected = routeGoal();
-      if (selected) button("Отредактировать выбранную цель: " + selected.name, () => {
-        d.goalPlan = "edit"; routeStep("action");
-      });
-      input("goalName", "Или сформулируй новую цель", nameField().maxLength);
-      choice("Создать новую цель", () => {
-        if (!d.goalName.trim()) { alert("Напиши название новой цели."); return; }
-        d.goalId = null; d.goalPlan = "new"; routeStep("action");
-      }, d.goalPlan === "new");
-      choice("Пока без цели", () => {
-        d.goalId = null; d.goalPlan = "none"; routeStep("action");
-      }, d.goalPlan === "none" && !d.goalId);
-      button("Помоги сформулировать цель", () => routeAi("Помоги сформулировать цель"));
-    } else if (d.step === "action") {
-      title("Какой небольшой шаг поможет тебе начать?");
-      note("Можно выбрать что-то, что займёт примерно 5–15 минут. Это только ориентир");
-      choice("Выбрать существующее задание", () => routeStep("tasks"), d.taskPlan === "existing");
-      for (const [text, days] of [["Создать разовое задание", []], ["Создать повторяемое задание", [1, 2, 3, 4, 5, 6, 7]]]) choice(text, () => {
-        d.taskPlan = "new"; d.taskId = null;
-        if (d.taskKind !== text) d.weekdays = days;
-        d.taskKind = text; routeStep("taskDraft");
-      }, d.taskPlan === "new" && d.taskKind === text);
-      choice("Пока без задания", () => { d.taskPlan = "none"; d.taskId = null; routeStep("preview"); }, d.taskPlan === "none" && d.choices.action === "Пока без задания");
-      button("Посмотреть квесты", () => go("quests"));
-      button("Помоги найти первый шаг", () => routeAi("Помоги найти небольшой первый шаг"));
-    } else if (d.step === "tasks") {
-      title("Выбери задание блока");
-      const tasks = state.tasks.filter(x => x.block === d.blockId && x.archivedAt === null && blockIsActive(state, x.block));
-      if (!tasks.length) note("В этом блоке пока нет заданий.");
-      for (const task of tasks) {
-        const completed = !!completion(state, task);
-        const node = button(task.name + (completed ? (task.type === "once" ? " · Выполнено" : " · Выполнено сегодня") : " · Не выполнено"), () => {
-          d.taskId = task.id; d.taskPlan = "existing"; routeStep("preview");
-        }, task.id === d.taskId);
-        node.disabled = completed;
-      }
-      choice("Пока без задания", () => { d.taskId = null; d.taskPlan = "none"; routeStep("preview"); }, d.taskPlan === "none" && d.choices.tasks === "Пока без задания");
-    } else if (d.step === "taskDraft") {
-      title("Первое действие: черновик задания");
-      input("taskName", "Название задания", nameField().maxLength);
-      if (d.taskKind === "Создать повторяемое задание") {
-        WEEKDAYS.forEach((text, index) => {
-          const label = el("label", "route-day"), check = el("input"); check.type = "checkbox";
-          check.checked = d.weekdays.includes(index + 1);
-          label.classList.toggle("route-selected", check.checked);
-          check.onchange = () => {
-            d.weekdays = check.checked ? [...d.weekdays, index + 1] : d.weekdays.filter(x => x !== index + 1);
-            label.classList.toggle("route-selected", check.checked);
-          };
-          label.append(check, el("span", "", text)); root.append(label);
-        });
-        note("Дни повторения и награда будут доступны для проверки в стандартной форме.");
-      }
-      primary("К предпросмотру", () => {
-        if (d.taskKind === "Создать повторяемое задание" && !d.weekdays.length) { alert("Выбери хотя бы один день повторения."); return; }
-        needText("taskName", "preview");
-      });
-    } else if (d.step === "preview") {
-      title("Вот твой маршрут");
-      card("Твой первый маршрут");
-      const block = routeBlock(), goal = routeGoal(), task = routeTask();
-      card("Желание: " + (d.desire || "Не сформулировано") + "\nНе будет сохранено");
-      if (d.meaning) card("Личный смысл: " + d.meaning + "\nНе будет сохранено отдельно");
-      if (block) card("Жизненный блок: " + block.name + "\nУже существует\nСмысл: " + (block.meaning || "Не указан") + "\n" + (d.saved.meaning ? "Сохранён через форму" : d.meaningPlan ? "Планируется изменить через форму" : "Уже существует / не будет изменён"));
-      else note("Блок не выбран или больше не существует.");
-      if (d.meaningPlan && !d.saved.meaning) card("Предлагаемый смысл блока: " + (d.meaning || "Будет введён пользователем в стандартной форме") + "\nПланируется изменить");
-      if (goal) card("Цель: " + goal.name + "\n" + (d.goalPlan === "edit" ? "Планируется изменить" : "Уже существует"));
-      else if (d.goalPlan === "new") card("Предлагаемая цель: " + d.goalName + "\nПланируется создать");
-      else card("Новая цель: не выбрана\nНе будет сохранено");
-      if (task) card("Задание: " + task.name + "\nУже существует" + (completion(state, task) ? " · уже выполнено" : " · не выполнено"));
-      else if (d.taskPlan === "new") card("Предлагаемое задание: " + d.taskName + "\n" + (d.weekdays.length ? "Повторение: " + d.weekdays.map(x => WEEKDAYS[x - 1]).join(", ") : "Разовое") + "\nПланируется создать");
-      else card("Первое задание: не выбрано или больше недоступно\nНе будет сохранено");
-      root.append(el("h3", "", "Что изменится в LifeGame"));
-      const plans = routePlans();
-      if (!plans.length) note("Пока никаких изменений не планируется");
-      for (const [, text] of plans) card(text);
-      if (d.goalPlan === "new" && goal) note("В блоке уже появилась активная цель. Новая цель не будет создана; вернись к шагу цели.");
-      note("Награды проверяются и подтверждаются в штатных формах. Задание не добавляется в Конструктор дня автоматически.");
-      if (plans.length) primary("Открыть форму: " + plans[0][1], () => routeSave(plans[0][0]));
-      (plans.length ? button : primary)(plans.length ? "Завершить с текущим результатом" : "Завершить", () => routeStep("done"));
-    } else if (d.step === "done") {
-      title("Ты выбрал направление"); note("Теперь можно двигаться своим темпом");
-      const block = routeBlock(), goal = routeGoal(), task = routeTask();
-      if (routePlans().length) note(Object.values(d.saved).some(Boolean)
-        ? "Часть маршрута сохранена. Остальное можно продолжить позднее через штатные разделы. Черновик маршрута после выхода не хранится."
-        : "Новые изменения не сохранены. К ним можно вернуться через штатные разделы. Черновик маршрута после выхода не хранится.");
-      if (block && d.saved.meaning === block.id && block.meaning) {
-        card("Сохранённый смысл: " + block.meaning); button("Открыть мой блок", () => go("blocks", block.id));
-      }
-      if (goal) { card("Цель: " + goal.name); button("Открыть блок с целью", () => go("blocks", goal.blockId)); }
-      if (task) {
-        card("Задание: " + task.name + (completion(state, task) ? " · выполнено" : " · не выполнено"));
-        button("Открыть задание в блоке", () => go("blocks", task.block, false, { target: "task:" + task.id }));
-        button("Перейти в Конструктор дня", () => go("day"));
-      }
-      button("Вернуться к Герою", () => go("hero"));
-    } else if (d.step === "ai") {
-      title("Тема разговора с LifeGame AI");
-      note("Текст не отправляется и не переносится в чат автоматически. Можно скопировать его отдельным действием и самостоятельно вставить в чат. При выходе черновик маршрута будет потерян.");
-      const field = input("aiText", "Просмотри и отредактируй тему");
-      button("Скопировать тему", async () => {
-        try { await navigator.clipboard.writeText(d.aiText); alert("Тема скопирована. Отправки в ИИ не было."); }
-        catch { field.focus(); field.select(); alert("Автокопирование недоступно. Скопируй выделенный текст вручную."); }
-      });
-      button("Открыть LifeGame AI", () => {
-        routeConfirmExit(() => { aiUiView = ai.connected ? "chat" : "settings"; go("aiPreview"); });
-      });
-      button("Отказаться", routeBack);
-    }
-    root.append(actions);
-    const navigation = el("div", "route-actions");
-    if (d.history.length && d.step !== "done") navigation.append(btn("Назад", "button secondary", routeBack));
-    if (d.step !== "done" && d.step !== "unsure") navigation.append(btn("Выйти из маршрута", "button secondary", () => go("hero")));
-    root.append(navigation);
   }
 
   function keyMinutes(data, id, date) {
@@ -8553,7 +8187,7 @@ h3.task-title { margin:0; }
     });
   }
 
-  function renderDayWidgets() {
+  function renderDayWidgets(target=screen) {
     for (const item of state.widgets.items) {
       const definition = widgetDefinition(item.id);
       if (!item.showInDay || !widgetAvailable(definition) || !definition.placements.includes("day")) continue;
@@ -8571,7 +8205,7 @@ h3.task-title { margin:0; }
       menuButton.setAttribute("aria-label", "Меню: " + definition.title);
       heading.append(menuButton);
       card.append(heading, definition.render());
-      screen.append(card);
+      target.append(card);
     }
   }
 
@@ -8716,7 +8350,7 @@ h3.task-title { margin:0; }
 
   function renderWidgets() {
     screen.append(
-      pageLinks(btn("Герой", "page-link", () => go("hero"))),
+      lgSectionNav("Мои виджеты"),
       el("h1", "", "Мои виджеты"),
       el("p", "", "Твои инструменты для своей игры.")
     );
@@ -8839,7 +8473,7 @@ h3.task-title { margin:0; }
 
   function renderWidgetCatalog() {
     screen.append(
-      pageLinks(btn("Мои виджеты", "page-link", () => go("widgets"))),
+      lgSectionNav("Каталог виджетов"),
       el("h1", "", "Собери свою игру"),
       el("p", "", "Выбирай то, что помогает именно тебе.")
     );
@@ -8975,7 +8609,8 @@ h3.task-title { margin:0; }
       blocksNav.setAttribute("aria-label", "Переходы раздела");
       blocksNav.append(
         btn("Главная", "page-link page-link-accent", () => go("hero")),
-        btn("Конструктор дня", "page-link page-link-accent", returnToDayPlan)
+        btn("Конструктор", "page-link page-link-accent", returnToDayPlan),
+        btn("Назад", "page-link page-link-accent", lgNavBack)
       );
       blocksNav.classList.add("blocks-nav");
       const blocksManage = btn("⚙", "blocks-manage-toggle", () => {
@@ -9062,12 +8697,8 @@ h3.task-title { margin:0; }
     blockNav.setAttribute("aria-label", "Переходы раздела");
     blockNav.append(
       btn("Главная", "page-link page-link-accent", () => go("hero")),
-      btn("Блоки времени", "page-link", () => go("blocks")),
-      btn(
-        "Конструктор дня",
-        "page-link page-link-accent",
-        returnToDayPlan
-      )
+      btn("Конструктор", "page-link page-link-accent", returnToDayPlan),
+      btn("Назад", "page-link page-link-accent", lgNavBack)
     );
     blockNav.classList.add("blocks-nav", "lg-block-detail-nav");
     const settingsToggle = btn("⚙", "blocks-manage-toggle block-settings-toggle", () => {
@@ -9132,6 +8763,7 @@ h3.task-title { margin:0; }
     }
     const activeQuests = state.quests.filter(x => x.archivedAt === null);
     screen.append(
+      lgSectionNav("Квесты"),
       el("h1", "", "Квесты"),
       el("p", "", "Большие цели — маленькими шагами."),
       btn("+ Добавить квест", "button full", createQuest, true)
@@ -9151,6 +8783,9 @@ h3.task-title { margin:0; }
   }
 
   function renderBonuses() {
+    if (bulkSelection?.collection !== "bonuses") {
+      screen.append(lgSectionNav("Бонусы"));
+    }
     screen.append(
       el("h1", "", bulkSelection?.collection === "bonuses" ? "ВЫБОР БОНУСОВ ДЛЯ АРХИВА" : "Бонусы"),
       balancesPanel(),
@@ -9190,49 +8825,82 @@ h3.task-title { margin:0; }
     if (bulkSelection?.collection !== "bonuses") historySection("purchases","ИСТОРИЯ ПОКУПОК", [...purchases].reverse(), purchaseCard);
   }
 
-  function renderDay() {
-    screen.append(
-      pageLinks(btn("Герой", "page-link", () => go("hero"))),
-      el("h1", "", "Конструктор дня"),
-      el("p", "", dateLabel())
-    );
-    const total = view.planned.length;
-    const done = view.plannedDone.length;
-    const summary = el("div", "card");
-    const hint = el("p", "", view.bonus
-      ? `✓ Бонус дня получен: +${view.bonus.reward} монет`
-      : total < MIN_DAY_TASKS
-        ? `Для бонуса нужно минимум ${MIN_DAY_TASKS} задания`
-        : `Выполни весь план: +${DAY_REWARD} монет`);
-    hint.style.marginBottom = "0"; hint.style.fontSize="13px"; hint.style.marginTop="8px";
-    if (view.bonus) hint.style.color = "var(--accent)";
-    summary.append(
-      el("div", "task-title", `План заданий: ${done} из ${total}`),
-      progressBar(total ? Math.round(done / total * 100) : 0, 100, "План заданий"),
-      hint
-    );
-    screen.append(summary);
-    renderDayWidgets();
-    if (!total) {
-      screen.append(el("div", "empty",
-        "План пока пуст. Выбери задания в блоках и включи для них «Конструктор дня». Таймер и виджеты не считаются заданиями для бонуса."));
+  // Только UI-память вкладки: не входит в state, localStorage и экспорт.
+  const lgDayCollapsed = new Set();
+  function lgDayFold(key, title, drawContent) {
+    const box = el("section", "lg-day-fold");
+    const body = el("div", "lg-day-fold-body");
+    body.id = "lg-day-fold-" + key;
+    const collapsed = lgDayCollapsed.has(key);
+    body.hidden = collapsed;
+    const toggle = btn("", "lg-day-fold-toggle", () => {
+      const hide = !lgDayCollapsed.has(key);
+      if (hide) lgDayCollapsed.add(key); else lgDayCollapsed.delete(key);
+      body.hidden = hide;
+      symbol.textContent = hide ? "+" : "−";
+      toggle.setAttribute("aria-expanded", String(!hide));
+      toggle.setAttribute("aria-label", (hide ? "Раскрыть" : "Свернуть") + " раздел «" + title + "»");
+    });
+    toggle.setAttribute("aria-controls", body.id);
+    toggle.setAttribute("aria-expanded", String(!collapsed));
+    toggle.setAttribute("aria-label", (collapsed ? "Раскрыть" : "Свернуть") + " раздел «" + title + "»");
+    const symbol = el("span", "lg-day-fold-indicator", collapsed ? "+" : "−");
+    symbol.setAttribute("aria-hidden", "true");
+    toggle.append(el("span", "lg-day-fold-rule"), el("span", "lg-day-fold-title", title),
+      el("span", "lg-day-fold-rule"), symbol);
+    drawContent(body);
+    if (!body.childElementCount) {
+      lgDayCollapsed.delete(key);
+      return false;
     }
+    box.append(toggle, body);
+    screen.append(box);
+    return true;
+  }
+
+  function renderDay() {
+    const dayNav = el("div", "page-links blocks-nav lg-day-nav");
+    dayNav.setAttribute("role", "group");
+    dayNav.setAttribute("aria-label", "Переходы раздела");
+    const dayLinks = el("div", "lg-day-nav-links");
+    dayLinks.append(
+      btn("Главная", "page-link page-link-accent", () => go("hero")),
+      btn("Виджеты", "page-link page-link-accent", () => go("widgets")),
+      btn("Блоки", "page-link page-link-accent", () => go("blocks")),
+      btn("Квесты", "page-link page-link-accent", () => go("quests")),
+      btn("Календарь", "page-link page-link-accent", () => go("calendar"))
+    );
+    dayNav.append(dayLinks);
+    const daySettings = btn("⚙", "blocks-manage-toggle lg-day-settings-placeholder", () => {});
+    daySettings.disabled = true;
+    daySettings.setAttribute("aria-label", "Настройки Конструктора дня (скоро)");
+    daySettings.setAttribute("title", "Настройки Конструктора дня — скоро");
+    dayNav.append(daySettings);
+    screen.append(
+      dayNav,
+      el("h1", "", "Конструктор дня"),
+      el("p", "", "Собери день который хочешь прожить")
+    );
+    lgDayFold("widgets", "ВИДЖЕТЫ", target => renderDayWidgets(target));
     const events = state.calendarEntries.filter(x => x.date === today());
-    section("СЕГОДНЯ ПО КАЛЕНДАРЮ", sortCalendar(events.filter(x => x.completionId === null)), calendarCard);
-    section("ЗАДАНИЯ", favorites(view.planned.filter(
-      x => !view.todayTask.has(x.id))), taskCard);
-
+    lgDayFold("calendar", "КАЛЕНДАРЬ", target =>
+      section("", sortCalendar(events.filter(x => x.completionId === null)), calendarCard, target));
+    lgDayFold("tasks", "ЗАДАНИЯ", target =>
+      section("", favorites(view.planned.filter(x => !view.todayTask.has(x.id))), taskCard, target));
     const quests = state.quests.filter(x => x.archivedAt === null && x.showInDay);
-    section("КВЕСТЫ", favorites(quests.filter(x => x.progress < x.target)),
-      quest => questCard(quest, true));
-
+    lgDayFold("quests", "КВЕСТЫ", target =>
+      section("", favorites(quests.filter(x => x.progress < x.target)), quest => questCard(quest, true), target));
     const completed = [
       ...events.filter(x => x.completionId !== null).map(x => ({ ...x, kind: "calendar" })),
       ...view.plannedDone.map(x => ({ ...x, kind: "task" })),
       ...quests.filter(x => x.progress >= x.target).map(x => ({ ...x, kind: "quest" }))
     ];
-    historySection(page==="day"?"day":"block:"+blockId,"ВЫПОЛНЕНО", completed, item =>
-      item.kind === "calendar" ? calendarCard(item) : item.kind === "quest" ? questCard(item, true) : taskCard(item));
+    lgDayFold("completed", "ВЫПОЛНЕНО", target =>
+      historySection(page==="day"?"day":"block:"+blockId,"", completed, item =>
+        item.kind === "calendar" ? calendarCard(item) : item.kind === "quest" ? questCard(item, true) : taskCard(item), target));
+    if (!screen.querySelector(".lg-day-fold")) {
+      screen.append(el("div", "empty", "Пока здесь ничего нет. Добавь первое."));
+    }
   }
 
   function summaryRow(container, title, value, total = false) {
@@ -9246,7 +8914,7 @@ h3.task-title { margin:0; }
 
   function renderSummary() {
     screen.append(
-      pageLinks(btn("Герой", "page-link", () => go("hero"))),
+      lgSectionNav("Итоги дня"),
       el("h1", "", "Итоги дня"),
       el("p", "", dateLabel())
     );
@@ -9315,7 +8983,7 @@ h3.task-title { margin:0; }
     wallet.setAttribute("aria-label",
       `Монеты: ${view.money.balance}. Алмазы: ${view.money.diamonds}.`);
 
-    const active = ["day", "summary", "calendar", "treats", "widgets", "widgetCatalog", "aiPreview", "myRoute"].includes(page) ? "hero" : page;
+    const active = ["day", "summary", "calendar", "treats", "widgets", "widgetCatalog", "aiPreview"].includes(page) ? "hero" : page;
     document.querySelectorAll(".nav-button").forEach(node => {
       const selected = node.dataset.page === active;
       node.classList.toggle("active", selected);
@@ -9326,7 +8994,7 @@ h3.task-title { margin:0; }
       hero: renderHero, blocks: renderBlocks, quests: renderQuests,
       bonuses: renderBonuses, day: renderDay, summary: renderSummary, calendar: renderCalendar, treats: renderTreats,
       widgets: renderWidgets, widgetCatalog: renderWidgetCatalog,
-      aiPreview: renderAiPreview, myRoute: renderMyRoute
+      aiPreview: renderAiPreview
     };
     (screens[page] || renderHero)();
     updateFocusMini();
@@ -9338,20 +9006,6 @@ h3.task-title { margin:0; }
   }
 
   // Настройки и резервные копии.
-  routeEntryToggle.addEventListener("change", () => {
-    const visible = routeEntryToggle.checked;
-    try {
-      localStorage.setItem(ROUTE_ENTRY_KEY, String(visible));
-      routeEntryVisible = visible;
-      $("route-entry-status").textContent = visible ? "Кнопка маршрута показана на главной." : "Кнопка маршрута скрыта с главной.";
-    } catch {
-      routeEntryToggle.checked = routeEntryVisible;
-      $("route-entry-status").textContent = "Не удалось сохранить настройку. Значение не изменено.";
-      return;
-    }
-    if (page === "hero") render();
-  });
-
   soundToggle.addEventListener("change", () => {
     const enabled = soundToggle.checked;
     const saved = transact(data => {
@@ -9918,7 +9572,7 @@ h3.task-title { margin:0; }
 
   function renderTreats() {
     screen.append(
-      pageLinks(btn("Герой", "page-link", () => go("hero"))),
+      lgSectionNav("Ништяки"),
       el("h1", "", "Ништяки"),
       el(
         "p",
