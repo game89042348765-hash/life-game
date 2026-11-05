@@ -2360,8 +2360,8 @@ h3.task-title { margin:0; }
 .blocks-nav.lg-block-detail-nav .blocks-manage-toggle { margin-left:auto; width:40px; }
 .blocks-nav .page-link { min-width:44px; flex:0 0 auto; align-items:center; justify-content:center; text-align:center; padding:7px 6px; gap:4px; border:1px solid #ffda2940; border-radius:12px; background:#ffda2908; color:#ffda29; font-size:11px; white-space:nowrap; overflow-wrap:normal; }
 .blocks-nav .page-link .design-icon { flex:0 0 13px; width:13px; height:13px; }
-.blocks-nav.lg-day-nav { align-items:center; }
-.lg-day-nav-links { display:flex; align-items:center; gap:4px; min-width:0; }
+.blocks-nav.lg-day-nav { display:grid; grid-template-columns:minmax(0,1fr) 40px; align-items:start; gap:4px; }
+.lg-day-nav-links { display:flex; flex-wrap:wrap; align-items:center; gap:4px; min-width:0; }
 .lg-day-settings-placeholder:disabled { opacity:1; cursor:default; }
 .blocks-nav.lg-section-nav { flex-wrap:nowrap; }
 .blocks-nav.lg-section-nav .page-link { flex-shrink:0; }
@@ -2371,10 +2371,7 @@ h3.task-title { margin:0; }
 .lg-day-fold + .lg-day-fold { margin-top:8px; }
 .lg-day-fold-head { display:flex; align-items:center; gap:6px; border-bottom:1px solid #ffda2926; }
 .lg-day-fold-toggle { display:flex; flex:1 1 auto; align-items:center; gap:10px; min-width:0; min-height:44px; margin:0; padding:8px 0; border:0; background:transparent; color:var(--text); text-align:left; cursor:pointer; }
-.lg-day-fold-toggle:disabled { opacity:1; cursor:default; }
-.lg-day-fold-lock { display:grid; place-items:center; flex:0 0 44px; width:44px; min-height:44px; padding:0; border:0; border-radius:7px; background:transparent; color:var(--accent); font-size:18px; cursor:pointer; }
-.lg-day-fold-lock[hidden], .lg-day-fold-indicator[hidden] { display:none; }
-.lg-day-fold-lock:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.lg-day-fold-indicator svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
 .lg-day-fold-title { flex:1 1 auto; min-width:0; font-size:15px; font-weight:650; line-height:1.4; overflow-wrap:anywhere; }
 .lg-day-fold-count { flex:0 0 auto; color:var(--muted); font-size:13px; font-variant-numeric:tabular-nums; }
 .lg-day-fold-body { padding-top:8px; }
@@ -8871,45 +8868,54 @@ h3.task-title { margin:0; }
     const symbol = el("span", "lg-day-fold-indicator");
     symbol.setAttribute("aria-hidden", "true");
     const toggle = btn("", "lg-day-fold-toggle", () => {
-      if (lgDayPinned.has(key)) return;
-      if (lgDayOpened.has(key)) lgDayOpened.delete(key); else lgDayOpened.add(key);
+      const pinned = lgDayPinned.has(key);
+      const opened = pinned || lgDayOpened.has(key);
+      // + → закреплено → открыто временно → +.
+      if (!opened || pinned) {
+        const next = new Set(lgDayPinned);
+        if (pinned) next.delete(key); else next.add(key);
+        try {
+          localStorage.setItem(LG_DAY_PIN_KEY, JSON.stringify([...next]));
+        } catch (error) {
+          uiFeedback("Не удалось сохранить закрепление раздела. Попробуй ещё раз.");
+          return;
+        }
+        lgDayPinned = next;
+        lgDayOpened.add(key);
+      } else {
+        lgDayOpened.delete(key);
+      }
       update();
     });
     toggle.setAttribute("aria-controls", body.id);
     toggle.append(el("span", "lg-day-fold-title", title),
       el("span", "lg-day-fold-count", String(itemCount)), symbol);
-    const lock = btn("", "lg-day-fold-lock", () => {
-      const next = new Set(lgDayPinned);
-      if (next.has(key)) next.delete(key); else next.add(key);
-      try {
-        localStorage.setItem(LG_DAY_PIN_KEY, JSON.stringify([...next]));
-      } catch (error) {
-        uiFeedback("Не удалось сохранить закрепление раздела. Попробуй ещё раз.");
-        return;
-      }
-      lgDayPinned = next;
-      lgDayOpened.add(key);
-      update();
-    });
-    lock.setAttribute("aria-controls", body.id);
     function update() {
       const pinned = lgDayPinned.has(key);
       const opened = pinned || lgDayOpened.has(key);
       body.hidden = !opened;
-      symbol.textContent = opened ? "−" : "+";
-      symbol.hidden = pinned;
-      toggle.disabled = pinned;
+      symbol.replaceChildren();
+      if (pinned) {
+        const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        icon.setAttribute("viewBox", "0 0 24 24");
+        icon.setAttribute("focusable", "false");
+        const path = document.createElementNS(icon.namespaceURI, "path");
+        path.setAttribute("d", "M7 10V7a5 5 0 0 1 10 0v3M6 10h12a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1ZM12 14v3");
+        icon.append(path);
+        symbol.append(icon);
+      } else {
+        symbol.textContent = opened ? "−" : "+";
+      }
+      toggle.dataset.mode = pinned ? "pinned" : opened ? "open" : "closed";
       toggle.setAttribute("aria-expanded", String(opened));
-      toggle.setAttribute("aria-label", (pinned ? "Закреплён открытым" : opened ? "Свернуть" : "Раскрыть") + " раздел «" + title + "», элементов: " + itemCount);
-      lock.hidden = !opened;
-      lock.textContent = pinned ? "🔒" : "🔓";
-      const label = (pinned ? "Открепить" : "Закрепить открытым") + " раздел «" + title + "»";
-      lock.setAttribute("aria-label", label);
-      lock.setAttribute("title", label);
-      lock.setAttribute("aria-pressed", String(pinned));
+      const status = pinned ? "Закреплён открытым" : opened ? "Открыт временно" : "Закрыт";
+      const action = pinned ? "Снять закрепление" : opened ? "Закрыть" : "Открыть и закрепить";
+      const label = status + " раздел «" + title + "», элементов: " + itemCount + ". " + action;
+      toggle.setAttribute("aria-label", label);
+      toggle.setAttribute("title", label);
     }
     update();
-    heading.append(toggle, lock);
+    heading.append(toggle);
     box.append(heading, body);
     screen.append(box);
     return true;
@@ -8921,9 +8927,10 @@ h3.task-title { margin:0; }
     dayNav.setAttribute("aria-label", "Переходы раздела");
     const dayLinks = el("div", "lg-day-nav-links");
     dayLinks.append(
-      btn("Главная", "page-link page-link-accent", () => go("hero")),
       btn("Виджеты", "page-link page-link-accent", () => go("widgets")),
-      btn("Блоки", "page-link page-link-accent", () => go("blocks"))
+      btn("Календарь", "page-link page-link-accent", () => go("calendar")),
+      btn("Блоки", "page-link page-link-accent", () => go("blocks")),
+      btn("Квесты", "page-link page-link-accent", () => go("quests"))
     );
     dayNav.append(dayLinks);
     const daySettings = btn("⚙", "blocks-manage-toggle lg-day-settings-placeholder", () => {});
