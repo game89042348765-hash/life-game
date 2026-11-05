@@ -1,0 +1,26 @@
+[
+  {
+    "source": ".clinerules",
+    "archive": ".clinerules.txt",
+    "bytes": 2016,
+    "sha256": "a56315278af50633b658e63a2d4a17221df3731efb43dd0d79bc6c180177d392"
+  },
+  {
+    "source": "LifeGame_CURRENT_WORK.md",
+    "archive": "LifeGame_CURRENT_WORK.md",
+    "bytes": 64259,
+    "sha256": "6ea14f0f2e6a6755323a2af25adeca03c77f26876695541398a79e28b031ae7f"
+  },
+  {
+    "source": "LifeGame_PROJECT_CONTEXT.md",
+    "archive": "LifeGame_PROJECT_CONTEXT.md",
+    "bytes": 200450,
+    "sha256": "3294dffe23948172ff8697e1d567a0dd52048e2874958d00ad172621ff89346e"
+  },
+  {
+    "source": "LifeGame_CHAT_HANDOFF_2026-11-06.md",
+    "archive": "LifeGame_CHAT_HANDOFF_2026-11-06.md",
+    "bytes": 6665,
+    "sha256": "6caea107452e13c183a15fdf5c021f16e9566f55edabd3e5d6d4b98a1bd6f8ac"
+  }
+]

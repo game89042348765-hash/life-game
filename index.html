@@ -2361,18 +2361,21 @@ h3.task-title { margin:0; }
 .blocks-nav .page-link { min-width:44px; flex:0 0 auto; align-items:center; justify-content:center; text-align:center; padding:7px 6px; gap:4px; border:1px solid #ffda2940; border-radius:12px; background:#ffda2908; color:#ffda29; font-size:11px; white-space:nowrap; overflow-wrap:normal; }
 .blocks-nav .page-link .design-icon { flex:0 0 13px; width:13px; height:13px; }
 .blocks-nav.lg-day-nav { display:grid; grid-template-columns:minmax(0,1fr) 40px; align-items:start; column-gap:8px; }
-.lg-day-nav-links { display:flex; flex-wrap:wrap; align-items:center; gap:4px; min-width:0; }
-.blocks-nav.lg-day-nav .page-link { flex-shrink:0; }
+.lg-day-nav-links { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; min-width:0; }
+.blocks-nav.lg-day-nav .page-link { min-width:0; padding:7px 3px; }
 .blocks-nav.lg-day-nav .blocks-manage-toggle { margin-left:0; }
 .lg-day-settings-placeholder:disabled { opacity:1; cursor:default; }
 .blocks-nav.lg-section-nav { flex-wrap:nowrap; }
 .blocks-nav.lg-section-nav .page-link { flex-shrink:0; }
 .lg-section-nav .lg-section-settings-placeholder:disabled { opacity:1; cursor:default; }
 /* Конструктор дня: отдельные сворачиваемые секции, без влияния на другие экраны. */
-.lg-day-fold { margin-top:24px; }
-.lg-day-fold-toggle { display:flex; align-items:center; gap:9px; width:100%; min-height:44px; margin:0 0 10px; padding:5px 0; border:0; background:transparent; color:#c0c6ba; cursor:pointer; }
-.lg-day-fold-rule { flex:1 1 0; min-width:8px; height:1px; background:#ffda29; }
-.lg-day-fold-title { flex:0 1 auto; min-width:0; font-size:10px; font-weight:600; letter-spacing:1.2px; white-space:nowrap; }
+.lg-day-fold { margin-top:12px; }
+.lg-day-fold + .lg-day-fold { margin-top:8px; }
+.lg-day-fold-toggle { display:flex; align-items:center; gap:10px; width:100%; min-height:44px; margin:0; padding:8px 0; border:0; border-bottom:1px solid #ffda2926; background:transparent; color:var(--text); text-align:left; cursor:pointer; }
+.lg-day-fold-title { flex:1 1 auto; min-width:0; font-size:15px; font-weight:650; line-height:1.4; overflow-wrap:anywhere; }
+.lg-day-fold-count { flex:0 0 auto; color:var(--muted); font-size:13px; font-variant-numeric:tabular-nums; }
+.lg-day-fold-body { padding-top:8px; }
+.lg-day-fold-body > :first-child { margin-top:0; }
 .lg-day-fold-indicator { flex:0 0 24px; box-sizing:border-box; display:grid; place-items:center; width:24px; height:24px; border:1px solid #ffda29; border-radius:7px; color:#ffda29; font-size:18px; font-weight:600; line-height:1; }
 .lg-day-fold-body[hidden] { display:none!important; }
 .lg-day-fold-toggle:focus-visible { outline:2px solid #ffda29; outline-offset:3px; border-radius:6px; }
@@ -8827,7 +8830,7 @@ h3.task-title { margin:0; }
 
   // Только UI-память вкладки: не входит в state, localStorage и экспорт.
   const lgDayCollapsed = new Set();
-  function lgDayFold(key, title, drawContent) {
+  function lgDayFold(key, title, drawContent, count = null) {
     const box = el("section", "lg-day-fold");
     const body = el("div", "lg-day-fold-body");
     body.id = "lg-day-fold-" + key;
@@ -8846,13 +8849,14 @@ h3.task-title { margin:0; }
     toggle.setAttribute("aria-label", (collapsed ? "Раскрыть" : "Свернуть") + " раздел «" + title + "»");
     const symbol = el("span", "lg-day-fold-indicator", collapsed ? "+" : "−");
     symbol.setAttribute("aria-hidden", "true");
-    toggle.append(el("span", "lg-day-fold-rule"), el("span", "lg-day-fold-title", title),
-      el("span", "lg-day-fold-rule"), symbol);
     drawContent(body);
     if (!body.childElementCount) {
       lgDayCollapsed.delete(key);
       return false;
     }
+    const itemCount = count ?? (key === "widgets" ? body.childElementCount : body.querySelector(".list")?.childElementCount || 0);
+    toggle.append(el("span", "lg-day-fold-title", title),
+      el("span", "lg-day-fold-count", String(itemCount)), symbol);
     box.append(toggle, body);
     screen.append(box);
     return true;
@@ -8881,23 +8885,23 @@ h3.task-title { margin:0; }
       el("h1", "", "Конструктор дня"),
       el("p", "", "Собери день который хочешь прожить")
     );
-    lgDayFold("widgets", "ВИДЖЕТЫ", target => renderDayWidgets(target));
+    lgDayFold("widgets", "Виджеты", target => renderDayWidgets(target));
     const events = state.calendarEntries.filter(x => x.date === today());
-    lgDayFold("calendar", "КАЛЕНДАРЬ", target =>
+    lgDayFold("calendar", "Календарь", target =>
       section("", sortCalendar(events.filter(x => x.completionId === null)), calendarCard, target));
-    lgDayFold("tasks", "ЗАДАНИЯ", target =>
+    lgDayFold("tasks", "Задания", target =>
       section("", favorites(view.planned.filter(x => !view.todayTask.has(x.id))), taskCard, target));
     const quests = state.quests.filter(x => x.archivedAt === null && x.showInDay);
-    lgDayFold("quests", "КВЕСТЫ", target =>
+    lgDayFold("quests", "Квесты", target =>
       section("", favorites(quests.filter(x => x.progress < x.target)), quest => questCard(quest, true), target));
     const completed = [
       ...events.filter(x => x.completionId !== null).map(x => ({ ...x, kind: "calendar" })),
       ...view.plannedDone.map(x => ({ ...x, kind: "task" })),
       ...quests.filter(x => x.progress >= x.target).map(x => ({ ...x, kind: "quest" }))
     ];
-    lgDayFold("completed", "ВЫПОЛНЕНО", target =>
+    lgDayFold("completed", "Выполнено", target =>
       historySection(page==="day"?"day":"block:"+blockId,"", completed, item =>
-        item.kind === "calendar" ? calendarCard(item) : item.kind === "quest" ? questCard(item, true) : taskCard(item), target));
+        item.kind === "calendar" ? calendarCard(item) : item.kind === "quest" ? questCard(item, true) : taskCard(item), target), completed.length);
     if (!screen.querySelector(".lg-day-fold")) {
       screen.append(el("div", "empty", "Пока здесь ничего нет. Добавь первое."));
     }
