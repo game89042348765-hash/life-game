@@ -2367,6 +2367,9 @@ h3.task-title { margin:0; }
 .blocks-nav.lg-section-nav { flex-wrap:nowrap; }
 .blocks-nav.lg-section-nav .page-link { flex-shrink:0; }
 .lg-section-nav .lg-section-settings-placeholder:disabled { opacity:1; cursor:default; }
+.blocks-nav.lg-shared-nav { display:grid; grid-template-columns:minmax(0,1fr) 40px; align-items:start; gap:4px; }
+.lg-section-nav-links { display:flex; flex-wrap:wrap; align-items:center; gap:4px; min-width:0; }
+.blocks-nav.lg-shared-nav .lg-section-nav-links .page-link { flex:1 1 auto; max-width:112px; }
 /* Конструктор дня: отдельные сворачиваемые секции, без влияния на другие экраны. */
 .lg-day-fold { margin-top:12px; }
 .lg-day-fold + .lg-day-fold { margin-top:8px; }
@@ -4178,16 +4181,24 @@ h3.task-title { margin:0; }
     }
   }
 
+  // Общий набор переходов; Конструктор сохраняет собственное меню.
+  function lgSectionLinks(openDay = () => go("day")) {
+    const links = el("div", "lg-section-nav-links");
+    links.append(
+      btn("Виджеты", "page-link page-link-accent", () => go("widgets")),
+      btn("Конструктор", "page-link page-link-accent", openDay),
+      btn("Блоки", "page-link page-link-accent", () => go("blocks")),
+      btn("Квесты", "page-link page-link-accent", () => go("quests"))
+    );
+    return links;
+  }
+
   // Единая навигация обычных экранов; ничего не записывает в прогресс.
   function lgSectionNav(title) {
-    const group = el("div", "page-links blocks-nav lg-section-nav");
+    const group = el("div", "page-links blocks-nav lg-section-nav lg-shared-nav");
     group.setAttribute("role", "group");
     group.setAttribute("aria-label", "Переходы раздела");
-    group.append(
-      btn("Главная", "page-link page-link-accent", () => go("hero")),
-      btn("Конструктор", "page-link page-link-accent", () => go("day")),
-      btn("Назад", "page-link page-link-accent", lgNavBack)
-    );
+    group.append(lgSectionLinks());
     const settings = btn("⚙", "blocks-manage-toggle lg-section-settings-placeholder", () => {});
     settings.disabled = true;
     settings.setAttribute("aria-label", `Настройки раздела «${title}» (скоро)`);
@@ -8612,12 +8623,8 @@ h3.task-title { margin:0; }
       const blocksNav = el("div", "page-links");
       blocksNav.setAttribute("role", "group");
       blocksNav.setAttribute("aria-label", "Переходы раздела");
-      blocksNav.append(
-        btn("Главная", "page-link page-link-accent", () => go("hero")),
-        btn("Конструктор", "page-link page-link-accent", returnToDayPlan),
-        btn("Назад", "page-link page-link-accent", lgNavBack)
-      );
-      blocksNav.classList.add("blocks-nav");
+      blocksNav.append(lgSectionLinks(returnToDayPlan));
+      blocksNav.classList.add("blocks-nav", "lg-shared-nav");
       const blocksManage = btn("⚙", "blocks-manage-toggle", () => {
         const details = screen.querySelector(".ui-list-management");
         if (!details) return;
@@ -8700,12 +8707,8 @@ h3.task-title { margin:0; }
     const blockNav = el("div", "page-links");
     blockNav.setAttribute("role", "group");
     blockNav.setAttribute("aria-label", "Переходы раздела");
-    blockNav.append(
-      btn("Главная", "page-link page-link-accent", () => go("hero")),
-      btn("Конструктор", "page-link page-link-accent", returnToDayPlan),
-      btn("Назад", "page-link page-link-accent", lgNavBack)
-    );
-    blockNav.classList.add("blocks-nav", "lg-block-detail-nav");
+    blockNav.append(lgSectionLinks(returnToDayPlan));
+    blockNav.classList.add("blocks-nav", "lg-block-detail-nav", "lg-shared-nav");
     const settingsToggle = btn("⚙", "blocks-manage-toggle block-settings-toggle", () => {
       blockSettingsOpen = !blockSettingsOpen;
       render();
