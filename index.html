@@ -2314,6 +2314,22 @@ h3.task-title { margin:0; }
 [aria-invalid="true"] { border-color:#e49b83!important; }
 #editor { max-height:calc(100dvh - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));scroll-padding:18px 0 95px; }
 #editor form { min-width:0;padding-bottom:1px; }
+#editor .numeric-row {grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:12px}
+#editor .numeric-cell:only-child {grid-column:1/-1}
+#editor .numeric-cell label {margin-top:0}
+#editor .numeric-row {margin-block:18px}
+#editor form > label:not(.check-label),#editor .weekday-picker {margin-top:20px}
+#editor .numeric-cell :is(.meta,.ui-field-hint) {margin:6px 0 0;line-height:1.5}
+#editor :is(.currency-picker,.quest-type-picker) {padding:12px;border:1px solid var(--graphite-edge);border-radius:12px;background:#ffffff03}
+#editor .currency-picker label {margin:0;padding:8px;border:1px solid transparent;border-radius:9px}
+#editor .currency-picker label:has(input:checked) {background:#ffffff08;border-color:var(--graphite-edge)}
+#editor .currency-picker label:focus-within {outline:2px solid var(--accent);outline-offset:2px}
+#editor .stage-editor-row {padding:12px;border:1px solid var(--graphite-edge);border-radius:12px;margin:12px 0}
+#editor .stage-editor-row .ui-stage-label {margin-top:0!important}
+#editor .ui-dialog-error[hidden] {display:none}
+#backup-dialog {scroll-padding-bottom:90px}
+#backup-dialog > .form-actions {position:sticky;bottom:-23px;padding:12px 0;background:var(--graphite-panel);box-shadow:0 -9px 12px var(--graphite-panel);z-index:2}
+
 #editor .form-actions { position:sticky;z-index:3;bottom:-23px;padding:14px 0 16px;margin-top:18px;background:var(--graphite-panel);box-shadow:0 -9px 12px var(--graphite-panel); }
 #editor input,#editor textarea,#editor select { scroll-margin-block:70px 110px; }
 #editor label.task-goal-toggle { display:flex;align-items:center;gap:10px;margin:8px 0;min-height:44px; }
@@ -4365,13 +4381,14 @@ h3.task-title { margin:0; }
     if (form.dataset.uiPrepared) return; form.dataset.uiPrepared = 'true';
     const note = el('p', 'ui-required-note', 'Поля со звёздочкой обязательны.'); heading?.after(note);
     for (const input of form.querySelectorAll('input:not([type=checkbox]):not([type=radio]),textarea,select')) {
+      if (input.type === 'number' && input.step === '1' && Number(input.min) >= 0) input.inputMode = 'numeric';
       if (input.required) for (const label of input.labels || []) { const star = el('span', 'ui-required-mark', ' *'); star.setAttribute('aria-hidden', 'true'); if (label.contains(input)) label.insertBefore(star, input); else label.append(star); }
       let hint = input.closest('.numeric-cell')?.querySelector('.meta') || (input.nextElementSibling?.matches('p.meta') ? input.nextElementSibling : null);
       if (!hint && input.type === 'number' && (input.min || input.max)) { hint = el('p', 'ui-field-hint', `Целое число${input.min ? ' от ' + input.min : ''}${input.max ? ' до ' + input.max : ''}.`); input.after(hint); }
       if (hint && !hint.contains(input)) { hint.id ||= 'ui-hint-' + (++uiDialogSerial); input.setAttribute('aria-describedby', ((input.getAttribute('aria-describedby') || '') + ' ' + hint.id).trim()); }
     }
     form.addEventListener('input', e => { if (uiFormSession?.form === form) uiFormSession.input = true; e.target.removeAttribute('aria-invalid'); form.querySelector('.ui-dialog-error')?.setAttribute('hidden', ''); });
-    form.addEventListener('invalid', e => { e.preventDefault(); e.target.setAttribute('aria-invalid', 'true'); uiFeedback(e.target.validationMessage); if (!form.querySelector(':invalid') || form.querySelector(':invalid') === e.target) e.target.focus(); }, true);
+    form.addEventListener('invalid', e => { e.preventDefault(); e.target.setAttribute('aria-invalid', 'true'); let error = form.querySelector('.ui-dialog-error'); if (!error) { error = el('p','ui-dialog-error'); error.setAttribute('role','alert'); form.querySelector('.form-actions')?.before(error); } if (!form.querySelector(':invalid') || form.querySelector(':invalid') === e.target) error.textContent = e.target.validationMessage; error.hidden = false; if (!form.querySelector(':invalid') || form.querySelector(':invalid') === e.target) e.target.focus(); }, true);
     form.addEventListener('submit', () => {
       const current = uiFormSession;
       setTimeout(() => {
