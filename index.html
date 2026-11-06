@@ -2520,7 +2520,14 @@ h3.task-title { margin:0; }
 @media(max-width:350px){.lg-quick-capture{padding-inline:12px}.lg-quick-entry{gap:6px}.lg-quick-entry .button.lg-quick-submit{min-width:75px;padding-inline:9px}}
 
 </style>
-</head>
+<style>
+.lg-carry-review{border:1px solid #aebba32e;border-radius:15px;padding:0 15px;margin:0 0 21px;background:#151c13}
+.lg-carry-review summary{cursor:pointer;padding:13px 0;font-size:13px;color:#e0d87f;min-height:46px}
+.lg-carry-help{font-size:12px!important;line-height:1.6;color:#aab99d;margin:0 0 12px!important}
+.lg-carry-row{padding:13px 0;border-top:1px solid #aebba324}.lg-carry-row h3{font-size:14px;line-height:1.4;margin:0;overflow-wrap:anywhere}
+.lg-carry-date{font-size:10px!important;color:#94a78a;margin:5px 0 10px!important}.lg-carry-actions{display:flex;gap:6px;flex-wrap:wrap}
+.lg-carry-actions .button{min-height:44px;min-width:0;padding:8px 11px;font-size:11px;flex:1;white-space:normal}
+</style></head>
 <body>
 <div class="app">
   <header class="topbar">
@@ -3122,6 +3129,7 @@ h3.task-title { margin:0; }
       treatUses: [],
       focus: {status:"ready", id:null, minutes:5, name:"", remaining:300000, endsAt:null, notified:true, natural:false},
       dayPlans: {},
+      planReviews: {},
       dayPlanDate: null
     };
   }
@@ -3528,6 +3536,9 @@ h3.task-title { margin:0; }
         fail("Повреждён план дня.");
       }
     }
+    if(data.planReviews===undefined)data.planReviews={};
+    if(!data.planReviews||typeof data.planReviews!=='object'||Array.isArray(data.planReviews))fail('Повреждены решения по прошлым планам.');
+    for(const [date,ids]of Object.entries(data.planReviews))if(!validDate(date)||!Array.isArray(ids)||!ids.every(validId)||new Set(ids).size!==ids.length)fail('Повреждены решения по прошлым планам.');
     if (data.dayPlanDate === undefined) data.dayPlanDate = null;
     if (data.dayPlanDate !== null && !validDate(data.dayPlanDate)) {
       fail("Некорректная дата плана.");
@@ -8980,6 +8991,46 @@ h3.task-title { margin:0; }
     historySection('inbox','ВЫПОЛНЕНО',tasks.filter(done),taskCard);
   }
 
+  // Only unfinished one-off tasks from the latest past plan need a decision.
+  let carryReviewOpen=false;
+  function pendingCarryovers(data=state) {
+    const date=today(),latest=new Map(),current=new Set(data.dayPlans[date]||[]);
+    for(const day of Object.keys(data.dayPlans).filter(x=>x<date).sort())for(const id of data.dayPlans[day])latest.set(id,day);
+    return data.tasks.filter(task=>task.type==='once'&&task.archivedAt===null&&taskBlockIsActive(data,task.block)&&!current.has(task.id)&&!completion(data,task))
+      .flatMap(task=>{const from=latest.get(task.id);return from&&!(data.planReviews[from]||[]).includes(task.id)?[{task,from}]:[];});
+  }
+  function decideCarryover(id,from,choice,expectedDay) {
+    if(!['today','later','archive'].includes(choice))return false;
+    return transact(data=>{
+      if(today()!==expectedDay)fail('Наступил новый день. Проверь список заново.');
+      const entry=pendingCarryovers(data).find(x=>x.task.id===id&&x.from===from);
+      if(!entry)fail('Дело уже разобрано или изменилось. Обнови список.');
+      const ids=new Set(data.planReviews[from]||[]);ids.add(id);data.planReviews[from]=[...ids];
+      if(choice==='today'){const plan=new Set(data.dayPlans[today()]||[]);plan.add(id);data.dayPlans[today()]=[...plan];}
+      if(choice==='archive'){
+        entry.task.archivedAt=new Date().toISOString();entry.task.inDayBuilder=false;
+        for(const day of Object.keys(data.dayPlans))if(day>=today())data.dayPlans[day]=data.dayPlans[day].filter(x=>x!==id);
+      }
+    },false);
+  }
+  function renderCarryovers() {
+    const entries=pendingCarryovers();if(!entries.length)return;
+    const date=today(),box=el('details','lg-carry-review');box.open=carryReviewOpen;
+    const heading=el('summary','','Со вчера: '+entries.length);box.append(heading,el('p','lg-carry-help','Незавершённые дела прошлых дней. Выбери, что делать дальше. «Позже» оставит дело в его блоке или Входящих.'));
+    box.addEventListener('toggle',()=>{if(box.isConnected)carryReviewOpen=box.open;});
+    for(const {task,from} of entries){
+      const row=el('div','lg-carry-row');row.dataset.carryId=task.id;
+      row.append(el('h3','',task.name),el('p','lg-carry-date','Из плана: '+calendarLabel(from)));
+      const controls=el('div','lg-carry-actions');
+      for(const [choice,label]of [['today','На сегодня'],['later','Позже'],['archive','В архив']]){
+        const action=btn(label,'button secondary',()=>{if(decideCarryover(task.id,from,choice,date))requestAnimationFrame(()=>{const target=screen.querySelector('.lg-carry-review summary')||screen.querySelector('#lg-quick-name');target?.focus({preventScroll:true});});},true);
+        action.setAttribute('aria-label',label+': '+task.name);controls.append(action);
+      }
+      row.append(controls);box.append(row);
+    }
+    screen.append(box);
+  }
+
   function renderDay() {
     const dayNav = el("div", "page-links blocks-nav lg-day-nav");
     dayNav.setAttribute("role", "group");
@@ -9003,6 +9054,7 @@ h3.task-title { margin:0; }
       el("p", "", "Собери день который хочешь прожить")
     );
     screen.append(quickTaskCapture('day'));
+    renderCarryovers();
     lgDayFold("widgets", "Виджеты", target => renderDayWidgets(target));
     const events = state.calendarEntries.filter(x => x.date === today());
     lgDayFold("calendar", "Календарь", target =>
