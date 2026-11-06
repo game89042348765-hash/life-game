@@ -2495,6 +2495,8 @@ h3.task-title { margin:0; }
 #editor .lg-new-block-form .form-actions { margin-top:14px; }
 @media (max-width:350px) { #editor .lg-block-icon-grid { gap:6px; } }
 </style>
+<link rel="stylesheet" href="assets/splash-sunrise.css">
+<script src="assets/splash-sunrise.js" defer></script>
 </head>
 <body>
 <div class="app">
@@ -2533,6 +2535,17 @@ h3.task-title { margin:0; }
            aria-describedby="sound-state" checked>
   </label>
   <button type="button" class="button secondary full" id="edit-motivation">Личная мотивация</button>
+  <section class="lg-sunrise-options" aria-labelledby="lg-sunrise-options-title">
+    <h3 id="lg-sunrise-options-title">Заставка «Рассвет»</h3>
+    <label for="lg-sunrise-mode">Показывать при открытии</label>
+    <select id="lg-sunrise-mode">
+      <option value="daily">Один раз в день</option>
+      <option value="always">При каждом открытии</option>
+      <option value="off">Только вручную</option>
+    </select>
+    <button type="button" class="button secondary full" id="lg-sunrise-replay">Посмотреть заставку</button>
+    <p class="lg-sunrise-status" id="lg-sunrise-status" role="status">4,5 секунды · звук зависит от общей настройки</p>
+  </section>
 
   <details><summary>Резервная копия</summary>
   <p>

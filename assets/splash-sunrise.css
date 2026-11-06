@@ -1,0 +1,60 @@
+.lg-sunrise{position:fixed;inset:0;background:#050504;display:grid;place-items:center;z-index:100;pointer-events:auto;opacity:1;visibility:visible;overflow:hidden}
+.lg-sunrise.is-playing{animation:lg-sunrise-splash-exit .65s ease 3.85s forwards}
+@keyframes lg-sunrise-splash-exit {0%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden}}
+.lg-sunrise-ambient-back{position:absolute;inset:-7%;background-image:var(--art);background-size:cover;background-position:center;filter:blur(26px) brightness(.24) saturate(.8);transform:scale(1.12)}
+.lg-sunrise-frame{position:relative;flex:none;aspect-ratio:941 / 1672;width:min(100vw,56.280dvh);max-height:100dvh;overflow:hidden;isolation:isolate;background:#090909}
+.lg-sunrise-poster{position:absolute;inset:0;background-image:var(--art);background-position:center;background-size:100% 100%;transform:scale(1.009);transform-origin:50% 53%}
+.lg-sunrise.is-playing .lg-sunrise-poster{animation:lg-sunrise-poster-enter 4.5s ease-out both}
+@keyframes lg-sunrise-poster-enter{0%{transform:scale(1.05);filter:brightness(.65) saturate(.74)}35%{filter:brightness(.97) saturate(1.05)}100%{transform:scale(1.005);filter:brightness(1.06) saturate(1.05)}}
+/* The image intentionally contains the exact original lettering. We reveal it rather than duplicate it. */
+.lg-sunrise-top-veil{position:absolute;inset:0 0 auto;height:42%;background:linear-gradient(#070706 0%,#070706f0 54%,#07070600 100%);opacity:1}
+.lg-sunrise.is-playing .lg-sunrise-top-veil{animation:lg-sunrise-unveil .95s ease-out .18s forwards}
+@keyframes lg-sunrise-unveil{0%{opacity:1}100%{opacity:0}}
+.lg-sunrise-sun-glow{position:absolute;left:28%;top:39.3%;width:30%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff3b9a0 0%,#ffda2980 6%,#ffae001c 30%,transparent 66%);mix-blend-mode:screen;filter:blur(19px);opacity:0}
+.lg-sunrise.is-playing .lg-sunrise-sun-glow{animation:lg-sunrise-glow-breathe 4.1s ease-in-out .05s both}
+@keyframes lg-sunrise-glow-breathe{0%{opacity:0;transform:scale(.58)}45%{opacity:.56}80%{opacity:.77}100%{opacity:.28;transform:scale(1.7)}}
+.lg-sunrise-ring{position:absolute;inset:0;width:100%;height:100%;overflow:visible;mix-blend-mode:screen;opacity:.9}
+.lg-sunrise-ring circle{fill:none;stroke:#ffd45a;stroke-width:2;stroke-linecap:round;stroke-dasharray:90 2800;stroke-dashoffset:0;filter:drop-shadow(0 0 8px #ffc400)}
+.lg-sunrise.is-playing .lg-sunrise-ring circle{animation:lg-sunrise-ring-run 4.15s linear .15s both}
+@keyframes lg-sunrise-ring-run{0%{stroke-dashoffset:2800;opacity:0}7%{opacity:1}100%{stroke-dashoffset:0;opacity:.55}}
+.lg-sunrise-horizon-flare{position:absolute;left:26%;top:46.3%;width:43%;height:7%;border-radius:50%;background:radial-gradient(ellipse,#fff2bb60 0%,#ffd33c2b 21%,transparent 68%);filter:blur(16px);mix-blend-mode:screen;opacity:0}
+.lg-sunrise.is-playing .lg-sunrise-horizon-flare{animation:lg-sunrise-flare 3.3s ease-out 1s both}
+@keyframes lg-sunrise-flare{0%{opacity:0;transform:scaleX(.25)}35%{opacity:.95}100%{opacity:.18;transform:scaleX(1.6)}}
+.lg-sunrise-embers{position:absolute;inset:0;overflow:hidden;mix-blend-mode:screen;pointer-events:none}
+.lg-sunrise-ember{position:absolute;left:var(--x);top:var(--y);width:var(--s);height:var(--s);border-radius:50%;background:#ffd960;box-shadow:0 0 9px 3px #ffad0066;opacity:0}
+.lg-sunrise.is-playing .lg-sunrise-ember{animation:lg-sunrise-ember-up var(--dur) linear var(--delay) infinite}
+@keyframes lg-sunrise-ember-up{0%{opacity:0;transform:translate3d(0,16px,0) scale(.6)}25%{opacity:.72}70%{opacity:.5}100%{opacity:0;transform:translate3d(12px,-85px,0) scale(.2)}}
+.lg-sunrise-light-sweep{position:absolute;top:0;bottom:0;left:-60%;width:48%;background:linear-gradient(90deg,transparent,rgba(255,210,55,.09),transparent);transform:skewX(-17deg);mix-blend-mode:screen}
+.lg-sunrise.is-playing .lg-sunrise-light-sweep{animation:lg-sunrise-sweep 2.5s ease-out .75s both}
+@keyframes lg-sunrise-sweep{from{left:-60%;opacity:0}20%{opacity:1}to{left:120%;opacity:0}}
+/* Cover the already painted static loading bar and draw a real timed bar. */
+.lg-sunrise-bar-eraser{position:absolute;left:10%;width:80%;top:84.2%;height:5.4%;background:linear-gradient(180deg,transparent,#080907 20%,#080907 85%,transparent)}
+.lg-sunrise-loading{position:absolute;left:15.1%;width:69.9%;top:85.93%;height:.73%;min-height:3px;border-radius:999px;background:#39392b;box-shadow:0 0 2px #000;overflow:visible}
+.lg-sunrise-loading-fill{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#ffcd30 0%,#ffd84a 58%,#fff2a3 95%,#fffbe1 100%);box-shadow:0 0 9px #ffd52d,0 0 18px #f5b52b;position:relative}
+.lg-sunrise-loading-fill::after{content:"";position:absolute;right:-2px;top:-65%;height:230%;width:15px;border-radius:100%;background:#fff2ba;filter:blur(8px);opacity:.7}
+.lg-sunrise.is-playing .lg-sunrise-loading-fill{animation:lg-sunrise-load 3.7s cubic-bezier(.3,.02,.25,1) .12s both}
+@keyframes lg-sunrise-load{0%{width:0}17%{width:19%}42%{width:41%}65%{width:70%}87%{width:90%}100%{width:100%}}
+/* The exact text in the reference remains sharp at native image proportions. */
+@media (prefers-reduced-motion:reduce){
+ .lg-sunrise.is-playing .lg-sunrise-poster{animation:lg-sunrise-poster-enter 4.5s linear both}
+ .lg-sunrise.is-playing .lg-sunrise-ember,.lg-sunrise.is-playing .lg-sunrise-light-sweep,.lg-sunrise.is-playing .lg-sunrise-ring circle,.lg-sunrise.is-playing .lg-sunrise-sun-glow,.lg-sunrise.is-playing .lg-sunrise-horizon-flare{animation:none;opacity:0}
+ .lg-sunrise.is-playing .lg-sunrise-top-veil{animation:lg-sunrise-unveil .15s linear .2s forwards}
+ .lg-sunrise.is-playing .lg-sunrise-loading-fill{animation:lg-sunrise-load 3.7s linear .12s both}
+ .lg-sunrise.is-playing{animation:lg-sunrise-splash-exit .65s linear 3.85s forwards}
+}
+
+/* Fullscreen modal: the application underneath is inert while this is open. */
+.lg-sunrise{width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;border-radius:0;color:#f4f3e9;--art:url("./images/sunrise-splash.jpg")}
+.lg-sunrise:not([open]){display:none}
+.lg-sunrise::backdrop{background:#050504}
+html.lg-sunrise-open{overflow:hidden}
+.lg-sunrise-controls{position:absolute;z-index:2;top:calc(12px + env(safe-area-inset-top,0px));right:16px;display:flex;align-items:flex-end;flex-direction:column;gap:8px}
+.lg-sunrise-controls button,.lg-sunrise-disable{min-height:44px;border:1px solid #ffda2950;border-radius:10px;background:#090909cc;color:#f4f3e9;padding:9px 13px;font-size:12px;cursor:pointer;touch-action:manipulation}
+.lg-sunrise-controls button:focus-visible,.lg-sunrise-disable:focus-visible{outline:2px solid #ffda29;outline-offset:3px}
+.lg-sunrise-disable{position:absolute;z-index:2;bottom:calc(10px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);max-width:calc(100% - 32px);white-space:nowrap;border-color:transparent;color:#d5d1bb;font-size:11px}
+.lg-sunrise-controls [hidden]{display:none!important}
+.lg-sunrise-options{margin:16px 0;padding:14px;border:1px solid var(--border);border-radius:10px}
+.lg-sunrise-options h3{margin:0 0 12px;font-size:15px}
+.lg-sunrise-options label{display:block;margin-bottom:7px;font-size:12px;color:var(--muted)}
+.lg-sunrise-options select{width:100%;margin-bottom:10px;min-height:44px}
+.lg-sunrise-status{font-size:12px;color:var(--muted);margin:8px 0 0}
