@@ -2384,6 +2384,7 @@ h3.task-title { margin:0; }
 .lg-day-fold-head { display:flex; align-items:center; gap:6px; border-bottom:1px solid #ffda2926; }
 .lg-day-fold-toggle { display:flex; flex:1 1 auto; align-items:center; gap:10px; min-width:0; min-height:44px; margin:0; padding:8px 0; border:0; background:transparent; color:var(--text); text-align:left; cursor:pointer; }
 .lg-day-fold-indicator svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+.lg-day-fold-toggle > .lg-day-fold-icon { flex:0 0 18px; width:18px; height:18px; color:var(--accent); }
 .lg-day-fold-title { flex:1 1 auto; min-width:0; font-size:15px; font-weight:650; line-height:1.4; overflow-wrap:anywhere; }
 .lg-day-fold-count { flex:0 0 auto; color:var(--muted); font-size:13px; font-variant-numeric:tabular-nums; }
 .lg-day-fold-body { padding-top:8px; }
@@ -3878,6 +3879,9 @@ h3.task-title { margin:0; }
   "flag": "<path d=\"M5 22V3c5-4 9 4 15 0v11c-6 4-10-4-15 0\"/>",
   "close": "<path d=\"m6 6 12 12M6 18 18 6\"/>",
   "more": "<circle cx=\"5\" cy=\"12\" r=\"1\"/><circle cx=\"12\" cy=\"12\" r=\"1\"/><circle cx=\"19\" cy=\"12\" r=\"1\"/>",
+  "list": "<path d=\"M8 5h13M8 12h13M8 19h13\"/><circle cx=\"3\" cy=\"5\" r=\".8\"/><circle cx=\"3\" cy=\"12\" r=\".8\"/><circle cx=\"3\" cy=\"19\" r=\".8\"/>",
+  "layers": "<path d=\"m12 2 10 5-10 5L2 7ZM2 12l10 5 10-5M2 17l10 5 10-5\"/>",
+  "check": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"m7 12 3 3 7-7\"/>",
   "star": "<path d=\"m12 2 3.1 6.3 7 .9-5.1 5 1.2 7-6.2-3.3L5.8 21 7 14.2l-5-5 7-.9Z\"/>"
 });
   const DESIGN_WIDGET_ICONS = Object.freeze({ keyActions: "flag", focus: "clock", dayGraph: "chart", firstStep: "play", happiness: "heart", challenge: "quest" });
@@ -8913,7 +8917,9 @@ h3.task-title { margin:0; }
       update();
     });
     toggle.setAttribute("aria-controls", body.id);
-    toggle.append(el("span", "lg-day-fold-title", title),
+    const sectionIcon = designIcon(({ widgets:"grid", calendar:"calendar", tasks:"list", quests:"layers", completed:"check" })[key]);
+    sectionIcon.classList.add("lg-day-fold-icon");
+    toggle.append(sectionIcon, el("span", "lg-day-fold-title", title),
       el("span", "lg-day-fold-count", String(itemCount)), symbol);
     function update() {
       const pinned = lgDayPinned.has(key);
