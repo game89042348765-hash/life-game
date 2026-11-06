@@ -2543,7 +2543,115 @@ h3.task-title { margin:0; }
 .lg-carry-row{padding:13px 0;border-top:1px solid #aebba324}.lg-carry-row h3{font-size:14px;line-height:1.4;margin:0;overflow-wrap:anywhere}
 .lg-carry-date{font-size:10px!important;color:#94a78a;margin:5px 0 10px!important}.lg-carry-actions{display:flex;gap:6px;flex-wrap:wrap}
 .lg-carry-actions .button{min-height:44px;min-width:0;padding:8px 11px;font-size:11px;flex:1;white-space:normal}
-</style></head>
+</style><style id="lg-graphite-widgets">
+/* Accepted Graphite appearance. Widget operations and data remain in the existing renderers. */
+:is(.widget-instance,.widget-catalog-card,.focus-card,.key-dialog,.day-graph-editor,.first-step-ritual,.happiness-dialog) {
+  --wg-surface:linear-gradient(145deg,#1b1e19,#131613);
+  --wg-line:#ffffff18; --wg-edge:#ffffff24; --wg-input:#0a0d0a;
+  --bg:#0a0d0a; --card:#151815; --border:#ffffff24; --text:#f3f1e8;
+  --muted:#aeb2a6; --accent:#ffda29; --green:#acd8b8; --radius:16px;
+  color:var(--text); background:var(--wg-surface);
+  border:1px solid var(--wg-edge); border-radius:16px;
+  box-shadow:0 8px 28px #0002;
+}
+:is(.widget-instance,.widget-catalog-card) {padding:17px;min-width:0}
+.widget-instance>.widget-instance-head {
+  display:grid; grid-template-columns:20px minmax(0,1fr) auto;
+  gap:3px 9px; align-items:center; padding-bottom:13px; margin-bottom:15px;
+  border-bottom:1px solid var(--wg-line);
+}
+.widget-instance>.widget-instance-head>h2 {grid-column:2;grid-row:1;margin:0;font-size:15px;line-height:1.35;font-weight:650;letter-spacing:-.2px}
+.widget-instance>.widget-instance-head>.design-icon {grid-column:1;grid-row:1;width:18px;height:18px;color:var(--accent)}
+.widget-instance>.widget-instance-head>.widget-badge {grid-column:2;grid-row:2;justify-self:start;background:none;border:0;padding:0;color:var(--muted);font-size:10px;line-height:1.4;letter-spacing:0}
+.widget-instance>.widget-instance-head>.button {grid-column:3;grid-row:1/3;width:44px;min-width:44px;min-height:44px;flex:none;padding:8px;background:transparent;border-color:transparent;border-radius:9px;color:var(--muted)}
+.widget-instance.widget-managing>.widget-instance-head {margin-bottom:0;border-bottom:0;padding-bottom:0}
+.widget-instance .widget-controls {border-top-color:var(--wg-line)}
+.widget-instance .widget-day-toggle {color:var(--muted)}
+:is(.widget-instance,.widget-catalog-card,.focus-card,.key-dialog,.day-graph-editor,.first-step-ritual,.happiness-dialog) .button {
+  min-height:44px;border-radius:9px;padding:10px 13px;
+  border:1px solid var(--accent);background:var(--accent);color:#1b1d0e;
+  font-size:13px;font-weight:550;line-height:1.35;box-shadow:none;
+}
+:is(.widget-instance,.widget-catalog-card,.focus-card,.key-dialog,.day-graph-editor,.first-step-ritual,.happiness-dialog) .button.secondary {
+  border-color:var(--wg-edge);background:#ffffff06;color:var(--text);
+}
+:is(.widget-instance,.widget-catalog-card,.focus-card,.key-dialog,.day-graph-editor,.first-step-ritual,.happiness-dialog) .button.danger {
+  border-color:#b4776866;background:#b4776810;color:#f0b5a8;
+}
+:is(.widget-instance,.widget-catalog-card,.focus-card,.key-dialog,.day-graph-editor,.first-step-ritual,.happiness-dialog) .button[aria-pressed=true] {
+  border-color:#ffda2980;background:#ffda2910;color:var(--accent);
+}
+:is(.widget-instance,.focus-card,.key-dialog,.day-graph-editor,.first-step-ritual,.happiness-dialog) :is(input:not([type=checkbox]):not([type=radio]),select,textarea) {
+  background:var(--wg-input);color:var(--text);border:1px solid var(--wg-edge);
+  border-radius:9px;min-height:44px;font-size:16px;
+}
+:is(.widget-instance,.widget-catalog-card,.focus-card,.key-dialog,.day-graph-editor,.first-step-ritual,.happiness-dialog) :is(button,input,select,textarea,summary):focus-visible {
+  outline:2px solid var(--accent);outline-offset:3px;
+}
+.widget-instance :is(input[type=checkbox],input[type=radio]) {accent-color:var(--accent)}
+.widget-instance :is(.meta,.focus-hint,.lg-result-note,.lg-main-note,.lg-carry-help,.lg-carry-date,.lg-quick-reward,.lg-quick-label,.lg-main-form label,.lg-balance-label,.lg-balance-estimate) {color:var(--muted)}
+.widget-instance :is(.meta,.focus-hint,.lg-result-note) {font-size:12px;line-height:1.6}
+.widget-instance .empty {background:#ffffff03;border-color:var(--wg-edge);border-radius:11px;color:var(--muted)}
+.widget-instance :is(.widget-focus-content,.widget-key-content,.lg-widget-content) {border:0;background:none;border-radius:0;padding:0;margin:0;box-shadow:none}
+.widget-instance :is(.lg-main-picker,.lg-main-focus,.lg-carry-row,.lg-goal-step-detail,.lg-rhythm-facts,.lg-balance details,.lg-balance-row,.lg-reward-picker,.lg-result-row) {border-color:var(--wg-line)}
+.widget-instance :is(.lg-balance-preview,.lg-evening-saved) {border-color:#acd8b838;background:#acd8b805;border-radius:11px}
+.widget-instance :is(.lg-balance-warn) {color:#e3b5a9}
+.widget-instance .lg-main-picker summary {color:var(--text)}
+.widget-instance :is(.lg-main-name,.lg-goal-step-detail h3,.lg-my-reward h3) {font-size:20px;line-height:1.3;font-weight:650;letter-spacing:-.3px}
+.widget-instance :is(.lg-main-heading,.lg-goal-status,.lg-reward-status) {color:var(--green)}
+.widget-instance :is(.lg-balance-total,.lg-result-time>strong) {font-size:30px;line-height:1.25;font-weight:650;letter-spacing:-.8px;color:var(--green);font-variant-numeric:tabular-nums}
+.widget-instance .lg-rhythm-head strong {font-size:32px;line-height:1.2;letter-spacing:-.7px;color:var(--text)}
+.widget-instance .lg-rhythm-days .button {background:transparent;border-color:transparent;color:var(--muted);padding:8px 0;font-size:11px}
+.widget-instance .lg-rhythm-days [aria-pressed=true] {background:#ffda290d;border-color:#ffda2950;color:var(--accent)}
+.widget-instance .lg-rhythm-nav .button {padding:6px;min-width:40px;min-height:44px}
+.widget-instance :is(.lg-rhythm-meter,.progress-bar,.focus-progress) {background:#ffffff13;border-radius:5px}
+.widget-instance :is(.lg-rhythm-meter i,.progress-fill) {background:var(--green)}
+.widget-instance .lg-balance-estimate input {font-size:15px}
+.widget-instance .lg-carry-actions .button {font-size:12px;padding:9px 8px}
+.widget-instance .lg-quick-submit {min-width:79px;padding:10px 11px;font-size:12px}
+.widget-instance .lg-quick-options label {color:var(--muted)}
+.widget-instance .lg-inbox-link {color:var(--muted);border-color:var(--wg-line)}
+.widget-instance .key-total-value {font-size:28px;line-height:1.2;font-weight:650;letter-spacing:-.5px;color:var(--green)}
+.widget-instance :is(.key-quick-row,.key-row) {border-color:var(--wg-line)}
+.widget-instance .key-quick-add {padding:8px;font-size:13px;border-radius:9px}
+.widget-instance .key-quick-main {color:var(--text)}
+.widget-instance :is(.key-quick-meta,.key-total-label,.key-row-meta) {color:var(--muted)}
+.widget-instance .key-quick-minutes {background:var(--wg-input);border-color:var(--wg-edge);color:var(--text)}
+.widget-instance .focus-card .focus-clock,.focus-card>.focus-main>.focus-clock {color:var(--text);font-weight:600;letter-spacing:-1.6px}
+.widget-instance .focus-status {color:var(--muted);border-color:var(--wg-edge);background:#ffffff03;border-radius:7px}
+.widget-instance .focus-options .button {padding:9px 6px;font-size:12px}
+.widget-instance .focus-log-row {border-color:var(--wg-line)}
+.widget-instance .first-step-entry {gap:9px}
+.widget-instance .first-step-entry p {color:var(--muted);font-size:13px;line-height:1.6}
+.widget-instance .first-step-entry label {color:var(--muted)}
+.widget-instance .day-graph-heading {color:var(--text);font-weight:550}
+.widget-instance .day-graph-list-row {border-color:var(--wg-line)}
+.widget-instance .day-graph-list-empty {color:var(--muted)}
+.widget-instance .day-graph-modes .button {padding:9px 7px}
+.widget-instance .happiness-mini-prompt {color:var(--text);font-size:18px;font-weight:550;letter-spacing:-.2px}
+.widget-instance .happiness-mini-count {color:var(--muted);font-size:12px;line-height:1.5}
+.widget-instance .happiness-mini-status {color:var(--muted)}
+.widget-catalog-filters {background:#151815;border-color:#ffffff24;border-radius:16px;color:#aeb2a6}
+.widget-catalog-filters label,.widget-catalog-filters>label:first-child {color:#aeb2a6}
+.widget-catalog-filters select {background:#0a0d0a;color:#f3f1e8;border-color:#ffffff24;border-radius:9px;font-size:16px}
+.widget-catalog-card .widget-symbol {background:#ffda290b;border-color:#ffda2924;border-radius:12px;color:var(--accent)}
+.widget-catalog-card .widget-badge {background:#ffffff05;border-color:var(--wg-line);border-radius:5px;color:var(--muted);font-size:10px}
+.widget-catalog-card .widget-catalog-title h2 {font-size:16px;line-height:1.35;color:var(--text)}
+.widget-catalog-card .widget-catalog-description {color:var(--text);font-size:13px}
+.widget-catalog-card .widget-catalog-note {color:var(--muted);font-size:12px}
+:is(.key-dialog,.day-graph-editor,.first-step-ritual,.happiness-dialog)::backdrop {background:#030503bb}
+.key-dialog :is(.key-row-meta,.meta),.happiness-dialog .meta {color:var(--muted)}
+.focus-mini {background:linear-gradient(145deg,#1b1e19,#131613);border-color:#ffffff24;box-shadow:0 8px 28px #0002}
+.focus-mini .button.secondary {background:#ffffff06;border-color:#ffffff24;border-radius:9px}
+@media(max-width:350px) {
+  :is(.widget-instance,.widget-catalog-card){padding:14px}
+  .widget-instance>.widget-instance-head {gap:3px 7px}
+  .widget-instance>.widget-instance-head>h2 {font-size:14px}
+  .widget-instance :is(.lg-main-name,.lg-goal-step-detail h3,.lg-my-reward h3){font-size:19px}
+  .widget-instance .lg-carry-actions .button {font-size:11px;padding:8px 6px}
+}
+</style>
+</head>
 <body>
 <div class="app">
   <header class="topbar">
