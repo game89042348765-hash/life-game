@@ -2370,6 +2370,14 @@ h3.task-title { margin:0; }
 .blocks-nav.lg-shared-nav { display:grid; grid-template-columns:minmax(0,1fr) 40px; align-items:start; gap:4px; }
 .lg-section-nav-links { display:flex; flex-wrap:wrap; align-items:center; gap:4px; min-width:0; }
 .blocks-nav.lg-shared-nav .lg-section-nav-links .page-link { flex:1 1 auto; max-width:112px; }
+/* Stable tracks across Calendar/Day: the label change must not move adjacent links. */
+.lg-day-nav-links,.lg-section-nav-links { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1.5fr) minmax(0,.9fr) minmax(0,1fr); }
+.blocks-nav.lg-day-nav .lg-day-nav-links .page-link,.blocks-nav.lg-shared-nav .lg-section-nav-links .page-link { width:100%; }
+@media(max-width:339px) {
+  .lg-day-nav-links,.lg-section-nav-links { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+
+
 /* Конструктор дня: отдельные сворачиваемые секции, без влияния на другие экраны. */
 .lg-day-fold { margin-top:12px; }
 .lg-day-fold + .lg-day-fold { margin-top:8px; }
