@@ -4111,7 +4111,6 @@ h3.task-title { margin:0; }
   function uiAfterRender(previous, doneBefore = null) {
     uiDecorate();
     const serial = ++uiRenderSerial, pending = uiPendingNavigation; uiPendingNavigation = null;
-    if (doneBefore) { const completed = [...screen.querySelectorAll('[data-ui-key].done')].find(n=>doneBefore.get(n.dataset.uiKey) === false); if(completed) uiToast('Выполнено: ' + (completed.querySelector('.task-title')?.textContent || 'дело'), 'Показать', () => uiTarget(completed.dataset.uiKey)); }
     requestAnimationFrame(() => {
       if (serial !== uiRenderSerial) return;
       if (pending?.target && uiTarget(pending.target)) return;
@@ -8886,10 +8885,11 @@ h3.task-title { margin:0; }
     const body = el("div", "lg-day-fold-body");
     body.id = "lg-day-fold-" + key;
     drawContent(body);
-    if (!body.childElementCount) {
-      return false;
-    }
     const itemCount = count ?? (key === "widgets" ? body.childElementCount : body.querySelector(".list")?.childElementCount || 0);
+    if (!body.childElementCount) {
+      const emptyText = { widgets:"В Конструктор пока не добавлены виджеты.", calendar:"На сегодня пока нет событий.", tasks:"В плане на сегодня пока нет заданий.", quests:"В Конструктор пока не добавлены активные квесты.", completed:"Здесь появятся выполненные дела." };
+      body.append(el("div", "empty", emptyText[key]));
+    }
     const heading = el("div", "lg-day-fold-head");
     const symbol = el("span", "lg-day-fold-indicator");
     symbol.setAttribute("aria-hidden", "true");
