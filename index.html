@@ -4165,7 +4165,6 @@ h3.task-title { margin:0; }
     document.getElementById("ui-feedback")?.setAttribute("hidden", "");
     uiCapture();
     const sameRoot = nextPage === page && selectedBlock === blockId;
-    if (nextPage === "day" && page !== "day") lgDayOpened.clear();
     if (page === "aiPreview" && nextPage !== page) aiCancel();
     resetBulkSelection();
     if (nextPage !== "blocks" || selectedBlock !== blockId) taskReorderMode = false;
@@ -8858,28 +8857,27 @@ h3.task-title { margin:0; }
     if (bulkSelection?.collection !== "bonuses") historySection("purchases","ИСТОРИЯ ПОКУПОК", [...purchases].reverse(), purchaseCard);
   }
 
-  // Раскрытие временное; закрепление — отдельная UI-настройка, не игровой прогресс.
-  const LG_DAY_PIN_KEY = "lifegame-day-pinned-sections-v1";
+  // Saved open/closed UI state. Reuse the old key so prior open preferences remain compatible.
+  const LG_DAY_OPEN_KEY = "lifegame-day-pinned-sections-v1";
   const LG_DAY_SECTION_KEYS = ["widgets", "calendar", "tasks", "quests", "completed"];
-  const lgDayOpened = new Set();
-  function lgDayReadPins() {
+  function lgDayReadOpened() {
     try {
-      const raw = localStorage.getItem(LG_DAY_PIN_KEY);
+      const raw = localStorage.getItem(LG_DAY_OPEN_KEY);
       if (raw === null) return new Set();
       const values = JSON.parse(raw);
       if (!Array.isArray(values) || !values.every(key => LG_DAY_SECTION_KEYS.includes(key))) {
-        throw new Error("Неверный список закреплённых разделов.");
+        throw new Error("Неверный список открытых разделов.");
       }
       return new Set(values);
     } catch (error) {
-      console.warn("Не удалось прочитать закрепление разделов:", error);
+      console.warn("Не удалось прочитать состояние разделов:", error);
       return new Set();
     }
   }
-  let lgDayPinned = lgDayReadPins();
+  let lgDayOpened = lgDayReadOpened();
   window.addEventListener("storage", event => {
-    if (event.key === LG_DAY_PIN_KEY || event.key === null) {
-      lgDayPinned = lgDayReadPins();
+    if (event.key === LG_DAY_OPEN_KEY || event.key === null) {
+      lgDayOpened = lgDayReadOpened();
       if (page === "day") render();
     }
   });
@@ -8889,7 +8887,6 @@ h3.task-title { margin:0; }
     body.id = "lg-day-fold-" + key;
     drawContent(body);
     if (!body.childElementCount) {
-      lgDayOpened.delete(key);
       return false;
     }
     const itemCount = count ?? (key === "widgets" ? body.childElementCount : body.querySelector(".list")?.childElementCount || 0);
@@ -8897,23 +8894,15 @@ h3.task-title { margin:0; }
     const symbol = el("span", "lg-day-fold-indicator");
     symbol.setAttribute("aria-hidden", "true");
     const toggle = btn("", "lg-day-fold-toggle", () => {
-      const pinned = lgDayPinned.has(key);
-      const opened = pinned || lgDayOpened.has(key);
-      // + → закреплено → открыто временно → +.
-      if (!opened || pinned) {
-        const next = new Set(lgDayPinned);
-        if (pinned) next.delete(key); else next.add(key);
-        try {
-          localStorage.setItem(LG_DAY_PIN_KEY, JSON.stringify([...next]));
-        } catch (error) {
-          uiFeedback("Не удалось сохранить закрепление раздела. Попробуй ещё раз.");
-          return;
-        }
-        lgDayPinned = next;
-        lgDayOpened.add(key);
-      } else {
-        lgDayOpened.delete(key);
+      const next = new Set(lgDayOpened);
+      if (next.has(key)) next.delete(key); else next.add(key);
+      try {
+        localStorage.setItem(LG_DAY_OPEN_KEY, JSON.stringify([...next]));
+      } catch (error) {
+        uiFeedback("Не удалось сохранить состояние раздела. Попробуй ещё раз.");
+        return;
       }
+      lgDayOpened = next;
       update();
     });
     toggle.setAttribute("aria-controls", body.id);
@@ -8922,26 +8911,13 @@ h3.task-title { margin:0; }
     toggle.append(sectionIcon, el("span", "lg-day-fold-title", title),
       el("span", "lg-day-fold-count", String(itemCount)), symbol);
     function update() {
-      const pinned = lgDayPinned.has(key);
-      const opened = pinned || lgDayOpened.has(key);
+      const opened = lgDayOpened.has(key);
       body.hidden = !opened;
-      symbol.replaceChildren();
-      if (pinned) {
-        const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        icon.setAttribute("viewBox", "0 0 24 24");
-        icon.setAttribute("focusable", "false");
-        const path = document.createElementNS(icon.namespaceURI, "path");
-        path.setAttribute("d", "M7 10V7a5 5 0 0 1 10 0v3M6 10h12a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1ZM12 14v3");
-        icon.append(path);
-        symbol.append(icon);
-      } else {
-        symbol.textContent = opened ? "−" : "+";
-      }
-      toggle.dataset.mode = pinned ? "pinned" : opened ? "open" : "closed";
+      symbol.textContent = opened ? "−" : "+";
+      toggle.dataset.mode = opened ? "open" : "closed";
       toggle.setAttribute("aria-expanded", String(opened));
-      const status = pinned ? "Закреплён открытым" : opened ? "Открыт временно" : "Закрыт";
-      const action = pinned ? "Снять закрепление" : opened ? "Закрыть" : "Открыть и закрепить";
-      const label = status + " раздел «" + title + "», элементов: " + itemCount + ". " + action;
+      const action = opened ? "Свернуть" : "Раскрыть";
+      const label = action + " раздел «" + title + "», элементов: " + itemCount;
       toggle.setAttribute("aria-label", label);
       toggle.setAttribute("title", label);
     }
