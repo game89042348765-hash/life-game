@@ -2470,6 +2470,40 @@ h3.task-title { margin:0; }
 </style>
 <link rel="stylesheet" href="assets/splash-sunrise.css">
 <script src="assets/splash-sunrise.js" defer></script>
+<style>
+/* Accepted unified card layout. */
+.lg-card-v2{padding:14px 16px 0;border:1px solid #aebba329;border-radius:19px;background:linear-gradient(145deg,#191d1a,#111512);min-width:0;transition:border-color .18s}.lg-card-v2.done{border-color:#a4d9bd30}.lg-card-v2.done h3{color:#b5c4ad}.lg-c-top{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:32px;margin-top:-4px}.lg-c-kind{display:flex;align-items:center;gap:7px;color:#a9b19f;font-size:11px;min-width:0}.lg-c-kind svg{color:var(--accent);width:15px;height:15px}.lg-card-v2.done .lg-c-kind,.lg-card-v2.done .lg-c-kind svg{color:var(--green)}.lg-c-tools{display:flex;gap:1px;flex-shrink:0;margin-right:-9px}.lg-c-icon-button{width:40px;height:40px;border:0;background:transparent;display:grid;place-items:center;padding:0;color:#a2ad97}.lg-c-icon-button svg{width:19px;height:19px}.lg-c-icon-button[aria-pressed=true]{color:var(--accent)}.lg-c-icon-button[aria-pressed=true] svg{fill:#ffda2920}.lg-c-icon-button:hover{background:#ffffff06}.lg-card-v2 h3{font-size:17px;line-height:1.35;font-weight:600;letter-spacing:-.25px;overflow-wrap:anywhere;margin:3px 0 0}.lg-c-context{display:flex;align-items:flex-start;gap:6px;font-size:11px;line-height:1.5;color:#9fae94;margin-top:8px;overflow-wrap:anywhere}.lg-c-context svg{width:13px;height:13px;margin-top:2px;color:#a5b397}.goal-context{color:#a4d9bd}.lg-c-description{color:#aeb7a6;font-size:12px;line-height:1.6;overflow-wrap:anywhere;margin:10px 0 0}.lg-c-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0}.lg-c-value{min-width:0;flex:1;font-variant-numeric:tabular-nums}.lg-c-value small{display:block;font-size:10px;color:var(--muted);line-height:1.2;margin-bottom:4px}.lg-c-amount{display:flex;align-items:center;gap:5px;color:var(--accent);font-weight:650;line-height:1.2;font-size:17px;white-space:nowrap}.lg-c-amount svg{width:15px;height:15px}.lg-c-value.mint .lg-c-amount{color:var(--green)}.lg-card-v2.done .lg-c-amount{color:#a9be9b}.lg-c-action{min-height:44px;min-width:126px;padding:10px 13px;border:1px solid var(--accent);border-radius:11px;background:var(--accent);color:#222509;font-weight:650;font-size:12px;line-height:1.3;flex-shrink:0}.lg-c-action.secondary{color:#c8d1bf;background:#ffffff04;border-color:#aebba32b}.lg-c-action:disabled{opacity:1;background:#ffffff05;color:#7e8876;border-color:#aebba324}.lg-c-step-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}.lg-c-step-actions .lg-c-action{min-width:91px}.lg-c-undo-step{width:40px;height:44px;min-width:0;border:1px solid #aebba32b;background:#ffffff03;display:grid;place-items:center;color:#aab89d}.lg-c-undo-step svg{width:15px}.lg-c-undo-step:disabled{opacity:.3}.lg-c-day{border-top:1px solid var(--border);min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:12px;color:#a7b19d;font-size:11px;cursor:pointer}.lg-c-day span{display:flex;gap:6px;align-items:center}.lg-c-day svg{width:14px;height:14px}.lg-c-day input{appearance:none;-webkit-appearance:none;width:32px;height:19px;margin:0;flex-shrink:0;border:1px solid #55604c;background:#242d21;border-radius:15px;position:relative;cursor:pointer;transition:background .15s}.lg-c-day input:before{content:"";position:absolute;width:11px;height:11px;border-radius:50%;background:#87957a;top:3px;left:3px;transition:transform .15s}.lg-c-day input:checked{background:#ffda2920;border-color:#ffda2980}.lg-c-day input:checked:before{transform:translateX(13px);background:var(--accent)}.lg-c-day:has(input:checked){color:#d6dfc6}.lg-c-progress{margin-top:15px}.lg-c-progress-line{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:11px;color:#b5bfaa}.lg-c-progress-line b{font-weight:600;color:#d7dfce;font-variant-numeric:tabular-nums}.lg-c-step-pay{color:#9fae94}.lg-c-step-pay span{color:#c9bd63}.lg-c-track{height:4px;border-radius:4px;overflow:hidden;background:#aebba320;margin-top:9px}.lg-c-track i{display:block;height:100%;background:var(--accent);border-radius:4px;transition:width .3s}.lg-card-v2.done .lg-c-track i{background:var(--green)}.lg-c-stages{margin-top:13px;border-top:1px solid var(--border);padding-top:3px}.lg-c-stage{display:flex;align-items:center;gap:10px;min-height:44px;padding:7px 0;cursor:pointer;font-size:12px;color:#c5cebb;line-height:1.4}.lg-c-stage input{width:18px;height:18px;flex-shrink:0;accent-color:var(--accent);margin:0}.lg-c-stage span{min-width:0;overflow-wrap:anywhere}.lg-c-stage.complete{color:#8e9c84}.lg-c-stage.complete span{text-decoration:line-through;text-decoration-color:#8e9c8455}.lg-c-missing{font-size:11px;color:#a6b09d;margin:-5px 0 14px}.lg-c-missing b{color:var(--green);font-weight:600}.lg-c-purchase-note{font-size:11px;color:#91a685;display:flex;align-items:center;gap:6px;margin-top:10px}.lg-c-purchase-note svg{width:13px;height:13px}
+.card.lg-card-v2{padding:14px 16px 0;box-shadow:none;min-width:0}
+.card.lg-card-v2 .lg-c-title,.card.lg-card-v2:has(.favorite-bar) .task-title{padding:0;font-size:17px;line-height:1.35;font-weight:600;letter-spacing:-.25px;margin:3px 0 0;overflow-wrap:anywhere}
+.lg-card-v2 .lg-c-tools .favorite-bar{position:static;display:block;margin:0;padding:0;inset:auto}
+.lg-card-v2 .lg-c-tools button{width:40px;height:40px;min-width:40px;min-height:40px;padding:0;border:0;background:none;display:grid;place-items:center;color:#a2ad97;border-radius:12px;flex:none}
+.lg-card-v2 .lg-c-tools .is-favorite{color:var(--accent)}
+.lg-card-v2 .lg-c-tools svg{width:19px;height:19px}
+.lg-card-v2 .lg-c-amount svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lg-card-v2 .button.lg-c-action:not(.secondary){background:var(--accent);border-color:var(--accent);color:#222509}
+.lg-card-v2 .button.lg-c-action:disabled{background:#ffffff05;border-color:#aebba324;color:#7e8876;opacity:1}
+.lg-card-v2 .button.lg-c-action{width:auto;min-width:126px;min-height:44px;margin:0;font-size:12px;padding:10px 13px;border-radius:11px;flex-shrink:0}
+.lg-card-v2 .lg-c-footer>.lg-c-step-actions{margin:0;flex:none;display:flex;gap:6px}
+.lg-card-v2 .lg-c-step-actions .button.lg-c-action{min-width:81px}
+.lg-card-v2 .lg-c-step-actions .button.lg-c-undo-step{width:40px;min-width:40px;min-height:44px;padding:0;margin:0;font-size:11px}
+.lg-card-v2 .lg-c-context .task-block-badge{border:0;background:none;border-radius:0;padding:0;margin:0;min-height:0;text-align:left;font-size:11px;line-height:1.5;color:inherit}
+.lg-card-v2 .lg-c-track.progress{height:4px;margin:9px 0 0;background:#aebba320}
+.lg-card-v2 .lg-c-track .progress-fill{height:100%;background:var(--accent);border-radius:4px}
+.lg-card-v2.done .lg-c-track .progress-fill{background:var(--green)}
+.lg-card-v2 .lg-c-day.check-label{margin:0;display:flex;flex-wrap:nowrap;min-height:44px;border-top:1px solid var(--border);padding:0;font-size:12px;gap:12px}
+.lg-card-v2 .lg-c-day span{display:flex;gap:6px;align-items:center;order:0;flex:1}
+.lg-card-v2 .lg-c-day input{order:1;flex:0 0 32px;min-width:32px;min-height:19px;max-width:32px;max-height:19px;padding:0}
+.lg-card-v2 .lg-c-day input:disabled{opacity:.45;cursor:default}
+.lg-card-v2 .lg-c-stages{padding:3px 0 0}
+.lg-card-v2 .lg-c-stage.stage-row{display:grid;grid-template-columns:18px minmax(0,1fr);gap:5px 9px;padding:8px 0;margin:0;min-height:44px}
+.lg-card-v2 .lg-c-stage input{grid-column:1;grid-row:1/3;margin:0;width:18px;height:18px;align-self:start;accent-color:var(--accent)}
+.lg-card-v2 .lg-c-stage>span:not(.stage-reward){grid-column:2;min-width:0;font-size:12px}
+.lg-card-v2 .lg-c-stage .stage-reward{grid-column:2;font-size:10px;line-height:1.3;color:var(--muted)}
+.lg-card-v2>p.meta{font-size:11px;margin:10px 0 14px;line-height:1.5}
+@media(max-width:350px){.card.lg-card-v2{padding-inline:14px}.lg-card-v2 .button.lg-c-action{min-width:115px}.lg-card-v2 .lg-c-footer{gap:9px}.lg-card-v2 .lg-c-step-actions .button.lg-c-action{min-width:75px}.lg-card-v2 .lg-c-amount{font-size:16px}}
+@media(prefers-reduced-motion:reduce){.lg-card-v2,.lg-card-v2 *,.lg-card-v2 *:before{transition:none!important}}
+
+</style>
 </head>
 <body>
 <div class="app">
@@ -5938,39 +5972,47 @@ h3.task-title { margin:0; }
     });
   }
 
+  // Accepted card layout; actions continue to use the existing transactions.
+  function lgCardTop(item, collection, label, glyph, done=false) {
+    const top=el('div','lg-c-top'),kind=el('div','lg-c-kind'),tools=el('div','lg-c-tools');
+    kind.append(designIcon(done?'check':glyph),el('span','',label));
+    if(collection) {
+      tools.append(favoriteBar(collection,item));
+      const more=btn('⋯','more-button',()=>openCardMenu(collection,item.id));
+      more.setAttribute('aria-label','Действия: '+item.name);tools.append(more);
+    }
+    top.append(kind,tools);return top;
+  }
+  function lgCardValue(amount,label,diamonds=false,earned=false) {
+    const box=el('div','lg-c-value'+(diamonds?' mint':'')),value=el('span','lg-c-amount');
+    box.append(el('small','',label));value.append(document.createTextNode((earned?'+':'')+amount.toLocaleString('ru-RU')+' '),rewardIcon(diamonds?'gem':'coin'));box.append(value);return box;
+  }
+  function lgCardFooter(value,...controls) {
+    const row=el('div','lg-c-footer');row.append(value,...controls);return row;
+  }
+  function lgCardDay(control) {
+    control.classList.add('lg-c-day');const span=control.querySelector('span');span.prepend(designIcon('calendar'));return control;
+  }
+  function lgCardProgress(q,stages=false) {
+    const box=el('div','lg-c-progress'),line=el('div','lg-c-progress-line');
+    line.append(el('b','',`${q.progress} из ${q.target}${stages?' этапов':''}`));
+    if(q.stepReward)line.append(el('span','lg-c-step-pay',`За ${stages?'этап':'шаг'} +${q.stepReward} ●`));
+    const bar=progressBar(q.progress,q.target,q.name);bar.classList.add('lg-c-track');box.append(line,bar);return box;
+  }
+
   function taskCard(task) {
-    const record = completion(state, task);
-    const old = task.type === "once" && record && record.date !== today();
-    const card = el("article", "card compact-task-card" + (record ? " done" : ""));
-    uiEntity(card, "task", task.id);
-    const details = el("div", "compact-details");
-    details.append(
-      el("span", "detail-muted", !task.weekdays.length ? "Разовое"
-        : task.weekdays.length === 7 ? "Ежедневно"
-        : task.weekdays.map(day => WEEKDAYS[day - 1]).join(", ")),
-      el("span", "detail-reward",
-        record ? `✓ ${record.reward} монет` : `+${task.reward} монет`)
-    );
-    const goal = task.goalId ? state.goals.find(x => x.id === task.goalId) : null;
-    const controls = el("div", "compact-task-controls");
-    controls.append(
-      btn(record ? "Отменить выполнение" : "Выполнить",
-        "button full" + (record ? " secondary" : ""),
-        () => toggleTask(task.id), true),
-      checkbox(old ? "Выполнено в другой день" : "Конструктор дня",
-        task.type === "daily" ? task.inDayBuilder : view.planIds.has(task.id),
-        checked => togglePlan(task.id, checked), !!old)
-    );
-    card.append(
-      favoriteBar("tasks", task),
-      cardHead(task, "tasks"),
-      ...(page === "day" ? [taskBlockBadge(task)] : []),
-      ...(goal ? [el("div", "task-goal-tag", "Цель: " + goal.name +
-        (goal.completedDate === null ? "" : " · достигнута"))] : []),
-      details,
-      controls
-    );
-    if (task.type === "once" && record && record.taskType !== "once") card.append(el("p", "meta", "Выполнение относится к прежнему расписанию или старой истории. Отмена через разовую карточку недоступна."));
+    const record=completion(state,task),old=task.type==='once'&&record&&record.date!==today();
+    const card=el('article','card compact-task-card lg-card-v2'+(record?' done':''));uiEntity(card,'task',task.id);
+    const schedule=!task.weekdays.length?'Разовое':task.weekdays.length===7?'Ежедневно':task.weekdays.map(day=>WEEKDAYS[day-1]).join(', ');
+    card.append(lgCardTop(task,'tasks',record?(record.date===today()?'Выполнено сегодня':'Выполнено '+record.date):schedule,'list',!!record),el('div','task-title lg-c-title',task.name));
+    if(page==='day'){const context=el('div','lg-c-context');context.append(designIcon('book'),taskBlockBadge(task));card.append(context);}
+    const goal=task.goalId?state.goals.find(x=>x.id===task.goalId):null;
+    if(goal){const context=el('div','lg-c-context goal-context');context.append(designIcon('flag'),el('span','','Цель: '+goal.name+(goal.completedDate===null?'':' · достигнута')));card.append(context);}
+    const complete=btn(record?'Отменить':'Выполнить','button lg-c-action'+(record?' secondary':''),()=>toggleTask(task.id),true);
+    complete.setAttribute('aria-label',(record?'Отменить выполнение: ':'Выполнить: ')+task.name);
+    card.append(lgCardFooter(lgCardValue(record?record.reward:task.reward,record?'Получено':'За выполнение',false,!record),complete));
+    card.append(lgCardDay(checkbox(old?'Выполнено в другой день':'Конструктор дня',task.type==='daily'?task.inDayBuilder:view.planIds.has(task.id),checked=>togglePlan(task.id,checked),!!old)));
+    if(task.type==='once'&&record&&record.taskType!=='once')card.append(el('p','meta','Выполнение относится к прежнему расписанию или старой истории. Отмена через разовую карточку недоступна.'));
     return card;
   }
 
@@ -6030,22 +6072,23 @@ h3.task-title { margin:0; }
     return expectedDone ? transact(change,false) : confirmRewardChange(change,false,{title:"Отменить этап?",description:"Будут убраны сохранённые награды этапа и завершения квеста.",action:"Отменить этап"});
   }
   function stagesCard(q) {
-    const done=q.progress===q.target, card=el("article","card"+(done?" done":""));
-    uiEntity(card, "quest", q.id);
-    card.append(favoriteBar("quests",q),cardHead(q,"quests"));
-    if(q.stepReward)card.append(el("div","detail-reward",`За этап: +${q.stepReward} монет`));
-    const final=state.completions.find(x=>x.id===q.finalCompletionId);
-    card.append(el("div","detail-reward",`За достижение: +${final?.reward??q.reward} монет`),progressBar(q.progress,q.target,q.name),el("div","progress-label",`Выполнено ${q.progress} из ${q.target} · ${Math.round(q.progress/q.target*100)}%`));
-    if(expandedStages.has(q.id))for(const stage of q.stages){
-      const row=checkbox(stage.name,stage.done,()=>setStage(q.id,stage.id,!stage.done));
-      row.classList.add("stage-row");row.classList.toggle("done",stage.done);
-      const amount=stage.done?stage.paidReward:q.stepReward;
-      row.append(el("span","stage-reward",(stage.done?"✓ ":"")+(amount>0?`+${amount} монет`:"Без награды")));
-      card.append(row);
+    const done=q.progress===q.target,card=el('article','card lg-card-v2'+(done?' done':''));uiEntity(card,'quest',q.id);
+    card.append(lgCardTop(q,'quests',done?'Квест завершён':'Квест · этапы','layers',done),el('div','task-title lg-c-title',q.name),lgCardProgress(q,true));
+    if(expandedStages.has(q.id)){
+      const list=el('div','lg-c-stages');
+      for(const stage of q.stages){
+        const row=checkbox(stage.name,stage.done,()=>setStage(q.id,stage.id,!stage.done));row.classList.add('stage-row','lg-c-stage');row.classList.toggle('done',stage.done);
+        const amount=stage.done?stage.paidReward:q.stepReward;
+        row.append(el('span','stage-reward',(stage.done?'✓ ':'')+(amount>0?`+${amount} монет`:'Без награды')));list.append(row);
+      }card.append(list);
     }
-    card.append(btn(expandedStages.has(q.id)?"Свернуть этапы":`Показать этапы · ${q.target}`,"button secondary full",()=>{if(expandedStages.has(q.id))expandedStages.delete(q.id);else expandedStages.add(q.id);render();}),checkbox("Конструктор дня",q.showInDay,checked=>transact(d=>{const actual=d.quests.find(x=>x.id===q.id);if(!actual||actual.archivedAt!==null)fail("Квест находится в архиве.");actual.showInDay=checked;},false)));
+    const final=state.completions.find(x=>x.id===q.finalCompletionId),expand=btn(expandedStages.has(q.id)?'Скрыть этапы':'Открыть этапы','button secondary lg-c-action',()=>{if(expandedStages.has(q.id))expandedStages.delete(q.id);else expandedStages.add(q.id);render();});
+    expand.setAttribute('aria-expanded',String(expandedStages.has(q.id)));expand.setAttribute('aria-label',(expandedStages.has(q.id)?'Скрыть':'Открыть')+' этапы: '+q.name);
+    card.append(lgCardFooter(lgCardValue(final?.reward??q.reward,done?'Достижение получено':'За достижение',false,!done),expand));
+    card.append(lgCardDay(checkbox('Конструктор дня',q.showInDay,checked=>transact(d=>{const actual=d.quests.find(x=>x.id===q.id);if(!actual||actual.archivedAt!==null)fail('Квест находится в архиве.');actual.showInDay=checked;},false))));
     return card;
   }
+
   function stageForm(id=null, session=null) {
     const original=state.quests.find(x=>x.id===id);
     if(id!==null&&(!original||original.archivedAt!==null))return;
@@ -6170,27 +6213,15 @@ h3.task-title { margin:0; }
   function questCard(quest, inDay = false) {
     if(quest.type==="stages")return stagesCard(quest);
     const done = quest.progress >= quest.target;
-    const card = el("article", "card" + (done ? " done" : ""));
+    const card = el("article", "card lg-card-v2" + (done ? " done" : ""));
     uiEntity(card, "quest", quest.id);
-    const rewards = el("div", "compact-details");
-    if (quest.stepReward > 0) {
-      rewards.append(el("span", "detail-reward",
-        `За продвижение: +${quest.stepReward} монет`));
-    }
-    rewards.append(el("span", "detail-reward", done
-      ? `✓ Достижение получено: +${state.completions.find(x => x.taskId === "quest:" + quest.id)?.reward ?? quest.reward} монет`
-      : `За достижение: +${quest.reward} монет`));
-
     const plan = checkbox("Конструктор дня", quest.showInDay,
       checked => transact(data => {
         const actual = data.quests.find(x => x.id === quest.id);
         if (!actual || actual.archivedAt !== null) fail("Квест находится в архиве.");
         actual.showInDay = checked;
       }, false));
-    plan.classList.add("quest-plan-toggle");
-
-    const line = el("div", "quest-reward-line");
-    line.append(rewards);
+    lgCardDay(plan);
 
     const lastStep = quest.stepHistory[quest.stepHistory.length - 1];
     const canUndo = quest.progress > 0 &&
@@ -6218,17 +6249,14 @@ h3.task-title { margin:0; }
     plus.setAttribute("aria-label", done
       ? "Квест завершён"
       : `Продвинуть квест на ${nextAmount}`);
-    const actions = el("div", "actions");
+    minus.classList.add("lg-c-undo-step");minus.replaceChildren(rewardIcon("undo"));minus.title=minus.getAttribute("aria-label");plus.classList.add("lg-c-action");
+    const actions = el("div", "lg-c-step-actions");
     actions.append(minus, plus);
 
     card.append(
-      favoriteBar("quests", quest),
-      cardHead(quest, "quests"),
-      line,
-      progressBar(quest.progress, quest.target, quest.name),
-      el("div", "progress-label",
-        `${quest.progress} / ${quest.target}` + (done ? " · Завершён" : "")),
-      actions,
+      lgCardTop(quest,'quests',done?'Квест завершён':'Квест · счётчик','layers',done),
+      el('div','task-title lg-c-title',quest.name),lgCardProgress(quest),
+      lgCardFooter(lgCardValue(state.completions.find(x=>x.taskId==='quest:'+quest.id)?.reward??quest.reward,done?'Достижение получено':'За достижение',false,!done),actions),
       ...(quest.progress > 0 && !canUndo
         ? [el("p", "meta",
           "Для текущего прогресса нет доступной истории отмены. " +
@@ -6308,99 +6336,32 @@ h3.task-title { margin:0; }
 
   }
 
-    function bonusCard(bonus) {
-    const isDiamonds = bonus.currency === "diamonds";
-
-    const available = isDiamonds
-      ? view.money.diamonds
-      : view.money.balance;
-
-    const missing = Math.max(0, bonus.price - available);
-    const symbol = isDiamonds ? "◆" : "●";
-
-    const card = el(
-      "article",
-      "card" + (isDiamonds ? " diamond-shop-card" : "")
-    );
-    uiEntity(card, "bonus", bonus.id);
-
-    card.append(
-      favoriteBar("bonuses", bonus),
-      cardHead(bonus, "bonuses")
-    );
-
-    if (bonus.description) {
-      card.append(el("p", "", bonus.description));
-    }
-
-    const buy = btn(
-      missing
-        ? `Не хватает ${missing} ${symbol}`
-        : "Купить",
-      "button full" + (missing ? " secondary" : ""),
-      () => buyBonus(bonus.id),
-      true
-    );
-
-    buy.disabled = !healthy || missing > 0;
-
-    card.append(
-      el("div", "reward", `${bonus.price} ${symbol}`),
-      buy
-    );
-
+  function bonusCard(bonus) {
+    const diamonds=bonus.currency==='diamonds',available=diamonds?view.money.diamonds:view.money.balance,missing=Math.max(0,bonus.price-available);
+    const card=el('article','card lg-card-v2'+(diamonds?' diamond-shop-card':''));uiEntity(card,'bonus',bonus.id);
+    card.append(lgCardTop(bonus,'bonuses',diamonds?'Бонус · за алмазы':'Бонус · за монеты','spark'),el('div','task-title lg-c-title',bonus.name));
+    if(bonus.description)card.append(el('p','lg-c-description',bonus.description));
+    const buy=btn(missing?'Недоступно':'Купить','button lg-c-action',()=>buyBonus(bonus.id),true);buy.disabled=!healthy||missing>0;
+    buy.setAttribute('aria-label',(missing?`Не хватает ${missing} ${diamonds?'алмазов':'монет'}: `:'Купить: ')+bonus.name);
+    card.append(lgCardFooter(lgCardValue(bonus.price,'Стоимость',diamonds),buy));
+    if(missing)card.append(el('p','lg-c-missing',`Нужно ещё ${missing} ${diamonds?'◆':'●'}`));
     return card;
   }
 
-    function purchaseCard(purchase) {
-    const isDiamonds = purchase.currency === "diamonds";
-    const symbol = isDiamonds ? "◆" : "●";
-
-    const card = el(
-      "article",
-      "card" + (isDiamonds ? " diamond-shop-card" : "")
-    );
-    uiEntity(card, "purchase", purchase.id);
-
-    card.append(
-      el("div", "task-title", purchase.name),
-
-      el(
-        "div",
-        "meta",
-        new Date(purchase.createdAt).toLocaleString("ru-RU", {
-          day: "numeric",
-          month: "short",
-          hour: "2-digit",
-          minute: "2-digit"
-        })
-      ),
-
-      el("div", "reward", `−${purchase.price} ${symbol}`),
-
-      ...(state.bonuses.some(bonus => bonus.id === purchase.bonusId && bonus.archivedAt === null)
-        ? [btn("В архив карточку (без возврата)", "button secondary full", () => setBonusArchived(purchase.bonusId, true), true)]
-        : []),
-
-      btn(
-        "Отменить покупку",
-        "button secondary full",
-        () => {
-          confirmRewardChange(data => {
-            if (!data.purchases.some(x => x.id === purchase.id)) {
-              fail("Покупка уже отменена.");
-            }
-
-            data.purchases = data.purchases.filter(
-              x => x.id !== purchase.id
-            );
-          }, false, {title:"Вернуть покупку?",description:"Стоимость из сохранённой покупки вернётся на баланс. Уровень не изменится.",action:"Вернуть покупку",keep:"Оставить покупку",kind:"undo"});
-        },
-        true
-      )
-    );
-
-    return card;
+  function purchaseCard(purchase) {
+    const diamonds=purchase.currency==='diamonds',card=el('article','card lg-card-v2 done'+(diamonds?' diamond-shop-card':''));uiEntity(card,'purchase',purchase.id);
+    const top=lgCardTop(purchase,null,'Покупка · оплачено','check',true);
+    if(state.bonuses.some(b=>b.id===purchase.bonusId&&b.archivedAt===null)){
+      const more=btn('⋯','more-button',()=>openMenu(purchase.name,[{text:'В архив карточку (без возврата)',run:()=>setBonusArchived(purchase.bonusId,true)}]));
+      more.setAttribute('aria-label','Действия с покупкой: '+purchase.name);top.querySelector('.lg-c-tools').append(more);
+    }
+    card.append(top,el('div','task-title lg-c-title',purchase.name),el('p','lg-c-description',new Date(purchase.createdAt).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})));
+    const refund=btn('Вернуть','button secondary lg-c-action',()=>confirmRewardChange(data=>{
+      if(!data.purchases.some(x=>x.id===purchase.id))fail('Покупка уже отменена.');
+      data.purchases=data.purchases.filter(x=>x.id!==purchase.id);
+    },false,{title:'Вернуть покупку?',description:'Стоимость из сохранённой покупки вернётся на баланс. Уровень не изменится.',action:'Вернуть покупку',keep:'Оставить покупку',kind:'undo'}),true);
+    refund.setAttribute('aria-label','Отменить покупку: '+purchase.name);
+    card.append(lgCardFooter(lgCardValue(purchase.price,'Оплачено',diamonds),refund));return card;
   }
 
   // Экраны.
