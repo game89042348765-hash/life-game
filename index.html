@@ -21,6 +21,8 @@
   --graphite-edge: #ffffff24;
   --graphite-muted: #aeb2a6;
   --graphite-shadow: 0 8px 28px #0002;
+  --graphite-input: #0a0d0a;
+  --graphite-panel: #151815;
 }
 * { box-sizing: border-box; }
 html {
@@ -667,7 +669,7 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
 .lg-effect{position:fixed;inset:0;z-index:30;display:grid;place-items:center;pointer-events:none;--tone:#ffda29}.lg-effect[hidden]{display:none}.lg-effect:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,#080b08a6,#080b0820 70%);animation:lg-reward-shade var(--time) ease both}.lg-effect.negative{--tone:#dda5a0}.lg-effect.diamond{--tone:#a9d7c0}.lg-effect-card{position:relative;text-align:center;width:min(360px,calc(100vw - 40px));padding:24px 20px 23px;isolation:isolate;animation:lg-reward-arrival var(--time) cubic-bezier(.2,.75,.2,1) both}.lg-effect-card:before{content:"";position:absolute;z-index:-1;inset:65px 0 0;border:1px solid color-mix(in srgb,var(--tone) 32%,transparent);border-radius:23px;background:linear-gradient(155deg,#20271ef2,#10160ff5);box-shadow:0 20px 80px #0008,inset 0 1px 0 #ffffff0a}.lg-effect-halo{width:120px;height:120px;margin:0 auto 14px;display:grid;place-items:center;position:relative;color:var(--tone);border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--tone) 18%,#171e14),#11170f 70%);box-shadow:0 0 50px color-mix(in srgb,var(--tone) 15%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--tone) 25%,transparent)}.lg-effect-halo:before{content:"";position:absolute;inset:-8px;border:1px solid color-mix(in srgb,var(--tone) 28%,transparent);border-top-color:var(--tone);border-radius:50%;animation:lg-reward-orbit 2.8s ease-out both}.lg-effect-halo svg{width:54px;height:54px;filter:drop-shadow(0 0 14px color-mix(in srgb,var(--tone) 40%,transparent))}.lg-effect.negative .lg-effect-halo{animation:lg-reward-recede .65s ease-out both}.lg-effect .lg-effect-overline{font-size:9px;letter-spacing:2px;font-weight:750;color:var(--tone);margin-bottom:10px}.lg-effect h3{font-size:38px;letter-spacing:-1.4px;margin:0;color:var(--tone);line-height:1.1;font-variant-numeric:tabular-nums}.lg-effect.major h3{font-size:33px}.lg-effect .lg-effect-caption{font-size:13px;color:#c5cfbd;line-height:1.5;margin-top:10px}.lg-effect .lg-effect-detail{font-size:11px;color:#96a68b;margin-top:6px}.lg-effect .lg-effect-badge{display:inline-block;padding:6px 10px;margin-top:14px;border:1px solid color-mix(in srgb,var(--tone) 30%,transparent);background:color-mix(in srgb,var(--tone) 8%,transparent);border-radius:9px;font-size:11px;color:var(--tone)}.lg-effect-close{position:absolute;top:68px;right:8px;pointer-events:auto;cursor:pointer;border:0;background:none;color:#b0bba4;width:36px;height:36px;border-radius:50%;font-size:22px}.lg-effect-mote{position:absolute;left:50%;top:31%;width:5px;height:5px;border-radius:2px;background:var(--tone);box-shadow:0 0 8px var(--tone);animation:lg-reward-mote 1.15s ease-out both;animation-delay:var(--delay)}.lg-effect.negative .lg-effect-mote{animation-name:lg-reward-mote-in}.lg-effect-track{height:3px;border-radius:5px;background:#ffffff12;margin:18px 12px 0;overflow:hidden}.lg-effect-track i{display:block;width:100%;height:100%;background:var(--tone);animation:lg-reward-countdown var(--time) linear forwards}
 @keyframes lg-reward-arrival{0%{opacity:0;transform:translateY(28px) scale(.88)}12%,78%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-12px) scale(.98)}}@keyframes lg-reward-shade{0%,100%{opacity:0}12%,78%{opacity:1}}@keyframes lg-reward-orbit{from{transform:rotate(-120deg);opacity:0}25%{opacity:1}to{transform:rotate(160deg)}}@keyframes lg-reward-recede{from{transform:scale(1.15)}to{transform:scale(1)}}@keyframes lg-reward-mote{from{opacity:0;transform:translate(-50%,0) scale(.1)}20%{opacity:1}to{opacity:0;transform:translate(var(--x),var(--y)) rotate(90deg)}}@keyframes lg-reward-mote-in{from{opacity:0;transform:translate(var(--x),var(--y))}30%{opacity:.8}to{opacity:0;transform:translate(-50%,0) scale(.1)}}@keyframes lg-reward-countdown{to{width:0}}
 /* Application-styled confirmation, no native browser confirm. */
-.lg-reward-confirm{position:fixed;inset:auto 0 0;width:min(500px,100%);max-width:100%;max-height:90dvh;overflow:auto;margin:0 auto;padding:25px 22px calc(22px + env(safe-area-inset-bottom,0px));border:1px solid #dda5a034;border-bottom:0;border-radius:24px 24px 0 0;background:linear-gradient(145deg,#20261c,#10180e);color:#f0f1e7;box-shadow:0 -16px 80px #0005;animation:lg-reward-sheet .23s ease-out}.lg-reward-confirm::backdrop{background:#030703a6;backdrop-filter:blur(5px)}.lg-reward-handle{width:35px;height:3px;background:#58604d;border-radius:4px;margin:-10px auto 22px}.lg-reward-sheet-icon{width:43px;height:43px;display:grid;place-items:center;border:1px solid #dda5a03a;border-radius:12px;background:#dda5a00b;color:#dda5a0;margin-bottom:13px}.lg-reward-confirm h2{font-size:22px;letter-spacing:-.5px;margin:0 0 8px;line-height:1.2}.lg-reward-confirm .lg-reward-description{font-size:13px;line-height:1.5}.lg-reward-breakdown{margin:20px 0;padding:4px 0;border-block:1px solid #a9b39324}.lg-reward-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;font-size:12px;color:#aebaa1}.lg-reward-row b{color:#dda5a0;font-weight:700}.lg-reward-row.result{border-top:1px solid #a9b39324;margin-top:3px;padding-top:12px;font-size:14px}.lg-reward-row.result b{font-size:16px}.lg-reward-warning{font-size:12px;color:#dda5a0;padding:11px;border:1px solid #dda5a02b;border-radius:10px;background:#dda5a008;margin-bottom:14px}.lg-reward-sheet-actions{display:flex;gap:9px}.lg-reward-sheet-actions button{flex:1;min-height:47px;border:1px solid #a9b39324;border-radius:11px;background:#ffffff04;font-weight:700;font-size:12px}.lg-reward-sheet-actions .danger{color:#f0d3cb;border-color:#dda5a040;background:linear-gradient(130deg,#714944,#4b302c)}@keyframes lg-reward-sheet{from{transform:translateY(35px);opacity:0}to{transform:translateY(0);opacity:1}}
+.lg-reward-confirm{position:fixed;inset:auto 0 0;width:min(500px,100%);max-width:100%;max-height:90dvh;overflow:auto;margin:0 auto;padding:25px 22px calc(22px + env(safe-area-inset-bottom,0px));border:1px solid #dda5a034;border-bottom:0;border-radius:24px 24px 0 0;background:var(--graphite-surface);color:#f0f1e7;box-shadow:0 -16px 80px #0005;animation:lg-reward-sheet .23s ease-out}.lg-reward-confirm::backdrop{background:#030703a6;backdrop-filter:blur(5px)}.lg-reward-handle{width:35px;height:3px;background:#58604d;border-radius:4px;margin:-10px auto 22px}.lg-reward-sheet-icon{width:43px;height:43px;display:grid;place-items:center;border:1px solid #dda5a03a;border-radius:12px;background:#dda5a00b;color:#dda5a0;margin-bottom:13px}.lg-reward-confirm h2{font-size:22px;letter-spacing:-.5px;margin:0 0 8px;line-height:1.2}.lg-reward-confirm .lg-reward-description{font-size:13px;line-height:1.5}.lg-reward-breakdown{margin:20px 0;padding:4px 0;border-block:1px solid #a9b39324}.lg-reward-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;font-size:12px;color:var(--graphite-muted)}.lg-reward-row b{color:#dda5a0;font-weight:700}.lg-reward-row.result{border-top:1px solid #a9b39324;margin-top:3px;padding-top:12px;font-size:14px}.lg-reward-row.result b{font-size:16px}.lg-reward-warning{font-size:12px;color:#dda5a0;padding:11px;border:1px solid #dda5a02b;border-radius:10px;background:#dda5a008;margin-bottom:14px}.lg-reward-sheet-actions{display:flex;gap:9px}.lg-reward-sheet-actions button{flex:1;min-height:47px;border:1px solid #a9b39324;border-radius:11px;background:#ffffff04;font-weight:700;font-size:12px}.lg-reward-sheet-actions .danger{color:#f0d3cb;border-color:#dda5a040;background:linear-gradient(130deg,#714944,#4b302c)}@keyframes lg-reward-sheet{from{transform:translateY(35px);opacity:0}to{transform:translateY(0);opacity:1}}
 
 .lg-effect { margin:0;width:100%;height:100%;max-width:none;max-height:none;border:0;padding:0;background:transparent;overflow:visible; }
 .lg-effect svg,.lg-reward-sheet-icon svg { fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round; }
@@ -2154,17 +2156,26 @@ nav[aria-label="Главное меню"] {
 .nav-button.active { color: var(--accent); background: linear-gradient(#ffda2917,#ffda2906); box-shadow: none; }
 .nav-button.active::before { content: ""; position: absolute; top: 0; width: 22px; height: 2px; background: var(--accent); border-radius: 3px; }
 dialog {
-  max-width: 448px; padding: 23px; border: 1px solid #4b5542; border-radius: 23px; background: #171c18;
-  box-shadow: 0 24px 100px #0008;
+  --border:var(--graphite-edge); --muted:var(--graphite-muted); --card:var(--graphite-panel);
+  max-width:448px; padding:23px; border:1px solid var(--graphite-edge); border-radius:16px;
+  background:var(--graphite-surface); box-shadow:0 24px 100px #0008;
 }
-dialog::backdrop { background: #050805bd; backdrop-filter: blur(6px); }
+dialog::backdrop {background:#030503bb;backdrop-filter:blur(6px)}
+dialog :is(input:not([type=checkbox]):not([type=radio]),select,textarea) {
+  border-color:var(--graphite-edge);border-radius:9px;background:var(--graphite-input);color:var(--text);
+}
+dialog label:not(.check-label) {color:var(--graphite-muted)}
+dialog .button {border-radius:9px}
+dialog .button.secondary {background:#ffffff06;border-color:var(--graphite-edge);color:var(--text)}
+dialog .button[aria-pressed=true] {background:#ffda2910;border-color:#ffda2980;color:var(--accent)}
+dialog .button.danger {background:#b4776810;border-color:#b4776866;color:#f0b5a8}
 dialog h2 { margin: 0 0 18px; font-size: 22px; font-weight: 600; letter-spacing: -.5px; }
 dialog p { font-size: 13px; }
 input, select, textarea { border-color: #424b3c; border-radius: 12px; background: #0e130f; color: var(--text); padding: 12px 13px; }
 input::placeholder, textarea::placeholder { color: #8c9884; opacity: 1; }
 input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
 label:not(.check-label) { color: #c0c9b7; font-size: 13px; }
-.weekday-preset, .weekday-tile span { border-radius: 10px; background: #1d241b; border-color: #3a4534; }
+.weekday-preset, .weekday-tile span {border-radius:9px;background:#ffffff04;border-color:var(--border)}
 .weekday-preset[aria-pressed="true"] { background: #302e16; border-color: #ac963d; }
 .menu-actions { gap: 9px; }
 .settings-danger { border-top-color: #67413a; padding-top: 18px; margin-top: 22px; }
@@ -2303,7 +2314,7 @@ h3.task-title { margin:0; }
 [aria-invalid="true"] { border-color:#e49b83!important; }
 #editor { max-height:calc(100dvh - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));scroll-padding:18px 0 95px; }
 #editor form { min-width:0;padding-bottom:1px; }
-#editor .form-actions { position:sticky;z-index:3;bottom:-23px;padding:14px 0 16px;margin-top:18px;background:#171c18;box-shadow:0 -9px 12px #171c18; }
+#editor .form-actions { position:sticky;z-index:3;bottom:-23px;padding:14px 0 16px;margin-top:18px;background:var(--graphite-panel);box-shadow:0 -9px 12px var(--graphite-panel); }
 #editor input,#editor textarea,#editor select { scroll-margin-block:70px 110px; }
 #editor label.task-goal-toggle { display:flex;align-items:center;gap:10px;margin:8px 0;min-height:44px; }
 #editor .task-goal-toggle input { flex:0 0 22px;width:22px;height:22px;min-height:22px;margin:0;padding:0; }
@@ -2682,12 +2693,7 @@ h3.task-title { margin:0; }
 .lg-quick-capture:not(.lg-widget-content) :is(.lg-quick-label,.lg-quick-reward,.check-label) {color:var(--muted)}
 .lg-quick-capture:not(.lg-widget-content) .lg-quick-entry input {background:#0a0d0a;border-color:#ffffff24;border-radius:9px;color:#f3f1e8}
 .lg-quick-capture:not(.lg-widget-content) .lg-quick-submit {border-radius:9px;font-weight:550}
-/* The minutes field belongs only to existing Key Actions forms. */
-#editor:has(#edit-minutes) {--border:#ffffff24;--muted:#aeb2a6;background:var(--graphite-surface);border-color:var(--border);border-radius:16px}
-#editor:has(#edit-minutes) :is(input,textarea,select) {background:#0a0d0a;color:#f3f1e8;border-color:var(--border);border-radius:9px;font-size:16px}
-#editor:has(#edit-minutes) .button {border-radius:9px;font-weight:550;font-size:13px}
-#editor:has(#edit-minutes) .button.secondary {background:#ffffff06;border-color:var(--border);color:#f3f1e8}
-#editor:has(#edit-minutes) .form-actions {background:#151815;box-shadow:0 -9px 12px #151815}
+#editor:has(#edit-minutes) .button {font-weight:550;font-size:13px}
 </style>
 </head>
 <body>
