@@ -2521,6 +2521,11 @@ h3.task-title { margin:0; }
 
 </style>
 <style>
+.lg-organizer-widget>.widget-instance-head{display:grid;grid-template-columns:20px minmax(0,1fr) 44px;gap:3px 9px}.lg-organizer-widget>.widget-instance-head>h2{grid-column:2;grid-row:1;margin:0}.lg-organizer-widget>.widget-instance-head>.design-icon{grid-column:1;grid-row:1}.lg-organizer-widget>.widget-instance-head>.widget-badge{grid-column:2;grid-row:2;justify-self:start}.lg-organizer-widget>.widget-instance-head>.button{grid-column:3;grid-row:1/3}
+.lg-widget-content.lg-main-day,.lg-widget-content.lg-quick-capture,.lg-widget-content.lg-carry-review{border:0;background:none;margin:0;padding:0;border-radius:0}.lg-widget-content.lg-main-day .lg-main-name{margin-top:0}.lg-widget-content.lg-quick-capture .lg-quick-options{flex-wrap:wrap}
+.app{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px) + var(--lg-focus-space,0px))}
+.lg-main-focus{margin-top:13px;border-top:1px solid #d5c72e27;padding-top:4px}.lg-main-focus-presets{display:flex;gap:8px}.lg-main-focus-presets .button{flex:1;min-width:0;min-height:44px;padding:9px 6px;font-size:12px}.lg-main-focus>.button{margin-top:9px;min-height:44px;font-size:12px}
+.focus-mini{width:min(calc(100% - 24px),456px);padding:9px 10px;gap:7px;border:1px solid #ada75b70;border-radius:16px;box-shadow:0 7px 28px #0009;top:auto}.focus-mini-title{padding:0;display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:0}.focus-mini-title small{font-size:9px;color:#c7c292;letter-spacing:.03em}.focus-mini-title span{display:block;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}.focus-mini-time{font-size:16px;font-weight:650;font-variant-numeric:tabular-nums;color:var(--accent);flex:none}.focus-mini .button{min-width:38px;min-height:44px;padding:7px;font-size:12px}
 .lg-main-day{margin:20px 0 16px;padding:16px;border:1px solid #d5c72e63;border-radius:17px;background:linear-gradient(135deg,#222515,#12180f)}
 .lg-main-heading{display:flex;align-items:center;gap:9px;color:var(--accent)}.lg-main-heading h2{font-size:12px;letter-spacing:.04em;margin:0}.lg-main-heading .design-icon{width:17px;height:17px;flex:none}
 .lg-main-name{font-size:19px;line-height:1.4;margin:12px 0;overflow-wrap:anywhere}.lg-main-note{font-size:12px!important;line-height:1.6;color:#b9c3af;margin:10px 0!important}
@@ -2716,6 +2721,27 @@ h3.task-title { margin:0; }
   // Для готового виджета: available=true и render — функция,
   // возвращающая DOM-узел. Сохранение содержит только его стабильный ID.
   const WIDGET_REGISTRY = Object.freeze({
+    mainDay: Object.freeze({
+      id:'mainDay',title:'Главное дело дня',symbol:'⚑',
+      description:'Одно главное дело из сегодняшнего плана и подход к нему.',
+      note:'Выбор на текущий день, отдельно от избранного. Выполнение отмечается отдельно.',
+      category:'Организация дня',system:true,available:true,dayArea:'top',
+      placements:Object.freeze(['widgets','day']),render:()=>renderMainDayTask(true)
+    }),
+    quickCapture: Object.freeze({
+      id:'quickCapture',title:'Быстрое добавление',symbol:'＋',
+      description:'Запиши дело сразу, а блок и подробности выбери позже.',
+      note:'Можно добавить на сегодня или оставить во Входящих.',
+      category:'Организация дня',system:true,available:true,dayArea:'top',
+      placements:Object.freeze(['widgets','day']),render:()=>quickTaskCapture('day',true)
+    }),
+    carryovers: Object.freeze({
+      id:'carryovers',title:'Со вчера',symbol:'↪',
+      description:'Реши, что делать с незавершёнными прошлыми планами.',
+      note:'На сегодня, позже или в архив. В Конструкторе появляется, когда есть дела для разбора.',
+      category:'Организация дня',system:true,available:true,dayArea:'top',
+      placements:Object.freeze(['widgets','day']),render:()=>renderCarryovers(true)
+    }),
     keyActions: Object.freeze({
       id: "keyActions",
       title: "Ключевые действия",
@@ -2732,7 +2758,7 @@ h3.task-title { margin:0; }
       id: "focus",
       title: "Время для важного",
       symbol: "⏱",
-      description: "Самостоятельный таймер для подходов к важному.",
+      description: "Таймер подходов: самостоятельно или для главного дела.",
       note: "Без наград и автоматического учёта ключевых действий.",
       category: "Фокус и время",
       system: true,
@@ -3114,7 +3140,7 @@ h3.task-title { margin:0; }
       soundEnabled: true,
       motivationEnabled: true,
       motivationText: "",
-      widgets: { version: 3, items: [{ id: "keyActions", placement: "widgets", showInDay: true }, { id: "focus", placement: "widgets", showInDay: true }], favorites: [] },
+      widgets: { version: 4, items: [{ id: "mainDay", placement: "widgets", showInDay: true }, { id: "quickCapture", placement: "widgets", showInDay: true }, { id: "carryovers", placement: "widgets", showInDay: true }, { id: "keyActions", placement: "widgets", showInDay: true }, { id: "focus", placement: "widgets", showInDay: true }], favorites: [] },
       dayGraph: dayGraphDefaults(),
       happiness: happinessDefaults(),
       keyActions: { version: 1, actions: [], conditions: [], entries: [] },
@@ -3132,7 +3158,7 @@ h3.task-title { margin:0; }
       purchases: [],
       treats: [],
       treatUses: [],
-      focus: {status:"ready", id:null, minutes:5, name:"", remaining:300000, endsAt:null, notified:true, natural:false},
+      focus: {status:"ready", id:null, minutes:5, name:"", taskId:null, remaining:300000, endsAt:null, notified:true, natural:false},
       dayPlans: {},
       planReviews: {},
       mainDayTasks: {},
@@ -3294,6 +3320,7 @@ h3.task-title { margin:0; }
     }
     if (data.focus === undefined) data.focus = emptyState().focus;
     const f = data.focus;
+    if(f&&typeof f==='object'&&f.taskId===undefined)f.taskId=null;
     if (!f || typeof f !== "object" || !["ready","running","paused","completed"].includes(f.status) ||
         !integer(f.minutes,1,180) || typeof f.name !== "string" || f.name.length > 120 ||
         !integer(f.remaining,0,f.minutes*60000) || typeof f.notified !== "boolean" || typeof f.natural !== "boolean" ||
@@ -3303,6 +3330,7 @@ h3.task-title { margin:0; }
         (f.status === "ready" && (f.remaining !== f.minutes*60000 || !f.notified || f.natural)) ||
         (["running","paused"].includes(f.status) && f.natural) ||
         (f.status === "completed" && (f.remaining !== 0 || (!f.natural && !f.notified)))) fail("Повреждены данные таймера.");
+    if(f.taskId!==null&&(!validId(f.taskId)||f.status==='ready'||!validName(f.name)))fail('Повреждена связь таймера с делом.');
         const blocks = new Set();
 
     for (const item of data.blocks) {
@@ -3963,6 +3991,8 @@ h3.task-title { margin:0; }
   "wallet": "<path d=\"M20 7H5a2 2 0 0 1 0-4h13v4M3 5v14a2 2 0 0 0 2 2h15V7M20 11h-6v6h6\"/><circle cx=\"16\" cy=\"14\" r=\".5\"/>",
   "people": "<circle cx=\"9\" cy=\"8\" r=\"3\"/><path d=\"M3 21v-3a6 6 0 0 1 12 0v3M16 5a3 3 0 0 1 0 6M18 15a5 5 0 0 1 3 5\"/>",
   "cloud": "<path d=\"M6 18a5 5 0 1 1 1-10 6 6 0 0 1 11-1 5.5 5.5 0 1 1 0 11Z\"/>",
+  "pause": "<path d=\"M8 5v14M16 5v14\"/>",
+  "plus": "<path d=\"M5 12h14M12 5v14\"/>",
   "minus": "<path d=\"M5 12h14\"/>",
   "clock": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l4 2\"/>",
   "play": "<path d=\"m8 4 12 8-12 8Z\"/>",
@@ -3974,7 +4004,7 @@ h3.task-title { margin:0; }
   "check": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"m7 12 3 3 7-7\"/>",
   "star": "<path d=\"m12 2 3.1 6.3 7 .9-5.1 5 1.2 7-6.2-3.3L5.8 21 7 14.2l-5-5 7-.9Z\"/>"
 });
-  const DESIGN_WIDGET_ICONS = Object.freeze({ keyActions: "flag", focus: "clock", dayGraph: "chart", firstStep: "play", happiness: "heart", challenge: "quest" });
+  const DESIGN_WIDGET_ICONS = Object.freeze({ mainDay:"flag", quickCapture:"plus", carryovers:"calendar", keyActions: "flag", focus: "clock", dayGraph: "chart", firstStep: "play", happiness: "heart", challenge: "quest" });
   function designIcon(name) {
     const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     icon.setAttribute("viewBox", "0 0 24 24");
@@ -8197,7 +8227,7 @@ h3.task-title { margin:0; }
     if (data.widgets === undefined) data.widgets = emptyState().widgets;
     const widgets = data.widgets;
     if (!widgets || typeof widgets !== "object" || Array.isArray(widgets) ||
-        ![1, 2, 3].includes(widgets.version) || !Array.isArray(widgets.items)) {
+        ![1, 2, 3, 4].includes(widgets.version) || !Array.isArray(widgets.items)) {
       fail("Повреждены настройки виджетов.");
     }
     const ids = new Set();
@@ -8226,6 +8256,11 @@ h3.task-title { margin:0; }
       if (!ids.has("keyActions")) widgets.items.unshift({ id: "keyActions", placement: "widgets", showInDay: true });
       widgets.version = 3;
     }
+    if(widgets.version===3){
+      const additions=['mainDay','quickCapture','carryovers'].filter(id=>!widgets.items.some(item=>item.id===id));
+      widgets.items.unshift(...additions.map(id=>({id,placement:'widgets',showInDay:true})));
+      widgets.version=4;
+    }
   }
 
   function setWidgetDay(id, show) {
@@ -8238,11 +8273,13 @@ h3.task-title { margin:0; }
     });
   }
 
-  function renderDayWidgets(target=screen) {
+  function renderDayWidgets(target=screen,area="section") {
     for (const item of state.widgets.items) {
       const definition = widgetDefinition(item.id);
-      if (!item.showInDay || !widgetAvailable(definition) || !definition.placements.includes("day")) continue;
+      if (!item.showInDay || !widgetAvailable(definition) || !definition.placements.includes("day") || (definition.dayArea||'section')!==area) continue;
+      if(item.id==='carryovers'&&!pendingCarryovers().length)continue;
       const card = uiEntity(el("section", "widget-instance spaced"), "widget", item.id);
+      if(definition.dayArea==='top')card.classList.add('lg-organizer-widget');
       const heading = el("div", "widget-instance-head");
       heading.append(designIcon(DESIGN_WIDGET_ICONS[item.id]), el("h2", "", definition.title));
       if (definition.system) heading.append(el("span", "widget-badge", "Системный"));
@@ -8356,6 +8393,7 @@ h3.task-title { margin:0; }
     const definition = widgetDefinition(item.id);
     const card = el("section", "widget-instance");
     uiEntity(card, "widget", item.id);
+    if(definition?.dayArea==='top')card.classList.add('lg-organizer-widget');
 
     const heading = el("div", "widget-instance-head");
     heading.append(designIcon(DESIGN_WIDGET_ICONS[item.id]));
@@ -8958,10 +8996,10 @@ h3.task-title { margin:0; }
     if(toggle?.getAttribute('aria-expanded')==='false')toggle.click();
     uiTarget('task:'+id);
   }
-  function quickTaskCapture(context) {
+  function quickTaskCapture(context,embedded=false) {
     const draft=quickTaskDrafts[context],builtDay=today(),box=el('section','lg-quick-capture');
     box.setAttribute('aria-label','Быстро добавить дело');
-    const form=el('form','lg-quick-form'),label=el('label','lg-quick-label','Быстро добавить'),input=el('input');
+    const form=el('form','lg-quick-form'),label=el('label','lg-quick-label',embedded?'Новое дело':'Быстро добавить'),input=el('input');
     input.id='lg-quick-name';input.name='name';input.type='text';input.maxLength=120;input.required=true;input.autocomplete='off';
     input.placeholder='Что нужно сделать?';input.value=draft.name;input.disabled=!healthy||draft.busy;label.htmlFor=input.id;
     input.addEventListener('input',()=>{draft.name=input.value;input.setCustomValidity('');});
@@ -8986,7 +9024,7 @@ h3.task-title { margin:0; }
         uiToast(todaySelected?'Дело добавлено на сегодня':'Дело сохранено во Входящих','Показать',()=>showQuickTask(id,todaySelected));
       }
     });
-    box.append(form);if(context==='day')box.append(inboxLink());return box;
+    if(embedded)box.classList.add('lg-widget-content');box.append(form);if(context==='day')box.append(inboxLink());return box;
   }
   function renderInbox() {
     screen.append(lgSectionNav('Входящие'),el('h1','','Входящие'),el('p','','Запиши сейчас. Выбрать блок можно позже.'));
@@ -9024,10 +9062,10 @@ h3.task-title { margin:0; }
       }
     },false);
   }
-  function renderCarryovers() {
-    const entries=pendingCarryovers();if(!entries.length)return;
+  function renderCarryovers(embedded=false) {
+    const entries=pendingCarryovers();if(!entries.length)return el('p','lg-carry-help','Неразобранных дел прошлых дней нет.');
     const date=today(),box=el('details','lg-carry-review');box.open=carryReviewOpen;
-    const heading=el('summary','','Со вчера: '+entries.length);box.append(heading,el('p','lg-carry-help','Незавершённые дела прошлых дней. Выбери, что делать дальше. «Позже» оставит дело в его блоке или Входящих.'));
+    const heading=el('summary','',(embedded?'Открыть разбор · ':'Со вчера: ')+entries.length);box.append(heading,el('p','lg-carry-help','Незавершённые дела прошлых дней. Выбери, что делать дальше. «Позже» оставит дело в его блоке или Входящих.'));
     box.addEventListener('toggle',()=>{if(box.isConnected)carryReviewOpen=box.open;});
     for(const {task,from} of entries){
       const row=el('div','lg-carry-row');row.dataset.carryId=task.id;
@@ -9039,7 +9077,7 @@ h3.task-title { margin:0; }
       }
       row.append(controls);box.append(row);
     }
-    screen.append(box);
+    if(embedded)box.classList.add('lg-widget-content');return box;
   }
 
   function mainDayTask(data=state) {
@@ -9058,11 +9096,11 @@ h3.task-title { margin:0; }
       data.mainDayTasks[today()]=id;
     },false);
   }
-  function renderMainDayTask() {
+  function renderMainDayTask(embedded=false) {
     const date=today(),task=mainDayTask(),done=task&&!!completion(state,task,true);
     const choices=favorites(view.planned.filter(x=>!completion(state,x))),box=el('section','lg-main-day'+(done?' is-done':''));
     box.setAttribute('aria-label','Главное дело дня');
-    const heading=el('div','lg-main-heading');heading.append(designIcon(done?'check':'flag'),el('h2','',done?'Главное выполнено':'Главное дело дня'));box.append(heading);
+    const heading=el('div','lg-main-heading');heading.append(designIcon(done?'check':'flag'),el('h2','',done?'Главное выполнено':'Главное дело дня'));if(!embedded||done)box.append(heading);
     if(task){
       box.append(el('h3','lg-main-name',task.name));
       const controls=el('div','lg-main-actions');
@@ -9071,6 +9109,19 @@ h3.task-title { margin:0; }
         complete.setAttribute('aria-label','Выполнить главное дело: '+task.name);controls.append(complete);
       }else controls.append(el('p','lg-main-note','Главный шаг на сегодня сделан.'));
       box.append(controls);
+      if(!done){
+        const start=el('div','lg-main-focus');
+        if(state.focus.status==='ready'){
+          start.append(el('p','lg-main-note','Уделить время · дело отметишь отдельно'));
+          const presets=el('div','lg-main-focus-presets');
+          for(const minutes of [5,15,25]){
+            const action=btn(minutes+' мин','button secondary',()=>startMainFocus(task.id,minutes,date),true);
+            action.setAttribute('aria-label','Начать подход '+minutes+' мин: '+task.name);presets.append(action);
+          }
+          start.append(presets);
+        }else start.append(btn('Открыть текущий подход','button secondary',()=>go('focus')));
+        box.append(start);
+      }
     }else box.append(el('p','lg-main-note',choices.length?'Выбери одно дело, с которого хочешь начать.':'Добавь дело на сегодня — и сможешь выбрать главное.'));
     if(choices.length||task){
       const picker=el('details','lg-main-picker');picker.append(el('summary','',task?'Изменить выбор':'Выбрать главное'));
@@ -9085,7 +9136,7 @@ h3.task-title { margin:0; }
       if(task){const clear=btn('Снять отметку','button secondary lg-main-clear',()=>chooseMainDayTask(null,date),true);picker.append(clear);}
       box.append(picker);
     }
-    box.tabIndex=-1;screen.append(box);
+    if(embedded)box.classList.add('lg-widget-content');box.tabIndex=-1;return box;
   }
 
   function renderDay() {
@@ -9110,9 +9161,7 @@ h3.task-title { margin:0; }
       el("h1", "", "Конструктор дня"),
       el("p", "", "Собери день который хочешь прожить")
     );
-    renderMainDayTask();
-    screen.append(quickTaskCapture('day'));
-    renderCarryovers();
+    renderDayWidgets(screen,'top');
     lgDayFold("widgets", "Виджеты", target => renderDayWidgets(target));
     const events = state.calendarEntries.filter(x => x.date === today());
     lgDayFold("calendar", "Календарь", target =>
@@ -9215,7 +9264,7 @@ h3.task-title { margin:0; }
     wallet.setAttribute("aria-label",
       `Монеты: ${view.money.balance}. Алмазы: ${view.money.diamonds}.`);
 
-    const active = ["day", "inbox", "summary", "calendar", "treats", "widgets", "widgetCatalog", "aiPreview"].includes(page) ? "hero" : page;
+    const active = ["day", "inbox", "summary", "calendar", "treats", "widgets", "widgetCatalog", "aiPreview", "focus"].includes(page) ? "hero" : page;
     document.querySelectorAll(".nav-button").forEach(node => {
       const selected = node.dataset.page === active;
       node.classList.toggle("active", selected);
@@ -9225,7 +9274,7 @@ h3.task-title { margin:0; }
     const screens = {
       hero: renderHero, blocks: renderBlocks, inbox: renderInbox, quests: renderQuests,
       bonuses: renderBonuses, day: renderDay, summary: renderSummary, calendar: renderCalendar, treats: renderTreats,
-      widgets: renderWidgets, widgetCatalog: renderWidgetCatalog,
+      widgets: renderWidgets, widgetCatalog: renderWidgetCatalog, focus: renderFocusSession,
       aiPreview: renderAiPreview
     };
     (screens[page] || renderHero)();
@@ -9942,7 +9991,23 @@ h3.task-title { margin:0; }
       return true;
     } catch(error) { storageError("Таймер не сохранён: "+error.message); render(); return false; }
   }
-  function redrawFocus() { const old=$("focus-card"); if(old) old.replaceWith(focusCard(old.classList.contains("widget-focus-content"))); updateFocusMini(); }
+  function redrawFocus() { render(); }
+  function startMainFocus(id,minutes,expectedDay) {
+    if(![5,15,25].includes(minutes))return false;
+    const task=mainDayTask();
+    if(today()!==expectedDay||!task||task.id!==id||completion(state,task)){
+      render();uiFeedback('План изменился. Проверь главное дело и повтори запуск.');return false;
+    }
+    if(state.focus.status!=='ready'){
+      uiFeedback('Сначала заверши текущий подход.');return false;
+    }
+    primeAudio();
+    if(!focusSave(f=>{f.id=uid();f.taskId=id;f.name=task.name;f.minutes=minutes;f.status='running';f.remaining=minutes*60000;f.endsAt=focusNow()+f.remaining;f.notified=false;f.natural=false;}))return false;
+    redrawFocus();return true;
+  }
+  function renderFocusSession() {
+    screen.append(lgSectionNav('Время для важного'),el('h1','','Время для важного'),el('p','','Подход помогает начать. Завершение дела отмечается отдельно.'),focusCard());
+  }
   function focusAction(action,id) {
     const f=state.focus;
     if(f.id!==id) return;
@@ -9954,10 +10019,10 @@ h3.task-title { margin:0; }
     if(action==="stop" && !confirm("Завершить подход сейчас? Можно вернуться позже.")) return;
     if(action==="pause" && focusLeft(f)===0) { focusTick(); return; }
     if(focusSave(x=>{
-      if(action==="start") { x.id=uid(); x.status="running"; x.remaining=x.minutes*60000; x.endsAt=focusNow()+x.remaining; x.notified=false; x.natural=false; }
+      if(action==="start") { x.id=uid(); x.taskId=null; x.status="running"; x.remaining=x.minutes*60000; x.endsAt=focusNow()+x.remaining; x.notified=false; x.natural=false; }
       if(action==="pause") { x.remaining=focusLeft(x); x.endsAt=null; x.status="paused"; }
       if(action==="resume") { x.endsAt=focusNow()+x.remaining; x.status="running"; }
-      if(action==="stop" || action==="reset") { x.status="ready"; x.id=null; x.minutes=5; x.name=""; x.endsAt=null; x.remaining=300000; x.notified=true; x.natural=false; }
+      if(action==="stop" || action==="reset") { x.status="ready"; x.id=null; x.minutes=5; x.name=""; x.taskId=null; x.endsAt=null; x.remaining=300000; x.notified=true; x.natural=false; }
     })) {
       if(action==="stop" || action==="reset") focusCustomMode=false;
       redrawFocus();
@@ -10044,51 +10109,41 @@ h3.task-title { margin:0; }
     return card;
   }
   function updateFocusMini() {
-    const card=$("focus-card"), top=document.querySelector('.topbar').getBoundingClientRect().bottom;
-    const active=["running","paused"].includes(state.focus.status);
-    const placed=state.widgets.items.some(item=>item.id==="focus"&&item.showInDay);
-    const show=page==="day"&&placed&&card&&active&&card.getBoundingClientRect().bottom<=top;
-    focusMini.hidden=!show; focusMini.style.top=top+"px";
-    if(!show) {
-      document.documentElement.style.scrollPaddingTop=(top+12)+"px";
-      focusMini.replaceChildren();
-      return;
+    const card=$('focus-card'),nav=document.querySelector('nav'),top=document.querySelector('.topbar').getBoundingClientRect().bottom;
+    const f=state.focus,active=['running','paused','completed'].includes(f.status);
+    const bottom=nav.getBoundingClientRect().top,rect=card?.getBoundingClientRect();
+    const cardVisible=rect&&rect.bottom>top&&rect.top<bottom-90;
+    const show=active&&!cardVisible;
+    focusMini.hidden=!show;focusMini.style.top='auto';focusMini.style.bottom=(nav.getBoundingClientRect().height+8)+'px';
+    document.documentElement.style.scrollPaddingTop=(top+12)+'px';
+    if(!show){focusMini.replaceChildren();document.documentElement.style.setProperty('--lg-focus-space','0px');return;}
+    focusMini.setAttribute('aria-label','Текущий подход');focusMini.setAttribute('role','region');
+    const title=btn('','focus-mini-title',()=>go('focus'));
+    title.append(el('small','',f.status==='completed'?'Подход завершён':f.status==='paused'?'Подход на паузе':'Текущий подход'),el('span','',f.name||'Время для важного'));
+    title.setAttribute('aria-label','Открыть подход: '+(f.name||'Время для важного'));
+    const time=el('span','focus-mini-time',focusTime(focusLeft(f)));
+    focusMini.replaceChildren(title,time);
+    if(f.status==='completed')focusMini.append(btn('Готово','button secondary',()=>focusAction('reset',f.id),true));
+    else{
+      const pause=btn(f.status==='paused'?'▶':'Ⅱ','button secondary',()=>focusAction(f.status==='paused'?'resume':'pause',f.id),true);
+      pause.replaceChildren(designIcon(f.status==='paused'?'play':'pause'));pause.setAttribute('aria-label',f.status==='paused'?'Продолжить подход':'Пауза подхода');
+      const stop=btn('×','button secondary',()=>focusAction('stop',f.id),true);stop.replaceChildren(designIcon('close'));stop.setAttribute('aria-label','Завершить подход');
+      focusMini.append(pause,stop);
     }
-    const f=state.focus;
-    const title=btn(f.name||"Время для важного","focus-mini-title",()=>card.scrollIntoView({block:"center"}));
-    const time=el("span","focus-mini-time",focusTime(focusLeft(f)));
-    focusMini.replaceChildren(title,time,btn(f.status==="paused"?"▶":"Ⅱ","button secondary",()=>focusAction(f.status==="paused"?"resume":"pause",f.id)));
-    focusMini.lastChild.setAttribute("aria-label",f.status==="paused"?"Продолжить":"Пауза");
-    document.documentElement.style.scrollPaddingTop=(top+focusMini.getBoundingClientRect().height+12)+"px";
+    document.documentElement.style.setProperty('--lg-focus-space',(focusMini.getBoundingClientRect().height+16)+'px');
   }
   function focusTick() {
     if(!healthy)return;
     let f=state.focus;
     if(f.status==="running"&&focusLeft(f)===0) {
-      if(!focusSave(x=>{x.status="completed";x.remaining=0;x.endsAt=null;x.natural=true;x.name="";}))return;
+      if(!focusSave(x=>{x.status="completed";x.remaining=0;x.endsAt=null;x.natural=true;}))return;
       redrawFocus(); f=state.focus;
     }
     if(f.status==="completed"&&!f.notified&&!document.hidden) {
       if(focusSave(x=>{x.notified=true;})) {
         try { tones([392,523.25],.22,.45,.045); }
         catch(error) { console.warn("Звук таймера недоступен:",error); }
-        if(!$("focus-card")) {
-          document.querySelectorAll('.focus-result').forEach(x=>x.remove());
-          const toast=el("div","self-toast focus-result");
-          toast.style.pointerEvents="auto";
-          toast.append(el("strong","","Время завершено ✓"),el("p","",`Ты выделил ${f.minutes} минут на важное`));
-          for(const text of ["Ещё подход","Закрыть"])toast.append(btn(text,"button secondary",()=>{
-            if(text==="Ещё подход") {
-              if(state.focus.id!==f.id || state.focus.status!=="completed") return;
-              if(!state.widgets.items.some(item=>item.id==="focus") && !addWidget("focus")) return;
-              if(!focusAction("reset",f.id)) return;
-              const item=state.widgets.items.find(item=>item.id==="focus");
-              go(item.showInDay?"day":"widgets");
-            }
-            toast.remove();
-          }));
-          toast.setAttribute("role","status");document.body.append(toast);
-        }
+
       }
     }
     const clock=$("focus-card")?.querySelector('.focus-clock');
