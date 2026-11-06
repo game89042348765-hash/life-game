@@ -2521,6 +2521,7 @@ h3.task-title { margin:0; }
 
 </style>
 <style>
+.focus-log-form{min-width:0}.focus-log-form label{display:block;font-size:12px;margin:12px 0 6px}.focus-log-form input,.focus-log-form select{display:block;width:100%;min-width:0;min-height:44px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);padding:9px;font:inherit;font-size:14px}.focus-log-form .button{margin-top:10px;min-height:44px}.focus-log-history{margin-top:18px;border-top:1px solid var(--border);padding-top:10px}.focus-log-history summary{font-size:12px;min-height:44px;padding-top:8px;cursor:pointer;color:var(--muted)}.focus-log-row{padding:10px 0;border-top:1px solid #ffffff0b;overflow-wrap:anywhere}.focus-log-row strong{font-size:13px}.focus-log-row .focus-hint{margin-top:4px}.focus-actions-completed>.focus-log-form{width:100%}
 .lg-organizer-widget>.widget-instance-head{display:grid;grid-template-columns:20px minmax(0,1fr) 44px;gap:3px 9px}.lg-organizer-widget>.widget-instance-head>h2{grid-column:2;grid-row:1;margin:0}.lg-organizer-widget>.widget-instance-head>.design-icon{grid-column:1;grid-row:1}.lg-organizer-widget>.widget-instance-head>.widget-badge{grid-column:2;grid-row:2;justify-self:start}.lg-organizer-widget>.widget-instance-head>.button{grid-column:3;grid-row:1/3}
 .lg-widget-content.lg-main-day,.lg-widget-content.lg-quick-capture,.lg-widget-content.lg-carry-review{border:0;background:none;margin:0;padding:0;border-radius:0}.lg-widget-content.lg-main-day .lg-main-name{margin-top:0}.lg-widget-content.lg-quick-capture .lg-quick-options{flex-wrap:wrap}
 .app{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px) + var(--lg-focus-space,0px))}
@@ -2759,7 +2760,7 @@ h3.task-title { margin:0; }
       title: "Время для важного",
       symbol: "⏱",
       description: "Таймер подходов: самостоятельно или для главного дела.",
-      note: "Без наград и автоматического учёта ключевых действий.",
+      note: "После подхода можно подтвердить минуты и выбрать ключевое действие. Выполнение дела — отдельно.",
       category: "Фокус и время",
       system: true,
       available: true,
@@ -3158,7 +3159,8 @@ h3.task-title { margin:0; }
       purchases: [],
       treats: [],
       treatUses: [],
-      focus: {status:"ready", id:null, minutes:5, name:"", taskId:null, remaining:300000, endsAt:null, notified:true, natural:false},
+      focus: {status:"ready", id:null, minutes:5, name:"", taskId:null, remaining:300000, endsAt:null, notified:true, natural:false, elapsedMs:0, endedAt:null},
+      focusLog: [],
       dayPlans: {},
       planReviews: {},
       mainDayTasks: {},
@@ -3331,6 +3333,13 @@ h3.task-title { margin:0; }
         (["running","paused"].includes(f.status) && f.natural) ||
         (f.status === "completed" && (f.remaining !== 0 || (!f.natural && !f.notified)))) fail("Повреждены данные таймера.");
     if(f.taskId!==null&&(!validId(f.taskId)||f.status==='ready'||!validName(f.name)))fail('Повреждена связь таймера с делом.');
+    if(f.elapsedMs===undefined)f.elapsedMs=f.status==='completed'&&f.natural?f.minutes*60000:0;
+    if(f.endedAt===undefined)f.endedAt=null;
+    const focusIso=x=>typeof x==='string'&&Number.isFinite(Date.parse(x))&&new Date(x).toISOString()===x;
+    if(!integer(f.elapsedMs,0,f.minutes*60000)||(f.endedAt!==null&&!focusIso(f.endedAt))||
+      (f.status!=='completed'&&(f.elapsedMs!==0||f.endedAt!==null))||
+      (f.status==='completed'&&f.natural&&f.elapsedMs!==f.minutes*60000))fail('Повреждён результат таймера.');
+    normalizeFocusLog(data);
         const blocks = new Set();
 
     for (const item of data.blocks) {
@@ -7246,6 +7255,39 @@ h3.task-title { margin:0; }
     k.entries = k.entries.filter(e => actions.get(e.actionId).deleted !== true);
   }
 
+  // Receipts prevent recording a session again, even if its linked time is later removed.
+  function normalizeFocusLog(data) {
+    if(data.focusLog===undefined)data.focusLog=[];
+    const bad=()=>fail('Повреждена история подходов.');
+    if(!Array.isArray(data.focusLog))bad();
+    const records=new Map(),iso=x=>typeof x==='string'&&Number.isFinite(Date.parse(x))&&new Date(x).toISOString()===x;
+    for(const r of data.focusLog){
+      if(!r||typeof r!=='object'||Array.isArray(r)||!validId(r.id)||records.has(r.id)||
+        !['recorded','skipped'].includes(r.status)||(r.taskId!==null&&!validId(r.taskId))||
+        typeof r.name!=='string'||r.name.length>120||!integer(r.plannedMinutes,1,180)||
+        !integer(r.elapsedMs,0,r.plannedMinutes*60000)||(r.endedAt!==null&&!iso(r.endedAt))||
+        !iso(r.confirmedAt)||!validDate(r.date)||
+        (r.status==='recorded'?!integer(r.minutes,1,180):r.minutes!==0)||
+        ((r.actionId===null)!==(r.entryId===null))||
+        (r.actionId!==null&&(!validId(r.actionId)||!validId(r.entryId)||!data.keyActions.actions.some(a=>a.id===r.actionId)))||
+        (r.status==='skipped'&&r.actionId!==null))bad();
+      records.set(r.id,r);
+    }
+    const links=new Set(),entries=new Map(data.keyActions.entries.map(e=>[e.id,e]));
+    for(const e of data.keyActions.entries){
+      if(e.sourceFocusId===undefined)continue;
+      const r=records.get(e.sourceFocusId);
+      if(!validId(e.sourceFocusId)||links.has(e.sourceFocusId)||!r||r.status!=='recorded'||
+        r.entryId!==e.id||r.actionId!==e.actionId||r.date!==e.date)bad();
+      links.add(e.sourceFocusId);
+    }
+    for(const r of records.values()){
+      const e=entries.get(r.entryId);
+      if(e&&e.sourceFocusId!==r.id)bad();
+    }
+    if(records.has(data.focus.id)&&data.focus.status!=='completed')bad();
+  }
+
   function keyLocalNow() {
     const d = new Date();
     return dateKey(d) + "T" + [d.getHours(), d.getMinutes(), d.getSeconds()].map(x => String(x).padStart(2, "0")).join(":");
@@ -10002,7 +10044,7 @@ h3.task-title { margin:0; }
       uiFeedback('Сначала заверши текущий подход.');return false;
     }
     primeAudio();
-    if(!focusSave(f=>{f.id=uid();f.taskId=id;f.name=task.name;f.minutes=minutes;f.status='running';f.remaining=minutes*60000;f.endsAt=focusNow()+f.remaining;f.notified=false;f.natural=false;}))return false;
+    if(!focusSave(f=>{f.id=uid();f.taskId=id;f.name=task.name;f.minutes=minutes;f.status='running';f.remaining=minutes*60000;f.endsAt=focusNow()+f.remaining;f.notified=false;f.natural=false;f.elapsedMs=0;f.endedAt=null;}))return false;
     redrawFocus();return true;
   }
   function renderFocusSession() {
@@ -10016,20 +10058,81 @@ h3.task-title { margin:0; }
     if(action==="resume" && f.status!=="paused") return;
     if(action==="reset" && f.status!=="completed") return;
     if(action==="stop" && !["running","paused"].includes(f.status)) return;
-    if(action==="stop" && !confirm("Завершить подход сейчас? Можно вернуться позже.")) return;
+    if(action==="reset")return decideFocusTime(id,'skipped',0,null,today());
+    if(action==="stop" && !confirm("Завершить подход сейчас и уточнить фактическое время?")) return;
     if(action==="pause" && focusLeft(f)===0) { focusTick(); return; }
     if(focusSave(x=>{
-      if(action==="start") { x.id=uid(); x.taskId=null; x.status="running"; x.remaining=x.minutes*60000; x.endsAt=focusNow()+x.remaining; x.notified=false; x.natural=false; }
+      if(action==="start") { x.id=uid(); x.taskId=null; x.status="running"; x.remaining=x.minutes*60000; x.endsAt=focusNow()+x.remaining; x.notified=false; x.natural=false; x.elapsedMs=0; x.endedAt=null; }
       if(action==="pause") { x.remaining=focusLeft(x); x.endsAt=null; x.status="paused"; }
       if(action==="resume") { x.endsAt=focusNow()+x.remaining; x.status="running"; }
-      if(action==="stop" || action==="reset") { x.status="ready"; x.id=null; x.minutes=5; x.name=""; x.taskId=null; x.endsAt=null; x.remaining=300000; x.notified=true; x.natural=false; }
+      if(action==="stop") { x.elapsedMs=x.minutes*60000-focusLeft(x);x.endedAt=new Date().toISOString();x.status='completed';x.endsAt=null;x.remaining=0;x.notified=true;x.natural=false; }
     })) {
       if(action==="stop" || action==="reset") focusCustomMode=false;
       redrawFocus();
       return true;
     }
   }
-  let focusCustomMode = false;
+  let focusCustomMode = false,focusConfirmDraft=null,focusHistoryExpanded=false;
+  function focusReset(f) {
+    Object.assign(f,{status:'ready',id:null,minutes:5,name:'',taskId:null,endsAt:null,remaining:300000,notified:true,natural:false,elapsedMs:0,endedAt:null});
+  }
+  function decideFocusTime(id,status,minutes,actionId,expectedDay) {
+    const saved=transact(data=>{
+      if(today()!==expectedDay)fail('Наступил новый день. Проверь дату записи и повтори подтверждение.');
+      const f=data.focus;
+      if(f.id!==id||f.status!=='completed'||data.focusLog.some(r=>r.id===id))fail('Этот подход уже разобран или изменился.');
+      if(!['recorded','skipped'].includes(status)||(status==='recorded'&&!integer(minutes,1,180)))fail('Введи целое число минут от 1 до 180.');
+      let entryId=null;
+      if(status==='recorded'&&actionId!==null){
+        const action=keyActive(data,actionId);entryId=uid();
+        keyCondition(data,action,expectedDay,true);
+        data.keyActions.entries.push({id:entryId,actionId,date:expectedDay,minutes,createdAt:new Date().toISOString(),sourceFocusId:id});
+        keyReconcile(data,action,expectedDay);
+      }
+      data.focusLog.push({id,status,taskId:f.taskId,name:f.name,plannedMinutes:f.minutes,elapsedMs:f.elapsedMs,endedAt:f.endedAt,
+        confirmedAt:new Date().toISOString(),date:expectedDay,minutes:status==='recorded'?minutes:0,actionId:status==='recorded'?actionId:null,entryId});
+      focusReset(f);
+    },false);
+    if(saved){focusConfirmDraft=null;focusCustomMode=false;uiToast(status==='recorded'?'Время подхода записано':'Подход закрыт без записи времени');}
+    return saved;
+  }
+  function focusConfirmation(f) {
+    const date=today(),form=el('form','focus-log-form');form.setAttribute('aria-label','Подтвердить время подхода');
+    if(state.focusLog.some(r=>r.id===f.id)){
+      form.append(el('p','focus-hint','Этот подход уже разобран.'),btn('Закрыть результат','button secondary full',()=>{if(focusSave(focusReset))redrawFocus();},true));return form;
+    }
+    if(focusConfirmDraft?.id!==f.id)focusConfirmDraft={id:f.id,minutes:String(Math.max(1,Math.round(f.elapsedMs/60000))),actionId:''};
+    const draft=focusConfirmDraft,label=el('label','','Фактически минут'),input=el('input');
+    input.id='focus-confirm-minutes';input.type='number';input.min='1';input.max='180';input.step='1';input.inputMode='numeric';input.value=draft.minutes;input.required=true;input.disabled=!healthy;label.htmlFor=input.id;
+    const actionLabel=el('label','','Ключевое действие · необязательно'),select=el('select');select.id='focus-confirm-action';actionLabel.htmlFor=select.id;select.disabled=!healthy;
+    const none=el('option','','Без ключевого действия');none.value='';select.append(none);
+    for(const a of state.keyActions.actions.filter(a=>a.status==='active'&&a.deleted!==true)){const option=el('option','',a.name);option.value=a.id;select.append(option);}select.value=draft.actionId;
+    const submit=el('button','button full','Записать время');submit.type='submit';submit.disabled=!healthy;
+    const update=()=>{const n=Number(input.value);submit.textContent=integer(n,1,180)?'Записать '+uiAmount(n,['минуту','минуты','минут']):'Записать время';};
+    input.addEventListener('input',()=>{draft.minutes=input.value;input.setCustomValidity('');update();});select.addEventListener('change',()=>draft.actionId=select.value);update();
+    form.append(el('p','focus-hint','Оценка по таймеру — уточни фактическое время. Запись за сегодня: '+dateLabel()+'.'),label,input,actionLabel,select,
+      el('p','focus-hint','Без привязки время сохранится в истории подходов. С привязкой — также в учёте выбранного действия; его дневная награда пересчитается.'),submit,
+      btn('Не записывать','button secondary full',()=>decideFocusTime(f.id,'skipped',0,null,date),true));
+    if(f.endedAt&&dateKey(new Date(f.endedAt))!==date)form.prepend(el('p','focus-hint','Подход завершился '+new Date(f.endedAt).toLocaleDateString('ru-RU')+'. Минуты будут записаны за сегодняшний день.'));
+    form.addEventListener('submit',event=>{
+      event.preventDefault();if(!form.isConnected)return;
+      const n=Number(input.value);if(!/^\d+$/.test(input.value)||!integer(n,1,180)){input.setCustomValidity('Введи целое число минут от 1 до 180.');input.reportValidity();return;}
+      decideFocusTime(f.id,'recorded',n,select.value||null,date);
+    });return form;
+  }
+  function focusHistory() {
+    if(!state.focusLog.length)return null;
+    const box=el('details','focus-log-history');box.append(el('summary','','История подходов · '+state.focusLog.length));
+    const records=[...state.focusLog].reverse();
+    for(const r of focusHistoryExpanded?records:records.slice(0,5)){
+      const row=el('div','focus-log-row'),entry=r.entryId?state.keyActions.entries.find(e=>e.id===r.entryId):null;
+      const action=r.actionId?state.keyActions.actions.find(a=>a.id===r.actionId):null;
+      const value=r.status==='skipped'?'Без записи времени':r.entryId&&!entry?'Запись времени удалена':keyDuration(entry?entry.minutes:r.minutes)+(action?' · '+action.name:' · без ключевого действия');
+      row.append(el('strong','',r.name||'Подход к важному'),el('p','focus-hint',r.date+' · '+value));box.append(row);
+    }
+    if(records.length>5)box.append(btn(focusHistoryExpanded?'Свернуть историю':'Показать все подходы','button secondary full',()=>{focusHistoryExpanded=!focusHistoryExpanded;redrawFocus();screen.querySelector('.focus-log-history')?.setAttribute('open','');}));
+    return box;
+  }
   function updateFocusProgress(progress,f) {
     const total=f.minutes*60000, value=Math.max(0,Math.min(100,(total-focusLeft(f))/total*100));
     progress.firstChild.style.width=value+"%";
@@ -10097,15 +10200,15 @@ h3.task-title { margin:0; }
       const actions=el("div","focus-actions");
       if(f.status==="completed") {
         card.append(el("h3","focus-result-text",f.natural?"Подход завершён":"Подход завершён. Можно вернуться позже"));
-        if(f.natural)card.append(el("p","focus-result-text",`Ты выделил ${f.minutes} минут на важное`));
         actions.classList.add("focus-actions-completed");
-        actions.append(btn("Ещё подход","button secondary full",()=>focusAction("reset",f.id)));
+        actions.append(focusConfirmation(f));
       } else {
         card.append(el("p","focus-hint",f.status==="paused"?"На паузе":"Сейчас — только одно дело"));
         actions.append(btn(f.status==="paused"?"Продолжить":"Пауза","button secondary",()=>focusAction(f.status==="paused"?"resume":"pause",f.id)),btn("Завершить","button secondary",()=>focusAction("stop",f.id)));
       }
       card.append(actions);
     }
+    const history=focusHistory();if(history)card.append(history);
     return card;
   }
   function updateFocusMini() {
@@ -10123,7 +10226,7 @@ h3.task-title { margin:0; }
     title.setAttribute('aria-label','Открыть подход: '+(f.name||'Время для важного'));
     const time=el('span','focus-mini-time',focusTime(focusLeft(f)));
     focusMini.replaceChildren(title,time);
-    if(f.status==='completed')focusMini.append(btn('Готово','button secondary',()=>focusAction('reset',f.id),true));
+    if(f.status==='completed')focusMini.append(btn('Записать','button secondary',()=>go('focus')));
     else{
       const pause=btn(f.status==='paused'?'▶':'Ⅱ','button secondary',()=>focusAction(f.status==='paused'?'resume':'pause',f.id),true);
       pause.replaceChildren(designIcon(f.status==='paused'?'play':'pause'));pause.setAttribute('aria-label',f.status==='paused'?'Продолжить подход':'Пауза подхода');
@@ -10136,7 +10239,7 @@ h3.task-title { margin:0; }
     if(!healthy)return;
     let f=state.focus;
     if(f.status==="running"&&focusLeft(f)===0) {
-      if(!focusSave(x=>{x.status="completed";x.remaining=0;x.endsAt=null;x.natural=true;}))return;
+      if(!focusSave(x=>{x.elapsedMs=x.minutes*60000;x.endedAt=new Date(x.endsAt).toISOString();x.status="completed";x.remaining=0;x.endsAt=null;x.natural=true;}))return;
       redrawFocus(); f=state.focus;
     }
     if(f.status==="completed"&&!f.notified&&!document.hidden) {
