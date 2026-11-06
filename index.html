@@ -2651,6 +2651,38 @@ h3.task-title { margin:0; }
   .widget-instance .lg-carry-actions .button {font-size:11px;padding:8px 6px}
 }
 </style>
+<style id="lg-graphite-widget-details">
+/* Graphite: expanded widget states and the same quick capture in Inbox. */
+.happiness-dialog .happiness-chat {background:var(--wg-input);border-color:var(--wg-edge);border-radius:11px}
+.happiness-dialog .happiness-message {background:#ffffff04;border:1px solid var(--wg-line);border-radius:12px 12px 12px 4px;padding:12px}
+.happiness-dialog .happiness-own {background:#ffda2908;border-color:#ffda2930;border-radius:12px 12px 4px 12px}
+.happiness-dialog :is(.happiness-collection-entry,.happiness-library-info) {background:#ffffff03;border-color:var(--wg-edge);border-radius:11px}
+.happiness-dialog .happiness-origin {color:var(--green)}
+.happiness-dialog .happiness-message-text {line-height:1.6}
+.happiness-dialog .ui-message-label {color:var(--muted)!important}
+.happiness-play-header .button.secondary {padding:0}
+.happiness-collection-dialog .happiness-collection-content>.button:last-child {position:sticky;bottom:0;z-index:1;box-shadow:0 -8px 18px #151815,0 22px 0 #151815}
+.happiness-dialog :is(.happiness-typing,.happiness-turn,.happiness-file-label,.happiness-disclaimer) {color:var(--muted)}
+.key-dialog details {margin-top:15px;padding-top:10px;border-top:1px solid var(--wg-line)}
+.key-dialog details>summary {font-size:13px;line-height:1.5;color:var(--text)}
+.key-dialog .key-entry {border-top:1px solid var(--wg-line);gap:10px;padding:9px 0}
+.key-dialog .key-entry>.meta {min-width:0;overflow-wrap:anywhere}
+.focus-card .focus-log-row {background:#ffffff03;border:1px solid var(--wg-line);border-radius:9px;padding:11px;margin-top:8px}
+.focus-card .focus-log-history>summary {color:var(--text)}
+.focus-card .focus-log-row strong {line-height:1.5}
+.focus-mini-title small {font-size:10px;color:#aeb2a6;letter-spacing:0}
+:is(.day-graph-editor .day-graph-note,.day-graph-editor .day-graph-progress) {color:var(--muted)}
+.lg-quick-capture:not(.lg-widget-content) {--muted:#aeb2a6;background:linear-gradient(145deg,#1b1e19,#131613);border-color:#ffffff24;border-radius:16px;box-shadow:0 8px 28px #0002}
+.lg-quick-capture:not(.lg-widget-content) :is(.lg-quick-label,.lg-quick-reward,.check-label) {color:var(--muted)}
+.lg-quick-capture:not(.lg-widget-content) .lg-quick-entry input {background:#0a0d0a;border-color:#ffffff24;border-radius:9px;color:#f3f1e8}
+.lg-quick-capture:not(.lg-widget-content) .lg-quick-submit {border-radius:9px;font-weight:550}
+/* The minutes field belongs only to existing Key Actions forms. */
+#editor:has(#edit-minutes) {--border:#ffffff24;--muted:#aeb2a6;background:linear-gradient(145deg,#1b1e19,#131613);border-color:var(--border);border-radius:16px}
+#editor:has(#edit-minutes) :is(input,textarea,select) {background:#0a0d0a;color:#f3f1e8;border-color:var(--border);border-radius:9px;font-size:16px}
+#editor:has(#edit-minutes) .button {border-radius:9px;font-weight:550;font-size:13px}
+#editor:has(#edit-minutes) .button.secondary {background:#ffffff06;border-color:var(--border);color:#f3f1e8}
+#editor:has(#edit-minutes) .form-actions {background:#151815;box-shadow:0 -9px 12px #151815}
+</style>
 </head>
 <body>
 <div class="app">
