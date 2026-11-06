@@ -2521,6 +2521,11 @@ h3.task-title { margin:0; }
 
 </style>
 <style>
+.lg-main-day{margin:20px 0 16px;padding:16px;border:1px solid #d5c72e63;border-radius:17px;background:linear-gradient(135deg,#222515,#12180f)}
+.lg-main-heading{display:flex;align-items:center;gap:9px;color:var(--accent)}.lg-main-heading h2{font-size:12px;letter-spacing:.04em;margin:0}.lg-main-heading .design-icon{width:17px;height:17px;flex:none}
+.lg-main-name{font-size:19px;line-height:1.4;margin:12px 0;overflow-wrap:anywhere}.lg-main-note{font-size:12px!important;line-height:1.6;color:#b9c3af;margin:10px 0!important}
+.lg-main-actions{display:flex;align-items:center;gap:10px}.lg-main-actions .button{min-height:44px;padding:10px 18px}.lg-main-picker{margin-top:10px;border-top:1px solid #d5c72e27}.lg-main-picker summary{padding:12px 0 3px;min-height:44px;cursor:pointer;font-size:12px;color:#ddd991}
+.lg-main-form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px;padding-top:9px}.lg-main-form label{grid-column:1/-1;font-size:12px;color:#b9c3af}.lg-main-form select{width:100%;min-width:0;min-height:44px;background:#11170e;color:var(--text);border:1px solid #c7c6644a;border-radius:10px;padding:9px;font:inherit;font-size:12px}.lg-main-form .button,.lg-main-clear{min-height:44px;padding:9px 13px;font-size:12px}.lg-main-clear{margin-top:12px}.lg-main-mark{color:var(--accent)}.lg-main-day.is-done{border-color:#98c6ad66;background:linear-gradient(135deg,#1a2a20,#121810)}.lg-main-day.is-done .lg-main-heading{color:var(--green)}
 .lg-carry-review{border:1px solid #aebba32e;border-radius:15px;padding:0 15px;margin:0 0 21px;background:#151c13}
 .lg-carry-review summary{cursor:pointer;padding:13px 0;font-size:13px;color:#e0d87f;min-height:46px}
 .lg-carry-help{font-size:12px!important;line-height:1.6;color:#aab99d;margin:0 0 12px!important}
@@ -3130,6 +3135,7 @@ h3.task-title { margin:0; }
       focus: {status:"ready", id:null, minutes:5, name:"", remaining:300000, endsAt:null, notified:true, natural:false},
       dayPlans: {},
       planReviews: {},
+      mainDayTasks: {},
       dayPlanDate: null
     };
   }
@@ -3539,6 +3545,9 @@ h3.task-title { margin:0; }
     if(data.planReviews===undefined)data.planReviews={};
     if(!data.planReviews||typeof data.planReviews!=='object'||Array.isArray(data.planReviews))fail('Повреждены решения по прошлым планам.');
     for(const [date,ids]of Object.entries(data.planReviews))if(!validDate(date)||!Array.isArray(ids)||!ids.every(validId)||new Set(ids).size!==ids.length)fail('Повреждены решения по прошлым планам.');
+    if(data.mainDayTasks===undefined)data.mainDayTasks={};
+    if(!data.mainDayTasks||typeof data.mainDayTasks!=='object'||Array.isArray(data.mainDayTasks))fail('Повреждён выбор главного дела дня.');
+    for(const [date,id]of Object.entries(data.mainDayTasks))if(!validDate(date)||!validId(id))fail('Повреждён выбор главного дела дня.');
     if (data.dayPlanDate === undefined) data.dayPlanDate = null;
     if (data.dayPlanDate !== null && !validDate(data.dayPlanDate)) {
       fail("Некорректная дата плана.");
@@ -3688,6 +3697,7 @@ h3.task-title { margin:0; }
       const draft = clone(state);
       if (!selfCare) ensureDay(draft);
       change(draft);
+      if(draft.mainDayTasks[today()]&&!mainDayTask(draft))delete draft.mainDayTasks[today()];
       if (awardDayBonus) reconcileDayBonus(draft);
             const money = totals(draft);
 
@@ -6039,6 +6049,7 @@ h3.task-title { margin:0; }
     const card=el('article','card compact-task-card lg-card-v2'+(record?' done':''));uiEntity(card,'task',task.id);
     const schedule=!task.weekdays.length?'Разовое':task.weekdays.length===7?'Ежедневно':task.weekdays.map(day=>WEEKDAYS[day-1]).join(', ');
     card.append(lgCardTop(task,'tasks',record?(record.date===today()?'Выполнено сегодня':'Выполнено '+record.date):schedule,'list',!!record),el('div','task-title lg-c-title',task.name));
+    if(mainDayTask()?.id===task.id){const mark=el('div','lg-c-context lg-main-mark');mark.append(designIcon('flag'),el('span','','Главное сегодня'));card.append(mark);}
     if(page==='day'){const context=el('div','lg-c-context');context.append(designIcon(task.block===INBOX_BLOCK_ID?'inbox':'book'),taskBlockBadge(task));card.append(context);}
     const goal=task.goalId?state.goals.find(x=>x.id===task.goalId):null;
     if(goal){const context=el('div','lg-c-context goal-context');context.append(designIcon('flag'),el('span','','Цель: '+goal.name+(goal.completedDate===null?'':' · достигнута')));card.append(context);}
@@ -9031,6 +9042,52 @@ h3.task-title { margin:0; }
     screen.append(box);
   }
 
+  function mainDayTask(data=state) {
+    const id=data.mainDayTasks[today()];
+    const task=plannedTasks(data).find(x=>x.id===id);
+    if(!task)return null;
+    const record=completion(data,task);
+    return record&&record.date!==today()?null:task;
+  }
+  function chooseMainDayTask(id,expectedDay) {
+    return transact(data=>{
+      if(today()!==expectedDay)fail('Наступил новый день. Выбери главное дело заново.');
+      if(id===null){delete data.mainDayTasks[today()];return;}
+      const task=plannedTasks(data).find(x=>x.id===id);
+      if(!task||completion(data,task))fail('Выбери невыполненное дело из плана на сегодня.');
+      data.mainDayTasks[today()]=id;
+    },false);
+  }
+  function renderMainDayTask() {
+    const date=today(),task=mainDayTask(),done=task&&!!completion(state,task,true);
+    const choices=favorites(view.planned.filter(x=>!completion(state,x))),box=el('section','lg-main-day'+(done?' is-done':''));
+    box.setAttribute('aria-label','Главное дело дня');
+    const heading=el('div','lg-main-heading');heading.append(designIcon(done?'check':'flag'),el('h2','',done?'Главное выполнено':'Главное дело дня'));box.append(heading);
+    if(task){
+      box.append(el('h3','lg-main-name',task.name));
+      const controls=el('div','lg-main-actions');
+      if(!done){
+        const complete=btn('Выполнить','button',()=>{if(today()!==date){render();uiFeedback('Наступил новый день. Проверь план.');return;}toggleTask(task.id);},true);
+        complete.setAttribute('aria-label','Выполнить главное дело: '+task.name);controls.append(complete);
+      }else controls.append(el('p','lg-main-note','Главный шаг на сегодня сделан.'));
+      box.append(controls);
+    }else box.append(el('p','lg-main-note',choices.length?'Выбери одно дело, с которого хочешь начать.':'Добавь дело на сегодня — и сможешь выбрать главное.'));
+    if(choices.length||task){
+      const picker=el('details','lg-main-picker');picker.append(el('summary','',task?'Изменить выбор':'Выбрать главное'));
+      if(choices.length){
+        const form=el('form','lg-main-form'),label=el('label','','Дело из сегодняшнего плана'),select=el('select');
+        select.id='lg-main-select';label.htmlFor=select.id;select.required=true;select.disabled=!healthy;
+        const placeholder=el('option','','Выбери дело');placeholder.value='';placeholder.disabled=true;placeholder.selected=true;select.append(placeholder);
+        for(const item of choices){const option=el('option','',item.name);option.value=item.id;select.append(option);}
+        const submit=el('button','button secondary','Выбрать');submit.type='submit';submit.disabled=!healthy;
+        form.append(label,select,submit);form.addEventListener('submit',event=>{event.preventDefault();if(!form.isConnected||!select.value)return;if(chooseMainDayTask(select.value,date))requestAnimationFrame(()=>screen.querySelector('.lg-main-day')?.focus({preventScroll:true}));});picker.append(form);
+      }
+      if(task){const clear=btn('Снять отметку','button secondary lg-main-clear',()=>chooseMainDayTask(null,date),true);picker.append(clear);}
+      box.append(picker);
+    }
+    box.tabIndex=-1;screen.append(box);
+  }
+
   function renderDay() {
     const dayNav = el("div", "page-links blocks-nav lg-day-nav");
     dayNav.setAttribute("role", "group");
@@ -9053,6 +9110,7 @@ h3.task-title { margin:0; }
       el("h1", "", "Конструктор дня"),
       el("p", "", "Собери день который хочешь прожить")
     );
+    renderMainDayTask();
     screen.append(quickTaskCapture('day'));
     renderCarryovers();
     lgDayFold("widgets", "Виджеты", target => renderDayWidgets(target));
