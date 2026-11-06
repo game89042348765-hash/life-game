@@ -41,6 +41,7 @@
   const splash = document.createElement('dialog');
   splash.className = 'lg-sunrise';
   splash.setAttribute('aria-label','Заставка LifeGame. Больше жизни. В каждом дне.');
+  splash.setAttribute('tabindex','-1');
   splash.innerHTML = ` <div class="lg-sunrise-ambient-back"></div>
  <div class="lg-sunrise-frame">
   <div class="lg-sunrise-poster"></div>
@@ -85,8 +86,7 @@
   <div class="lg-sunrise-loading" aria-hidden="true"><div class="lg-sunrise-loading-fill"></div></div>
  </div>
     <div class="lg-sunrise-controls">
-      <button type="button" data-sunrise="skip" autofocus>Пропустить</button>
-      <button type="button" data-sunrise="sound" hidden>Включить звук</button>
+      <button type="button" data-sunrise="sound" aria-label="Включить звук" aria-pressed="false"></button>
     </div>
     <button type="button" class="lg-sunrise-disable" data-sunrise="disable">Не показывать при запуске</button>`;
   document.body.append(splash);
@@ -113,7 +113,15 @@
     played = false;
   }
   function syncSoundButton() {
-    enableSound.hidden = !soundOn() || !audio || audio.state === 'running';
+    const available = !!(window.AudioContext || window.webkitAudioContext) && !sounds.disabled;
+    const audible = soundOn() && audio?.state === 'running';
+    enableSound.disabled = !available;
+    const label = !available ? 'Звук недоступен' : audible ? 'Выключить звук' : 'Включить звук';
+    enableSound.setAttribute('aria-label',label);
+    enableSound.setAttribute('title',label);
+    enableSound.setAttribute('aria-pressed',String(audible));
+    enableSound.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4Z"/><path d="' +
+      (audible ? 'M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14' : 'm16 9 5 6m0-6-5 6') + '"/></svg>';
   }
   function playNotes() {
     if (!active || played || !soundOn() || !audio || audio.state !== 'running') return;
@@ -167,6 +175,7 @@
       }
       previousFocus = document.activeElement;
       splash.showModal();
+      splash.focus({preventScroll:true});
       active = true;
       document.documentElement.classList.add('lg-sunrise-open');
       splash.classList.add('is-playing');
@@ -178,8 +187,15 @@
       imageReady = null;
     } finally { pending = false; }
   }
-  splash.querySelector('[data-sunrise="skip"]').addEventListener('click',finish);
-  enableSound.addEventListener('click',requestSound);
+  enableSound.addEventListener('click',() => {
+    if (soundOn() && audio?.state === 'running') {
+      sounds.click();
+    } else {
+      if (!sounds.checked && !sounds.disabled) sounds.click();
+      requestSound();
+    }
+    syncSoundButton();
+  });
   splash.querySelector('[data-sunrise="disable"]').addEventListener('click',() => {
     if (save({...prefs,mode:'off'})) { status.textContent = 'Автопоказ выключен. Ручной просмотр доступен.'; finish(); }
     else splash.querySelector('[data-sunrise="disable"]').textContent = 'Не удалось сохранить · повторить';
@@ -202,6 +218,7 @@
       if (prefs.mode === 'off' && active) finish();
     }
     if (!soundOn()) stopAudio();
+    syncSoundButton();
   });
   show();
 })();
