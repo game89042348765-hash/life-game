@@ -2521,6 +2521,7 @@ h3.task-title { margin:0; }
 
 </style>
 <style>
+.first-step-entry label,.lg-reward-picker label{display:block;font-size:12px;margin:12px 0 6px}.first-step-entry input,.first-step-entry select,.lg-reward-picker select{width:100%;min-width:0;min-height:44px;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);font:inherit;font-size:14px}.first-step-entry .button,.lg-my-reward .button{min-height:44px;margin-top:10px;font-size:12px}.first-step-context,.lg-my-reward h3{overflow-wrap:anywhere}.first-step-context,.lg-reward-status{color:var(--green)}.lg-my-reward h3{font-size:18px;margin:6px 0}.lg-reward-picker{margin-top:14px;border-top:1px solid var(--border);padding-top:10px}.lg-reward-picker summary{cursor:pointer;font-size:12px;min-height:44px;padding:8px 0}.lg-my-reward .meta{overflow-wrap:anywhere}
 .lg-widget-mode{display:flex;justify-content:flex-end;margin:14px 0}.lg-widget-mode .button{min-height:44px;padding:10px 14px;font-size:12px}.lg-widget-manage-note{font-size:12px;line-height:1.6;margin:0 0 14px}.widget-managing .widget-instance-head{margin-bottom:0}.widget-managing .widget-controls{margin-top:12px}.widget-managing .widget-controls .button{min-height:44px}
 .lg-day-result{min-width:0}.lg-result-time{display:flex;flex-direction:column;gap:5px}.lg-result-caption{font-size:11px;color:var(--muted)}.lg-result-time>strong{font-size:27px;line-height:1.3;font-weight:650;color:var(--green);overflow-wrap:anywhere;font-variant-numeric:tabular-nums}.lg-day-result .lg-result-note{font-size:11px;color:var(--muted);line-height:1.6;margin:5px 0 10px;overflow-wrap:anywhere}.lg-result-row{display:flex;align-items:flex-start;gap:10px;border-top:1px solid #ffffff0c;padding-top:13px;margin-top:13px}.lg-result-row>.design-icon{width:17px;height:17px;flex:none;margin-top:2px;color:var(--accent)}.lg-result-row>div{min-width:0}.lg-result-row strong{font-size:13px;font-weight:600;overflow-wrap:anywhere}.lg-result-row.is-done strong,.lg-result-row.is-done>.design-icon{color:var(--green)}.lg-day-result>.button{font-size:12px;min-height:44px;margin-top:12px}
 .focus-log-form{min-width:0}.focus-log-form label{display:block;font-size:12px;margin:12px 0 6px}.focus-log-form input,.focus-log-form select{display:block;width:100%;min-width:0;min-height:44px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);padding:9px;font:inherit;font-size:14px}.focus-log-form .button{margin-top:10px;min-height:44px}.focus-log-history{margin-top:18px;border-top:1px solid var(--border);padding-top:10px}.focus-log-history summary{font-size:12px;min-height:44px;padding-top:8px;cursor:pointer;color:var(--muted)}.focus-log-row{padding:10px 0;border-top:1px solid #ffffff0b;overflow-wrap:anywhere}.focus-log-row strong{font-size:13px}.focus-log-row .focus-hint{margin-top:4px}.focus-actions-completed>.focus-log-form{width:100%}
@@ -2724,6 +2725,7 @@ h3.task-title { margin:0; }
   // Для готового виджета: available=true и render — функция,
   // возвращающая DOM-узел. Сохранение содержит только его стабильный ID.
   const WIDGET_REGISTRY = Object.freeze({
+    myReward:Object.freeze({id:'myReward',title:'Моя награда',symbol:'◇',description:'Выбранный бонус и сколько до него осталось.',note:'Выбери награду из своих Бонусов.',category:'Итоги и мотивация',system:true,available:true,placements:Object.freeze(['widgets','day']),render:()=>myRewardCard()}),
     dayResult: Object.freeze({
       id:'dayResult',title:'Результат дня',symbol:'✓',
       description:'Записанное время, главное дело и продвижение квестов за сегодня.',
@@ -2805,9 +2807,9 @@ h3.task-title { margin:0; }
       title: "Первый шаг",
       symbol: "➜",
       description: "Короткий ритуал, чтобы попробовать начать.",
-      note: "Пять секунд отсчёта со звуком. Без наград и записей.",
+      note: "После ритуала — подход на 2 минуты к выбранному делу. Можно отказаться или открыть свободный ритуал.",
       category: "Фокус и время",
-      system: false,
+      system: true,
       available: true,
       placements: Object.freeze(["widgets", "day"]),
       render: () => firstStepCard()
@@ -3031,15 +3033,25 @@ h3.task-title { margin:0; }
   }
 
   function firstStepCard() {
-    const card = el("div", "first-step-entry");
-    card.append(
-      el("p", "", "Иногда самое сложное — просто сделать первый шаг. Попробуем сделать его вместе."),
-      btn("Открыть виджет", "button full widget-primary", openFirstStepRitual)
-    );
-    return card;
+    const card=el('div','first-step-entry'),date=today(),tasks=plannedTasks(state).filter(task=>!completion(state,task));
+    const main=mainDayTask(),label=el('label','','С какого дела начнём?'),select=el('select');select.id='first-step-task';label.htmlFor=select.id;
+    const none=el('option','','Выбери дело на сегодня');none.value='';select.append(none);
+    for(const task of tasks){const option=el('option','',task.name);option.value=task.id;select.append(option);}
+    if(main&&tasks.some(task=>task.id===main.id))select.value=main.id;
+    const stepLabel=el('label','','Маленький первый шаг · необязательно'),step=el('input');step.id='first-step-small';step.maxLength=120;step.placeholder='Например, открыть документ';stepLabel.htmlFor=step.id;
+    const start=btn('Попробовать 2 минуты','button full widget-primary',()=>{
+      const task=plannedTasks(state).find(task=>task.id===select.value&&!completion(state,task));
+      if(!task||today()!==date){render();uiFeedback('План изменился. Выбери дело заново.');return;}
+      openFirstStepRitual({id:task.id,name:task.name,date,step:step.value.trim()});
+    },true);
+    const update=()=>start.disabled=!healthy||!select.value||state.focus.status!=='ready';select.addEventListener('change',update);update();
+    card.append(el('p','','Начни с небольшой части дела. Отметить выполнение можно отдельно.'),label,select,stepLabel,step,start);
+    if(!tasks.length)card.append(el('p','meta','Добавь дело на сегодня в Конструкторе.'));
+    if(state.focus.status!=='ready')card.append(btn('Открыть текущий подход','button secondary full',()=>go('focus')));
+    card.append(btn('Ритуал без выбранного дела','button secondary full',()=>openFirstStepRitual()));return card;
   }
 
-  function openFirstStepRitual() {
+  function openFirstStepRitual(context=null) {
     // Только временное состояние текущего открытия; без записи в хранилище.
     const dialog = el("dialog", "first-step-ritual");
     const content = el("div");
@@ -3070,7 +3082,9 @@ h3.task-title { margin:0; }
       choices.forEach(({ label, run, secondary }) => {
         options.append(btn(label, "button full" + (secondary ? " secondary" : ""), run));
       });
-      content.replaceChildren(heading, options);
+      content.replaceChildren(heading);
+      if(context){content.append(el('p','first-step-context',context.name));if(context.step)content.append(el('p','',context.step));}
+      content.append(options);
     };
     const countdown = () => {
       if (finished) return;
@@ -3087,7 +3101,17 @@ h3.task-title { margin:0; }
         number.classList.add("first-step-go");
         tones([392, 523.25, 659.25, 783.99], .16, .46, .14);
         timeout = setTimeout(() => {
-          if (!finished && dialog.open) dialog.close();
+          if(finished||!dialog.open)return;
+          if(!context){dialog.close();return;}
+          if(startTaskFocus(context.id,2,context.date)){
+            dialog.close();go('focus');
+          }else{
+            dialog.classList.remove('first-step-running');closeButton.hidden=false;
+            draw('Подход не запущен. Проверь дело и текущий таймер.',[
+              {label:'Открыть таймер',run:()=>{dialog.close();go('focus');}},
+              {label:'Закрыть',run:()=>dialog.close(),secondary:true}
+            ]);
+          }
         }, 700);
       };
       const tick = () => {
@@ -3150,7 +3174,7 @@ h3.task-title { margin:0; }
       soundEnabled: true,
       motivationEnabled: true,
       motivationText: "",
-      widgets: { version: 5, items: [{ id: "mainDay", placement: "widgets", showInDay: true }, { id: "quickCapture", placement: "widgets", showInDay: true }, { id: "carryovers", placement: "widgets", showInDay: true }, { id: "keyActions", placement: "widgets", showInDay: true }, { id: "focus", placement: "widgets", showInDay: true }, { id: "dayResult", placement: "widgets", showInDay: true }], favorites: [] },
+      widgets: { version: 6, items: [{ id: "mainDay", placement: "widgets", showInDay: true }, { id: "quickCapture", placement: "widgets", showInDay: true }, { id: "carryovers", placement: "widgets", showInDay: true }, { id: "keyActions", placement: "widgets", showInDay: true }, { id: "focus", placement: "widgets", showInDay: true }, { id: "dayResult", placement: "widgets", showInDay: true }, { id: "firstStep", placement: "widgets", showInDay: true }, { id: "myReward", placement: "widgets", showInDay: true }], favorites: [] },
       dayGraph: dayGraphDefaults(),
       happiness: happinessDefaults(),
       keyActions: { version: 1, actions: [], conditions: [], entries: [] },
@@ -3170,6 +3194,7 @@ h3.task-title { margin:0; }
       treatUses: [],
       focus: {status:"ready", id:null, minutes:5, name:"", taskId:null, remaining:300000, endsAt:null, notified:true, natural:false, elapsedMs:0, endedAt:null},
       focusLog: [],
+      rewardTargetId: null,
       dayPlans: {},
       planReviews: {},
       mainDayTasks: {},
@@ -3594,6 +3619,8 @@ h3.task-title { margin:0; }
     if(data.mainDayTasks===undefined)data.mainDayTasks={};
     if(!data.mainDayTasks||typeof data.mainDayTasks!=='object'||Array.isArray(data.mainDayTasks))fail('Повреждён выбор главного дела дня.');
     for(const [date,id]of Object.entries(data.mainDayTasks))if(!validDate(date)||!validId(id))fail('Повреждён выбор главного дела дня.');
+    if(data.rewardTargetId===undefined)data.rewardTargetId=null;
+    if(data.rewardTargetId!==null&&!validId(data.rewardTargetId))fail('Повреждён выбор личной награды.');
     if (data.dayPlanDate === undefined) data.dayPlanDate = null;
     if (data.dayPlanDate !== null && !validDate(data.dayPlanDate)) {
       fail("Некорректная дата плана.");
@@ -4022,7 +4049,7 @@ h3.task-title { margin:0; }
   "check": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"m7 12 3 3 7-7\"/>",
   "star": "<path d=\"m12 2 3.1 6.3 7 .9-5.1 5 1.2 7-6.2-3.3L5.8 21 7 14.2l-5-5 7-.9Z\"/>"
 });
-  const DESIGN_WIDGET_ICONS = Object.freeze({ dayResult:"chart", mainDay:"flag", quickCapture:"plus", carryovers:"calendar", keyActions: "flag", focus: "clock", dayGraph: "chart", firstStep: "play", happiness: "heart", challenge: "quest" });
+  const DESIGN_WIDGET_ICONS = Object.freeze({ myReward:"spark", dayResult:"chart", mainDay:"flag", quickCapture:"plus", carryovers:"calendar", keyActions: "flag", focus: "clock", dayGraph: "chart", firstStep: "play", happiness: "heart", challenge: "quest" });
   function designIcon(name) {
     const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     icon.setAttribute("viewBox", "0 0 24 24");
@@ -6430,6 +6457,33 @@ h3.task-title { margin:0; }
 
   }
 
+  function chooseReward(id) {
+    return widgetChange(data=>{
+      if(id!==null&&!data.bonuses.some(b=>b.id===id&&b.archivedAt===null))fail('Награда недоступна. Выбери её заново.');
+      data.rewardTargetId=id;
+    });
+  }
+  function myRewardCard() {
+    const box=el('div','lg-my-reward'),id=state.rewardTargetId,bonus=state.bonuses.find(b=>b.id===id),purchase=state.purchases.find(p=>p.bonusId===id);
+    if(purchase){
+      box.append(el('p','lg-reward-status','Награда куплена'),el('h3','',purchase.name),el('p','meta','Покупка: '+purchase.price+' '+(purchase.currency==='diamonds'?'◆':'●')),btn('Открыть бонусы','button secondary full',()=>go('bonuses')));
+    }else if(bonus&&bonus.archivedAt===null){
+      const diamonds=bonus.currency==='diamonds',balance=diamonds?view.money.diamonds:view.money.balance,missing=Math.max(0,bonus.price-balance),unit=diamonds?'алмазов':'монет';
+      box.append(el('h3','',bonus.name));if(bonus.description)box.append(el('p','meta',bonus.description));
+      box.append(el('p','lg-reward-status',missing?'Осталось '+missing+' '+unit:'Можно получить награду'),el('p','meta','Баланс: '+balance+' из '+bonus.price+' '+(diamonds?'◆':'●')),progressBar(Math.min(balance,bonus.price),bonus.price,'Баланс для выбранной награды'));
+      const buy=btn('Купить награду','button full',()=>buyBonus(bonus.id),true);buy.disabled=!healthy||missing>0;box.append(buy);
+    }else box.append(el('p','meta',id?'Выбранная награда недоступна. Выбери другую или восстанови её в Бонусах.':'Выбери один бонус, который хочется получить.'));
+    const picker=el('details','lg-reward-picker');picker.append(el('summary','',id?'Изменить награду':'Выбрать награду'));
+    const choices=state.bonuses.filter(b=>b.archivedAt===null);
+    if(choices.length){
+      const form=el('form'),label=el('label','','Бонус из магазина'),select=el('select');select.id='reward-target-select';label.htmlFor=select.id;
+      for(const b of choices){const option=el('option','',b.name+' · '+b.price+' '+(b.currency==='diamonds'?'◆':'●'));option.value=b.id;select.append(option);}if(choices.some(b=>b.id===id))select.value=id;
+      const save=el('button','button secondary full','Выбрать');save.type='submit';save.disabled=!healthy;form.append(label,select,save);form.addEventListener('submit',e=>{e.preventDefault();if(form.isConnected)chooseReward(select.value);});picker.append(form);
+    }else picker.append(el('p','meta','Добавь личный бонус в разделе «Бонусы».'));
+    if(id)picker.append(btn('Снять выбор','button secondary full',()=>chooseReward(null),true));
+    picker.append(btn('К бонусам','button secondary full',()=>go('bonuses')));box.append(picker);return box;
+  }
+
   function bonusCard(bonus) {
     const diamonds=bonus.currency==='diamonds',available=diamonds?view.money.diamonds:view.money.balance,missing=Math.max(0,bonus.price-available);
     const card=el('article','card lg-card-v2'+(diamonds?' diamond-shop-card':''));uiEntity(card,'bonus',bonus.id);
@@ -8280,7 +8334,7 @@ h3.task-title { margin:0; }
     if (data.widgets === undefined) data.widgets = emptyState().widgets;
     const widgets = data.widgets;
     if (!widgets || typeof widgets !== "object" || Array.isArray(widgets) ||
-        ![1, 2, 3, 4, 5].includes(widgets.version) || !Array.isArray(widgets.items)) {
+        ![1, 2, 3, 4, 5, 6].includes(widgets.version) || !Array.isArray(widgets.items)) {
       fail("Повреждены настройки виджетов.");
     }
     const ids = new Set();
@@ -8317,6 +8371,10 @@ h3.task-title { margin:0; }
     if(widgets.version===4){
       if(!widgets.items.some(item=>item.id==='dayResult'))widgets.items.push({id:'dayResult',placement:'widgets',showInDay:true});
       widgets.version=5;
+    }
+    if(widgets.version===5){
+      for(const id of ['firstStep','myReward'])if(!widgets.items.some(item=>item.id===id))widgets.items.push({id,placement:'widgets',showInDay:true});
+      widgets.version=6;
     }
   }
 
@@ -10098,7 +10156,11 @@ h3.task-title { margin:0; }
   function redrawFocus() { render(); }
   function startMainFocus(id,minutes,expectedDay) {
     if(![5,15,25].includes(minutes))return false;
-    const task=mainDayTask();
+    return startTaskFocus(id,minutes,expectedDay,true);
+  }
+  function startTaskFocus(id,minutes,expectedDay,requireMain=false) {
+    if(![2,5,15,25].includes(minutes))return false;
+    const task=requireMain?mainDayTask():plannedTasks(state).find(task=>task.id===id);
     if(today()!==expectedDay||!task||task.id!==id||completion(state,task)){
       render();uiFeedback('План изменился. Проверь главное дело и повтори запуск.');return false;
     }
