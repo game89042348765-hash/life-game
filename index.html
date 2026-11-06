@@ -2521,6 +2521,7 @@ h3.task-title { margin:0; }
 
 </style>
 <style>
+.lg-widget-mode{display:flex;justify-content:flex-end;margin:14px 0}.lg-widget-mode .button{min-height:44px;padding:10px 14px;font-size:12px}.lg-widget-manage-note{font-size:12px;line-height:1.6;margin:0 0 14px}.widget-managing .widget-instance-head{margin-bottom:0}.widget-managing .widget-controls{margin-top:12px}.widget-managing .widget-controls .button{min-height:44px}
 .lg-day-result{min-width:0}.lg-result-time{display:flex;flex-direction:column;gap:5px}.lg-result-caption{font-size:11px;color:var(--muted)}.lg-result-time>strong{font-size:27px;line-height:1.3;font-weight:650;color:var(--green);overflow-wrap:anywhere;font-variant-numeric:tabular-nums}.lg-day-result .lg-result-note{font-size:11px;color:var(--muted);line-height:1.6;margin:5px 0 10px;overflow-wrap:anywhere}.lg-result-row{display:flex;align-items:flex-start;gap:10px;border-top:1px solid #ffffff0c;padding-top:13px;margin-top:13px}.lg-result-row>.design-icon{width:17px;height:17px;flex:none;margin-top:2px;color:var(--accent)}.lg-result-row>div{min-width:0}.lg-result-row strong{font-size:13px;font-weight:600;overflow-wrap:anywhere}.lg-result-row.is-done strong,.lg-result-row.is-done>.design-icon{color:var(--green)}.lg-day-result>.button{font-size:12px;min-height:44px;margin-top:12px}
 .focus-log-form{min-width:0}.focus-log-form label{display:block;font-size:12px;margin:12px 0 6px}.focus-log-form input,.focus-log-form select{display:block;width:100%;min-width:0;min-height:44px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);padding:9px;font:inherit;font-size:14px}.focus-log-form .button{margin-top:10px;min-height:44px}.focus-log-history{margin-top:18px;border-top:1px solid var(--border);padding-top:10px}.focus-log-history summary{font-size:12px;min-height:44px;padding-top:8px;cursor:pointer;color:var(--muted)}.focus-log-row{padding:10px 0;border-top:1px solid #ffffff0b;overflow-wrap:anywhere}.focus-log-row strong{font-size:13px}.focus-log-row .focus-hint{margin-top:4px}.focus-actions-completed>.focus-log-form{width:100%}
 .lg-organizer-widget>.widget-instance-head{display:grid;grid-template-columns:20px minmax(0,1fr) 44px;gap:3px 9px}.lg-organizer-widget>.widget-instance-head>h2{grid-column:2;grid-row:1;margin:0}.lg-organizer-widget>.widget-instance-head>.design-icon{grid-column:1;grid-row:1}.lg-organizer-widget>.widget-instance-head>.widget-badge{grid-column:2;grid-row:2;justify-self:start}.lg-organizer-widget>.widget-instance-head>.button{grid-column:3;grid-row:1/3}
@@ -4299,6 +4300,7 @@ h3.task-title { margin:0; }
   }
 
   function go(nextPage, selectedBlock = null, fromDayTask = false, options = {}) {
+    if(nextPage!=="widgets")widgetManageMode=false;
     if (nextPage === "myRoute") nextPage = "hero"; // Старые записи браузерной истории, без восстановления удалённого экрана.
 
     document.getElementById("ui-feedback")?.setAttribute("hidden", "");
@@ -8269,6 +8271,7 @@ h3.task-title { margin:0; }
     return root;
   }
 
+  let widgetManageMode = false; // Interface only; never exported.
   let widgetCategory = "Все";
   let widgetFavoritesOnly = false;
   let widgetSystemOnly = false;
@@ -8459,7 +8462,7 @@ h3.task-title { margin:0; }
     card.append(heading);
 
     if (definition?.system) heading.append(el("span", "widget-badge", "Системный"));
-    if (item.id === "happiness" && widgetAvailable(definition)) {
+    if (!widgetManageMode && item.id === "happiness" && widgetAvailable(definition)) {
       const menuButton = btn("⋯", "button secondary", () => happinessOpenMenu(false));
       menuButton.setAttribute("aria-label", "Меню: Игра в счастье");
       heading.append(menuButton);
@@ -8469,7 +8472,7 @@ h3.task-title { margin:0; }
         definition.placements.includes(item.placement)) {
       // Рендерер только строит интерфейс.
       // Изменения данных выполняются отдельными действиями функции.
-      card.append(definition.render());
+      if(!widgetManageMode)card.append(definition.render());
     } else {
       card.append(el(
         "p",
@@ -8479,7 +8482,7 @@ h3.task-title { margin:0; }
       ));
     }
 
-    if (widgetAvailable(definition) && definition.placements.includes("day")) {
+    if (widgetManageMode && widgetAvailable(definition) && definition.placements.includes("day")) {
       const label = el("label", "widget-day-toggle");
       const input = el("input"); input.type = "checkbox";
       input.checked = item.showInDay; input.disabled = !healthy;
@@ -8487,7 +8490,7 @@ h3.task-title { margin:0; }
       label.append(input, document.createTextNode("Показывать в Конструкторе дня"));
       card.append(label);
     }
-    card.append(widgetControls(item, index, total));
+    if(widgetManageMode){card.classList.add("widget-managing");card.append(widgetControls(item, index, total));}
     return card;
   }
 
@@ -8499,6 +8502,16 @@ h3.task-title { margin:0; }
     );
 
     const items = state.widgets.items;
+    if(items.length||widgetManageMode){
+      const controls=el('div','lg-widget-mode');
+      const toggle=btn(widgetManageMode?'Готово':'Настроить сборку','button secondary',()=>{
+        widgetManageMode=!widgetManageMode;render();
+        requestAnimationFrame(()=>screen.querySelector('.lg-widget-mode button')?.focus({preventScroll:true}));
+      });
+      toggle.setAttribute('aria-pressed',String(widgetManageMode));
+      controls.append(toggle);screen.append(controls);
+      if(widgetManageMode)screen.append(el('p','lg-widget-manage-note','Порядок и показ сохраняются сразу. Удаление из сборки сохраняет данные инструмента.'));
+    }
 
     if (!items.length) {
       const empty = el("section", "widgets-empty");
