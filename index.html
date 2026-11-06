@@ -579,67 +579,13 @@ label.weekday-tile { position: relative; min-width: 0; margin: 0; cursor: pointe
   font-size: 13px;
   line-height: 1.5;
 }
-.reward-toast {
-  position: fixed;
-  z-index: 100;
-  top: 50%;
-  left: 50%;
-  display: grid;
-  place-items: center;
-  min-width: 210px;
-  max-width: calc(100vw - 40px);
-  min-height: 82px;
-  padding: 18px 24px;
-  border: 2px solid var(--accent);
-  border-radius: 14px;
-  background: #18180f;
-  color: var(--accent);
-  font-size: 25px;
-  font-weight: 900;
-  text-align: center;
-  white-space: pre-line;
-  line-height: 1.4;
-  pointer-events: none;
-  box-shadow: 0 0 0 9999px #0006, 0 0 35px #ffda2944;
-  animation: reward-popup var(--duration, 1700ms) ease-out forwards;
-}
-.reward-toast.level-up,
-.reward-toast.day-bonus-toast {
-  min-width: 250px;
-  background: #302b0d;
-  color: #fff29a;
-  border-color: #fff29a;
-}
-.reward-toast.goal-toast {
-  min-width: 240px;
-  background: #15271b;
-  border-color: #96caa4;
-  color: #c0e6ca;
-  font-size: 23px;
-}
-@keyframes reward-popup {
-  0% { opacity: 0; transform: translate(-50%, -50%) scale(.85); }
-  12% { opacity: 1; transform: translate(-50%, -50%) scale(1.04); }
-  24%, 85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(.97); }
-}
 @media (max-width: 390px) {
   .quest-reward-line { flex-direction: column; align-items: flex-start; gap: 3px; }
-  .reward-toast { font-size: 21px; }
 }
 @media (max-width: 350px) {
   .brand { font-size: 10px; letter-spacing: 1px; }
   #wallet { font-size: 12px; gap: 4px 8px; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .reward-toast { animation-name: reward-fade; }
-  @keyframes reward-fade {
-    0%, 85% { opacity: 1; transform: translate(-50%, -50%); }
-    100% { opacity: 0; transform: translate(-50%, -50%); }
-  }
-}
-
-
 /* Compact shared interface; no title truncation. */
 .home-primary {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:100%;min-width:0;min-height:76px;margin-top:10px;background:#211e0d;color:var(--accent);border:1px solid var(--accent);text-align:center}
 .home-status{font-size:13px;font-weight:400;color:var(--muted)}
@@ -712,6 +658,24 @@ dialog label{margin-top:14px}dialog fieldset{min-width:0}
 .block-order-row .block-order-arrow{min-width:44px;min-height:44px;padding:8px}
 @media(max-width:350px){.stage-row{grid-template-columns:22px minmax(0,1fr)}.stage-row .stage-reward{grid-column:2;text-align:left}}
 @media(max-width:350px){.numeric-row{grid-template-columns:minmax(0,1fr)}}
+/* Approved feedback design. */
+/* Animated event stage: expressive, automatically replaced by the latest action. */
+.lg-effect{position:fixed;inset:0;z-index:30;display:grid;place-items:center;pointer-events:none;--tone:#ffda29}.lg-effect[hidden]{display:none}.lg-effect:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,#080b08a6,#080b0820 70%);animation:lg-reward-shade var(--time) ease both}.lg-effect.negative{--tone:#dda5a0}.lg-effect.diamond{--tone:#a9d7c0}.lg-effect-card{position:relative;text-align:center;width:min(360px,calc(100vw - 40px));padding:24px 20px 23px;isolation:isolate;animation:lg-reward-arrival var(--time) cubic-bezier(.2,.75,.2,1) both}.lg-effect-card:before{content:"";position:absolute;z-index:-1;inset:65px 0 0;border:1px solid color-mix(in srgb,var(--tone) 32%,transparent);border-radius:23px;background:linear-gradient(155deg,#20271ef2,#10160ff5);box-shadow:0 20px 80px #0008,inset 0 1px 0 #ffffff0a}.lg-effect-halo{width:120px;height:120px;margin:0 auto 14px;display:grid;place-items:center;position:relative;color:var(--tone);border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--tone) 18%,#171e14),#11170f 70%);box-shadow:0 0 50px color-mix(in srgb,var(--tone) 15%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--tone) 25%,transparent)}.lg-effect-halo:before{content:"";position:absolute;inset:-8px;border:1px solid color-mix(in srgb,var(--tone) 28%,transparent);border-top-color:var(--tone);border-radius:50%;animation:lg-reward-orbit 2.8s ease-out both}.lg-effect-halo svg{width:54px;height:54px;filter:drop-shadow(0 0 14px color-mix(in srgb,var(--tone) 40%,transparent))}.lg-effect.negative .lg-effect-halo{animation:lg-reward-recede .65s ease-out both}.lg-effect .lg-effect-overline{font-size:9px;letter-spacing:2px;font-weight:750;color:var(--tone);margin-bottom:10px}.lg-effect h3{font-size:38px;letter-spacing:-1.4px;margin:0;color:var(--tone);line-height:1.1;font-variant-numeric:tabular-nums}.lg-effect.major h3{font-size:33px}.lg-effect .lg-effect-caption{font-size:13px;color:#c5cfbd;line-height:1.5;margin-top:10px}.lg-effect .lg-effect-detail{font-size:11px;color:#96a68b;margin-top:6px}.lg-effect .lg-effect-badge{display:inline-block;padding:6px 10px;margin-top:14px;border:1px solid color-mix(in srgb,var(--tone) 30%,transparent);background:color-mix(in srgb,var(--tone) 8%,transparent);border-radius:9px;font-size:11px;color:var(--tone)}.lg-effect-close{position:absolute;top:68px;right:8px;pointer-events:auto;cursor:pointer;border:0;background:none;color:#b0bba4;width:36px;height:36px;border-radius:50%;font-size:22px}.lg-effect-mote{position:absolute;left:50%;top:31%;width:5px;height:5px;border-radius:2px;background:var(--tone);box-shadow:0 0 8px var(--tone);animation:lg-reward-mote 1.15s ease-out both;animation-delay:var(--delay)}.lg-effect.negative .lg-effect-mote{animation-name:lg-reward-mote-in}.lg-effect-track{height:3px;border-radius:5px;background:#ffffff12;margin:18px 12px 0;overflow:hidden}.lg-effect-track i{display:block;width:100%;height:100%;background:var(--tone);animation:lg-reward-countdown var(--time) linear forwards}
+@keyframes lg-reward-arrival{0%{opacity:0;transform:translateY(28px) scale(.88)}12%,78%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-12px) scale(.98)}}@keyframes lg-reward-shade{0%,100%{opacity:0}12%,78%{opacity:1}}@keyframes lg-reward-orbit{from{transform:rotate(-120deg);opacity:0}25%{opacity:1}to{transform:rotate(160deg)}}@keyframes lg-reward-recede{from{transform:scale(1.15)}to{transform:scale(1)}}@keyframes lg-reward-mote{from{opacity:0;transform:translate(-50%,0) scale(.1)}20%{opacity:1}to{opacity:0;transform:translate(var(--x),var(--y)) rotate(90deg)}}@keyframes lg-reward-mote-in{from{opacity:0;transform:translate(var(--x),var(--y))}30%{opacity:.8}to{opacity:0;transform:translate(-50%,0) scale(.1)}}@keyframes lg-reward-countdown{to{width:0}}
+/* Application-styled confirmation, no native browser confirm. */
+.lg-reward-confirm{position:fixed;inset:auto 0 0;width:min(500px,100%);max-width:100%;max-height:90dvh;overflow:auto;margin:0 auto;padding:25px 22px calc(22px + env(safe-area-inset-bottom,0px));border:1px solid #dda5a034;border-bottom:0;border-radius:24px 24px 0 0;background:linear-gradient(145deg,#20261c,#10180e);color:#f0f1e7;box-shadow:0 -16px 80px #0005;animation:lg-reward-sheet .23s ease-out}.lg-reward-confirm::backdrop{background:#030703a6;backdrop-filter:blur(5px)}.lg-reward-handle{width:35px;height:3px;background:#58604d;border-radius:4px;margin:-10px auto 22px}.lg-reward-sheet-icon{width:43px;height:43px;display:grid;place-items:center;border:1px solid #dda5a03a;border-radius:12px;background:#dda5a00b;color:#dda5a0;margin-bottom:13px}.lg-reward-confirm h2{font-size:22px;letter-spacing:-.5px;margin:0 0 8px;line-height:1.2}.lg-reward-confirm .lg-reward-description{font-size:13px;line-height:1.5}.lg-reward-breakdown{margin:20px 0;padding:4px 0;border-block:1px solid #a9b39324}.lg-reward-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;font-size:12px;color:#aebaa1}.lg-reward-row b{color:#dda5a0;font-weight:700}.lg-reward-row.result{border-top:1px solid #a9b39324;margin-top:3px;padding-top:12px;font-size:14px}.lg-reward-row.result b{font-size:16px}.lg-reward-warning{font-size:12px;color:#dda5a0;padding:11px;border:1px solid #dda5a02b;border-radius:10px;background:#dda5a008;margin-bottom:14px}.lg-reward-sheet-actions{display:flex;gap:9px}.lg-reward-sheet-actions button{flex:1;min-height:47px;border:1px solid #a9b39324;border-radius:11px;background:#ffffff04;font-weight:700;font-size:12px}.lg-reward-sheet-actions .danger{color:#f0d3cb;border-color:#dda5a040;background:linear-gradient(130deg,#714944,#4b302c)}@keyframes lg-reward-sheet{from{transform:translateY(35px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+.lg-effect { margin:0;width:100%;height:100%;max-width:none;max-height:none;border:0;padding:0;background:transparent;overflow:visible; }
+.lg-effect svg,.lg-reward-sheet-icon svg { fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round; }
+.lg-reward-sheet-icon svg { width:24px;height:24px; }
+.lg-effect h3,.lg-effect p { overflow-wrap:anywhere; }
+.lg-reward-confirm .lg-reward-sheet-actions .danger { width:auto; }
+.lg-reward-confirm .lg-reward-row b { text-align:right; }
+.lg-wallet-pulse { animation:lg-wallet-pulse .6s ease-out; }
+@keyframes lg-wallet-pulse { 40% { filter:brightness(1.7); } }
+@media(max-width:350px) { .lg-effect h3 {font-size:30px}.lg-effect-card{padding-inline:14px}.lg-reward-confirm{padding-inline:16px}.lg-reward-sheet-actions{flex-wrap:wrap}.lg-reward-sheet-actions button{min-width:120px} }
+@media(prefers-reduced-motion:reduce) { .lg-effect *,.lg-effect:before,.lg-wallet-pulse,.lg-reward-confirm {animation:none!important;transition:none!important}.lg-effect .lg-effect-mote,.lg-effect-track{display:none} }
+
 </style>
 <style>
   .card.diamond-shop-card {
@@ -2683,8 +2647,6 @@ h3.task-title { margin:0; }
   let view;
   let audioContext = null;
   const activeSounds = new Map();
-  const effects = [];
-  let effectRunning = false;
   let effectTimer = null;
 
   // Реестр содержит описание и рендереры, но не пользовательские данные.
@@ -3653,7 +3615,7 @@ h3.task-title { margin:0; }
     }
 
     const before = totals(state);
-    const beforeIds = new Set(state.completions.map(x => x.id));
+    const beforeRecords = state.completions;
     let next;
 
     try {
@@ -3699,7 +3661,7 @@ h3.task-title { margin:0; }
     // Ошибки эффектов не должны объявлять успешную запись неудачной.
     render();
     try {
-      if (!selfCare) celebrateChanges(before, beforeIds);
+      if (!selfCare) celebrateChanges(before, beforeRecords);
     } catch (error) {
       console.warn("Эффект награды недоступен:", error);
     }
@@ -3775,74 +3737,125 @@ h3.task-title { margin:0; }
     }
   }
 
-  function enqueueEffect(type, value) {
-    primeAudio();
-    effects.push({ type, value });
-    runEffect();
-  }
-
-  function runEffect() {
-    if (effectRunning || !effects.length || document.hidden) return;
-    effectRunning = true;
-
-    const event = effects.shift();
-    const toast = el("div", "reward-toast");
-    let duration = 1700;
-
-    if (event.type === "coins") {
-      toast.textContent = `+${event.value} монет`;
-      tones([880, 1175, 1480], .07, .16);
-    } else if (event.type === "day") {
-      duration = 4000;
-      toast.classList.add("day-bonus-toast");
-      toast.textContent = `★ БОНУС ДНЯ\n+${event.value} МОНЕТ`;
-      tones([523.25, 659.25, 783.99, 1046.5], .14, .5, .14);
-    } else if (event.type === "goal") {
-      duration = 2800;
-      toast.classList.add("goal-toast");
-      toast.textContent = `✓ ЦЕЛЬ ДОСТИГНУТА\n+${event.value} ◆`;
-      tones([659.25, 783.99, 1046.5], .16, .45, .13);
-    } else if (event.type === "level") {
-      duration = 3600;
-      toast.classList.add("level-up");
-      toast.textContent = `★ УРОВЕНЬ ${event.value}`;
-      tones([523.25, 659.25, 783.99, 1046.5], .15, .45, .14);
+  // One feedback event per saved transaction; newer events replace older effects.
+  const rewardVoices = new Set();
+  function stopRewardSound() {
+    for (const oscillator of rewardVoices) {
+      try { activeSounds.get(oscillator)?.disconnect(); oscillator.stop(); } catch {}
     }
-
-    toast.style.setProperty("--duration", duration + "ms");
-    document.body.append(toast);
-
-    effectTimer = setTimeout(() => {
-      toast.remove();
-      effectRunning = false;
-      runEffect();
-    }, duration + 100);
+    rewardVoices.clear();
   }
-
+  function rewardSound(negative, major, purchase) {
+    if (!state.soundEnabled || document.hidden) return;
+    try {
+      primeAudio();
+      if (!audioContext) return;
+      const frequencies = negative ? [392,329.63,261.63] : major ? [392,523.25,659.25,783.99] : purchase ? [392,523.25] : [523.25,659.25,783.99];
+      frequencies.forEach((frequency,index) => {
+        const oscillator=audioContext.createOscillator(), gain=audioContext.createGain(), at=audioContext.currentTime+index*.12;
+        oscillator.type="sine"; oscillator.frequency.setValueAtTime(frequency,at);
+        gain.gain.setValueAtTime(.0001,at); gain.gain.linearRampToValueAtTime(negative?.04:.055,at+.025); gain.gain.exponentialRampToValueAtTime(.0001,at+.42);
+        oscillator.connect(gain); gain.connect(audioContext.destination);
+        activeSounds.set(oscillator,gain); rewardVoices.add(oscillator);
+        oscillator.onended=()=>{rewardVoices.delete(oscillator);activeSounds.delete(oscillator);oscillator.disconnect();gain.disconnect();};
+        oscillator.start(at); oscillator.stop(at+.45);
+      });
+    } catch (error) { console.warn("Звук эффекта недоступен:",error); }
+  }
+  const REWARD_ICONS = Object.freeze({
+    coin:'<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v5c0 4 16 4 16 0V6M4 11v5c0 4 16 4 16 0v-5"/>',
+    gem:'<path d="m3 9 4-5h10l4 5-9 12ZM3 9h18M7 4l5 17 5-17"/>',
+    level:'<path d="m12 2 3 6 7 1-5 5 1 8-6-4-6 4 1-8-5-5 7-1Z"/>',
+    bonus:'<circle cx="12" cy="12" r="4"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3M4 4l2 2M18 18l2 2M4 20l2-2M18 6l2-2"/>',
+    undo:'<path d="M4 4v6h6M4 10a8 8 0 1 1 2 10"/>',
+    purchase:'<path d="M4 7h16l1 14H3ZM8 8V6a4 4 0 0 1 8 0v2"/>'
+  });
+  function rewardIcon(kind) {
+    const node=document.createElementNS("http://www.w3.org/2000/svg","svg");
+    node.setAttribute("viewBox","0 0 24 24"); node.setAttribute("aria-hidden","true");
+    node.innerHTML=REWARD_ICONS[kind]||REWARD_ICONS.coin; // Fixed paths only.
+    return node;
+  }
   function clearEffects() {
-    effects.length = 0;
-    clearTimeout(effectTimer);
-    effectRunning = false;
-    document.querySelectorAll(".reward-toast").forEach(x => x.remove());
+    clearTimeout(effectTimer); stopRewardSound();
+    document.querySelectorAll(".lg-effect").forEach(node=>node.remove());
+  }
+  function showRewardEffect({kind="coin",title,caption,detail="",badge="",negative=false,major=false}) {
+    clearEffects(); if(document.hidden) return;
+    const duration=major?3200:2400, stage=el("div","lg-effect"+(negative?" negative":kind==="gem"?" diamond":"")+(major?" major":""));
+    stage.setAttribute("role","status"); stage.setAttribute("aria-live","polite"); stage.setAttribute("aria-atomic","true");
+    stage.style.setProperty("--time",duration+"ms");
+    const card=el("div","lg-effect-card"),halo=el("div","lg-effect-halo");
+    for(let i=0;i<12;i++) { const mote=el("i","lg-effect-mote"),a=i/12*Math.PI*2; mote.setAttribute("aria-hidden","true");mote.style.setProperty("--x",Math.cos(a)*135+"px");mote.style.setProperty("--y",Math.sin(a)*100-35+"px");mote.style.setProperty("--delay",i*.025+"s");card.append(mote); }
+    const close=btn("×","lg-effect-close",clearEffects); close.setAttribute("aria-label","Закрыть эффект");close.tabIndex=-1;
+    halo.append(rewardIcon(negative?"undo":kind));
+    card.append(close,halo,el("div","lg-effect-overline",negative?"ИЗМЕНЕНИЕ ОТМЕНЕНО":kind==="purchase"?"ДЛЯ СЕБЯ":kind==="refund"?"СРЕДСТВА ВОЗВРАЩЕНЫ":major?"ТВОЙ ПРОГРЕСС":"СДЕЛАН ЕЩЁ ОДИН ШАГ"),el("h3","",title),el("p","lg-effect-caption",caption));
+    if(detail)card.append(el("p","lg-effect-detail",detail));if(badge)card.append(el("span","lg-effect-badge",badge));
+    const track=el("div","lg-effect-track");track.setAttribute("aria-hidden","true");track.append(el("i"));card.append(track);stage.append(card);document.body.append(stage);
+    // Above existing modal widgets, without blocking or stealing their focus.
+    if(typeof stage.showPopover==="function"){stage.setAttribute("popover","manual");stage.showPopover();}
+    effectTimer=setTimeout(clearEffects,duration);rewardSound(negative,major,kind==="purchase");
+    wallet.classList.remove("lg-wallet-pulse");void wallet.offsetWidth;wallet.classList.add("lg-wallet-pulse");
+  }
+  const signedReward=(value,currency)=>(value<0?"−":"+")+Math.abs(value)+" "+currency;
+  function celebrateChanges(before, beforeRecords) {
+    const after=totals(state), coins=after.earned-before.earned, gems=after.diamondsEarned-before.diamondsEarned, spent=after.spent-before.spent, gemSpent=after.diamondsSpent-before.diamondsSpent;
+    if(!coins&&!gems&&!spent&&!gemSpent)return;
+    const ids=new Set(beforeRecords.map(x=>x.id)),afterIds=new Set(state.completions.map(x=>x.id));
+    const bonus=state.completions.filter(x=>!ids.has(x.id)&&x.taskId.startsWith("day-bonus:")).reduce((n,x)=>n+x.reward,0);
+    const revokedBonus=beforeRecords.filter(x=>!afterIds.has(x.id)&&x.taskId.startsWith("day-bonus:")).reduce((n,x)=>n+x.reward,0);
+    const oldLevel=Math.floor(before.earned/LEVEL_COST)+1,newLevel=Math.floor(after.earned/LEVEL_COST)+1;
+    const negative=coins<0||gems<0, purchase=spent>0||gemSpent>0, refund=spent<0||gemSpent<0;
+    const values=[...(coins?[signedReward(coins,"монет")]:[]),...(gems?[signedReward(gems,"алмазов")]:[]),...(spent?[signedReward(-spent,"монет")]:[]),...(gemSpent?[signedReward(-gemSpent,"алмазов")]:[])].join(" · ");
+    const kind=purchase?"purchase":refund?"refund":gems?"gem":newLevel>oldLevel?"level":bonus?"bonus":"coin";
+    showRewardEffect({kind,negative,major:oldLevel!==newLevel||!!bonus||!!gems,
+      title:negative||purchase||refund?values:gems?"Цель достигнута":newLevel>oldLevel?"Уровень "+newLevel:bonus?"Бонус дня":values,
+      caption:negative?"Начисление отменено":purchase?"Покупка для себя":refund?"Покупка возвращена":gems||bonus||newLevel>oldLevel?values:"Награда получена",
+      detail:revokedBonus?`Включая бонус дня −${revokedBonus} монет`:bonus?`Из них +${bonus} — бонус дня`:negative?"Это возврат начисления, а не штраф":refund?"Возврат твоих средств, а не новая награда":purchase?"Твой уровень не изменился":"",
+      badge:oldLevel!==newLevel?`Уровень ${oldLevel} → ${newLevel}`:""});
   }
 
-  function celebrateChanges(before, beforeIds) {
-    const after = totals(state);
-    const bonus = state.completions.find(record =>
-      !beforeIds.has(record.id) && record.taskId.startsWith("day-bonus:")
-    );
-    const regular = after.earned - before.earned - (bonus ? bonus.reward : 0);
-    if (regular > 0) enqueueEffect("coins", regular);
-    if (bonus) enqueueEffect("day", bonus.reward);
-        const diamondsAwarded =
-      after.diamondsEarned - before.diamondsEarned;
-
-    if (diamondsAwarded > 0) {
-      enqueueEffect("goal", diamondsAwarded);
-    }
-    const oldLevel = Math.floor(before.earned / LEVEL_COST) + 1;
-    const newLevel = Math.floor(after.earned / LEVEL_COST) + 1;
-    if (newLevel > oldLevel) enqueueEffect("level", newLevel);
+  // Preview the same mutation on a clone. Re-run only against the unchanged
+  // snapshot/date on acceptance, through the existing transactional validator.
+  function confirmRewardChange(change, awardDayBonus=true, options={}) {
+    if(!healthy){uiFeedback("Изменения временно отключены. Проверь хранилище в настройках.");render();return false;}
+    let draft;
+    const expectedSnapshot=snapshot,expectedDay=today();
+    try { draft=clone(state);ensureDay(draft);change(draft);if(awardDayBonus)reconcileDayBonus(draft); }
+    catch(error){uiFeedback(error.message);render();return false;}
+    const before=totals(state),after=totals(draft),negative=after.earned<before.earned||after.diamondsEarned<before.diamondsEarned;
+    const blocked=after.balance<0||after.diamonds<0;
+    clearEffects();render();
+    const dialog=el("dialog","lg-reward-confirm"),handle=el("div","lg-reward-handle"),symbol=el("div","lg-reward-sheet-icon");
+    symbol.append(rewardIcon(negative?"undo":options.kind||"gem"));
+    const heading=el("h2","",options.title||"Отменить выполнение?");heading.id="lg-reward-confirm-title";
+    const description=el("p","lg-reward-description",options.description||"Выполнение будет снято. Связанные начисления будут возвращены.");description.id="lg-reward-confirm-description";
+    dialog.setAttribute("aria-labelledby",heading.id);dialog.setAttribute("aria-describedby",description.id);
+    const breakdown=el("div","lg-reward-breakdown");
+    const row=(label,value,result=false)=>{const r=el("div","lg-reward-row"+(result?" result":""));r.append(el("span","",label),el("b","",value));breakdown.append(r);};
+    const nextIds=new Set(draft.completions.map(x=>x.id));
+    const bonus=state.completions.filter(x=>!nextIds.has(x.id)&&x.taskId.startsWith("day-bonus:")).reduce((n,x)=>n+x.reward,0);
+    const coins=after.earned-before.earned+bonus,gems=after.diamondsEarned-before.diamondsEarned;
+    if(coins)row("Награда",signedReward(coins,"монет"));if(bonus)row("Связанный бонус дня",signedReward(-bonus,"монет"));if(gems)row("Алмазы за цель",signedReward(gems,"алмазов"));
+    if(after.spent!==before.spent)row("Возврат покупки",signedReward(before.spent-after.spent,"монет"));
+    if(after.diamondsSpent!==before.diamondsSpent)row("Возврат покупки",signedReward(before.diamondsSpent-after.diamondsSpent,"алмазов"));
+    const oldLevel=Math.floor(before.earned/LEVEL_COST)+1,newLevel=Math.floor(after.earned/LEVEL_COST)+1;
+    if(oldLevel!==newLevel)row("Уровень",oldLevel+" → "+newLevel);
+    if(!breakdown.childElementCount)row("Награда","Без списания");
+    row("После подтверждения",after.balance+" ● · "+after.diamonds+" ◆",true);
+    dialog.append(handle,symbol,heading,description,breakdown);
+    if(blocked)dialog.append(el("p","lg-reward-warning","Награда уже потрачена. Сначала отмени соответствующие покупки, затем повтори действие."));
+    const actions=el("div","lg-reward-sheet-actions"),keep=btn(options.keep||"Оставить","",()=>dialog.close()),apply=btn(options.action||"Отменить выполнение","danger",()=>{
+      apply.disabled=true;
+      if(snapshot!==expectedSnapshot||today()!==expectedDay){dialog.close();uiFeedback("Данные или день изменились. Повтори действие и проверь новые суммы.");render();return;}
+      // transact also checks storage snapshot, balances, normalization and write.
+      const saved=transact(change,awardDayBonus);
+      if(saved)dialog.close();else apply.disabled=!healthy;
+    });
+    apply.disabled=blocked;actions.append(keep,apply);dialog.append(actions);document.body.append(dialog);
+    dialog.addEventListener("close",()=>dialog.remove(),{once:true});
+    uiShowDialog(dialog);keep.focus({preventScroll:true});
+    return false;
   }
 
   // Общие элементы интерфейса.
@@ -3995,6 +4008,9 @@ h3.task-title { margin:0; }
     dialog.dataset.uiDialogOrder = ++uiDialogSerial;
     if (dialog.classList.contains('day-graph-editor') && !dialog.querySelector('.ui-autosave')) { const note = el('p', 'ui-autosave', 'Каждый выбранный час сохраняется сразу. «Готово» закрывает редактор.'); dialog.querySelector('h2')?.after(note); }
     if (!dialog.open) dialog.showModal();
+    // A returning widget dialog must not cover an effect of its saved action.
+    const effect=document.querySelector(".lg-effect");
+    if(typeof effect?.showPopover==="function"&&effect.matches(":popover-open")){effect.hidePopover();effect.showPopover();}
     setTimeout(uiSyncDialogs, 0);
   }
   function uiInitHistory() {
@@ -4338,6 +4354,7 @@ h3.task-title { margin:0; }
 
   // Archive v1 / AUD-10-03: single task archive may complete today's remaining plan.
   function setTaskArchived(id, archive) {
+    const beforeReward=totals(state),beforeRecords=state.completions;
     let dayBonusAwarded = false;
     const ok = transact(data => {
       const task = data.tasks.find(x => x.id === id);
@@ -4389,7 +4406,7 @@ h3.task-title { margin:0; }
       }
     }, false, true); // No ensureDay; one explicitly validated day bonus at most.
     if (ok && dayBonusAwarded) {
-      try { enqueueEffect("day", DAY_REWARD); }
+      try { celebrateChanges(beforeReward,beforeRecords); }
       catch (error) { console.warn("Не удалось показать бонус дня:", error); }
     }
     return ok;
@@ -5556,12 +5573,7 @@ h3.task-title { margin:0; }
     if (!goal || !blockIsActive(state, goal.blockId)) return;
     const done = goal.completedDate !== null;
 
-    if (!confirm(done
-      ? `Отменить выполнение и убрать ${uiAmount(goal.diamonds,["алмаз","алмаза","алмазов"])}?`
-      : `Цель достигнута? Начислить ${uiAmount(goal.diamonds,["алмаз","алмаза","алмазов"])}?`
-    )) return;
-
-    transact(data => {
+    const change=data => {
       const actual = data.goals.find(x => x.id === id);
       if (!actual || !blockIsActive(data, actual.blockId)) fail("Цель недоступна в архиве.");
 
@@ -5579,7 +5591,10 @@ h3.task-title { margin:0; }
           date: actual.completedDate
         });
       }
-    }, false);
+    };
+    return confirmRewardChange(change,false,done
+      ? {title:"Отменить достижение?",description:"Цель снова станет активной. Её сохранённое начисление будет убрано.",action:"Отменить достижение"}
+      : {title:"Цель достигнута?",description:"Подтверди результат, чтобы получить награду.",action:"Получить награду",keep:"Пока нет",kind:"gem"});
   }
 
   function goalCard(goal) {
@@ -5647,8 +5662,7 @@ h3.task-title { margin:0; }
     }, false), entry ? "Сохранить" : "Создать");
   }
   function completeCalendar(id, done) {
-    if (!done && !confirm("Отменить выполнение? Связанная награда будет возвращена, если монеты ещё не потрачены.")) return;
-    return transact(data => {
+    const change=data => {
       const entry = data.calendarEntries.find(x => x.id === id);
       if (!entry) fail("Запись не найдена.");
       if ((entry.completionId !== null) === done) return;
@@ -5664,7 +5678,8 @@ h3.task-title { margin:0; }
         data.calendarCompletions = data.calendarCompletions.filter(x => x.id !== fact.id);
         entry.completionId = null;
       }
-    }, false);
+    };
+    return done ? transact(change,false) : confirmRewardChange(change,false,{description:"Выполнение записи календаря будет снято вместе с её начислением."});
   }
   function calendarMenu(id) {
     const entry = state.calendarEntries.find(x => x.id === id);
@@ -5818,11 +5833,8 @@ h3.task-title { margin:0; }
   function toggleTask(id) {
     const task = state.tasks.find(x => x.id === id);
     if (!task || task.archivedAt !== null || !blockIsActive(state, task.block)) return;
-    if (completion(state, task) && !confirm(
-      "Отменить выполнение? Награда и связанный бонус дня будут пересчитаны."
-    )) return;
-
-    transact(data => {
+    const done=!!completion(state,task);
+    const change=data => {
       const actual = data.tasks.find(x => x.id === id);
       if (!actual || actual.archivedAt !== null || !blockIsActive(data, actual.block)) fail("Задание недоступно в архиве.");
       const record = completion(data, actual);
@@ -5830,7 +5842,8 @@ h3.task-title { margin:0; }
         if (actual.type === "once" && record.taskType !== "once") fail("Выполнение относится к прежнему расписанию или старой истории. Отмена через разовую карточку недоступна.");
         data.completions = data.completions.filter(x => x.id !== record.id);
       } else addRecord(data, id, actual.reward, {taskType: actual.type});
-    });
+    };
+    return done ? confirmRewardChange(change) : transact(change);
   }
 
   function editTaskDays(id) {
@@ -5999,8 +6012,7 @@ h3.task-title { margin:0; }
     if(!quest||quest.archivedAt!==null)return false;
     const current=quest.stages?.find(x=>x.id===stageId);
     if(!current||current.done===expectedDone)return false;
-    if(!expectedDone&&!confirm("Отменить этап? Его награда и награда за достижение будут убраны.")){render();return false;}
-    return transact(data=>{
+    const change=data=>{
       const q=data.quests.find(x=>x.id===id);const stage=q?.stages?.find(x=>x.id===stageId);
       if(!q||q.archivedAt!==null)fail("Квест находится в архиве.");
       if(!stage||stage.done===expectedDone)return;
@@ -6014,7 +6026,8 @@ h3.task-title { margin:0; }
         data.completions=data.completions.filter(x=>!remove.has(x.id));
         stage.done=false;stage.completedAt=null;stage.completedDate=null;stage.completionId=null;stage.paidReward=null;q.finalCompletionId=null;q.completedAt=null;q.completedDate=null;
       }
-    },false);
+    };
+    return expectedDone ? transact(change,false) : confirmRewardChange(change,false,{title:"Отменить этап?",description:"Будут убраны сохранённые награды этапа и завершения квеста.",action:"Отменить этап"});
   }
   function stagesCard(q) {
     const done=q.progress===q.target, card=el("article","card"+(done?" done":""));
@@ -6112,12 +6125,7 @@ h3.task-title { margin:0; }
   function moveQuest(id, direction) {
     const current = state.quests.find(x => x.id === id);
     if(!current||current.archivedAt!==null||current.type==="stages")return;
-    if (direction < 0 && !confirm(
-      "Отменить последнее продвижение? Его награда, а при необходимости " +
-      "и награда за достижение, будут убраны."
-    )) return;
-
-    transact(data => {
+    const change=data => {
       const quest = data.quests.find(x => x.id === id);
       if (!quest || quest.archivedAt !== null) fail("Квест находится в архиве.");
       const last = quest.stepHistory[quest.stepHistory.length - 1];
@@ -6155,7 +6163,8 @@ h3.task-title { margin:0; }
       if (next < quest.target && final) {
         data.completions = data.completions.filter(x => x.id !== final.id);
       }
-    }, false);
+    };
+    return direction < 0 ? confirmRewardChange(change,false,{title:"Отменить продвижение?",description:"Последний шаг будет снят вместе с его начислениями и наградой за достижение.",action:"Отменить шаг"}) : transact(change,false);
   }
 
   function questCard(quest, inDay = false) {
@@ -6260,7 +6269,7 @@ h3.task-title { margin:0; }
   }
 
     function buyBonus(id) {
-    const ok = transact(data => {
+    transact(data => {
       const bonus = data.bonuses.find(x => x.id === id);
 
       if (data.purchases.some(x=>x.bonusId===id)) fail("Бонус уже куплен.");
@@ -6297,9 +6306,6 @@ h3.task-title { margin:0; }
       });
     }, false);
 
-    if (ok) {
-      tones([392, 523.25, 659.25], .12, .3);
-    }
   }
 
     function bonusCard(bonus) {
@@ -6380,13 +6386,7 @@ h3.task-title { margin:0; }
         "Отменить покупку",
         "button secondary full",
         () => {
-          if (!confirm(
-            `Отменить покупку и вернуть ${purchase.price} ${symbol}?`
-          )) {
-            return;
-          }
-
-          transact(data => {
+          confirmRewardChange(data => {
             if (!data.purchases.some(x => x.id === purchase.id)) {
               fail("Покупка уже отменена.");
             }
@@ -6394,7 +6394,7 @@ h3.task-title { margin:0; }
             data.purchases = data.purchases.filter(
               x => x.id !== purchase.id
             );
-          }, false);
+          }, false, {title:"Вернуть покупку?",description:"Стоимость из сохранённой покупки вернётся на баланс. Уровень не изменится.",action:"Вернуть покупку",keep:"Оставить покупку",kind:"undo"});
         },
         true
       )
@@ -7342,7 +7342,14 @@ h3.task-title { margin:0; }
     openMenu(title, actions.map(action => ({ ...action, run: () => {
       keyPending = null;
       action.run();
-      if (!editor.open && !menu.open && keyRoute) keyShow(keyRoute.id);
+      if (!editor.open && !menu.open && keyRoute) {
+        const confirmation=document.querySelector(".lg-reward-confirm[open]");
+        if(confirmation) confirmation.addEventListener("close",()=>{
+          if(!keyRoute)return;
+          keyShow(keyRoute.id);
+        },{once:true});
+        else keyShow(keyRoute.id);
+      }
     } })));
   }
 
@@ -7559,14 +7566,13 @@ h3.task-title { margin:0; }
         btn("⋯", "button secondary key-more", () => keyMenu("Запись: " + e.minutes + " мин", [
         { text: "Исправить", run: () => keyTime(a.id, e.id) },
         { text: "Удалить", run: () => {
-          if (!confirm("Удалить запись времени? Дневная награда может быть отменена.")) return;
-          transact(data => {
+          confirmRewardChange(data => {
             const current = keyActive(data, a.id);
             const found = data.keyActions.entries.find(x => x.id === e.id && x.actionId === a.id && x.date === today());
             if (!found) fail("Сегодняшняя запись больше недоступна.");
             data.keyActions.entries = data.keyActions.entries.filter(x => x.id !== e.id);
             keyReconcile(data, current, today());
-          }, false);
+          }, false, {title:"Удалить запись времени?",description:"Время будет удалено. Дневная награда пересчитается по оставшимся записям.",action:"Удалить запись"});
         } }
         ]), true));
       row.querySelector("button")?.setAttribute("aria-label", "Управление записью: " + e.minutes + " мин");
@@ -9166,11 +9172,11 @@ h3.task-title { margin:0; }
     if (document.hidden || !healthy) return;
     if (loadLatest()) syncDay();
     render();
-    runEffect();
   }
-  document.addEventListener("visibilitychange", refreshVisible);
+  document.addEventListener("visibilitychange", () => { if(document.hidden) clearEffects(); refreshVisible(); });
+  window.addEventListener("pagehide",clearEffects);
   window.addEventListener("storage", event => {
-    if (event.key === STORAGE_KEY || event.key === null) refreshVisible();
+    if (event.key === STORAGE_KEY || event.key === null) { clearEffects(); refreshVisible(); }
   });
   setInterval(() => {
     if (!document.hidden && healthy && state.dayPlanDate !== today()) {
