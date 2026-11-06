@@ -2521,6 +2521,7 @@ h3.task-title { margin:0; }
 
 </style>
 <style>
+.lg-balance{min-width:0}.lg-balance-label{display:block;font-size:12px;margin:12px 0 6px}.lg-balance input,.lg-balance textarea,.lg-balance select{min-height:44px;min-width:0;max-width:100%;border:1px solid var(--border);border-radius:10px;padding:9px;background:var(--bg);color:var(--text);font:inherit;font-size:14px}.lg-balance>input{width:110px}.lg-balance textarea,.lg-balance select{width:100%}.lg-balance textarea{min-height:84px;resize:vertical}.lg-balance .button{min-height:44px;font-size:12px;margin-top:10px;white-space:normal}.lg-balance-total{font-size:26px;color:var(--green);font-weight:650;margin:12px 0}.lg-balance-warn{font-size:12px;color:#dda5a0}.lg-balance-preview,.lg-evening-saved{margin:14px 0;padding:12px;border:1px solid #a4d9bd44;border-radius:12px}.lg-balance-preview li,.lg-evening-saved li{overflow-wrap:anywhere}.lg-evening-saved p{white-space:pre-wrap;overflow-wrap:anywhere}.lg-balance details{border-top:1px solid var(--border);padding-top:10px;margin-top:14px}.lg-balance summary{font-size:12px;cursor:pointer;min-height:44px;padding-top:8px}.lg-balance-row{border-top:1px solid #ffffff0c;padding:12px 0;min-width:0;font-size:12px;overflow-wrap:anywhere}.lg-balance-row strong{display:block;margin-bottom:6px}.lg-balance-row select{margin-top:7px}.lg-balance-estimate{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:11px}.lg-balance-estimate input{width:86px}
 .first-step-entry label,.lg-reward-picker label{display:block;font-size:12px;margin:12px 0 6px}.first-step-entry input,.first-step-entry select,.lg-reward-picker select{width:100%;min-width:0;min-height:44px;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);font:inherit;font-size:14px}.first-step-entry .button,.lg-my-reward .button{min-height:44px;margin-top:10px;font-size:12px}.first-step-context,.lg-my-reward h3{overflow-wrap:anywhere}.first-step-context,.lg-reward-status{color:var(--green)}.lg-my-reward h3{font-size:18px;margin:6px 0}.lg-reward-picker{margin-top:14px;border-top:1px solid var(--border);padding-top:10px}.lg-reward-picker summary{cursor:pointer;font-size:12px;min-height:44px;padding:8px 0}.lg-my-reward .meta{overflow-wrap:anywhere}
 .lg-widget-mode{display:flex;justify-content:flex-end;margin:14px 0}.lg-widget-mode .button{min-height:44px;padding:10px 14px;font-size:12px}.lg-widget-manage-note{font-size:12px;line-height:1.6;margin:0 0 14px}.widget-managing .widget-instance-head{margin-bottom:0}.widget-managing .widget-controls{margin-top:12px}.widget-managing .widget-controls .button{min-height:44px}
 .lg-day-result{min-width:0}.lg-result-time{display:flex;flex-direction:column;gap:5px}.lg-result-caption{font-size:11px;color:var(--muted)}.lg-result-time>strong{font-size:27px;line-height:1.3;font-weight:650;color:var(--green);overflow-wrap:anywhere;font-variant-numeric:tabular-nums}.lg-day-result .lg-result-note{font-size:11px;color:var(--muted);line-height:1.6;margin:5px 0 10px;overflow-wrap:anywhere}.lg-result-row{display:flex;align-items:flex-start;gap:10px;border-top:1px solid #ffffff0c;padding-top:13px;margin-top:13px}.lg-result-row>.design-icon{width:17px;height:17px;flex:none;margin-top:2px;color:var(--accent)}.lg-result-row>div{min-width:0}.lg-result-row strong{font-size:13px;font-weight:600;overflow-wrap:anywhere}.lg-result-row.is-done strong,.lg-result-row.is-done>.design-icon{color:var(--green)}.lg-day-result>.button{font-size:12px;min-height:44px;margin-top:12px}
@@ -2725,6 +2726,8 @@ h3.task-title { margin:0; }
   // Для готового виджета: available=true и render — функция,
   // возвращающая DOM-узел. Сохранение содержит только его стабильный ID.
   const WIDGET_REGISTRY = Object.freeze({
+    dayBudget:Object.freeze({id:'dayBudget',title:'Посильный план',symbol:'◷',description:'Оценки дел и время, которое есть на сегодня.',note:'Перегрузка — подсказка; облегчение применяется по твоему выбору.',category:'Организация дня',system:true,available:true,placements:Object.freeze(['widgets','day']),render:()=>dayBudgetCard()}),
+    closeDay:Object.freeze({id:'closeDay',title:'Закрыть день',symbol:'✓',description:'Необязательный итог и решения по оставшимся делам.',note:'Сохрани важное и выбери, что оставить на завтра.',category:'Итоги и мотивация',system:true,available:true,placements:Object.freeze(['widgets','day']),render:()=>closeDayCard()}),
     myReward:Object.freeze({id:'myReward',title:'Моя награда',symbol:'◇',description:'Выбранный бонус и сколько до него осталось.',note:'Выбери награду из своих Бонусов.',category:'Итоги и мотивация',system:true,available:true,placements:Object.freeze(['widgets','day']),render:()=>myRewardCard()}),
     dayResult: Object.freeze({
       id:'dayResult',title:'Результат дня',symbol:'✓',
@@ -3174,7 +3177,7 @@ h3.task-title { margin:0; }
       soundEnabled: true,
       motivationEnabled: true,
       motivationText: "",
-      widgets: { version: 6, items: [{ id: "mainDay", placement: "widgets", showInDay: true }, { id: "quickCapture", placement: "widgets", showInDay: true }, { id: "carryovers", placement: "widgets", showInDay: true }, { id: "keyActions", placement: "widgets", showInDay: true }, { id: "focus", placement: "widgets", showInDay: true }, { id: "dayResult", placement: "widgets", showInDay: true }, { id: "firstStep", placement: "widgets", showInDay: true }, { id: "myReward", placement: "widgets", showInDay: true }], favorites: [] },
+      widgets: { version: 7, items: [{ id: "mainDay", placement: "widgets", showInDay: true }, { id: "quickCapture", placement: "widgets", showInDay: true }, { id: "carryovers", placement: "widgets", showInDay: true }, { id: "keyActions", placement: "widgets", showInDay: true }, { id: "focus", placement: "widgets", showInDay: true }, { id: "dayResult", placement: "widgets", showInDay: true }, { id: "firstStep", placement: "widgets", showInDay: true }, { id: "myReward", placement: "widgets", showInDay: true }, { id: "dayBudget", placement: "widgets", showInDay: true }, { id: "closeDay", placement: "widgets", showInDay: true }], favorites: [] },
       dayGraph: dayGraphDefaults(),
       happiness: happinessDefaults(),
       keyActions: { version: 1, actions: [], conditions: [], entries: [] },
@@ -3195,6 +3198,9 @@ h3.task-title { margin:0; }
       focus: {status:"ready", id:null, minutes:5, name:"", taskId:null, remaining:300000, endsAt:null, notified:true, natural:false, elapsedMs:0, endedAt:null},
       focusLog: [],
       rewardTargetId: null,
+      dayBudgets: {},
+      daySkips: {},
+      eveningReviews: {},
       dayPlans: {},
       planReviews: {},
       mainDayTasks: {},
@@ -3415,6 +3421,8 @@ h3.task-title { margin:0; }
           !integer(task.reward, 1, 100000)) {
         fail("Повреждены данные задания.");
       }
+      if(task.estimateMinutes===undefined)task.estimateMinutes=null;
+      if(task.estimateMinutes!==null&&!integer(task.estimateMinutes,1,1440))fail('Повреждена оценка длительности задания.');
       bool(task, "favorite");
       if (task.weekdays === undefined) {
         task.weekdays = task.type === "daily" ? [1, 2, 3, 4, 5, 6, 7] : [];
@@ -3621,6 +3629,7 @@ h3.task-title { margin:0; }
     for(const [date,id]of Object.entries(data.mainDayTasks))if(!validDate(date)||!validId(id))fail('Повреждён выбор главного дела дня.');
     if(data.rewardTargetId===undefined)data.rewardTargetId=null;
     if(data.rewardTargetId!==null&&!validId(data.rewardTargetId))fail('Повреждён выбор личной награды.');
+    normalizeDayBalance(data);
     if (data.dayPlanDate === undefined) data.dayPlanDate = null;
     if (data.dayPlanDate !== null && !validDate(data.dayPlanDate)) {
       fail("Некорректная дата плана.");
@@ -3693,8 +3702,8 @@ h3.task-title { margin:0; }
     const date = today();
     const ids = new Set(data.dayPlans[date] || []);
     data.dayPlans[date] = data.tasks.filter(task => task.archivedAt === null &&
-      taskBlockIsActive(data, task.block) && (task.type === "daily"
-        ? task.inDayBuilder && scheduledToday(task) : ids.has(task.id))).map(task => task.id);
+      taskBlockIsActive(data, task.block) && !(data.daySkips[date]||[]).includes(task.id) && (task.type === "daily"
+        ? task.inDayBuilder && scheduledToday(task) : ids.has(task.id)&&(!completion(data,task)||completion(data,task).date===date))).map(task => task.id);
     data.dayPlanDate = date;
   }
 
@@ -3705,7 +3714,7 @@ h3.task-title { margin:0; }
   function plannedTasks(data) {
     const ids = new Set(data.dayPlans[today()] || []);
     return data.tasks.filter(task => task.archivedAt === null && taskBlockIsActive(data, task.block) &&
-      ids.has(task.id) && scheduledToday(task));
+      ids.has(task.id) && !(data.daySkips[today()]||[]).includes(task.id) && scheduledToday(task) && (!completion(data,task)||completion(data,task).date===today()));
   }
 
   function completion(data, task, todayOnly = false) {
@@ -4049,7 +4058,7 @@ h3.task-title { margin:0; }
   "check": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"m7 12 3 3 7-7\"/>",
   "star": "<path d=\"m12 2 3.1 6.3 7 .9-5.1 5 1.2 7-6.2-3.3L5.8 21 7 14.2l-5-5 7-.9Z\"/>"
 });
-  const DESIGN_WIDGET_ICONS = Object.freeze({ myReward:"spark", dayResult:"chart", mainDay:"flag", quickCapture:"plus", carryovers:"calendar", keyActions: "flag", focus: "clock", dayGraph: "chart", firstStep: "play", happiness: "heart", challenge: "quest" });
+  const DESIGN_WIDGET_ICONS = Object.freeze({ dayBudget:"clock", closeDay:"check", myReward:"spark", dayResult:"chart", mainDay:"flag", quickCapture:"plus", carryovers:"calendar", keyActions: "flag", focus: "clock", dayGraph: "chart", firstStep: "play", happiness: "heart", challenge: "quest" });
   function designIcon(name) {
     const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     icon.setAttribute("viewBox", "0 0 24 24");
@@ -6051,6 +6060,7 @@ h3.task-title { margin:0; }
       }
       const ids = new Set(data.dayPlans[today()]);
       if (task.type === "daily") task.inDayBuilder = checked;
+      if(checked)data.daySkips[today()]=(data.daySkips[today()]||[]).filter(x=>x!==id);
       if (checked) ids.add(id); else ids.delete(id);
       data.dayPlans[today()] = [...ids];
       ensureDay(data);
@@ -6132,7 +6142,7 @@ h3.task-title { margin:0; }
     const complete=btn(record?'Отменить':'Выполнить','button lg-c-action'+(record?' secondary':''),()=>toggleTask(task.id),true);
     complete.setAttribute('aria-label',(record?'Отменить выполнение: ':'Выполнить: ')+task.name);
     card.append(lgCardFooter(lgCardValue(record?record.reward:task.reward,record?'Получено':'За выполнение',false,!record),complete));
-    card.append(lgCardDay(checkbox(old?'Выполнено в другой день':'Конструктор дня',task.type==='daily'?task.inDayBuilder:view.planIds.has(task.id),checked=>togglePlan(task.id,checked),!!old)));
+    card.append(lgCardDay(checkbox(old?'Выполнено в другой день':'Конструктор дня',task.type==='daily'?task.inDayBuilder&&!(state.daySkips[today()]||[]).includes(task.id):view.planIds.has(task.id),checked=>togglePlan(task.id,checked),!!old)));
     if(task.type==='once'&&record&&record.taskType!=='once')card.append(el('p','meta','Выполнение относится к прежнему расписанию или старой истории. Отмена через разовую карточку недоступна.'));
     return card;
   }
@@ -8334,7 +8344,7 @@ h3.task-title { margin:0; }
     if (data.widgets === undefined) data.widgets = emptyState().widgets;
     const widgets = data.widgets;
     if (!widgets || typeof widgets !== "object" || Array.isArray(widgets) ||
-        ![1, 2, 3, 4, 5, 6].includes(widgets.version) || !Array.isArray(widgets.items)) {
+        ![1, 2, 3, 4, 5, 6, 7].includes(widgets.version) || !Array.isArray(widgets.items)) {
       fail("Повреждены настройки виджетов.");
     }
     const ids = new Set();
@@ -8375,6 +8385,10 @@ h3.task-title { margin:0; }
     if(widgets.version===5){
       for(const id of ['firstStep','myReward'])if(!widgets.items.some(item=>item.id===id))widgets.items.push({id,placement:'widgets',showInDay:true});
       widgets.version=6;
+    }
+    if(widgets.version===6){
+      for(const id of ['dayBudget','closeDay'])if(!widgets.items.some(item=>item.id===id))widgets.items.push({id,placement:'widgets',showInDay:true});
+      widgets.version=7;
     }
   }
 
@@ -9180,7 +9194,7 @@ h3.task-title { margin:0; }
       const entry=pendingCarryovers(data).find(x=>x.task.id===id&&x.from===from);
       if(!entry)fail('Дело уже разобрано или изменилось. Обнови список.');
       const ids=new Set(data.planReviews[from]||[]);ids.add(id);data.planReviews[from]=[...ids];
-      if(choice==='today'){const plan=new Set(data.dayPlans[today()]||[]);plan.add(id);data.dayPlans[today()]=[...plan];}
+      if(choice==='today'){const plan=new Set(data.dayPlans[today()]||[]);plan.add(id);data.dayPlans[today()]=[...plan];data.daySkips[today()]=(data.daySkips[today()]||[]).filter(x=>x!==id);}
       if(choice==='archive'){
         entry.task.archivedAt=new Date().toISOString();entry.task.inDayBuilder=false;
         for(const day of Object.keys(data.dayPlans))if(day>=today())data.dayPlans[day]=data.dayPlans[day].filter(x=>x!==id);
@@ -9316,6 +9330,85 @@ h3.task-title { margin:0; }
       el("strong", total ? "summary-total" : "", String(value))
     );
     container.append(row);
+  }
+
+  function normalizeDayBalance(data) {
+    const object=x=>x&&typeof x==='object'&&!Array.isArray(x);
+    for(const field of ['dayBudgets','daySkips','eveningReviews']){if(data[field]===undefined)data[field]={};if(!object(data[field]))fail('Повреждены настройки плана или итоги дня.');}
+    for(const [date,value]of Object.entries(data.dayBudgets))if(!validDate(date)||!integer(value,0,1440))fail('Повреждён бюджет дня.');
+    for(const [date,ids]of Object.entries(data.daySkips))if(!validDate(date)||!Array.isArray(ids)||!ids.every(validId)||new Set(ids).size!==ids.length)fail('Повреждены отложенные дела дня.');
+    for(const [date,r]of Object.entries(data.eveningReviews)){
+      if(!validDate(date)||!object(r)||typeof r.note!=='string'||r.note.length>280||typeof r.good!=='string'||r.good.length>160||
+        typeof r.savedAt!=='string'||!Number.isFinite(Date.parse(r.savedAt))||new Date(r.savedAt).toISOString()!==r.savedAt||!Array.isArray(r.decisions))fail('Повреждён вечерний итог.');
+      const ids=new Set();for(const d of r.decisions){if(!object(d)||!validId(d.taskId)||ids.has(d.taskId)||!validName(d.name)||!['keep','tomorrow','later'].includes(d.choice))fail('Повреждены решения вечернего итога.');ids.add(d.taskId);}
+    }
+  }
+  const balanceUi={preview:null,undo:null,drafts:new Map(),allHistory:false};
+  function nextPlanDate(){const date=new Date();date.setHours(12,0,0,0);date.setDate(date.getDate()+1);return dateKey(date);}
+  function scheduledOn(task,date){return !task.weekdays.length||task.weekdays.includes(new Date(date+'T12:00:00').getDay()||7);}
+  function planLoad(data=state){const tasks=plannedTasks(data);return {tasks,known:sum(tasks.filter(t=>t.estimateMinutes!==null),'estimateMinutes'),unknown:tasks.filter(t=>t.estimateMinutes===null).length,budget:data.dayBudgets[today()]??60};}
+  function deferToday(data,id,choice){
+    const date=today(),task=plannedTasks(data).find(t=>t.id===id&&!completion(data,t));
+    if(!task||!['later','tomorrow'].includes(choice))fail('Дело уже изменилось или завершено.');
+    const tomorrow=nextPlanDate();if(choice==='tomorrow'&&task.type==='daily'&&!scheduledOn(task,tomorrow))fail('Завтра это повторяемое дело не запланировано по расписанию.');
+    if(task.type==='once'&&choice==='later'&&data.eveningReviews[date]?.decisions.some(d=>d.taskId===id&&d.choice==='tomorrow'))data.dayPlans[tomorrow]=(data.dayPlans[tomorrow]||[]).filter(x=>x!==id);
+    if(task.type==='once')for(const [day,ids]of Object.entries(data.dayPlans))if(day<=date&&ids.includes(id))data.planReviews[day]=[...new Set([...(data.planReviews[day]||[]),id])];
+    data.daySkips[date]=[...new Set([...(data.daySkips[date]||[]),id])];data.dayPlans[date]=(data.dayPlans[date]||[]).filter(x=>x!==id);
+    if(choice==='tomorrow'){data.dayPlans[tomorrow]=[...new Set([...(data.dayPlans[tomorrow]||[]),id])];data.daySkips[tomorrow]=(data.daySkips[tomorrow]||[]).filter(x=>x!==id);}
+  }
+  function balanceChange(date,change){return transact(data=>{if(today()!==date)fail('Наступил новый день. Проверь план и повтори действие.');change(data);},false);}
+  function estimateField(task,date){
+    const label=el('label','lg-balance-estimate','Оценка, мин'),input=el('input');input.type='number';input.min='1';input.max='1440';input.step='1';input.placeholder='—';input.value=task.estimateMinutes??'';input.disabled=!healthy;input.setAttribute('aria-label','Оценка минут: '+task.name);
+    input.addEventListener('input',()=>input.setCustomValidity(''));input.addEventListener('change',()=>{const value=input.value===''?null:Number(input.value);if(value!==null&&(!/^\d+$/.test(input.value)||!integer(value,1,1440))){input.setCustomValidity('Оставь пустым или укажи от 1 до 1440 минут.');input.reportValidity();return;}balanceChange(date,data=>{const t=plannedTasks(data).find(x=>x.id===task.id);if(!t)fail('Дело больше не входит в сегодняшний план.');t.estimateMinutes=value;});});label.append(input);return label;
+  }
+  function dayBudgetCard(){
+    const date=today(),load=planLoad(),main=mainDayTask(),box=el('div','lg-balance'),label=el('label','lg-balance-label','Время на дела сегодня, минут'),budget=el('input');budget.type='number';budget.min='0';budget.max='1440';budget.step='1';budget.value=load.budget;budget.id='day-budget-minutes';label.htmlFor=budget.id;budget.disabled=!healthy;
+    budget.addEventListener('input',()=>budget.setCustomValidity(''));budget.addEventListener('change',()=>{const n=Number(budget.value);if(!/^\d+$/.test(budget.value)||!integer(n,0,1440)){budget.setCustomValidity('Укажи целое число от 0 до 1440.');budget.reportValidity();return;}balanceChange(date,data=>{data.dayBudgets[date]=n;});});
+    box.append(label,budget,el('p','lg-balance-total','≈ '+load.known+' мин'+(load.unknown?' + ?':'')),el('p','meta','Бюджет: '+load.budget+' мин. '+(load.unknown?'Без оценки: '+load.unknown+'. Полный объём неизвестен.':(load.tasks.length?'Все дела оценены.':'В плане пока нет дел.'))),
+      el('p','meta','Оценки относятся ко всему плану, включая выполненное. Факт записан отдельно: '+keyDuration(dayResult().minutes)+'.'));
+    if(load.known>load.budget){
+      box.append(el('p','lg-balance-warn','Известные оценки превышают бюджет на '+(load.known-load.budget)+' мин.'),btn('Предложить облегчённый план','button secondary full',()=>{let total=load.known;const ids=[];for(const task of [...load.tasks].reverse()){if(total<=load.budget)break;if(task.id===main?.id||completion(state,task)||task.estimateMinutes===null)continue;ids.push(task.id);total-=task.estimateMinutes;}balanceUi.preview={ids,date,snapshot};render();},true));
+    }
+    const preview=balanceUi.preview;if(preview&&preview.date===date&&preview.snapshot===snapshot){
+      const p=el('div','lg-balance-preview');p.append(el('strong','','Предпросмотр'));
+      if(preview.ids.length){
+        p.append(el('p','meta','Эти дела останутся в блоках или Входящих для выбора позже:'));const list=el('ul');for(const id of preview.ids)list.append(el('li','',state.tasks.find(t=>t.id===id).name));p.append(list);
+        const remaining=load.known-preview.ids.reduce((n,id)=>n+state.tasks.find(t=>t.id===id).estimateMinutes,0);p.append(el('p','meta','Останется ≈ '+remaining+' из '+load.budget+' мин.'+(load.unknown?' Есть дела без оценки.':'')),el('p','meta','Главное и выполненное сохраняются. Повторяемые дела пропускаются только сегодня.'));
+        p.append(btn('Оставить эти дела на потом','button full',()=>{
+          const before={plan:[...(state.dayPlans[date]||[])],skips:[...(state.daySkips[date]||[])],main:state.mainDayTasks[date],reviews:clone(state.planReviews)};
+          const saved=balanceChange(date,data=>{if(snapshot!==preview.snapshot)fail('План изменился. Открой предложение заново.');for(const id of preview.ids)deferToday(data,id,'later');});
+          balanceUi.preview=null;if(saved)balanceUi.undo={date,before,snapshot};render();
+        },true));
+      }else p.append(el('p','meta','Главное и выполненное уже превышают бюджет. Уточни оценки или доступное время; они не убираются автоматически.'));
+      p.append(btn('Отмена','button secondary full',()=>{balanceUi.preview=null;render();}));box.append(p);
+    }
+    const undo=balanceUi.undo;if(undo&&undo.date===date&&undo.snapshot===snapshot)box.append(btn('Отменить облегчение','button secondary full',()=>{if(balanceChange(date,data=>{if(snapshot!==undo.snapshot)fail('План уже изменился.');data.dayPlans[date]=undo.before.plan;data.daySkips[date]=undo.before.skips;data.planReviews=undo.before.reviews;if(undo.before.main)data.mainDayTasks[date]=undo.before.main;})){balanceUi.undo=null;render();}},true));
+    const list=el('details');list.append(el('summary','','Оценки дел · '+load.tasks.length));for(const task of load.tasks){const row=el('div','lg-balance-row');row.append(el('strong','',task.name+(completion(state,task)?' · выполнено':task.id===main?.id?' · главное':'')),estimateField(task,date));list.append(row);}if(!load.tasks.length)list.append(el('p','meta','Добавь дело на сегодня в Конструкторе.'));box.append(list);
+    const deferred=state.tasks.filter(t=>(state.daySkips[date]||[]).includes(t.id)&&t.archivedAt===null&&taskBlockIsActive(state,t.block)&&!completion(state,t));
+    const pastIds=new Set(Object.entries(state.daySkips).filter(([day])=>day<date).flatMap(([,ids])=>ids)),futureIds=new Set(Object.entries(state.dayPlans).filter(([day])=>day>=date).flatMap(([,ids])=>ids));
+    const later=state.tasks.filter(t=>t.type==='once'&&pastIds.has(t.id)&&!futureIds.has(t.id)&&!deferred.some(x=>x.id===t.id)&&t.archivedAt===null&&taskBlockIsActive(state,t.block)&&!completion(state,t));
+    for(const [title,tasks]of [['Отложено сегодня',deferred],['Позже',later]])if(tasks.length){const queue=el('details');queue.append(el('summary','',title+' · '+tasks.length));for(const t of tasks){const row=el('div','lg-balance-row');row.append(el('span','',t.name),btn('Добавить на сегодня','button secondary',()=>balanceChange(date,data=>{const actual=data.tasks.find(x=>x.id===t.id);if(!actual||actual.archivedAt!==null||!taskBlockIsActive(data,actual.block)||completion(data,actual)||!scheduledToday(actual)||(actual.type==='daily'&&!actual.inDayBuilder))fail('Дело недоступно для сегодняшнего плана. Включи его через карточку задания.');data.daySkips[date]=(data.daySkips[date]||[]).filter(x=>x!==t.id);data.dayPlans[date]=[...new Set([...(data.dayPlans[date]||[]),t.id])];}),true));queue.append(row);}box.append(queue);}
+    box.append(btn('К конструктору','button secondary full',()=>go('day')));return box;
+  }
+  function eveningDirty(d){const saved=JSON.parse(d.base);return d.note!==(saved?.note||'')||d.good!==(saved?.good||'')||Object.values(d.decisions).some(Boolean);}
+  function eveningDraft(date){const saved=JSON.stringify(state.eveningReviews[date]||null),previous=balanceUi.drafts.get(date);if(!previous||(previous.base!==saved&&!eveningDirty(previous)))balanceUi.drafts.set(date,{base:saved,note:state.eveningReviews[date]?.note||'',good:state.eveningReviews[date]?.good||'',decisions:{}});return balanceUi.drafts.get(date);}
+  function eveningSummary(review,date){const box=el('div','lg-evening-saved');box.append(el('strong','','Итог · '+date));if(review.note)box.append(el('p','',review.note));if(review.good)box.append(el('p','','Хороший момент: '+review.good));if(review.decisions.length){const list=el('ul');for(const d of review.decisions)list.append(el('li','',d.name+' — '+({keep:'оставлено в плане',tomorrow:'на завтра',later:'позже'}[d.choice])));box.append(list);}return box;}
+  function closeDayCard(){
+    const date=today(),draft=eveningDraft(date),saved=state.eveningReviews[date],conflict=draft.base!==JSON.stringify(saved||null),box=el('div','lg-balance'),form=el('form','lg-evening-form');
+    box.append(el('p','meta','Можно сохранить итог, даже если весь план не закрыт. Поля и решения необязательны.'));if(saved)box.append(eveningSummary(saved,date));
+    if(conflict)box.append(el('p','lg-balance-warn','Итог изменён в другой вкладке. Скопируй нужный текст черновика перед загрузкой.'),btn('Загрузить сохранённый итог','button secondary full',()=>{balanceUi.drafts.delete(date);render();}));
+    for(const [key,title,max]of [['note','Что сегодня было важным? · необязательно',280],['good','Хороший момент · необязательно',160]]){const label=el('label','lg-balance-label',title),input=el('textarea');input.id='evening-'+key;label.htmlFor=input.id;input.maxLength=max;input.value=draft[key];input.disabled=!healthy;input.addEventListener('input',()=>draft[key]=input.value);form.append(label,input);}
+    form.append(el('p','meta','Хороший момент сохраняется в этом итоге. Решения ниже — по заданиям сегодняшнего плана. Перенос — только по твоему выбору. Повторяемые дела пропускаются сегодня, расписание сохраняется.'));
+    const pending=plannedTasks(state).filter(t=>!completion(state,t));for(const t of pending){const row=el('div','lg-balance-row'),label=el('label','',t.name),select=el('select');select.id='evening-task-'+t.id;label.htmlFor=select.id;select.dataset.eveningTask=t.id;select.disabled=!healthy;
+      for(const [value,text]of [['','Без решения'],['tomorrow','На завтра'],['later','Позже'],['keep','Оставить в сегодняшнем плане']]){const option=el('option','',text);option.value=value;if(value==='tomorrow'&&t.type==='daily'&&!scheduledOn(t,nextPlanDate())){option.disabled=true;option.textContent='Завтра — не по расписанию';}select.append(option);}select.value=draft.decisions[t.id]||'';select.addEventListener('change',()=>draft.decisions[t.id]=select.value);row.append(label,select);form.append(row);}
+    if(!pending.length)form.append(el('p','meta','Незавершённых дел в сегодняшнем плане нет.'));
+    const submit=el('button','button full','Сохранить итог');submit.type='submit';submit.disabled=!healthy||conflict;form.append(submit);
+    form.addEventListener('submit',event=>{event.preventDefault();if(!form.isConnected)return;const choices=[...form.querySelectorAll('[data-evening-task]')].filter(x=>x.value).map(x=>({id:x.dataset.eveningTask,choice:x.value}));
+      const ok=balanceChange(date,data=>{if(JSON.stringify(data.eveningReviews[date]||null)!==draft.base)fail('Итог уже изменён. Загрузи сохранённый вариант.');if(draft.note.length>280||draft.good.length>160)fail('Сократи текст итога.');const decisions=new Map((data.eveningReviews[date]?.decisions||[]).map(d=>[d.taskId,d]));for(const c of choices){const t=plannedTasks(data).find(t=>t.id===c.id&&!completion(data,t));if(!t||!['keep','later','tomorrow'].includes(c.choice))fail('Дело или решение изменилось. Проверь список.');if(c.choice==='keep'&&t.type==='once'&&decisions.get(t.id)?.choice==='tomorrow')data.dayPlans[nextPlanDate()]=(data.dayPlans[nextPlanDate()]||[]).filter(x=>x!==t.id);decisions.set(t.id,{taskId:t.id,name:t.name,choice:c.choice});if(c.choice!=='keep')deferToday(data,t.id,c.choice);}data.eveningReviews[date]={note:draft.note.trim(),good:draft.good.trim(),decisions:[...decisions.values()],savedAt:new Date().toISOString()};});
+      if(ok){balanceUi.drafts.delete(date);render();uiToast('Итог дня сохранён');}
+    });box.append(form,btn('Пропустить итог','button secondary full',()=>go('day')));
+    for(const [day,d]of [...balanceUi.drafts].filter(([day,d])=>day<date&&eveningDirty(d)).sort((a,b)=>b[0].localeCompare(a[0]))){const old=el('details');old.append(el('summary','','Несохранённый черновик · '+day));if(d.note)old.append(el('p','',d.note));if(d.good)old.append(el('p','','Хороший момент: '+d.good));old.append(el('p','meta','Текст можно скопировать в сегодняшний итог. Вчерашние решения не применяются автоматически.'));box.append(old);}
+    const dates=Object.keys(state.eveningReviews).filter(d=>d<date).sort().reverse();if(dates.length){const history=el('details');history.append(el('summary','','Прошлые итоги · '+dates.length));for(const d of balanceUi.allHistory?dates:dates.slice(0,7))history.append(eveningSummary(state.eveningReviews[d],d));if(dates.length>7)history.append(btn(balanceUi.allHistory?'Свернуть':'Показать все итоги','button secondary full',()=>{balanceUi.allHistory=!balanceUi.allHistory;render();}));box.append(history);}return box;
   }
 
   // Read-only view of current facts; linked focus receipts are never summed twice.
