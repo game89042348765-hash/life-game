@@ -2521,6 +2521,7 @@ h3.task-title { margin:0; }
 
 </style>
 <style>
+.lg-day-result{min-width:0}.lg-result-time{display:flex;flex-direction:column;gap:5px}.lg-result-caption{font-size:11px;color:var(--muted)}.lg-result-time>strong{font-size:27px;line-height:1.3;font-weight:650;color:var(--green);overflow-wrap:anywhere;font-variant-numeric:tabular-nums}.lg-day-result .lg-result-note{font-size:11px;color:var(--muted);line-height:1.6;margin:5px 0 10px;overflow-wrap:anywhere}.lg-result-row{display:flex;align-items:flex-start;gap:10px;border-top:1px solid #ffffff0c;padding-top:13px;margin-top:13px}.lg-result-row>.design-icon{width:17px;height:17px;flex:none;margin-top:2px;color:var(--accent)}.lg-result-row>div{min-width:0}.lg-result-row strong{font-size:13px;font-weight:600;overflow-wrap:anywhere}.lg-result-row.is-done strong,.lg-result-row.is-done>.design-icon{color:var(--green)}.lg-day-result>.button{font-size:12px;min-height:44px;margin-top:12px}
 .focus-log-form{min-width:0}.focus-log-form label{display:block;font-size:12px;margin:12px 0 6px}.focus-log-form input,.focus-log-form select{display:block;width:100%;min-width:0;min-height:44px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);padding:9px;font:inherit;font-size:14px}.focus-log-form .button{margin-top:10px;min-height:44px}.focus-log-history{margin-top:18px;border-top:1px solid var(--border);padding-top:10px}.focus-log-history summary{font-size:12px;min-height:44px;padding-top:8px;cursor:pointer;color:var(--muted)}.focus-log-row{padding:10px 0;border-top:1px solid #ffffff0b;overflow-wrap:anywhere}.focus-log-row strong{font-size:13px}.focus-log-row .focus-hint{margin-top:4px}.focus-actions-completed>.focus-log-form{width:100%}
 .lg-organizer-widget>.widget-instance-head{display:grid;grid-template-columns:20px minmax(0,1fr) 44px;gap:3px 9px}.lg-organizer-widget>.widget-instance-head>h2{grid-column:2;grid-row:1;margin:0}.lg-organizer-widget>.widget-instance-head>.design-icon{grid-column:1;grid-row:1}.lg-organizer-widget>.widget-instance-head>.widget-badge{grid-column:2;grid-row:2;justify-self:start}.lg-organizer-widget>.widget-instance-head>.button{grid-column:3;grid-row:1/3}
 .lg-widget-content.lg-main-day,.lg-widget-content.lg-quick-capture,.lg-widget-content.lg-carry-review{border:0;background:none;margin:0;padding:0;border-radius:0}.lg-widget-content.lg-main-day .lg-main-name{margin-top:0}.lg-widget-content.lg-quick-capture .lg-quick-options{flex-wrap:wrap}
@@ -2722,6 +2723,13 @@ h3.task-title { margin:0; }
   // Для готового виджета: available=true и render — функция,
   // возвращающая DOM-узел. Сохранение содержит только его стабильный ID.
   const WIDGET_REGISTRY = Object.freeze({
+    dayResult: Object.freeze({
+      id:'dayResult',title:'Результат дня',symbol:'✓',
+      description:'Записанное время, главное дело и продвижение квестов за сегодня.',
+      note:'Обновляется после записи, исправления или отмены результата.',
+      category:'Итоги и мотивация',system:true,available:true,
+      placements:Object.freeze(['widgets','day']),render:()=>dayResultCard()
+    }),
     mainDay: Object.freeze({
       id:'mainDay',title:'Главное дело дня',symbol:'⚑',
       description:'Одно главное дело из сегодняшнего плана и подход к нему.',
@@ -3141,7 +3149,7 @@ h3.task-title { margin:0; }
       soundEnabled: true,
       motivationEnabled: true,
       motivationText: "",
-      widgets: { version: 4, items: [{ id: "mainDay", placement: "widgets", showInDay: true }, { id: "quickCapture", placement: "widgets", showInDay: true }, { id: "carryovers", placement: "widgets", showInDay: true }, { id: "keyActions", placement: "widgets", showInDay: true }, { id: "focus", placement: "widgets", showInDay: true }], favorites: [] },
+      widgets: { version: 5, items: [{ id: "mainDay", placement: "widgets", showInDay: true }, { id: "quickCapture", placement: "widgets", showInDay: true }, { id: "carryovers", placement: "widgets", showInDay: true }, { id: "keyActions", placement: "widgets", showInDay: true }, { id: "focus", placement: "widgets", showInDay: true }, { id: "dayResult", placement: "widgets", showInDay: true }], favorites: [] },
       dayGraph: dayGraphDefaults(),
       happiness: happinessDefaults(),
       keyActions: { version: 1, actions: [], conditions: [], entries: [] },
@@ -4013,7 +4021,7 @@ h3.task-title { margin:0; }
   "check": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"m7 12 3 3 7-7\"/>",
   "star": "<path d=\"m12 2 3.1 6.3 7 .9-5.1 5 1.2 7-6.2-3.3L5.8 21 7 14.2l-5-5 7-.9Z\"/>"
 });
-  const DESIGN_WIDGET_ICONS = Object.freeze({ mainDay:"flag", quickCapture:"plus", carryovers:"calendar", keyActions: "flag", focus: "clock", dayGraph: "chart", firstStep: "play", happiness: "heart", challenge: "quest" });
+  const DESIGN_WIDGET_ICONS = Object.freeze({ dayResult:"chart", mainDay:"flag", quickCapture:"plus", carryovers:"calendar", keyActions: "flag", focus: "clock", dayGraph: "chart", firstStep: "play", happiness: "heart", challenge: "quest" });
   function designIcon(name) {
     const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     icon.setAttribute("viewBox", "0 0 24 24");
@@ -8269,7 +8277,7 @@ h3.task-title { margin:0; }
     if (data.widgets === undefined) data.widgets = emptyState().widgets;
     const widgets = data.widgets;
     if (!widgets || typeof widgets !== "object" || Array.isArray(widgets) ||
-        ![1, 2, 3, 4].includes(widgets.version) || !Array.isArray(widgets.items)) {
+        ![1, 2, 3, 4, 5].includes(widgets.version) || !Array.isArray(widgets.items)) {
       fail("Повреждены настройки виджетов.");
     }
     const ids = new Set();
@@ -8302,6 +8310,10 @@ h3.task-title { margin:0; }
       const additions=['mainDay','quickCapture','carryovers'].filter(id=>!widgets.items.some(item=>item.id===id));
       widgets.items.unshift(...additions.map(id=>({id,placement:'widgets',showInDay:true})));
       widgets.version=4;
+    }
+    if(widgets.version===4){
+      if(!widgets.items.some(item=>item.id==='dayResult'))widgets.items.push({id:'dayResult',placement:'widgets',showInDay:true});
+      widgets.version=5;
     }
   }
 
@@ -9235,13 +9247,49 @@ h3.task-title { margin:0; }
     container.append(row);
   }
 
+  // Read-only view of current facts; linked focus receipts are never summed twice.
+  function dayResult(data=state) {
+    const date=today(),keyTime=keyMinutes(data,null,date);
+    const unlinked=data.focusLog.filter(r=>r.date===date&&r.status==='recorded'&&r.actionId===null);
+    const freeTime=sum(unlinked,'minutes'),entryIds=new Set(data.keyActions.entries.filter(e=>e.date===date).map(e=>e.id));
+    const approaches=data.focusLog.filter(r=>r.date===date&&r.status==='recorded'&&(r.entryId===null||entryIds.has(r.entryId))).length;
+    const main=mainDayTask(data),mainDone=!!main&&!!completion(data,main,true);
+    const payments=new Map(data.completions.map(r=>[r.id,r]));
+    const savedDate=(date,stamp,paymentId)=>date||payments.get(paymentId)?.date||
+      (typeof stamp==='string'&&Number.isFinite(Date.parse(stamp))?dateKey(new Date(stamp)):null);
+    let questMoves=0;
+    for(const q of data.quests){
+      if(q.type==='stages')questMoves+=q.stages.filter(stage=>stage.done&&savedDate(stage.completedDate,stage.completedAt,stage.completionId)===date).length;
+      else questMoves+=(q.stepHistory||[]).filter(step=>savedDate(payments.get(step.completionId)?.date,step.completedAt,step.completionId)===date).length;
+    }
+    const questsDone=data.completions.filter(r=>r.date===date&&r.taskId.startsWith('quest:')&&!r.taskId.startsWith('quest:step:')).length;
+    return {minutes:keyTime+freeTime,keyTime,freeTime,approaches,main,mainDone,questMoves,questsDone};
+  }
+  function dayResultCard() {
+    const result=dayResult(),box=el('div','lg-day-result');box.setAttribute('aria-label','Результат за сегодня');
+    const time=el('div','lg-result-time');time.append(el('span','lg-result-caption','Записано времени · '+dateLabel()),el('strong','',result.minutes?keyDuration(result.minutes):'Пока без записей'));
+    box.append(time);
+    if(result.minutes){
+      const parts=[];if(result.keyTime)parts.push(keyDuration(result.keyTime)+' ключевым действиям');if(result.freeTime)parts.push(keyDuration(result.freeTime)+' без привязки');
+      box.append(el('p','lg-result-note',parts.join(' · ')));
+    }
+    if(result.approaches)box.append(el('p','lg-result-note',uiAmount(result.approaches,['подход записан','подхода записано','подходов записано'])));
+    const row=(icon,label,description,done=false)=>{
+      const item=el('div','lg-result-row'+(done?' is-done':'')),copy=el('div');copy.append(el('strong','',label));if(description)copy.append(el('p','lg-result-note',description));item.append(designIcon(icon),copy);box.append(item);
+    };
+    row(result.mainDone?'check':'flag',result.mainDone?'Главное сделано':result.main?'Главное выбрано':'Главное не выбрано',result.main?.name||'Можно выбрать одно важное дело в Конструкторе.',result.mainDone);
+    row('layers',result.questMoves?uiAmount(result.questMoves,['продвижение квестов','продвижения квестов','продвижений квестов']):result.questsDone?'Есть завершённые квесты':'Продвижений квестов пока нет',result.questsDone?uiAmount(result.questsDone,['квест завершён','квеста завершено','квестов завершено']):'Отмеченные шаги и этапы, включая шаги без монет.',result.questMoves>0||result.questsDone>0);
+    if(!result.minutes&&!result.mainDone&&!result.questMoves&&!result.questsDone)box.append(el('p','lg-result-note','Здесь появятся записанное время и результаты сегодняшних действий.'));
+    const more=btn('Подробнее о дне','button secondary full',()=>go('summary'));box.append(more);return box;
+  }
+
   function renderSummary() {
     screen.append(
       lgSectionNav("Итоги дня"),
       el("h1", "", "Итоги дня"),
       el("p", "", dateLabel())
     );
-    const records = view.recordsToday;
+    const records = view.recordsToday,result=dayResult();
     const tasks = records.filter(x =>
       !x.taskId.startsWith("key-action-day:") && !x.taskId.startsWith("quest:") && !x.taskId.startsWith("day-bonus:") && !x.taskId.startsWith("calendar:"));
     const keyPayments = records.filter(x => x.taskId.startsWith("key-action-day:"));
@@ -9268,12 +9316,13 @@ h3.task-title { margin:0; }
     const activity = el("section", "card");
     const money = el("section", "card spaced");
     summaryRow(activity, "Выполнено заданий", tasks.length);
-    summaryRow(activity, "Время для главного", keyDuration(keyMinutes(state, null, today())));
+    summaryRow(activity, "Подтверждённое время", keyDuration(result.minutes));
     summaryRow(activity, "Дневных ориентиров достигнуто", state.keyActions.conditions.filter(c =>
       c.date === today() && state.keyActions.actions.some(a => a.id === c.actionId && a.deleted !== true) &&
       keyMinutes(state, c.actionId, c.date) >= c.minutes).length);
     summaryRow(money, "За ключевые действия", `+${sum(keyPayments, "reward")}`);
     summaryRow(activity, "Выполнено событий и дел", state.calendarCompletions.filter(x => x.date === today()).length);
+    summaryRow(activity, "Продвижений квестов", result.questMoves);
     summaryRow(activity, "План заданий",
       `${view.plannedDone.length} из ${view.planned.length}`);
     summaryRow(activity, "Завершено квестов", quests.length);
