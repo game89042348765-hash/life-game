@@ -2504,7 +2504,8 @@ h3.task-title { margin:0; }
 #editor .lg-new-block-form .form-actions { margin-top:14px; }
 @media (max-width:350px) { #editor .lg-block-icon-grid { gap:6px; } }
 </style>
-<link rel="stylesheet" href="assets/strategy.css">
+<link rel="stylesheet" href="assets/strategy.css?v=stages-1">
+<link rel="stylesheet" href="assets/block-stages.css?v=stages-1">
 <link rel="stylesheet" href="assets/splash-sunrise.css">
 <script src="assets/splash-sunrise.js" defer></script>
 <style>
@@ -2971,7 +2972,9 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 <button type="button" class="button secondary full" id="close-backup">Закрыть</button>
 </dialog>
 
-<script src="assets/strategy.js"></script>
+<script src="assets/block-stages.js?v=stages-1"></script>
+<script src="assets/strategy.js?v=stages-1"></script>
+<script src="assets/strategy-map.js?v=stages-1"></script>
 <script>
 "use strict";
 
@@ -3027,6 +3030,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
   let state = emptyState();
   let strategyUI = null;
+  let viewedStageId = null;
   let snapshot = null;
   let healthy = true;
   let page = "hero";
@@ -3072,7 +3076,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   // Для готового виджета: available=true и render — функция,
   // возвращающая DOM-узел. Сохранение содержит только его стабильный ID.
   const WIDGET_REGISTRY = Object.freeze({
-    strategy:Object.freeze({id:"strategy",title:"Стратегия",symbol:"◈",description:"Сферы жизни, будущие ветки и ближайшие действия.",note:"Карта использует существующие дела и цели. Будущее включается в работу вручную.",category:"Вызовы и цели",system:true,available:true,placements:Object.freeze(["widgets","day"]),render:()=>strategyCard()}),
+    strategy:Object.freeze({id:"strategy",title:"Стратегия",symbol:"◈",description:"Этапы блоков, цели и связи между ними.",note:"Смысл, цели и задания принадлежат этапам. Будущие этапы можно подготовить заранее.",category:"Вызовы и цели",system:true,available:true,placements:Object.freeze(["widgets","day"]),render:()=>strategyCard()}),
     goalStep:Object.freeze({id:'goalStep',title:'Шаг к цели',symbol:'⚑',description:'Ближайшее связанное дело и короткий подход к нему.',note:'План, выполнение дела и достижение цели — отдельные действия.',category:'Вызовы и цели',system:true,available:true,placements:Object.freeze(['widgets','day']),render:()=>goalStepCard()}),
     weekRhythm:Object.freeze({id:'weekRhythm',title:'Ритм недели',symbol:'▦',description:'Дни с подтверждёнными результатами и свой ориентир.',note:'Отдых без штрафов. Планирование и запуск таймера не считаются результатом.',category:'Итоги и мотивация',system:true,available:true,placements:Object.freeze(['widgets','day']),render:()=>weekRhythmCard()}),
     dayBudget:Object.freeze({id:'dayBudget',title:'Посильный план',symbol:'◷',description:'Оценки дел и время, которое есть на сегодня.',note:'Перегрузка — подсказка; облегчение применяется по твоему выбору.',category:'Организация дня',system:true,available:true,placements:Object.freeze(['widgets','day']),render:()=>dayBudgetCard()}),
@@ -3522,7 +3526,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
 
   function emptyState() {
-    return {
+    const data = {
       soundEnabled: true,
       motivationEnabled: true,
       motivationText: "",
@@ -3558,6 +3562,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       mainDayTasks: {},
       dayPlanDate: null
     };
+    LifeGameStages.validate(data);
+    return data;
   }
 
   function clone(value) { return JSON.parse(JSON.stringify(value)); }
@@ -3983,6 +3989,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     if(data.rewardTargetId!==null&&!validId(data.rewardTargetId))fail('Повреждён выбор личной награды.');
     normalizeDayBalance(data);
     normalizeGoalRhythm(data);
+    LifeGameStages.validate(data);
     LifeGameStrategy.validate(data);
     if (data.dayPlanDate === undefined) data.dayPlanDate = null;
     if (data.dayPlanDate !== null && !validDate(data.dayPlanDate)) {
@@ -4052,11 +4059,16 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     return id === INBOX_BLOCK_ID || blockIsActive(data,id);
   }
 
+  function taskIsActive(data,task) {return !!task&&task.archivedAt===null&&taskBlockIsActive(data,task.block)&&LifeGameStages.active(data,task);}
+  function taskVisibleInDay(data,task) {return taskIsActive(data,task)||!!task&&task.archivedAt===null&&taskBlockIsActive(data,task.block)&&!!completion(data,task,true);}
+  function goalIsActive(data,goal) {return !!goal&&blockIsActive(data,goal.blockId)&&LifeGameStages.active(data,goal);}
+  function displayedStage(block=blockId) {const selected=LifeGameStages.get(state,viewedStageId);return selected?.blockId===block?selected:LifeGameStages.current(state,block);}
+
   function ensureDay(data) {
     const date = today();
     const ids = new Set(data.dayPlans[date] || []);
     data.dayPlans[date] = data.tasks.filter(task => task.archivedAt === null &&
-      taskBlockIsActive(data, task.block) && !(data.daySkips[date]||[]).includes(task.id) && (task.type === "daily"
+      taskVisibleInDay(data, task) && !(data.daySkips[date]||[]).includes(task.id) && (task.type === "daily"
         ? task.inDayBuilder && scheduledToday(task) : ids.has(task.id)&&(!completion(data,task)||completion(data,task).date===date))).map(task => task.id);
     data.dayPlanDate = date;
   }
@@ -4067,7 +4079,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
   function plannedTasks(data) {
     const ids = new Set(data.dayPlans[today()] || []);
-    return data.tasks.filter(task => task.archivedAt === null && taskBlockIsActive(data, task.block) &&
+    return data.tasks.filter(task => taskVisibleInDay(data, task) &&
       ids.has(task.id) && !(data.daySkips[today()]||[]).includes(task.id) && scheduledToday(task) && (!completion(data,task)||completion(data,task).date===today()));
   }
 
@@ -4792,7 +4804,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
   function uiBackupSummary(parsed) {
     const d = parsed.data;
-    return `Дата копии: ${parsed.createdAt ? new Date(parsed.createdAt).toLocaleString('ru-RU') : 'не указана'}.\nБлоков: ${d.blocks?.length || 0}; заданий: ${d.tasks?.length || 0}; целей: ${d.goals?.length || 0}; квестов: ${d.quests?.length || 0}; моментов счастья: ${d.happiness?.collection?.length || 0}.\nНабросков Стратегии: ${d.strategy?.drafts?.length || 0}; связей: ${d.strategy?.links?.length || 0}.`;
+    return `Дата копии: ${parsed.createdAt ? new Date(parsed.createdAt).toLocaleString('ru-RU') : 'не указана'}.\nБлоков: ${d.blocks?.length || 0}; заданий: ${d.tasks?.length || 0}; целей: ${d.goals?.length || 0}; квестов: ${d.quests?.length || 0}; моментов счастья: ${d.happiness?.collection?.length || 0}.\nЭтапов блоков: ${d.blockStages?.items?.length || 0}. Прежних набросков: ${d.strategy?.drafts?.length || 0}.`;
   }
   function uiSetupBackupFiles() {
     const group = el('section', 'ui-backup-files');
@@ -4813,6 +4825,10 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
   function go(nextPage, selectedBlock = null, fromDayTask = false, options = {}) {
     if(nextPage!=="widgets")widgetManageMode=false;
+    if(nextPage==='blocks'&&selectedBlock!==null){
+      const target=options.target?.startsWith('task:')?state.tasks.find(t=>t.id===options.target.slice(5)):options.target?.startsWith('goal:')?state.goals.find(g=>g.id===options.target.slice(5)):null;
+      viewedStageId=options.stageId||target?.stageId||(!options.restore?null:viewedStageId);
+    }else viewedStageId=null;
     if (nextPage === "myRoute") nextPage = "hero"; // Старые записи браузерной истории, без восстановления удалённого экрана.
 
     document.getElementById("ui-feedback")?.setAttribute("hidden", "");
@@ -5287,6 +5303,84 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   const numberField = (key, label, value, max = 100000, min = 1) => ({
     key, label, value, type: "number", min, max, step: 1
   });
+  // Stage preparation uses the existing editors; only the current stage enters daily work.
+  const stageListExpanded = new Map();
+  function taskStagePicker(selectedBlock,initialId=null) {
+    const element=el('div','lg-task-stage-picker'),label=el('label','','Этап'),select=el('select');
+    select.id='task-stage';label.htmlFor=select.id;element.append(label,select);
+    const update=block=>{
+      select.replaceChildren();const entries=LifeGameStages.list(state,block);
+      for(const stage of entries){const option=el('option','',stage.name+(LifeGameStages.current(state,block)?.id===stage.id?' · текущий':!LifeGameStages.unlocked(state,stage)?' · закрыт':''));option.value=stage.id;select.append(option);}
+      if(block===INBOX_BLOCK_ID){const option=el('option','','Без этапа — Входящие');option.value='';select.append(option);}
+      select.disabled=block===INBOX_BLOCK_ID;select.value=entries.some(s=>s.id===initialId)?initialId:(LifeGameStages.current(state,block)?.id||'');
+    };
+    update(selectedBlock);return {element,select,update,value:()=>select.value||null};
+  }
+  function blockStageForm(id=null,selectedBlock=blockId) {
+    const stage=id?LifeGameStages.get(state,id):null,owner=stage?.blockId||selectedBlock;
+    if(!blockIsActive(state,owner))return;
+    const expectedStage=stage?JSON.stringify(stage):null;
+    const current=LifeGameStages.current(state,owner),others=state.blockStages.items.filter(s=>s.id!==id&&(blockIsActive(state,s.blockId)||s.id===stage?.lock.stageId));
+    const choices=[['','Выбери этап'],...others.map(s=>[s.id,state.blocks.find(b=>b.id===s.blockId).name+' → '+s.name])];
+    let savedId=id;
+    openForm(stage?'Настроить этап':'Новый этап',[
+      nameField(stage?.name),
+      {key:'lockMode',label:'Доступ к этапу',value:stage?.lock.mode||'open',options:[['open','Открыт для перехода'],...(current?.id===id?[]:[['manual','Закрыт вручную']]),['stage','После достижения другого этапа']]},
+      {key:'requiredStage',label:'До какого этапа нужно дойти',value:stage?.lock.stageId||'',required:false,options:choices}
+    ],values=>transact(data=>{
+      if(!blockIsActive(data,owner))fail('Блок больше недоступен.');
+      if(!validName(values.name))fail('Напиши название этапа.');
+      if(values.lockMode==='stage'&&!values.requiredStage)fail('Выбери этап для условия.');
+      let actual=id?LifeGameStages.get(data,id):null;
+      if(id&&!actual)fail('Этап больше недоступен.');
+      if(id&&JSON.stringify(actual)!==expectedStage)fail('Этап изменён в другой вкладке. Скопируй свой текст и открой настройки заново.');
+      if(!actual){savedId=uid();actual={id:savedId,blockId:owner,name:values.name,meaning:'',reached:false,lock:{mode:'open',stageId:null}};data.blockStages.items.push(actual);}
+      actual.name=values.name;actual.lock={mode:values.lockMode,stageId:values.lockMode==='stage'?values.requiredStage:null};
+    },false),'Сохранить',()=>{viewedStageId=savedId;if(page==='blocks'&&blockId===owner)render();else if(page==='strategy')getStrategyUI().focusStage(savedId);});
+    const mode=editor.querySelector('#edit-lockMode'),required=editor.querySelector('#edit-requiredStage'),label=editor.querySelector('label[for="edit-requiredStage"]');
+    const update=()=>{const visible=mode.value==='stage';required.hidden=!visible;required.disabled=!visible;label.hidden=!visible;};mode.addEventListener('change',update);update();
+    editor.querySelector('.form-actions').before(el('p','meta','У каждого этапа свои смысл, цели и задания. Их можно подготовить и в закрытом этапе. Условие означает дойти до выбранного этапа, а не выполнить все его цели.'));
+  }
+  function makeStageCurrent(id) {
+    const selected=LifeGameStages.get(state,id);if(!selected||!blockIsActive(state,selected.blockId))return;
+    if(!LifeGameStages.unlocked(state,selected)){uiFeedback(LifeGameStages.lockText(state,selected));return;}
+    if(LifeGameStages.current(state,selected.blockId).id===id)return;
+    const expectedCurrent=LifeGameStages.current(state,selected.blockId).id;
+    openForm('Перейти к этапу?',[],()=>transact(data=>{
+      if(LifeGameStages.current(data,selected.blockId)?.id!==expectedCurrent)fail('Текущий этап уже изменился. Проверь выбор заново.');
+      const target=LifeGameStages.get(data,id),focusTask=data.tasks.find(t=>t.id===data.focus.taskId);
+      if(focusTask?.block===target?.blockId&&['running','paused'].includes(data.focus.status))fail('Сначала заверши текущий подход таймера в этом блоке.');
+      LifeGameStages.switchTo(data,id);ensureDay(data);
+    },false),'Сделать текущим',()=>{viewedStageId=id;render();});
+    editor.querySelector('h2').after(el('p','',selected.name),el('p','meta','Прежние цели и задания сохранятся в своём этапе. В плане останутся дела текущих этапов и уже выполненное сегодня. Переход не завершает цели и не выдаёт наград.'));
+  }
+  function stageMenu(id) {
+    const stage=LifeGameStages.get(state,id);if(!stage)return;
+    const stages=LifeGameStages.list(state,stage.blockId),index=stages.indexOf(stage),current=LifeGameStages.current(state,stage.blockId);
+    const items=[{text:'Настроить этап',run:()=>blockStageForm(id)}];
+    if(id!==current.id&&LifeGameStages.unlocked(state,stage))items.push({text:'Сделать текущим',run:()=>makeStageCurrent(id)});
+    const move=direction=>transact(data=>{const ids=LifeGameStages.list(data,stage.blockId).map(s=>s.id),at=ids.indexOf(id),other=ids[at+direction];if(!other)fail('Порядок этапов уже изменён.');const a=data.blockStages.items.findIndex(s=>s.id===id),b=data.blockStages.items.findIndex(s=>s.id===other);[data.blockStages.items[a],data.blockStages.items[b]]=[data.blockStages.items[b],data.blockStages.items[a]];},false);
+    if(index>0)items.push({text:'Переместить этап выше',run:()=>move(-1)});
+    if(index<stages.length-1)items.push({text:'Переместить этап ниже',run:()=>move(1)});
+    items.push({text:'Показать на карте',run:()=>{getStrategyUI().focusStage(id);go('strategy');}});
+    openMenu(stage.name,items);
+  }
+  function blockStagePanel(owner) {
+    const stage=displayedStage(owner),current=LifeGameStages.current(state,owner),stages=LifeGameStages.list(state,owner),box=el('section','lg-block-stages');
+    box.setAttribute('aria-label','Этапы блока');const row=el('div','lg-stage-heading'),copy=el('div');
+    copy.append(el('div','meta',stage.id===current.id?'Текущий этап':stage.reached?'Этот этап уже был текущим':'Будущий этап'),el('h2','',stage.name));
+    const more=btn('⋯','more-button',()=>stageMenu(stage.id));more.setAttribute('aria-label','Действия с этапом');row.append(copy,more);box.append(row);
+    if(stage.id!==current.id){
+      const ready=LifeGameStages.unlocked(state,stage),note=el('p','meta',ready?'Режим подготовки. Выполнение доступно после перехода к этапу.':LifeGameStages.lockText(state,stage));box.append(note);
+      if(ready)box.append(btn('Сделать текущим','button secondary full',()=>makeStageCurrent(stage.id),true));
+      else box.append(btn('Настроить условие','button secondary full',()=>blockStageForm(stage.id),true));
+    }
+    const details=el('details','lg-stage-list');details.open=stageListExpanded.get(owner)===true;details.append(el('summary','','Показать этапы · '+stages.length));
+    details.addEventListener('toggle',()=>{if(details.isConnected){stageListExpanded.set(owner,details.open);details.querySelector('summary').textContent=(details.open?'Скрыть этапы · ':'Показать этапы · ')+stages.length;}});
+    for(const item of stages){const choice=btn('','lg-stage-choice',()=>{viewedStageId=item.id;render();});choice.setAttribute('aria-pressed',String(stage.id===item.id));choice.append(el('span','',item.name),el('small','',item.id===current.id?'Сейчас':!LifeGameStages.unlocked(state,item)?'Закрыт':item.reached?'Уже был текущим':'Будущий'));details.append(choice);}
+    box.append(details,btn('+ Добавить этап','button secondary full lg-stage-add',()=>blockStageForm(null,owner),true));return box;
+  }
+
   // Смысл блока: одна текстовая карточка без награды.
 
   function editMeaning(id, options = {}) {
@@ -5295,6 +5389,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const selected = state.blocks.find(item => item.id === id);
     if (!selected || selected.archivedAt !== null) return;
 
+    const stage = LifeGameStages.get(state, options.stageId) || displayedStage(id);
+    if (!stage || stage.blockId !== id) return;
     editor.replaceChildren();
 
     const form = el("form");
@@ -5302,14 +5398,14 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const title = el(
       "h2",
       "",
-      selected.meaning ? "Изменить смысл" : "Добавить смысл"
+      stage.meaning ? "Изменить смысл" : "Добавить смысл"
     );
     title.id = "editor-title";
 
     const description = el(
       "p",
       "meta",
-      "Ради чего тебе важно это направление? " +
+      "Ради чего тебе важен этот этап? " +
       "Что ты хочешь получить, почувствовать или сохранить?"
     );
 
@@ -5321,7 +5417,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     input.maxLength = 2000;
     input.required = true;
     input.rows = 6;
-    input.value = options.text ?? selected.meaning ?? "";
+    input.value = options.text ?? stage.meaning ?? "";
     input.placeholder =
       "Например: хочу иметь больше сил на путешествия " +
       "и время с близкими.";
@@ -5360,7 +5456,10 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
           fail("Блок недоступен в архиве.");
         }
 
-        actual.meaning = text;
+        const target=LifeGameStages.get(data,stage.id);
+        if(!target||target.blockId!==id)fail("Этап больше недоступен.");
+        if(target.meaning!==stage.meaning)fail('Смысл этапа изменён в другой вкладке. Скопируй свой текст и открой окно заново.');
+        target.meaning = text;
       }, false);
 
       if (saved) {
@@ -5378,14 +5477,14 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     input.focus();
   }
 
-  function meaningMenu(id) {
+  function meaningMenu(id, stageId = displayedStage(id)?.id) {
     const selected = state.blocks.find(item => item.id === id);
     if (!selected || selected.archivedAt !== null) return;
 
-    openMenu("Смысл блока", [
+    openMenu("Смысл этапа", [
       {
         text: "Изменить смысл",
-        run: () => editMeaning(id)
+        run: () => editMeaning(id,{stageId})
       },
       {
         text: "Удалить смысл",
@@ -5404,7 +5503,9 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
               fail("Блок недоступен в архиве.");
             }
 
-            actual.meaning = "";
+            const target=LifeGameStages.get(data,stageId);
+            if(!target||target.blockId!==id)fail("Этап больше недоступен.");
+            target.meaning = "";
           }, false);
         }
       }
@@ -5412,6 +5513,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
 
   function meaningCard(selected) {
+    const stage=displayedStage(selected.id);
+    selected={...selected,meaning:stage.meaning};
     if (!selected.meaning) {
       return btn(
         "+ Добавить смысл",
@@ -5436,7 +5539,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     );
 
     text.append(
-      el("div", "lg-block-preview-title", "Смысл блока"),
+      el("div", "lg-block-preview-title", "Смысл этапа"),
       el("div", "lg-block-meaning-text", selected.meaning)
     );
 
@@ -5476,7 +5579,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
   function bulkItems(data, selection) {
     return data[selection.collection].filter(item => selection.collection === "tasks"
-      ? item.archivedAt === null && taskBlockIsActive(data,item.block) && (selection.scope === "all" || item.block === selection.block)
+      ? item.archivedAt === null && taskBlockIsActive(data,item.block) && (selection.scope === "all" || item.block === selection.block && (selection.scope!=="stage"||item.stageId===selection.stageId))
       : selection.collection === "quests" ? item.archivedAt === null
       : selection.collection !== "bonuses" ||
           (item.archivedAt === null && (bonusCurrencyFilter === "all" || item.currency === bonusCurrencyFilter)));
@@ -5485,7 +5588,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   function bulkEntry(collection, block = null) {
     return btn(collection === "tasks" || collection === "quests" || collection === "bonuses" ? "Выбрать для архива" : "Выбрать для удаления", "button secondary full spaced", () => {
       bulkProcedure = null;
-      bulkSelection = { collection, block, scope: block ? "block" : "all", ids: new Set() };
+      const stageId=collection==="tasks"&&block&&block!==INBOX_BLOCK_ID?displayedStage(block)?.id:null;
+      bulkSelection = { collection, block, stageId, scope: stageId?"stage":block?"block":"all", ids: new Set() };
       render();
     });
   }
@@ -5495,7 +5599,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const items = bulkItems(state, selection);
     if (selection.collection === "tasks" && selection.block) {
       const label = el("label", "", "Масштаб выбора"), select = el("select");
-      for (const [value, text] of [["block", selection.block === INBOX_BLOCK_ID ? "Входящие" : "Текущий блок"], ["all", "Все блоки и Входящие"]]) {
+      for (const [value, text] of [...(selection.stageId?[["stage","Выбранный этап"]]:[]),["block", selection.block === INBOX_BLOCK_ID ? "Входящие" : "Весь блок · все этапы"], ["all", "Все блоки и Входящие"]]) {
         const option = el("option", "", text); option.value = value; select.append(option);
       }
       select.value = selection.scope;
@@ -5508,7 +5612,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     screen.append(controls);
     for (const item of favorites(items)) {
       let status;
-      if (selection.collection === "tasks") status = (item.block === INBOX_BLOCK_ID ? "Входящие" : state.blocks.find(block => block.id === item.block)?.name || "") + (completion(state, item) ? " · Выполнено" : " · Активно");
+      if (selection.collection === "tasks") status = (item.block === INBOX_BLOCK_ID ? "Входящие" : state.blocks.find(block => block.id === item.block)?.name || "") + (item.stageId?" · "+LifeGameStages.get(state,item.stageId).name:"") + (completion(state, item) ? " · Выполнено" : " · Активно");
       else if (selection.collection === "quests") status = (item.type === "stages" ? "Этапы" : "Счётчик") + (item.progress >= item.target ? " · Завершён" : " · Активен");
       else status = (item.currency === "diamonds" ? "Алмазы" : "Монеты") + (state.purchases.some(purchase => purchase.bonusId === item.id) ? " · Куплено" : "");
       const row = checkbox(item.name + " — " + status, selection.ids.has(item.id), checked => {
@@ -5531,7 +5635,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
   function bulkSignature() {
     return bulkSelection && JSON.stringify({ collection: bulkSelection.collection, block: bulkSelection.block,
-      scope: bulkSelection.scope, filter: bonusCurrencyFilter, page, blockId, ids: [...bulkSelection.ids].sort() });
+      scope: bulkSelection.scope, stageId:bulkSelection.stageId, filter: bonusCurrencyFilter, page, blockId, ids: [...bulkSelection.ids].sort() });
   }
 
   // Archive v1, stage 04: selected tasks only, one transaction; do not touch other categories.
@@ -5895,7 +5999,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     }
   }
 
-  function moveOrderedItem(collection, id, direction, expectedBlock, expectedFavorite, expectedNeighborId) {
+  function moveOrderedItem(collection, id, direction, expectedBlock, expectedFavorite, expectedNeighborId, expectedStage=null) {
     return transact(data => {
       if (collection !== "tasks" && collection !== "quests") fail("Список недоступен.");
       const items = data[collection];
@@ -5905,11 +6009,11 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
         : item.archivedAt === null && item.progress < item.target;
       const actual = items.find(item => item.id === id);
       if (!actual || !active(actual) || !!actual.favorite !== expectedFavorite ||
-          (collection === "tasks" && actual.block !== expectedBlock)) {
+          (collection === "tasks" && (actual.block !== expectedBlock || actual.stageId!==expectedStage))) {
         fail("Элемент изменился. Повтори действие.");
       }
       const group = items.filter(item => !!item.favorite === expectedFavorite &&
-        (collection !== "tasks" || item.block === expectedBlock) && active(item));
+        (collection !== "tasks" || item.block === expectedBlock && item.stageId===expectedStage) && active(item));
       const position = group.indexOf(actual);
       const neighbor = group[position + direction];
       if ((direction !== -1 && direction !== 1) || !neighbor) fail("Перемещение недоступно.");
@@ -5946,7 +6050,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
         for (const [text, direction] of [["↑", -1], ["↓", 1]]) {
           const arrow = btn(text, "button secondary item-order-arrow", () => {
             const neighbor = group[group.indexOf(item) + direction];
-            if (!moveOrderedItem(collection, item.id, direction, item.block, favorite, neighbor?.id)) return;
+            if (!moveOrderedItem(collection, item.id, direction, item.block, favorite, neighbor?.id,item.stageId??null)) return;
             const currentRow = [...screen.querySelectorAll(".item-order-row")]
               .find(node => node.dataset.itemId === item.id);
             if (!currentRow) return;
@@ -5985,6 +6089,9 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
         if (!blockIsActive(data, values.block)) fail("Блок назначения недоступен в архиве.");
         if (actual.block === values.block) fail("Задание уже находится в этом блоке.");
         actual.block = values.block;
+        actual.stageId=LifeGameStages.current(data,values.block).id;
+        actual.goalId=null;
+        ensureDay(data);
       }, false, true);
       if (ok && fromBlock) go("blocks", values.block);
       return ok;
@@ -6151,6 +6258,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   function goalForm(goal = null, options = {}) {
     const selectedBlock = goal ? goal.blockId : (options.blockId ?? blockId);
     if (!blockIsActive(state, selectedBlock)) return;
+    const selectedStage=goal?LifeGameStages.get(state,goal.stageId):(LifeGameStages.get(state,options.stageId)||displayedStage(selectedBlock));
+    if(!selectedStage||selectedStage.blockId!==selectedBlock)return;
     let savedId = goal?.id;
     openForm(goal ? "Изменить цель" : "Новая цель", [
       nameField(goal?.name ?? options.name),
@@ -6161,7 +6270,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       }
       if (goal) {
         const actual = data.goals.find(x => x.id === goal.id);
-        if (!actual || actual.completedDate !== null) {
+        if (!actual || actual.completedDate !== null || actual.stageId!==goal.stageId) {
           fail("Цель уже изменена или выполнена.");
         }
         actual.name = values.name;
@@ -6170,12 +6279,14 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
         data.goals.push({
           id: (savedId = uid()),
           blockId: selectedBlock,
+          stageId: selectedStage.id,
           ...values,
           completedDate: null
         });
       }
     }, false), goal ? "Сохранить" : "Создать",
     options.onSaved ? () => options.onSaved(savedId) : null);
+    editor.querySelector("h2")?.after(el("p","meta","Этап: "+selectedStage.name));
   }
 
   function goalMenu(id) {
@@ -6217,6 +6328,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
         data.diamondRecords = data.diamondRecords.filter(x => x.goalId !== id);
         actual.completedDate = null;
       } else {
+        if(!goalIsActive(data,actual))fail("Сначала сделай этап текущим.");
         if (data.diamondRecords.some(x => x.goalId === id)) {
           fail("Награда уже начислена.");
         }
@@ -6253,6 +6365,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
         "button compact-goal-action" + (done ? " secondary" : ""),
         () => toggleGoal(goal.id), true)
     );
+    if(!done&&!goalIsActive(state,goal))footer.querySelector("button").disabled=true;
     card.append(head, footer);
     if (done) {
       card.append(el("div", "meta compact-goal-date",
@@ -6407,7 +6520,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
 
   // Привязка задания к одной цели — независима от наград и выполнения.
-  function taskGoalPicker(blockId, initialGoalId = null) {
+  function taskGoalPicker(blockId, initialGoalId = null, initialStageId = null) {
     const group = el("fieldset", "task-goal-link");
     group.append(el("legend", "", "Этот шаг ведёт тебя к цели?"));
     const label = el("label", "task-goal-toggle"), check = el("input");
@@ -6418,9 +6531,9 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const hint = el("p", "meta");
     group.append(label, select, hint);
 
-    const update = (selectedBlock, changedBlock = false) => {
+    const update = (selectedBlock, changedBlock = false, stageId = initialStageId || LifeGameStages.current(state,selectedBlock)?.id) => {
       const previousId = changedBlock ? "" : (select.value || initialGoalId || "");
-      const goals = state.goals.filter(goal => goal.blockId === selectedBlock &&
+      const goals = state.goals.filter(goal => goal.blockId === selectedBlock && goal.stageId === stageId &&
         (goal.completedDate === null || goal.id === initialGoalId));
       select.replaceChildren();
       const placeholder = el("option", "", "Выбери цель");
@@ -6448,7 +6561,9 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   function createTask(options = {}) {
     const selectedBlock = options.blockId ?? blockId;
     if (!taskBlockIsActive(state, selectedBlock)) return;
-    const goalPicker = taskGoalPicker(selectedBlock, options.goalId ?? null);
+    const initialStage=options.stageId||state.goals.find(g=>g.id===options.goalId)?.stageId||displayedStage(selectedBlock)?.id||null;
+    const stagePicker=taskStagePicker(selectedBlock,initialStage);
+    const goalPicker = taskGoalPicker(selectedBlock, options.goalId ?? null, initialStage);
     let savedId;
     openForm("Новое задание", [
       nameField(options.name),
@@ -6456,16 +6571,18 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       numberField("reward", "Награда в монетах", 15)
     ], values => transact(data => {
       if (!taskBlockIsActive(data, selectedBlock)) fail("Блок недоступен в архиве.");
+      const stageId=stagePicker.value();
       const goalId = goalPicker.goalId();
       if (goalPicker.checked() && !goalId) fail("Выбери цель для этого шага.");
-      if (goalId && !data.goals.some(x => x.id === goalId && x.blockId === selectedBlock &&
+      if (goalId && !data.goals.some(x => x.id === goalId && x.blockId === selectedBlock && x.stageId===stageId &&
           x.completedDate === null)) fail("Выбранная цель больше недоступна.");
       data.tasks.push({
         id: (savedId = uid()), ...values, type: values.weekdays.length ? "daily" : "once",
-        inDayBuilder: false, block: selectedBlock, favorite: false, goalId
+        inDayBuilder: false, block: selectedBlock, stageId, favorite: false, goalId
       });
-    }, false), "Создать", options.onSaved ? () => options.onSaved(savedId) : null);
-    editor.querySelector(".form-actions")?.before(goalPicker.element);
+    }, false), "Создать", () => {if(page==="blocks"&&blockId===selectedBlock){viewedStageId=stagePicker.value();render();}if(options.onSaved)options.onSaved(savedId);});
+    editor.querySelector(".form-actions")?.before(stagePicker.element,goalPicker.element);
+    stagePicker.select.addEventListener("change",()=>goalPicker.update(selectedBlock,true,stagePicker.value()));
   }
 
   function toggleTask(id, goalContext=null) {
@@ -6478,13 +6595,13 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       const record = completion(data, actual);
       if(goalContext){
         if(today()!==goalContext.date||data.goalStep.goalId!==goalContext.goalId||actual.goalId!==goalContext.goalId||
-          !data.goals.some(g=>g.id===goalContext.goalId&&blockIsActive(data,g.blockId))||!!record!==goalContext.done)fail('Цель, дело или дата изменились. Проверь выбор заново.');
+          !data.goals.some(g=>g.id===goalContext.goalId&&goalIsActive(data,g))||!!record!==goalContext.done)fail('Цель, дело или дата изменились. Проверь выбор заново.');
         data.goalStep.taskIds={...data.goalStep.taskIds,[goalContext.goalId]:id};
       }
       if (record) {
         if (actual.type === "once" && record.taskType !== "once") fail("Выполнение относится к прежнему расписанию или старой истории. Отмена через разовую карточку недоступна.");
         data.completions = data.completions.filter(x => x.id !== record.id);
-      } else addRecord(data, id, actual.reward, {taskType: actual.type});
+      } else {if(!taskIsActive(data,actual))fail("Сначала сделай этап текущим.");addRecord(data, id, actual.reward, {taskType: actual.type});}
     };
     return done ? confirmRewardChange(change) : transact(change);
   }
@@ -6492,7 +6609,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   function editTaskDays(id) {
     const task = state.tasks.find(x => x.id === id);
     if (!task || task.archivedAt !== null || !taskBlockIsActive(state, task.block)) return;
-    const goalPicker = taskGoalPicker(task.block, task.goalId);
+    const stagePicker=taskStagePicker(task.block,task.stageId);
+    const goalPicker = taskGoalPicker(task.block, task.goalId,task.stageId);
     openForm("Редактировать задание", [
       nameField(task.name),
       numberField("reward", "Награда в монетах", task.reward),
@@ -6502,11 +6620,12 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       const actual = data.tasks.find(x => x.id === id);
       if (!actual || actual.archivedAt !== null || !taskBlockIsActive(data, actual.block) ||
           !taskBlockIsActive(data, values.block)) fail("Блок или задание недоступны в архиве.");
+      if(actual.stageId!==task.stageId)fail("Этап задания изменён. Открой редактор заново.");
       const goalId = goalPicker.goalId();
       if (goalPicker.checked() && !goalId) fail("Выбери цель для этого шага.");
       if (goalId) {
         const goal = data.goals.find(x => x.id === goalId && x.blockId === values.block);
-        if (!goal || (goal.completedDate !== null && goalId !== actual.goalId)) {
+        if (!goal || goal.stageId!==stagePicker.value() || (goal.completedDate !== null && goalId !== actual.goalId)) {
           fail("Выбранная цель больше недоступна.");
         }
       }
@@ -6516,6 +6635,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       actual.name = values.name;
       actual.reward = values.reward;
       actual.block = values.block;
+      actual.stageId = stagePicker.value();
       actual.goalId = goalId;
       const nextType = values.weekdays.length ? "daily" : "once";
       if (nextType !== actual.type) {
@@ -6527,10 +6647,12 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       actual.type = nextType;
       actual.inDayBuilder = actual.type === "daily" && selected;
       ensureDay(data);
-    }, false), "Сохранить");
-    editor.querySelector(".form-actions")?.before(goalPicker.element);
+    }, false), "Сохранить", values=>{if(page==="blocks"&&blockId===values.block){viewedStageId=stagePicker.value();render();}});
+    editor.querySelector(".form-actions")?.before(stagePicker.element,goalPicker.element);
+    stagePicker.select.addEventListener("change",()=>goalPicker.update(editor.querySelector("#edit-block").value,true,stagePicker.value()));
     editor.querySelector("#edit-block")?.addEventListener("change", event => {
-      goalPicker.update(event.target.value, true);
+      stagePicker.update(event.target.value);
+      goalPicker.update(event.target.value, true,stagePicker.value());
     });
   }
 
@@ -6538,6 +6660,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     transact(data => {
       const task = data.tasks.find(x => x.id === id);
       if (!task || task.archivedAt !== null || !taskBlockIsActive(data, task.block)) fail("Задание недоступно в архиве.");
+      if(checked&&!taskIsActive(data,task))fail("Планировать можно только задания текущего этапа.");
       if (checked && task.type === "once" &&
           completion(data, task) && !completion(data, task, true)) {
         fail("Это задание выполнено в другой день.");
@@ -6568,7 +6691,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
           alert("Задание или его блок недоступны в архиве.");
           return;
         }
-        go("blocks", actual.block, true, { target: "task:" + actual.id });
+        go("blocks", actual.block, true, { target: "task:" + actual.id,stageId:actual.stageId });
       }
     );
     badge.setAttribute("aria-label", "Открыть блок: " + block.name);
@@ -6624,9 +6747,10 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const goal=task.goalId?state.goals.find(x=>x.id===task.goalId):null;
     if(goal){const context=el('div','lg-c-context goal-context');context.append(designIcon('flag'),el('span','','Цель: '+goal.name+(goal.completedDate===null?'':' · достигнута')));card.append(context);}
     const complete=btn(record?'Отменить':'Выполнить','button lg-c-action'+(record?' secondary':''),()=>toggleTask(task.id),true);
+    complete.disabled=!record&&!taskIsActive(state,task);
     complete.setAttribute('aria-label',(record?'Отменить выполнение: ':'Выполнить: ')+task.name);
     card.append(lgCardFooter(lgCardValue(record?record.reward:task.reward,record?'Получено':'За выполнение',false,!record),complete));
-    card.append(lgCardDay(checkbox(old?'Выполнено в другой день':'Конструктор дня',task.type==='daily'?task.inDayBuilder&&!(state.daySkips[today()]||[]).includes(task.id):view.planIds.has(task.id),checked=>togglePlan(task.id,checked),!!old)));
+    card.append(lgCardDay(checkbox(!taskIsActive(state,task)?'После перехода к этапу':old?'Выполнено в другой день':'Конструктор дня',taskIsActive(state,task)&&(task.type==='daily'?task.inDayBuilder&&!(state.daySkips[today()]||[]).includes(task.id):view.planIds.has(task.id)),checked=>togglePlan(task.id,checked),!!old||!taskIsActive(state,task))));
     if(task.type==='once'&&record&&record.taskType!=='once')card.append(el('p','meta','Выполнение относится к прежнему расписанию или старой истории. Отмена через разовую карточку недоступна.'));
     return card;
   }
@@ -7047,7 +7171,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     return visual;
   }
   function blockCounts(id) {
-    const tasks=state.tasks.filter(x=>x.block===id && x.archivedAt===null);
+    const tasks=state.tasks.filter(x=>x.block===id && taskIsActive(state,x));
     return `Заданий: ${tasks.filter(x=>x.type!=="once"||!completion(state,x)).length} · На сегодня: ${tasks.filter(x=>view.planIds.has(x.id)&&!completion(state,x)&&scheduledToday(x)).length}`;
   }
   function motivationWidth() {
@@ -8937,7 +9061,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
         if(task&&!done)use(find('Выполнить'));break;
       }
       case 'goalStep':{
-        const goal=state.goals.find(g=>g.id===state.goalStep.goalId&&blockIsActive(state,g.blockId));
+        const goal=state.goals.find(g=>g.id===state.goalStep.goalId&&goalIsActive(state,g));
         const tasks=goal?goalSteps(state,goal.id):[],task=goal?(tasks.find(t=>t.id===state.goalStep.taskIds[goal.id])||nearestGoalStep(state,goal.id)):null;
         title(task?.name|| (goal?'Добавь первое дело к цели':'Выбери цель'),goal?goal.name:copy[0]);
         status.textContent=goal?tasks.filter(t=>completion(state,t)).length+' / '+tasks.length+' дел выполнено':'Цель можно создать в блоках';
@@ -9568,11 +9692,13 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     screen.append(heading);
     if (selected.subtitle) screen.append(el("p", "lg-block-subtitle", selected.subtitle));
     screen.append(blockSettingsPanel(selected.id));
+    screen.append(blockStagePanel(selected.id));
 
     // Смысл всегда расположен над целью и заданиями.
     screen.append(meaningCard(selected));
 
-    const goals = state.goals.filter(x => x.blockId === blockId);
+    const selectedStage=displayedStage();
+    const goals = state.goals.filter(x => x.blockId === blockId && x.stageId===selectedStage.id);
     const activeGoals = goals.filter(x => x.completedDate === null);
     for (const goal of activeGoals) {
       const card = goalCard(goal);
@@ -9584,7 +9710,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     addGoalButton.setAttribute("aria-label", "Добавить цель");
     screen.append(addGoalButton);
 
-    const tasks = state.tasks.filter(x => x.block === blockId && x.archivedAt === null);
+    const tasks = state.tasks.filter(x => x.block === blockId && x.stageId===selectedStage.id && x.archivedAt === null);
     const addTaskButton = btn("+ Добавить задание", "button lg-block-add-task", createTask, true);
     addTaskButton.setAttribute("aria-label", "Добавить задание");
     screen.append(addTaskButton);
@@ -9599,7 +9725,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       ...goals.filter(x => x.completedDate !== null).reverse()
         .map(item => ({ kind: "goal", item }))
     ];
-    historySection(page==="day"?"day":"block:"+blockId,"ВЫПОЛНЕНО", completed, entry =>
+    historySection(page==="day"?"day":"block:"+blockId+":"+selectedStage.id,"ВЫПОЛНЕНО", completed, entry =>
       entry.kind === "goal" ? goalCard(entry.item) : taskCard(entry.item));
 
     if (!tasks.length) {
@@ -9815,7 +9941,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   function pendingCarryovers(data=state) {
     const date=today(),latest=new Map(),current=new Set(data.dayPlans[date]||[]);
     for(const day of Object.keys(data.dayPlans).filter(x=>x<date).sort())for(const id of data.dayPlans[day])latest.set(id,day);
-    return data.tasks.filter(task=>task.type==='once'&&task.archivedAt===null&&taskBlockIsActive(data,task.block)&&!current.has(task.id)&&!completion(data,task))
+    return data.tasks.filter(task=>task.type==='once'&&task.archivedAt===null&&taskIsActive(data,task)&&!current.has(task.id)&&!completion(data,task))
       .flatMap(task=>{const from=latest.get(task.id);return from&&!(data.planReviews[from]||[]).includes(task.id)?[{task,from}]:[];});
   }
   function decideCarryover(id,from,choice,expectedDay) {
@@ -9979,7 +10105,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
 
   function goalSteps(data,goalId) {
-    return data.tasks.filter(t=>t.goalId===goalId&&t.archivedAt===null&&taskBlockIsActive(data,t.block));
+    return data.tasks.filter(t=>t.goalId===goalId&&t.archivedAt===null&&taskIsActive(data,t));
   }
   function nearestGoalStep(data,goalId) {
     const tasks=goalSteps(data,goalId),pending=tasks.filter(t=>!completion(data,t));
@@ -9987,13 +10113,13 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
   function goalStepChange(date,goalId,change) {
     return balanceChange(date,data=>{
-      const g=data.goals.find(g=>g.id===goalId&&blockIsActive(data,g.blockId));
+      const g=data.goals.find(g=>g.id===goalId&&goalIsActive(data,g));
       if(!g||data.goalStep.goalId!==goalId)fail('Выбранная цель изменилась. Проверь её заново.');
       change(data,g);
     });
   }
   function goalStepCard() {
-    const box=el('div','lg-goal-step lg-balance'),date=today(),goals=state.goals.filter(g=>blockIsActive(state,g.blockId));
+    const box=el('div','lg-goal-step lg-balance'),date=today(),goals=state.goals.filter(g=>goalIsActive(state,g));
     const label=el('label','lg-balance-label','Моя цель'),select=el('select');select.id='goal-step-goal';label.htmlFor=select.id;select.disabled=!healthy;
     const none=el('option','','Выбери цель');none.value='';select.append(none);
     for(const g of [...goals.filter(g=>g.completedDate===null),...goals.filter(g=>g.completedDate!==null)]){
@@ -10003,7 +10129,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     select.value=goal?goal.id:'';
     select.addEventListener('change',()=>widgetChange(data=>{
       if(today()!==date)fail('Наступил новый день. Выбери цель заново.');
-      const id=select.value||null,g=data.goals.find(g=>g.id===id&&blockIsActive(data,g.blockId));
+      const id=select.value||null,g=data.goals.find(g=>g.id===id&&goalIsActive(data,g));
       if(id!==null&&!g)fail('Цель больше недоступна.');data.goalStep.goalId=id;
       if(g){const remembered=Object.hasOwn(data.goalStep.taskIds,id)?data.goalStep.taskIds[id]:null;
         const t=goalSteps(data,id).find(t=>t.id===remembered)||nearestGoalStep(data,id);
@@ -10238,10 +10364,10 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     }
     const undo=balanceUi.undo;if(undo&&undo.date===date&&undo.snapshot===snapshot)box.append(btn('Отменить облегчение','button secondary full',()=>{if(balanceChange(date,data=>{if(snapshot!==undo.snapshot)fail('План уже изменился.');data.dayPlans[date]=undo.before.plan;data.daySkips[date]=undo.before.skips;data.planReviews=undo.before.reviews;if(undo.before.main)data.mainDayTasks[date]=undo.before.main;})){balanceUi.undo=null;render();}},true));
     const list=el('details');list.append(el('summary','','Оценки дел · '+load.tasks.length));for(const task of load.tasks){const row=el('div','lg-balance-row');row.append(el('strong','',task.name+(completion(state,task)?' · выполнено':task.id===main?.id?' · главное':'')),estimateField(task,date));list.append(row);}if(!load.tasks.length)list.append(el('p','meta','Добавь дело на сегодня в Конструкторе.'));box.append(list);
-    const deferred=state.tasks.filter(t=>(state.daySkips[date]||[]).includes(t.id)&&t.archivedAt===null&&taskBlockIsActive(state,t.block)&&!completion(state,t));
+    const deferred=state.tasks.filter(t=>(state.daySkips[date]||[]).includes(t.id)&&t.archivedAt===null&&taskIsActive(state,t)&&!completion(state,t));
     const pastIds=new Set(Object.entries(state.daySkips).filter(([day])=>day<date).flatMap(([,ids])=>ids)),futureIds=new Set(Object.entries(state.dayPlans).filter(([day])=>day>=date).flatMap(([,ids])=>ids));
-    const later=state.tasks.filter(t=>t.type==='once'&&pastIds.has(t.id)&&!futureIds.has(t.id)&&!deferred.some(x=>x.id===t.id)&&t.archivedAt===null&&taskBlockIsActive(state,t.block)&&!completion(state,t));
-    for(const [title,tasks]of [['Отложено сегодня',deferred],['Позже',later]])if(tasks.length){const queue=el('details');queue.append(el('summary','',title+' · '+tasks.length));for(const t of tasks){const row=el('div','lg-balance-row');row.append(el('span','',t.name),btn('Добавить на сегодня','button secondary',()=>balanceChange(date,data=>{const actual=data.tasks.find(x=>x.id===t.id);if(!actual||actual.archivedAt!==null||!taskBlockIsActive(data,actual.block)||completion(data,actual)||!scheduledToday(actual)||(actual.type==='daily'&&!actual.inDayBuilder))fail('Дело недоступно для сегодняшнего плана. Включи его через карточку задания.');data.daySkips[date]=(data.daySkips[date]||[]).filter(x=>x!==t.id);data.dayPlans[date]=[...new Set([...(data.dayPlans[date]||[]),t.id])];}),true));queue.append(row);}box.append(queue);}
+    const later=state.tasks.filter(t=>t.type==='once'&&pastIds.has(t.id)&&!futureIds.has(t.id)&&!deferred.some(x=>x.id===t.id)&&t.archivedAt===null&&taskIsActive(state,t)&&!completion(state,t));
+    for(const [title,tasks]of [['Отложено сегодня',deferred],['Позже',later]])if(tasks.length){const queue=el('details');queue.append(el('summary','',title+' · '+tasks.length));for(const t of tasks){const row=el('div','lg-balance-row');row.append(el('span','',t.name),btn('Добавить на сегодня','button secondary',()=>balanceChange(date,data=>{const actual=data.tasks.find(x=>x.id===t.id);if(!actual||actual.archivedAt!==null||!taskIsActive(data,actual)||completion(data,actual)||!scheduledToday(actual)||(actual.type==='daily'&&!actual.inDayBuilder))fail('Дело недоступно для сегодняшнего плана. Включи его через карточку задания.');data.daySkips[date]=(data.daySkips[date]||[]).filter(x=>x!==t.id);data.dayPlans[date]=[...new Set([...(data.dayPlans[date]||[]),t.id])];}),true));queue.append(row);}box.append(queue);}
     box.append(btn('К конструктору','button secondary full',()=>go('day')));return box;
   }
   function eveningDirty(d){const saved=JSON.parse(d.base);return d.note!==(saved?.note||'')||d.good!==(saved?.good||'')||Object.values(d.decisions).some(Boolean);}
@@ -10358,54 +10484,18 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     screen.append(activity, money);
   }
 
-  // Strategy keeps canonical LifeGame records authoritative; map writes never award money.
   function getStrategyUI() {
     if(strategyUI)return strategyUI;
-    strategyUI=LifeGameStrategy.create({
-      read:()=>({data:clone(state),date:today(),healthy,planned:plannedTasks(state).map(t=>t.id),scheduled:state.tasks.filter(scheduledToday).map(t=>t.id),focusReady:state.focus.status==='ready'}),
-      uid,notify:uiFeedback,showDialog:uiShowDialog,redraw:render,navigate:()=>go('strategy'),
-      change:change=>widgetChange(data=>{
-        const mappings=data.strategy.drafts.filter(d=>d.actual).map(d=>({id:d.id,actual:JSON.stringify(d.actual)}));
-        change(data.strategy);
-        for(const old of mappings)if(!data.strategy.drafts.some(d=>d.id===old.id&&JSON.stringify(d.actual)===old.actual))fail('Связь с действующим элементом сохраняется. Изменяй его через LifeGame.');
-      }),
-      activate:(draftId,values,expected,date)=>transact(data=>{
-        if(today()!==date||JSON.stringify(data.strategy)!==expected)fail('Карта или день изменились. Открой окно заново.');
-        const draft=data.strategy.drafts.find(d=>d.id===draftId);
-        if(!draft||draft.actual||!['goal','task'].includes(draft.kind))fail('Ветка уже взята в работу или недоступна.');
-        const graph=LifeGameStrategy.project(data,date);
-        if(!graph.ready('draft:'+draftId))fail('Сначала выполни условия открытия.');
-        if(!validName(values.name)||!integer(values.reward,1,100000))fail('Проверь название и награду.');
-        const isTask=draft.kind==='task';
-        if(!(isTask?taskBlockIsActive(data,values.blockId):blockIsActive(data,values.blockId)))fail('Выбери действующую сферу.');
-        if(values.goalId&&(!isTask||!data.goals.some(g=>g.id===values.goalId&&g.blockId===values.blockId&&g.completedDate===null)))fail('Цель недоступна в этой сфере.');
-        const id=uid();
-        if(isTask)data.tasks.push({id,name:values.name,block:values.blockId,goalId:values.goalId||null,reward:values.reward,type:'once',weekdays:[],inDayBuilder:false,favorite:false,archivedAt:null});
-        else data.goals.push({id,name:values.name,blockId:values.blockId,diamonds:values.reward,completedDate:null});
-        draft.actual={kind:draft.kind,id};
-      },false),
-      open:n=>{
-        if(n.blockId===INBOX_BLOCK_ID)openInbox({target:n.kind+':'+n.id});
-        else if(blockIsActive(state,n.blockId))go('blocks',n.blockId,false,{target:['task','goal'].includes(n.kind)?n.kind+':'+n.id:'',top:!['task','goal'].includes(n.kind)});
-      },
-      plan:(id,date)=>transact(data=>{
-        const t=data.tasks.find(t=>t.id===id);
-        if(today()!==date||!t||t.archivedAt!==null||!taskBlockIsActive(data,t.block)||completion(data,t)||!scheduledToday(t))fail('Дело или день изменились. Проверь расписание.');
-        if(t.type==='daily')t.inDayBuilder=true;
-        data.daySkips[date]=(data.daySkips[date]||[]).filter(k=>k!==id);
-        data.dayPlans[date]=[...new Set([...(data.dayPlans[date]||[]),id])];ensureDay(data);
-      },false),
-      start:(id,date)=>{if(startTaskFocus(id,2,date))go('focus');},
-      complete:(kind,id,date,wasDone)=>{
-        if(today()!==date){render();uiFeedback('Наступил новый день. Проверь дело заново.');return;}
-        const item=(kind==='goal'?state.goals:state.tasks).find(t=>t.id===id);
-        const done=item&&(kind==='goal'?item.completedDate!==null:!!completion(state,item));
-        if(!item||done!==wasDone){render();uiFeedback('Элемент уже изменился. Проверь результат.');return;}
-        if(kind==='goal')toggleGoal(id,date);else toggleTask(id);
-      },
-      createTask:n=>createTask({blockId:n.blockId,goalId:n.id})
-    });
-    return strategyUI;
+    strategyUI=LifeGameStageMap.create({
+      read:()=>({data:clone(state),date:today(),healthy}),
+      notify:uiFeedback,showDialog:uiShowDialog,redraw:render,navigate:()=>go('strategy'),back:()=>go('widgets'),
+      openStage:(id)=>{const st=LifeGameStages.get(state,id);if(st)go('blocks',st.blockId,false,{stageId:id,top:true});},
+      editStage:id=>blockStageForm(id),
+      makeCurrent:id=>makeStageCurrent(id),
+      addStage:block=>blockStageForm(null,block),
+      complete:(kind,id)=>kind==='goal'?toggleGoal(id):toggleTask(id),
+      done:task=>!!completion(state,task)
+    });return strategyUI;
   }
   function strategyCard(){return getStrategyUI().widget();}
   function renderStrategy(){screen.append(lgSectionNav('Стратегия'));getStrategyUI().mount(screen);}
@@ -10513,7 +10603,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const answer = prompt(
       "Все данные LifeGame в этом браузере будут сброшены: " +
       "задания, квесты, календарь, цели, покупки, планы, монеты и алмазы, " +
-      "коллекцию и историю Игры в счастье, стратегию и будущие ветки.\n\n" +
+      "коллекцию и историю Игры в счастье, этапы блоков и условия Стратегии.\n\n" +
       "Вернутся восемь стартовых блоков. Внешние копии не изменятся.\n\n" +
       "Для подтверждения введи СБРОС:"
     );
