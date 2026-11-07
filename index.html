@@ -2711,6 +2711,42 @@ h3.task-title { margin:0; }
 .lg-quick-capture:not(.lg-widget-content) .lg-quick-submit {border-radius:9px;font-weight:550}
 #editor:has(#edit-minutes) .button {font-weight:550;font-size:13px}
 </style>
+<style id="lg-compact-widgets">
+/* Compact overview + full existing controls. No fixed card height. */
+.widget-instance.lg-compact-widget {padding:16px;border-radius:18px;background:linear-gradient(145deg,#191e16,#10160f);border-color:#ffffff17}
+.lg-compact-widget .widget-instance-head {display:flex;flex-wrap:nowrap;gap:9px;margin:0 0 16px;align-items:center;border-bottom:0;padding-bottom:0}
+.lg-compact-widget .widget-instance-head h2 {flex:1;min-width:0;font-size:14px;line-height:1.3;overflow-wrap:anywhere}
+.lg-compact-widget .widget-instance-head>.design-icon {width:17px;height:17px;flex-shrink:0;color:var(--accent)}
+.lg-compact-widget .widget-badge {border:0;border-left:1px solid #ffffff20;border-radius:0;background:none;padding:0 0 0 8px;font-size:9px;color:var(--muted);flex-shrink:0}
+.lg-compact-widget .lg-compact-menu {width:30px;min-width:30px;min-height:36px;padding:0;border:0;background:none;font-size:20px;color:var(--muted)}
+.lg-compact-summary {min-width:0}
+.lg-compact-summary .lg-compact-title {font-size:19px;font-weight:650;line-height:1.35;margin:8px 0;letter-spacing:-.3px;overflow-wrap:anywhere}
+.lg-compact-context {font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 6px;overflow-wrap:anywhere}
+.lg-compact-metric {display:flex;align-items:baseline;flex-wrap:wrap;gap:7px;margin:6px 0 14px;font-variant-numeric:tabular-nums}
+.lg-compact-metric strong {font-size:30px;line-height:1.15;letter-spacing:-1px;color:var(--text)}
+.lg-compact-metric>span {font-size:13px;color:var(--muted)}
+.lg-compact-footer {display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid #ffffff10;padding-top:12px;margin-top:16px}
+.lg-compact-status {font-size:11px;line-height:1.5;color:var(--muted);min-width:0;overflow-wrap:anywhere}
+.lg-compact-widget .lg-compact-action {flex-shrink:0;max-width:58%;width:auto;min-height:44px;padding:10px 13px;font-size:12px;border-radius:11px}
+.lg-compact-details {margin-top:10px;border:0}
+.lg-compact-details>summary {font-size:11px;color:var(--muted);cursor:pointer;padding:8px 0;min-height:32px}
+.lg-compact-original {border-top:1px solid #ffffff15;margin-top:8px;padding-top:16px}
+.lg-compact-details:not([open]) {margin:0}
+.lg-compact-details:not([open])>summary {display:none}
+.lg-compact-week {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;margin:14px 0 0}
+.lg-compact-day {display:grid;justify-items:center;gap:10px;border:0;background:none;color:var(--muted);border-radius:10px;padding:9px 1px;min-height:58px;font-size:11px;cursor:pointer}
+.lg-compact-day.is-today {background:#ffda290b;color:var(--accent)}
+.lg-compact-dot {display:grid;place-items:center;width:13px;height:13px;border:1px solid #77856b;border-radius:50%;font-size:9px;color:#10160f}
+.lg-compact-dot.is-done {background:#acd8b8;border-color:#acd8b8}
+.lg-compact-dot.is-future {border-style:dashed;opacity:.6}
+.lg-compact-hours {display:grid;grid-template-columns:repeat(24,minmax(0,1fr));gap:2px;margin:15px 0}
+.lg-compact-hours span {height:18px;border-radius:3px}
+.lg-compact-summary .lg-quick-label {display:none}
+.lg-compact-summary .lg-quick-options {margin-top:9px}
+.lg-compact-widget .lg-compact-summary .progress {height:4px;margin:15px 0 6px}
+@media(max-width:350px){.widget-instance.lg-compact-widget{padding:13px}.lg-compact-widget .widget-instance-head{gap:6px}.lg-compact-widget .widget-instance-head h2{font-size:13px}.lg-compact-widget .widget-badge{font-size:8px;padding-left:5px}.lg-compact-widget .lg-compact-action{padding-inline:10px}.lg-compact-summary .lg-compact-title{font-size:18px}}
+
+</style>
 </head>
 <body>
 <div class="app">
@@ -2895,7 +2931,7 @@ h3.task-title { margin:0; }
   // Для готового виджета: available=true и render — функция,
   // возвращающая DOM-узел. Сохранение содержит только его стабильный ID.
   const WIDGET_REGISTRY = Object.freeze({
-    goalStep:Object.freeze({id:'goalStep',title:'Следующий шаг к цели',symbol:'⚑',description:'Ближайшее связанное дело и короткий подход к нему.',note:'План, выполнение дела и достижение цели — отдельные действия.',category:'Вызовы и цели',system:true,available:true,placements:Object.freeze(['widgets','day']),render:()=>goalStepCard()}),
+    goalStep:Object.freeze({id:'goalStep',title:'Шаг к цели',symbol:'⚑',description:'Ближайшее связанное дело и короткий подход к нему.',note:'План, выполнение дела и достижение цели — отдельные действия.',category:'Вызовы и цели',system:true,available:true,placements:Object.freeze(['widgets','day']),render:()=>goalStepCard()}),
     weekRhythm:Object.freeze({id:'weekRhythm',title:'Ритм недели',symbol:'▦',description:'Дни с подтверждёнными результатами и свой ориентир.',note:'Отдых без штрафов. Планирование и запуск таймера не считаются результатом.',category:'Итоги и мотивация',system:true,available:true,placements:Object.freeze(['widgets','day']),render:()=>weekRhythmCard()}),
     dayBudget:Object.freeze({id:'dayBudget',title:'Посильный план',symbol:'◷',description:'Оценки дел и время, которое есть на сегодня.',note:'Перегрузка — подсказка; облегчение применяется по твоему выбору.',category:'Организация дня',system:true,available:true,placements:Object.freeze(['widgets','day']),render:()=>dayBudgetCard()}),
     closeDay:Object.freeze({id:'closeDay',title:'Закрыть день',symbol:'✓',description:'Необязательный итог и решения по оставшимся делам.',note:'Сохрани важное и выбери, что оставить на завтра.',category:'Итоги и мотивация',system:true,available:true,placements:Object.freeze(['widgets','day']),render:()=>closeDayCard()}),
@@ -8587,6 +8623,142 @@ h3.task-title { margin:0; }
     });
   }
 
+  // Presentation only: original controls remain connected, with their existing handlers.
+  const compactWidgetOpen = new Map();
+  const COMPACT_WIDGET_COPY = {
+    mainDay:['Одно главное дело на сегодня','Выбрать главное'],
+    firstStep:['Помогает начать: ритуал и две минуты','Выбрать дело'],
+    goalStep:['Ближайшее действие выбранной цели','Моя цель'],
+    quickCapture:['Запиши дело, разберёшь позже','Добавить дело'],
+    carryovers:['Реши, что делать с незавершённым','Разобрать'],
+    keyActions:['Время, уделённое важным направлениям','Мои действия'],
+    focus:['Один подход к одному делу','Настроить подход'],
+    dayResult:['Подтверждённые результаты за сегодня','Подробнее о дне'],
+    myReward:['Личный смысл заработанных монет','Выбрать награду'],
+    dayBudget:['Объём плана, а не фактическое время','Мой план'],
+    closeDay:['Сохрани итог и реши, что перенести','Подвести итог'],
+    weekRhythm:['Дни с результатом, без штрафа за отдых','Мой ритм'],
+    dayGraph:['Шаблон распределения суток','Мой график'],
+    happiness:['Замечай и сохраняй хорошее','Играть']
+  };
+  function compactWidget(card,item,definition,inDay=false) {
+    if(!widgetAvailable(definition)||widgetManageMode&&!inDay)return;
+    const id=item.id,copy=COMPACT_WIDGET_COPY[id];if(!copy)return;
+    card.classList.add('lg-compact-widget');
+    const heading=card.querySelector('.widget-instance-head'),body=el('div','lg-compact-original');
+    for(const node of [...card.children])if(node!==heading)body.append(node);
+    body.prepend(el('p','lg-compact-context',copy[0]));
+    const details=el('details','lg-compact-details'),toggle=el('summary','','Скрыть подробности');
+    details.id='widget-details-'+id;details.open=compactWidgetOpen.get(id)||false;
+    details.append(toggle,body);details.addEventListener('toggle',()=>{if(details.isConnected)compactWidgetOpen.set(id,details.open);});
+    const show=()=>{details.open=true;compactWidgetOpen.set(id,true);requestAnimationFrame(()=>toggle.focus({preventScroll:true}));};
+    const summary=el('div','lg-compact-summary'),status=el('div','lg-compact-status'),footer=el('div','lg-compact-footer');
+    const title=(text,context='')=>{if(context)summary.append(el('p','lg-compact-context',context));summary.append(el('h3','lg-compact-title',text));};
+    const metric=(value,unit)=>{const row=el('div','lg-compact-metric');row.append(el('strong','',String(value)),el('span','',unit));summary.append(row);};
+    let action=null,actionLabel=copy[1],primary=false;
+    const find=(text)=>[...body.querySelectorAll('button')].find(b=>b.textContent.trim()===text);
+    const use=(button,label)=>{if(button){action=button;actionLabel=label||button.textContent.trim();primary=!button.classList.contains('secondary');}};
+    const todayKey=today();
+    switch(id){
+      case 'mainDay':{
+        const task=mainDayTask(),done=task&&!!completion(state,task,true);
+        title(task?.name||'Что сегодня важнее всего?',copy[0]);status.textContent=done?'Главное выполнено':task?'Выбрано на сегодня':'Добавь дело в план и выбери его';
+        if(task&&!done)use(find('Выполнить'));break;
+      }
+      case 'goalStep':{
+        const goal=state.goals.find(g=>g.id===state.goalStep.goalId&&blockIsActive(state,g.blockId));
+        const tasks=goal?goalSteps(state,goal.id):[],task=goal?(tasks.find(t=>t.id===state.goalStep.taskIds[goal.id])||nearestGoalStep(state,goal.id)):null;
+        title(task?.name|| (goal?'Добавь первое дело к цели':'Выбери цель'),goal?goal.name:copy[0]);
+        status.textContent=goal?tasks.filter(t=>completion(state,t)).length+' / '+tasks.length+' дел выполнено':'Цель можно создать в блоках';
+        if(task){const start=find('Начать 2 минуты');if(start&&!start.disabled)use(start,'2 минуты →');else if(!completion(state,task))use(find('На сегодня'),'На сегодня');else use(find('Следующий доступный шаг'),'Следующий шаг');}
+        if(action?.disabled){action=null;actionLabel='Моя цель';primary=false;}
+        if(tasks.length)summary.append(progressBar(tasks.filter(t=>completion(state,t)).length,tasks.length,'Дела выбранной цели'));break;
+      }
+      case 'dayBudget':{
+        const load=planLoad();metric(load.known,'/ '+load.budget+' мин'+(load.unknown?' + ?':''));
+        const rest=load.budget-load.known;status.textContent=load.tasks.length+' дел · '+(rest<0?'сверх бюджета '+Math.abs(rest)+' мин':load.unknown?'объём пока неполный':rest+' мин в запасе')+(load.unknown?' · '+load.unknown+' без оценки':'');
+        summary.append(progressBar(Math.min(load.known,load.budget),Math.max(1,load.budget),'Объём сегодняшнего плана'));break;
+      }
+      case 'weekRhythm':{
+        const monday=rhythmUi.week||rhythmMonday(todayKey),facts=rhythmFacts(state),target=rhythmTarget(state,monday),days=Array.from({length:7},(_,i)=>rhythmShift(monday,i)),active=days.filter(d=>facts.has(d)).length;
+        metric(active+(target===null?'':' / '+target),'дней с результатом');
+        const week=el('div','lg-compact-week');
+        days.forEach((day,i)=>{const button=btn('','lg-compact-day'+(day===todayKey?' is-today':''),()=>{compactWidgetOpen.set(id,true);rhythmUi.inspect=day;render();});button.append(el('span','',['Пн','Вт','Ср','Чт','Пт','Сб','Вс'][i]),el('span','lg-compact-dot'+(facts.has(day)?' is-done':day>todayKey?' is-future':''),facts.has(day)?'✓':''));button.setAttribute('aria-label',calendarLabel(day)+(facts.has(day)?' · есть результат':day>todayKey?' · впереди':' · без результата'));week.append(button);});summary.append(week);
+        status.textContent=target===null?'В своём ритме':active>=target?'✓ Ориентир достигнут':'Ещё '+(target-active)+' дн. к ориентиру';break;
+      }
+      case 'focus':{
+        metric(focusTime(focusLeft(state.focus)),state.focus.status==='ready'?'минут на подход':({running:'в процессе',paused:'пауза',completed:'завершён'}[state.focus.status]));
+        summary.querySelector('strong').classList.add('lg-compact-clock');
+        if(state.focus.name)summary.append(el('p','lg-compact-context',state.focus.name));
+        status.textContent='Выполнение дела отмечается отдельно';
+        if(state.focus.status==='ready')use(find('Начать'));
+        else if(state.focus.status==='running')use(find('Пауза'));
+        else if(state.focus.status==='paused')use(find('Продолжить'));
+        else {actionLabel='Записать время';primary=true;}break;
+      }
+      case 'firstStep':{
+        const select=body.querySelector('#first-step-task'),task=plannedTasks(state).find(t=>t.id===select?.value);
+        title(task?.name||'Начни с маленького действия',copy[0]);status.textContent=task?'Дело отметишь отдельно':'Выбери дело из плана или свободный ритуал';
+        if(task)use(find('Попробовать 2 минуты'),'2 минуты →');break;
+      }
+      case 'myReward':{
+        const bonus=state.bonuses.find(b=>b.id===state.rewardTargetId),purchase=state.purchases.find(p=>p.bonusId===state.rewardTargetId);
+        title(purchase?.name||bonus?.name||'Выбери награду для себя');
+        status.textContent=purchase?'Награда куплена':body.querySelector('.lg-reward-status')?.textContent||'Добавь личный бонус в разделе «Бонусы»';
+
+        if(!purchase&&bonus&&bonus.archivedAt===null){const balance=bonus.currency==='diamonds'?view.money.diamonds:view.money.balance;summary.append(progressBar(Math.min(balance,bonus.price),Math.max(1,bonus.price),'Баланс для награды'));use(find('Купить награду'));}break;
+      }
+      case 'dayResult':{
+        const result=dayResult();metric(result.minutes,'мин записано');
+        title(result.mainDone?'Главное сделано':result.main?.name||'Результат начинается с одного шага');status.textContent=result.approaches+' подходов · '+result.questMoves+' шагов квестов';use(find('Подробнее о дне'));break;
+      }
+      case 'keyActions':{
+        const active=state.keyActions.actions.filter(a=>a.deleted!==true&&a.status==='active');metric(keyMinutes(state,null,todayKey),'мин сегодня');
+        title(active.length?active[0].name:'Что для тебя важно?');status.textContent=active.length+' активных действий';use(active.length?body.querySelector('.key-manage-button'):find('＋ Добавить действие'),active.length?'Мои действия':'Добавить действие');break;
+      }
+      case 'carryovers':{
+        const pending=pendingCarryovers();metric(pending.length,'дел ждут решения');title(pending[0]?.task.name||'Всё разобрано');status.textContent='На сегодня, позже или в архив';break;
+      }
+      case 'closeDay':{
+        const saved=state.eveningReviews[todayKey],pending=plannedTasks(state).filter(t=>!completion(state,t));title(saved?.note|| (saved?'Итог дня сохранён':'Как прошёл твой день?'));status.textContent=saved?'Можно дополнить итог':pending.length+' незавершённых дел · решения по желанию';actionLabel=saved?'Мой итог':'Подвести итог';break;
+      }
+      case 'dayGraph':{
+        const hours=state.dayGraph[dayGraphMode],assigned=hours.filter(h=>h!==-1).length;metric(assigned,'/ 24 ч распределено');
+        const strip=el('div','lg-compact-hours');hours.forEach((h,i)=>{const part=el('span');part.style.background=h===-1?'#ffffff15':DAY_GRAPH_COLORS[h];part.title=String((i+5)%24).padStart(2,'0')+':00 · '+(h===-1?'Не распределено':DAY_GRAPH_NAMES[h]);strip.append(part);});summary.append(strip);status.textContent=(dayGraphMode==='weekday'?'Будни':'Выходной')+' · шаблон, не учёт времени';use(find('Изменить график'));break;
+      }
+      case 'happiness':{
+        title('Что хорошего сегодня?');status.textContent=state.happiness.collection.length+' моментов в коллекции';use(find('Играть'));break;
+      }
+      case 'quickCapture':{
+        // Keep the actual form visible: input, draft and Enter submit are untouched.
+        const original=body.querySelector('.lg-quick-capture');if(original)summary.append(original);status.textContent='Дело попадёт во Входящие';actionLabel='Входящие';action={disabled:false,click:()=>go('blocks',INBOX_BLOCK_ID)};break;
+      }
+    }
+    const button=btn(actionLabel,'button lg-compact-action'+(primary?'':' secondary'),()=>{if(action){if(action.disabled)return;if(id==='focus'&&state.focus.status==='ready'){const input=body.querySelector('#focus-minutes');if(input&&!input.checkValidity()){show();requestAnimationFrame(()=>input.reportValidity());return;}}action.click();}else show();});
+    button.disabled=!!action?.disabled;
+    button.setAttribute('aria-label',actionLabel+': '+definition.title);
+    if(!action){button.setAttribute('aria-controls',details.id);button.setAttribute('aria-expanded',String(details.open));details.addEventListener('toggle',()=>{if(!action)button.setAttribute('aria-expanded',String(details.open));});}
+    footer.append(status,button);card.append(summary,footer,details);
+    if(id==='firstStep'){
+      body.querySelector('#first-step-task')?.addEventListener('change',()=>{
+        const selected=body.querySelector('#first-step-task').value,task=plannedTasks(state).find(t=>t.id===selected);
+        summary.querySelector('h3').textContent=task?.name||'Начни с маленького действия';
+        action=task?find('Попробовать 2 минуты'):null;
+        button.textContent=task?'2 минуты →':copy[1];button.disabled=!!action?.disabled;
+        button.classList.toggle('secondary',!task);button.setAttribute('aria-label',button.textContent+': '+definition.title);
+        if(task){button.removeAttribute('aria-controls');button.removeAttribute('aria-expanded');}else{button.setAttribute('aria-controls',details.id);button.setAttribute('aria-expanded',String(details.open));}
+        status.textContent=task?'Дело отметишь отдельно':'Выбери дело из плана или свободный ритуал';
+      });
+    }
+    // Keep the actual timer control authoritative; no second timer or observer.
+    for(const old of [...heading.querySelectorAll('button')])old.remove();
+    const menu=btn('⋯','button secondary lg-compact-menu',()=>openMenu(definition.title,[
+      {text:'Подробнее и настройки',run:show},
+      ...(id==='happiness'?[{text:'Настройки игры и коллекция',run:()=>happinessOpenMenu(inDay)}]:[]),
+      ...(inDay?[{text:'Убрать из Конструктора',run:()=>setWidgetDay(id,false)}]:[{text:'Убрать из моих виджетов',run:()=>removeWidget(id)}])
+    ]));menu.setAttribute('aria-label','Меню: '+definition.title);heading.append(menu);
+  }
+
   function renderDayWidgets(target=screen,area="section") {
     for (const item of state.widgets.items) {
       const definition = widgetDefinition(item.id);
@@ -8607,6 +8779,7 @@ h3.task-title { margin:0; }
       menuButton.setAttribute("aria-label", "Меню: " + definition.title);
       heading.append(menuButton);
       card.append(heading, definition.render());
+      compactWidget(card,item,definition,true);
       target.append(card);
     }
   }
@@ -8748,6 +8921,7 @@ h3.task-title { margin:0; }
       card.append(label);
     }
     if(widgetManageMode){card.classList.add("widget-managing");card.append(widgetControls(item, index, total));}
+    compactWidget(card,item,definition);
     return card;
   }
 
@@ -10786,7 +10960,8 @@ h3.task-title { margin:0; }
     const card=$('focus-card'),nav=document.querySelector('nav'),top=document.querySelector('.topbar').getBoundingClientRect().bottom;
     const f=state.focus,active=['running','paused','completed'].includes(f.status);
     const bottom=nav.getBoundingClientRect().top,rect=card?.getBoundingClientRect();
-    const cardVisible=rect&&rect.bottom>top&&rect.top<bottom-90;
+    const compact=card?.closest(".lg-compact-widget"),visibleRect=compact&&!compact.querySelector(".lg-compact-details").open?compact.getBoundingClientRect():rect;
+    const cardVisible=visibleRect&&visibleRect.bottom>top&&visibleRect.top<bottom-90;
     const show=active&&!cardVisible;
     focusMini.hidden=!show;focusMini.style.top='auto';focusMini.style.bottom=(nav.getBoundingClientRect().height+8)+'px';
     document.documentElement.style.scrollPaddingTop=(top+12)+'px';
@@ -10822,6 +10997,7 @@ h3.task-title { margin:0; }
     }
     const clock=$("focus-card")?.querySelector('.focus-clock');
     if(clock && state.focus.status!=="ready")clock.textContent=focusTime(focusLeft(state.focus));
+    const compactClock=screen.querySelector('.lg-compact-clock');if(compactClock)compactClock.textContent=focusTime(focusLeft(state.focus));
     const progress=$("focus-card")?.querySelector('.focus-progress');
     if(progress)updateFocusProgress(progress,state.focus);
     const miniTime=focusMini.querySelector('.focus-mini-time'); if(miniTime)miniTime.textContent=focusTime(focusLeft(state.focus));
