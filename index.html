@@ -2312,7 +2312,7 @@ h3.task-title { margin:0; }
 .ui-toast-close { border:0;background:transparent;color:var(--text);width:32px;min-height:44px;flex-shrink:0;font-size:23px;padding:0; }
 .ui-dialog-error { border:1px solid #ad6957;border-radius:12px;padding:12px;background:#38251e;color:#ffe2cb;font-size:13px;line-height:1.5; }
 [aria-invalid="true"] { border-color:#e49b83!important; }
-#editor { max-height:calc(100dvh - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));scroll-padding:18px 0 95px; }
+#editor { max-height:calc(var(--lg-dialog-height,100dvh) - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));scroll-padding:18px 0 95px; }
 #editor form { min-width:0;padding-bottom:1px; }
 #editor .numeric-row {grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:12px}
 #editor .numeric-cell:only-child {grid-column:1/-1}
@@ -2745,6 +2745,59 @@ h3.task-title { margin:0; }
 .lg-compact-summary .lg-quick-options {margin-top:9px}
 .lg-compact-widget .lg-compact-summary .progress {height:4px;margin:15px 0 6px}
 @media(max-width:350px){.widget-instance.lg-compact-widget{padding:13px}.lg-compact-widget .widget-instance-head{gap:6px}.lg-compact-widget .widget-instance-head h2{font-size:13px}.lg-compact-widget .widget-badge{font-size:8px;padding-left:5px}.lg-compact-widget .lg-compact-action{padding-inline:10px}.lg-compact-summary .lg-compact-title{font-size:18px}}
+
+</style>
+<style id="lg-adaptive-dialogs-and-weekly-review">
+/* One sizing contract for all application dialogs, including the visible keyboard. */
+dialog.lg-adaptive-dialog {max-height:calc(var(--lg-dialog-height,100dvh) - 24px);scroll-padding:12px 0 86px;overflow-wrap:anywhere;box-sizing:border-box}
+dialog.lg-adaptive-dialog:not(.lg-reward-confirm) {width:min(480px,calc(100% - 24px));max-width:calc(100vw - 24px);padding:18px;inset:auto 0;top:calc(var(--lg-dialog-top,0px) + var(--lg-dialog-height,100dvh)/2);translate:0 -50%;margin:0 auto}
+dialog.lg-adaptive-dialog h2 {font-size:20px;line-height:1.25;margin-bottom:12px;letter-spacing:-.4px}
+dialog.lg-adaptive-dialog p {line-height:1.5}
+dialog.lg-adaptive-dialog label:not(.check-label) {font-size:13px;margin-top:12px;margin-bottom:6px}
+dialog.lg-adaptive-dialog :is(input:not([type=checkbox]):not([type=radio]),select,textarea) {min-height:44px;padding:10px 11px;font-size:16px}
+dialog.lg-adaptive-dialog :is(input[type=checkbox],input[type=radio]) {width:20px;height:20px;min-height:20px;flex:0 0 20px}
+dialog.lg-adaptive-dialog textarea {min-height:80px;height:88px;max-height:min(260px,40dvh);line-height:1.5}
+dialog.lg-adaptive-dialog :is(.ui-required-note,.ui-field-hint) {font-size:11px;line-height:1.45;margin:5px 0 10px}
+dialog.lg-adaptive-dialog .button {min-height:44px;font-size:13px;white-space:normal;overflow-wrap:anywhere}
+dialog.lg-adaptive-dialog .form-actions {gap:9px;margin-top:14px}
+#editor.lg-adaptive-dialog .numeric-row {grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-block:14px}
+#editor.lg-adaptive-dialog .numeric-cell label {margin-top:0;min-height:2.8em}
+#editor.lg-adaptive-dialog .numeric-cell:only-child label {min-height:0}
+#editor.lg-adaptive-dialog form>label:not(.check-label),#editor.lg-adaptive-dialog .weekday-picker {margin-top:14px}
+#editor.lg-adaptive-dialog :is(.currency-picker,.quest-type-picker) {border:0;padding:0;background:none;margin:14px 0}
+#editor.lg-adaptive-dialog :is(.currency-picker,.quest-type-picker) legend {font-size:12px;margin-bottom:7px}
+#editor.lg-adaptive-dialog .currency-picker label {margin:0;padding:8px;gap:7px;min-width:0;border-color:var(--graphite-edge)}
+#editor.lg-adaptive-dialog .currency-picker label:has(input:checked) {border-color:#ffda2966;background:#ffda2908}
+#editor.lg-adaptive-dialog .currency-picker label.diamonds:has(input:checked) {border-color:#acd8b866;background:#acd8b808}
+#editor.lg-adaptive-dialog .quest-type-picker label {margin:0}
+#editor.lg-adaptive-dialog .quest-type-segments {padding:3px;gap:4px}
+#editor.lg-adaptive-dialog .quest-type-option span {font-size:13px}
+#editor.lg-adaptive-dialog .stage-editor-row {padding:10px;margin:10px 0}
+#editor.lg-adaptive-dialog .form-actions,#backup-dialog.lg-adaptive-dialog>.form-actions {bottom:-18px;padding:10px 0 12px;background:var(--graphite-panel)}
+#editor.lg-adaptive-dialog textarea.meaning-input {min-height:110px;height:110px;max-height:min(300px,40dvh)}
+#editor.lg-adaptive-dialog .form-actions .button.meaning-button {background:var(--accent);color:#171a0f;border-color:var(--accent)}
+#editor.lg-adaptive-dialog .form-actions .button.meaning-button:hover {background:#ffe45d;color:#171a0f}
+#backup-dialog.lg-adaptive-dialog :is(.ui-backup-files,.settings-danger,.lg-sunrise-options) {margin-top:14px;padding-top:14px}
+#backup-dialog.lg-adaptive-dialog h3 {font-size:15px}
+dialog.lg-adaptive-dialog .menu-actions {gap:7px;margin-top:12px}
+dialog.lg-adaptive-dialog .ui-dialog-error {padding:10px;font-size:12px}
+dialog.lg-adaptive-dialog :is(.key-dialog-content,.happiness-collection-content) {min-width:0}
+dialog.lg-adaptive-dialog.key-dialog>.key-panel>.button:last-child,dialog.lg-adaptive-dialog.lg-archive-overview>.button:last-child {position:sticky;bottom:-18px;z-index:2;box-shadow:0 -8px 14px var(--graphite-panel)}
+dialog.lg-adaptive-dialog.happiness-play-dialog {padding:12px}
+dialog.lg-adaptive-dialog.happiness-play-dialog .happiness-input {min-height:48px;height:52px;max-height:110px}
+dialog.lg-adaptive-dialog.lg-reward-confirm {bottom:calc(100dvh - var(--lg-dialog-top,0px) - var(--lg-dialog-height,100dvh));padding:20px 18px calc(18px + env(safe-area-inset-bottom,0px))}
+.lg-week-review {margin:14px 0 18px;padding-bottom:14px;border-bottom:1px solid var(--graphite-edge)}
+.lg-week-review h3 {font-size:17px;margin:0 0 12px}
+.lg-week-stats {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.lg-week-stat {min-width:0;padding:10px 8px;border:1px solid var(--graphite-edge);border-radius:10px;background:#ffffff03}
+.lg-week-stat strong {display:block;font-size:22px;line-height:1.2;font-variant-numeric:tabular-nums}
+.lg-week-stat span {display:block;font-size:11px;color:var(--muted);line-height:1.4;margin-top:5px;overflow-wrap:anywhere}
+.lg-week-review details>summary {font-size:12px;min-height:44px}
+.lg-week-carryover {display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--graphite-edge)}
+.lg-week-carryover>div {min-width:0;flex:1;overflow-wrap:anywhere}
+.lg-week-carryover strong {font-size:13px}
+.lg-week-carryover .button {flex-shrink:0}
+@media(max-width:360px){dialog.lg-adaptive-dialog:not(.lg-reward-confirm){padding:14px}dialog.lg-adaptive-dialog h2{font-size:19px}#editor.lg-adaptive-dialog .numeric-row{grid-template-columns:minmax(0,1fr)}#editor.lg-adaptive-dialog .numeric-cell label{min-height:0}#editor.lg-adaptive-dialog .form-actions,#backup-dialog.lg-adaptive-dialog>.form-actions{bottom:-14px}.lg-week-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 </style>
 </head>
@@ -4373,7 +4426,29 @@ h3.task-title { margin:0; }
     if (open && !history.state?.modal && !open.dataset.uiNoHistory) uiWriteHistory('push', true);
     else if (!open && history.state?.lifeGameUI && history.state.modal) { uiHistorySync = true; history.back(); }
   }
+  let dialogViewportFrame=0;
+  function uiSizeDialogs() {
+    const viewport=window.visualViewport,root=document.documentElement;
+    root.style.setProperty('--lg-dialog-height',(viewport?.height||window.innerHeight)+'px');
+    root.style.setProperty('--lg-dialog-top',(viewport?.offsetTop||0)+'px');
+  }
+  function uiQueueDialogSize() {
+    cancelAnimationFrame(dialogViewportFrame);
+    dialogViewportFrame=requestAnimationFrame(()=>{
+      uiSizeDialogs();
+      const active=document.activeElement,dialog=active?.closest('dialog[open]');
+      if(dialog&&active.matches('input,textarea,select')){
+        const r=active.getBoundingClientRect(),v=window.visualViewport,top=v?.offsetTop||0,bottom=top+(v?.height||innerHeight);
+        if(r.top<top+12||r.bottom>bottom-72)active.scrollIntoView({block:'nearest'});
+      }
+    });
+  }
+  window.addEventListener('resize',uiQueueDialogSize);
+  window.visualViewport?.addEventListener('resize',uiQueueDialogSize);
+  window.visualViewport?.addEventListener('scroll',uiQueueDialogSize);
+
   function uiShowDialog(dialog) {
+    dialog.classList.add('lg-adaptive-dialog');uiSizeDialogs();
     if (dialog === editor) uiPrepareForm();
     if (!uiDialogs.has(dialog)) { uiDialogs.add(dialog); dialog.addEventListener('close', () => { if (!dialog.isConnected) uiDialogs.delete(dialog); setTimeout(uiSyncDialogs, 0); }); }
     dialog.dataset.uiDialogOrder = ++uiDialogSerial;
@@ -9825,16 +9900,70 @@ h3.task-title { margin:0; }
     for(const r of data.diamondRecords)add(r.date,'goal','Достигнута цель: '+(goals.get(r.goalId)?.name||'карточка удалена'));
     return facts;
   }
+  // Read-only weekly projection; linked focus receipts are represented by their entries.
+  function weeklyReviewFacts(data,monday,until=today(),facts=rhythmFacts(data)) {
+    const end=rhythmShift(monday,6),inside=date=>date>=monday&&date<=end&&date<=until;
+    const result={tasks:0,minutes:0,questSteps:0,quests:0,goals:0,activeDays:0,carryovers:[]};
+    let questFacts=0;
+    for(const [date,items] of facts)if(inside(date)){
+      if(items.length)result.activeDays++;
+      result.tasks+=items.filter(f=>f.kind==='task').length;
+      questFacts+=items.filter(f=>f.kind==='quest').length;
+      result.goals+=items.filter(f=>f.kind==='goal').length;
+    }
+    result.quests=data.completions.filter(r=>inside(r.date)&&r.taskId.startsWith('quest:')&&!r.taskId.startsWith('quest:step:')).length;
+    result.questSteps=Math.max(0,questFacts-result.quests);
+    result.minutes=data.keyActions.entries.filter(e=>inside(e.date)).reduce((n,e)=>n+e.minutes,0)+
+      data.focusLog.filter(r=>inside(r.date)&&r.status==='recorded'&&r.actionId===null).reduce((n,r)=>n+r.minutes,0);
+    const transfers=new Map();
+    for(const [date,review] of Object.entries(data.eveningReviews))if(inside(date))for(const decision of review.decisions){
+      if(!['tomorrow','later'].includes(decision.choice))continue;
+      if(!transfers.has(decision.taskId))transfers.set(decision.taskId,new Set());
+      transfers.get(decision.taskId).add(date);
+    }
+    for(const task of data.tasks){
+      const dates=transfers.get(task.id);
+      if(dates?.size>=2&&task.type==='once'&&task.archivedAt===null&&taskBlockIsActive(data,task.block)&&!data.completions.some(r=>r.taskId===task.id))
+        result.carryovers.push({id:task.id,name:task.name,block:task.block,count:dates.size});
+    }
+    result.carryovers.sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,'ru'));
+    return result;
+  }
+  function weeklyReviewCard(monday,facts) {
+    const result=weeklyReviewFacts(state,monday,today(),facts),box=el('section','lg-week-review');
+    const heading=el('h3','','Обзор недели');box.append(heading);
+    const metrics=el('div','lg-week-stats');
+    for(const [key,forms] of [['tasks',['дело выполнено','дела выполнено','дел выполнено']],['minutes',['минута записана','минуты записано','минут записано']],['questSteps',['шаг в квестах','шага в квестах','шагов в квестах']],['quests',['квест завершён','квеста завершено','квестов завершено']],['goals',['цель достигнута','цели достигнуто','целей достигнуто']],['activeDays',['день с результатом','дня с результатом','дней с результатом']]]){
+      const stat=el('div','lg-week-stat');stat.dataset.stat=key;stat.append(el('strong','',String(result[key])),el('span','',uiPlural(result[key],forms)));metrics.append(stat);
+    }
+    box.append(metrics);
+    box.append(el('p','meta',result.activeDays?'Это сохранённые результаты. Отдых не обнуляет достигнутое.':'Пока без записанных результатов. Начни с одного небольшого дела или запиши время подхода.'));
+    const repeated=el('details','lg-week-carryovers');repeated.append(el('summary','','Повторные переносы · '+result.carryovers.length));
+    if(result.carryovers.length){
+      repeated.append(el('p','meta','Эти незавершённые дела переносились в вечерних итогах дважды и чаще. Можно уменьшить первый шаг, отложить или оставить важное.'));
+      for(const task of result.carryovers){
+        const row=el('div','lg-week-carryover'),copy=el('div');copy.append(el('strong','',task.name),el('p','meta',uiAmount(task.count,['перенос','переноса','переносов'])+' за неделю'));
+        const open=btn('Открыть','button secondary',()=>go('blocks',task.block,false,{target:'task:'+task.id}));open.setAttribute('aria-label','Открыть перенесённое дело: '+task.name);row.append(copy,open);repeated.append(row);
+      }
+    }else repeated.append(el('p','meta','Здесь появятся незавершённые дела, перенесённые в вечерних итогах дважды и чаще.'));
+    box.append(repeated);
+    const next=el('details','lg-week-next');next.append(el('summary','','Что взять дальше'));
+    next.append(el('p','meta',result.carryovers.length?'Начни с разбора повторных переносов. Необязательно брать всё в следующий план.':'Выбери одно важное дело и оставь запас времени. Прошлый результат не обязывает повышать нагрузку.'));
+    next.append(btn('Открыть конструктор','button secondary full',()=>go('day')));box.append(next);
+    const method=el('details','lg-week-method');method.append(el('summary','','Как считается обзор'),el('p','meta','Только сохранённые факты выбранной недели по сегодняшний день. Минуты ключевых действий и несвязанных подходов считаются один раз; план и запуск таймера — не результат. Переносы берутся из вечерних итогов. Выполненные, архивные и повторяемые дела в этот список не входят. Старые переносы без вечернего итога здесь не отражаются. Отмена факта обновляет обзор.'));
+    box.append(method);return box;
+  }
+
   const rhythmUi={week:null,inspect:null};
   function weekRhythmCard() {
     const box=el('div','lg-week-rhythm lg-balance'),date=today(),current=rhythmMonday(date),facts=rhythmFacts(state);
-    const earliest=[current,...facts.keys(),...Object.keys(state.weekRhythm.targets),...Object.keys(state.weekRhythm.restDays)].filter(d=>d<=date).sort()[0];
+    const earliest=[current,...facts.keys(),...Object.keys(state.eveningReviews),...Object.keys(state.weekRhythm.targets),...Object.keys(state.weekRhythm.restDays)].filter(d=>d<=date).sort()[0];
     if(rhythmUi.week>current||rhythmUi.week<rhythmMonday(earliest))rhythmUi.week=null;
     const monday=rhythmUi.week||current,days=Array.from({length:7},(_,i)=>rhythmShift(monday,i)),target=rhythmTarget(state,monday),active=days.filter(d=>facts.has(d)).length;
     const inspect=days.includes(rhythmUi.inspect)?rhythmUi.inspect:monday===current?date:monday;
     const nav=el('div','lg-rhythm-nav'),previous=btn('‹','button secondary',()=>{rhythmUi.week=rhythmShift(monday,-7);rhythmUi.inspect=null;render();}),next=btn('›','button secondary',()=>{rhythmUi.week=rhythmShift(monday,7);rhythmUi.inspect=null;render();});
     previous.setAttribute('aria-label','Предыдущая неделя');next.setAttribute('aria-label','Следующая неделя');previous.disabled=monday<=rhythmMonday(earliest);next.disabled=monday>=current;
-    nav.append(previous,el('span','',calendarLabel(monday)+' — '+calendarLabel(days[6])),next);box.append(nav);
+    nav.append(previous,el('span','',calendarLabel(monday)+' — '+calendarLabel(days[6])),next);box.append(nav);box.append(weeklyReviewCard(monday,facts));
     const head=el('div','lg-rhythm-head');head.append(el('strong','',String(active)+(target===null?'':' / '+target)),el('span','meta','дней с результатом'));box.append(head);
     box.append(el('p','meta',target===null?'Без числового ориентира. Каждый записанный результат остаётся видимым.':active>=target?'Ориентир достигнут. Дальше — в своём темпе.':'Ориентир — '+target+' '+(target===1?'день':target<5?'дня':'дней')+' с небольшим подтверждённым шагом.'));
     if(target!==null){const meter=el('div','lg-rhythm-meter');meter.setAttribute('role','progressbar');meter.setAttribute('aria-label','Дни с результатом');meter.setAttribute('aria-valuemin','0');meter.setAttribute('aria-valuemax',String(Math.max(target,active)));meter.setAttribute('aria-valuenow',String(active));const fill=el('i');fill.style.width=Math.min(100,100*active/target)+'%';meter.append(fill);box.append(meter);}
