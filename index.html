@@ -2817,7 +2817,7 @@ dialog.lg-adaptive-dialog.lg-reward-confirm {bottom:calc(100dvh - var(--lg-dialo
 .home-primary,.home-primary .design-icon-tile,.home-primary .home-status {color:var(--on-accent)}
 .ai-preview-entry .ai-entry-icon {color:var(--accent);background:rgba(var(--accent-rgb),.07);border-color:rgba(var(--accent-rgb),.18)}
 .settings-link .design-icon,.ai-empty .design-icon {color:var(--accent)}
-:root {--meaning-accent:#c0a0f0;--goal-accent:#8fb7ff}
+:root {--meaning-icon:#c0a0f0;--goal-icon:#8fb7ff}
 [data-icon="heart"] {--domain-icon:#f19aaa}
 [data-icon="body"],[data-icon="check"] {--domain-icon:#8ed6a5}
 [data-icon="book"],[data-icon="flag"],[data-icon="plus"] {--domain-icon:#8fb7ff}
@@ -2837,18 +2837,15 @@ dialog.lg-adaptive-dialog.lg-reward-confirm {bottom:calc(100dvh - var(--lg-dialo
 :root[data-icon-mode="colorful"] .widget-catalog-card .widget-symbol {background:color-mix(in srgb,var(--domain-icon,var(--accent)) 8%,transparent);border-color:color-mix(in srgb,var(--domain-icon,var(--accent)) 22%,transparent)}
 :root[data-icon-mode="colorful"] #editor .lg-block-icon-option>.design-icon {color:var(--domain-icon,var(--accent))}
 :root[data-icon-mode="colorful"] .ai-preview-entry .ai-entry-icon {color:#7fd5df;background:#7fd5df14;border-color:#7fd5df38}
-:root[data-icon-mode="colorful"] .lg-block-meaning-preview>.design-icon-tile {--domain-icon:var(--meaning-accent)}
-:root[data-icon-mode="colorful"] .lg-block-goal-preview .design-icon-tile {--domain-icon:var(--goal-accent)}
+:root[data-icon-mode="colorful"] .lg-block-meaning-preview>.design-icon-tile {--domain-icon:var(--meaning-icon)}
+:root[data-icon-mode="colorful"] .lg-block-goal-preview .design-icon-tile {--domain-icon:var(--goal-icon)}
 :root[data-icon-mode="colorful"] .home-primary .design-icon-tile {color:var(--on-accent);background:#00000006;border-color:#00000020}
-.card.lg-block-meaning-preview {box-shadow:inset 3px 0 0 var(--meaning-accent)}
-.lg-block-preview-title {color:var(--meaning-accent)}
-.card.goal-card.compact-goal-card,.card.goal-card.compact-goal-card.lg-block-goal-preview {box-shadow:inset 3px 0 0 var(--goal-accent)}
+.card.lg-block-meaning-preview,.card.goal-card.compact-goal-card,.card.goal-card.compact-goal-card.lg-block-goal-preview {box-shadow:none}
+.lg-block-preview-title {color:var(--text)}
 .lg-goal-title-copy {flex:1;min-width:0}
-.lg-goal-kind {color:var(--goal-accent);font-size:11px;font-weight:600;line-height:1.4;margin-bottom:4px}
-.button.lg-block-add-meaning {color:var(--meaning-accent);border-color:color-mix(in srgb,var(--meaning-accent) 32%,var(--border));background:color-mix(in srgb,var(--meaning-accent) 7%,var(--card))}
-.button.lg-block-add-goal {color:var(--goal-accent);border-color:color-mix(in srgb,var(--goal-accent) 32%,var(--border));background:color-mix(in srgb,var(--goal-accent) 7%,var(--card))}
-.button.lg-block-add-meaning:hover:not(:disabled) {color:var(--meaning-accent);background:color-mix(in srgb,var(--meaning-accent) 12%,var(--card));border-color:var(--meaning-accent)}
-.button.lg-block-add-goal:hover:not(:disabled) {color:var(--goal-accent);background:color-mix(in srgb,var(--goal-accent) 12%,var(--card));border-color:var(--goal-accent)}
+.lg-goal-kind {color:var(--muted);font-size:11px;font-weight:600;line-height:1.4;margin-bottom:4px}
+.button.lg-block-add-meaning,.button.lg-block-add-goal {color:var(--accent);border-color:rgba(var(--accent-rgb),.3);background:color-mix(in srgb,var(--accent-fill) 7%,var(--card))}
+.button.lg-block-add-meaning:hover:not(:disabled),.button.lg-block-add-goal:hover:not(:disabled) {color:var(--accent);background:color-mix(in srgb,var(--accent-fill) 12%,var(--card));border-color:var(--accent)}
 .lg-rhythm-meter i,.lg-compact-dot.is-done {background:var(--accent)}
 .lg-compact-dot.is-done {border-color:var(--accent);color:#000}
 .lg-appearance-options {padding:14px 0;margin:12px 0;border-block:1px solid var(--graphite-edge)}
@@ -4578,7 +4575,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       iconSwitch.type='checkbox';iconSwitch.id='lg-icon-monochrome';iconSwitch.setAttribute('role','switch');iconSwitch.checked=draft.icons==='accent';iconSwitch.setAttribute('aria-describedby','lg-icon-mode-note');
       iconSwitch.addEventListener('change',()=>{draft.icons=iconSwitch.checked?'accent':'colorful';applyAppearance(draft);});
       iconLabel.append(el('span','','Значки в цвет темы'),iconSwitch);
-      const iconNote=el('p','meta','По умолчанию значки разноцветные. Смысл и цели сохраняют отдельные метки.');iconNote.id='lg-icon-mode-note';
+      const iconNote=el('p','meta','По умолчанию значки разноцветные. В одноцветном режиме все значки используют цвет темы.');iconNote.id='lg-icon-mode-note';
       const iconPreview=el('div','lg-appearance-icon-preview');iconPreview.setAttribute('aria-hidden','true');iconPreview.append(designIconTile('heart'),designIconTile('book'),designIconTile('wallet'));
       iconOption.append(iconLabel,iconNote,iconPreview);
       const sample=el('div','lg-appearance-sample');sample.setAttribute('role','img');sample.setAttribute('aria-label','Предпросмотр: цвет значков, прогресса и основной кнопки');
