@@ -2811,12 +2811,44 @@ dialog.lg-adaptive-dialog.lg-reward-confirm {bottom:calc(100dvh - var(--lg-dialo
 :is(.ai-preview-entry,.ai-empty)::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,var(--card),transparent),url('assets/images/quiet-focus.webp') 65% center/cover;filter:saturate(.85);opacity:.8;pointer-events:none}
 </style>
 <style id="lg-appearance-settings">
-/* Navigational icons use the chosen accent; auxiliary controls retain their hierarchy. */
+/* Primary icons may carry domain colors; auxiliary controls retain their hierarchy. */
 .lg-theme-switch button,.lg-theme-switch .card,.lg-theme-switch .design-icon-tile,.lg-theme-switch .design-icon {transition:none!important}
 .design-icon-tile,.design-icon-tile.mint,.design-icon-tile.rose {color:var(--accent);background:rgba(var(--accent-rgb),.07);border-color:rgba(var(--accent-rgb),.18)}
 .home-primary,.home-primary .design-icon-tile,.home-primary .home-status {color:var(--on-accent)}
 .ai-preview-entry .ai-entry-icon {color:var(--accent);background:rgba(var(--accent-rgb),.07);border-color:rgba(var(--accent-rgb),.18)}
 .settings-link .design-icon,.ai-empty .design-icon {color:var(--accent)}
+:root {--meaning-accent:#c0a0f0;--goal-accent:#8fb7ff}
+[data-icon="heart"] {--domain-icon:#f19aaa}
+[data-icon="body"],[data-icon="check"] {--domain-icon:#8ed6a5}
+[data-icon="book"],[data-icon="flag"],[data-icon="plus"] {--domain-icon:#8fb7ff}
+[data-icon="wallet"],[data-icon="star"] {--domain-icon:#edc671}
+[data-icon="people"],[data-icon="grid"] {--domain-icon:#c0a0f0}
+[data-icon="compass"],[data-icon="spark"] {--domain-icon:#7fd5df}
+[data-icon="cloud"],[data-icon="chart"] {--domain-icon:#8ed6bf}
+[data-icon="coffee"],[data-icon="play"] {--domain-icon:#efb184}
+[data-icon="calendar"],[data-icon="quest"] {--domain-icon:#eac775}
+[data-icon="clock"] {--domain-icon:#9dc8f0}
+:root[data-icon-mode="colorful"] .design-icon-tile {
+  color:var(--domain-icon,var(--accent));
+  background:color-mix(in srgb,var(--domain-icon,var(--accent)) 8%,transparent);
+  border-color:color-mix(in srgb,var(--domain-icon,var(--accent)) 22%,transparent);
+}
+:root[data-icon-mode="colorful"] :is(.widget-instance-head,.widget-symbol,.lg-appearance-sample-head)>.design-icon {color:var(--domain-icon,var(--accent))}
+:root[data-icon-mode="colorful"] .widget-catalog-card .widget-symbol {background:color-mix(in srgb,var(--domain-icon,var(--accent)) 8%,transparent);border-color:color-mix(in srgb,var(--domain-icon,var(--accent)) 22%,transparent)}
+:root[data-icon-mode="colorful"] #editor .lg-block-icon-option>.design-icon {color:var(--domain-icon,var(--accent))}
+:root[data-icon-mode="colorful"] .ai-preview-entry .ai-entry-icon {color:#7fd5df;background:#7fd5df14;border-color:#7fd5df38}
+:root[data-icon-mode="colorful"] .lg-block-meaning-preview>.design-icon-tile {--domain-icon:var(--meaning-accent)}
+:root[data-icon-mode="colorful"] .lg-block-goal-preview .design-icon-tile {--domain-icon:var(--goal-accent)}
+:root[data-icon-mode="colorful"] .home-primary .design-icon-tile {color:var(--on-accent);background:#00000006;border-color:#00000020}
+.card.lg-block-meaning-preview {box-shadow:inset 3px 0 0 var(--meaning-accent)}
+.lg-block-preview-title {color:var(--meaning-accent)}
+.card.goal-card.compact-goal-card,.card.goal-card.compact-goal-card.lg-block-goal-preview {box-shadow:inset 3px 0 0 var(--goal-accent)}
+.lg-goal-title-copy {flex:1;min-width:0}
+.lg-goal-kind {color:var(--goal-accent);font-size:11px;font-weight:600;line-height:1.4;margin-bottom:4px}
+.button.lg-block-add-meaning {color:var(--meaning-accent);border-color:color-mix(in srgb,var(--meaning-accent) 32%,var(--border));background:color-mix(in srgb,var(--meaning-accent) 7%,var(--card))}
+.button.lg-block-add-goal {color:var(--goal-accent);border-color:color-mix(in srgb,var(--goal-accent) 32%,var(--border));background:color-mix(in srgb,var(--goal-accent) 7%,var(--card))}
+.button.lg-block-add-meaning:hover:not(:disabled) {color:var(--meaning-accent);background:color-mix(in srgb,var(--meaning-accent) 12%,var(--card));border-color:var(--meaning-accent)}
+.button.lg-block-add-goal:hover:not(:disabled) {color:var(--goal-accent);background:color-mix(in srgb,var(--goal-accent) 12%,var(--card));border-color:var(--goal-accent)}
 .lg-rhythm-meter i,.lg-compact-dot.is-done {background:var(--accent)}
 .lg-compact-dot.is-done {border-color:var(--accent);color:#000}
 .lg-appearance-options {padding:14px 0;margin:12px 0;border-block:1px solid var(--graphite-edge)}
@@ -2839,6 +2871,15 @@ dialog.lg-adaptive-dialog.lg-reward-confirm {bottom:calc(100dvh - var(--lg-dialo
 .lg-appearance-sample-track {height:4px;background:#ffffff16;border-radius:4px;overflow:hidden;margin:14px 0}
 .lg-appearance-sample-track i {display:block;width:62%;height:100%;background:var(--accent)}
 .lg-appearance-sample-button {display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:8px 18px;border-radius:9px;background:var(--accent-fill);color:var(--on-accent);font-size:12px;font-weight:650}
+.lg-appearance-icon-option {margin:18px 0}
+dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:44px;margin:0;color:var(--text);cursor:pointer;font-size:14px}
+#lg-icon-monochrome {appearance:none;-webkit-appearance:none;flex:0 0 44px;width:44px;height:26px;min-height:26px;padding:0;margin:0;border:1px solid #666;border-radius:20px;background:#343434;cursor:pointer;position:relative}
+#lg-icon-monochrome::before {content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#d0d0d0}
+#lg-icon-monochrome:checked {background:var(--accent-fill);border-color:var(--accent-fill)}
+#lg-icon-monochrome:checked::before {left:21px;background:var(--on-accent)}
+#lg-icon-monochrome:focus-visible {outline:2px solid var(--accent);outline-offset:4px}
+.lg-appearance-icon-option .meta {margin:3px 0 10px}
+.lg-appearance-icon-preview {display:flex;gap:10px}
 .lg-appearance-dialog .form-actions {position:sticky;bottom:-18px;padding:10px 0 12px;background:var(--graphite-panel);box-shadow:0 -9px 12px var(--graphite-panel);z-index:2}
 .lg-appearance-dialog .ui-dialog-error[hidden] {display:none}
 @media(max-width:360px){.lg-appearance-choice{font-size:11px;min-height:64px}.lg-appearance-dialog .form-actions{bottom:-14px}}
@@ -4372,12 +4413,14 @@ dialog.lg-adaptive-dialog.lg-reward-confirm {bottom:calc(100dvh - var(--lg-dialo
     icon.setAttribute("class", "design-icon");
     icon.setAttribute("aria-hidden", "true");
     icon.setAttribute("focusable", "false");
+    icon.dataset.icon = name;
     icon.innerHTML = DESIGN_ICON_PATHS[name] || DESIGN_ICON_PATHS.spark;
     return icon;
   }
   function designIconTile(name, tone = "") {
     const tile = el("span", "design-icon-tile" + (tone ? " " + tone : ""));
     tile.setAttribute("aria-hidden", "true");
+    tile.dataset.icon = name;
     tile.append(designIcon(name));
     return tile;
   }
@@ -4476,14 +4519,14 @@ dialog.lg-adaptive-dialog.lg-reward-confirm {bottom:calc(100dvh - var(--lg-dialo
     {id:'yellow',name:'Золотой',colors:['#ffc400','#ffd54a','#ffe58a']},
     {id:'green',name:'Зелёный',colors:['#2e7d46','#8fbc5a','#c6dab1']},
     {id:'blue',name:'Синий',colors:['#356ac3','#79a7f2','#b6ccf4']},
-    {id:'red',name:'Красный',colors:['#b83d4a','#e6757d','#eab0b4']},
+    {id:'red',name:'Красный',colors:['#b91c1c','#e53935','#ff6252']},
     {id:'orange',name:'Оранжевый',colors:['#d77724','#f0a45d','#f5c89a']},
     {id:'purple',name:'Фиолетовый',colors:['#8552c2','#b18ae5','#d8c2f4']}
   ]);
   const APPEARANCE_SHADES=Object.freeze([{id:'strong',name:'Глубокий'},{id:'balanced',name:'Основной'},{id:'soft',name:'Мягкий'}]);
   function appearanceValue(value){
     return value&&value.version===1&&APPEARANCE_PALETTES.some(p=>p.id===value.palette)&&APPEARANCE_SHADES.some(s=>s.id===value.shade)
-      ?{version:1,palette:value.palette,shade:value.shade}:{version:1,palette:'yellow',shade:'balanced'};
+      ?{version:1,palette:value.palette,shade:value.shade,icons:value.icons==='accent'?'accent':'colorful'}:{version:1,palette:'yellow',shade:'balanced',icons:'colorful'};
   }
   function readAppearance(){try{return appearanceValue(JSON.parse(localStorage.getItem(APPEARANCE_KEY)));}catch{return appearanceValue(null);}}
   function appearanceRgb(hex){return [1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));}
@@ -4492,7 +4535,9 @@ dialog.lg-adaptive-dialog.lg-reward-confirm {bottom:calc(100dvh - var(--lg-dialo
   function appearanceColors(value){
     const preference=appearanceValue(value),palette=APPEARANCE_PALETTES.find(p=>p.id===preference.palette),index=APPEARANCE_SHADES.findIndex(s=>s.id===preference.shade),fill=palette.colors[index],rgb=appearanceRgb(fill);
     let ink=fill;
-    for(let step=0;step<=20&&appearanceContrast(ink,'#333333')<4.5;step++)ink='#'+rgb.map(n=>Math.round(n+(255-n)*step/20).toString(16).padStart(2,'0')).join('');
+    // Keep red ink vivid while raising its contrast on graphite surfaces.
+    const inkRgb=palette.id==='red'?rgb.map(n=>Math.round(n*255/Math.max(...rgb))):rgb;
+    for(let step=0;step<=20&&appearanceContrast(ink,'#333333')<4.5;step++)ink='#'+inkRgb.map(n=>Math.round(n+(255-n)*step/20).toString(16).padStart(2,'0')).join('');
     const on=appearanceContrast(fill,'#000000')>=appearanceContrast(fill,'#ffffff')?'#000000':'#ffffff';
     return {fill,ink,on,rgb:rgb.join(',')};
   }
@@ -4500,6 +4545,7 @@ dialog.lg-adaptive-dialog.lg-reward-confirm {bottom:calc(100dvh - var(--lg-dialo
   function applyAppearance(value){
     const colors=appearanceColors(value),root=document.documentElement,style=root.style;
     root.classList.add('lg-theme-switch');cancelAnimationFrame(appearanceTransitionFrame);
+    root.dataset.iconMode=appearanceValue(value).icons;
     style.setProperty('--theme-accent',colors.ink);style.setProperty('--accent-fill',colors.fill);style.setProperty('--accent-rgb',colors.rgb);style.setProperty('--on-accent',colors.on);
     appearanceTransitionFrame=requestAnimationFrame(()=>{appearanceTransitionFrame=requestAnimationFrame(()=>root.classList.remove('lg-theme-switch'));});
   }
@@ -4513,8 +4559,8 @@ dialog.lg-adaptive-dialog.lg-reward-confirm {bottom:calc(100dvh - var(--lg-dialo
     let draft={...appearancePrefs};const dialog=el('dialog','lg-appearance-dialog');appearanceDialog=dialog;
     dialog.setAttribute('aria-labelledby','lg-appearance-title');
     const draw=(focus=null)=>{
-      const title=el('h2','','Цвет акцента');title.id='lg-appearance-title';
-      const note=el('p','meta','Графитовые фоны сохраняются. Цвет выделяет действия, значки и прогресс.');
+      const title=el('h2','','Цвет и значки');title.id='lg-appearance-title';
+      const note=el('p','meta','Графитовые фоны сохраняются. Цвет темы выделяет действия и прогресс.');
       const palettes=el('fieldset','lg-appearance-fieldset');palettes.append(el('legend','','Основной цвет'));
       const grid=el('div','lg-appearance-palettes');
       for(const palette of APPEARANCE_PALETTES){
@@ -4528,18 +4574,25 @@ dialog.lg-adaptive-dialog.lg-reward-confirm {bottom:calc(100dvh - var(--lg-dialo
         const button=btn('','lg-appearance-choice',()=>{draft.shade=shade.id;applyAppearance(draft);draw('shade:'+shade.id);});
         const swatch=el('span','lg-appearance-swatch');swatch.style.background=palette.colors[i];swatch.setAttribute('aria-hidden','true');button.append(swatch,el('span','',shade.name));button.dataset.shade=shade.id;button.setAttribute('aria-pressed',String(draft.shade===shade.id));row.append(button);
       });shades.append(row);
+      const iconOption=el('div','lg-appearance-icon-option'),iconLabel=el('label','lg-appearance-icon-switch'),iconSwitch=el('input');
+      iconSwitch.type='checkbox';iconSwitch.id='lg-icon-monochrome';iconSwitch.setAttribute('role','switch');iconSwitch.checked=draft.icons==='accent';iconSwitch.setAttribute('aria-describedby','lg-icon-mode-note');
+      iconSwitch.addEventListener('change',()=>{draft.icons=iconSwitch.checked?'accent':'colorful';applyAppearance(draft);});
+      iconLabel.append(el('span','','Значки в цвет темы'),iconSwitch);
+      const iconNote=el('p','meta','По умолчанию значки разноцветные. Смысл и цели сохраняют отдельные метки.');iconNote.id='lg-icon-mode-note';
+      const iconPreview=el('div','lg-appearance-icon-preview');iconPreview.setAttribute('aria-hidden','true');iconPreview.append(designIconTile('heart'),designIconTile('book'),designIconTile('wallet'));
+      iconOption.append(iconLabel,iconNote,iconPreview);
       const sample=el('div','lg-appearance-sample');sample.setAttribute('role','img');sample.setAttribute('aria-label','Предпросмотр: цвет значков, прогресса и основной кнопки');
       const heading=el('div','lg-appearance-sample-head');heading.append(designIcon('flag'),el('strong','','Твой следующий шаг'));
       const bar=el('div','lg-appearance-sample-track');bar.append(el('i'));sample.append(heading,bar,el('span','lg-appearance-sample-button','Выполнить'));
       const info=el('p','meta','Предпросмотр виден сразу. «Применить» сохранит выбор в этом браузере.'),error=el('p','ui-dialog-error');error.hidden=true;error.setAttribute('role','alert');
-      const reset=btn('Цвет по умолчанию','button secondary full',()=>{draft=appearanceValue(null);applyAppearance(draft);draw('palette:yellow');});
+      const reset=btn('Оформление по умолчанию','button secondary full',()=>{draft=appearanceValue(null);applyAppearance(draft);draw('palette:yellow');});
       const actions=el('div','form-actions');actions.append(btn('Отмена','button secondary',()=>{applyAppearance(appearancePrefs);dialog.close();}),btn('Применить','button',()=>{
         const value=appearanceValue(draft);
         try{localStorage.setItem(APPEARANCE_KEY,JSON.stringify(value));}
-        catch{error.textContent='Не удалось сохранить цвет в этом браузере. Попробуй ещё раз. Отмена вернёт прежний вариант.';error.hidden=false;return;}
+        catch{error.textContent='Не удалось сохранить оформление в этом браузере. Попробуй ещё раз. Отмена вернёт прежний вариант.';error.hidden=false;return;}
         appearancePrefs=value;applyAppearance(value);updateAppearanceSummary();dialog.close();
       }));
-      dialog.replaceChildren(title,note,palettes,shades,sample,info,reset,error,actions);
+      dialog.replaceChildren(title,note,palettes,shades,iconOption,sample,info,reset,error,actions);
       if(focus){const [kind,id]=focus.split(':');requestAnimationFrame(()=>dialog.querySelector('[data-'+kind+'="'+id+'"]')?.focus({preventScroll:true}));}
     };
     dialog.addEventListener('cancel',()=>applyAppearance(appearancePrefs));
@@ -6179,7 +6232,9 @@ dialog.lg-adaptive-dialog.lg-reward-confirm {bottom:calc(100dvh - var(--lg-dialo
     const card = el("article", "card goal-card compact-goal-card" + (done ? " done" : " active-goal"));
     uiEntity(card, "goal", goal.id);
     const head = el("div", "task-head");
-    head.append(el("div", "task-title", goal.name));
+    const titleCopy = el("div", "lg-goal-title-copy");
+    titleCopy.append(el("div", "lg-goal-kind", "Цель"), el("div", "task-title", goal.name));
+    head.append(titleCopy);
     if (!done) {
       const more = btn("⋯", "more-button", () => goalMenu(goal.id));
       more.setAttribute("aria-label", "Действия с целью");
@@ -9201,6 +9256,7 @@ dialog.lg-adaptive-dialog.lg-reward-confirm {bottom:calc(100dvh - var(--lg-dialo
     const head = el("div", "widget-catalog-head");
     const symbol = el("div", "widget-symbol");
     symbol.setAttribute("aria-hidden", "true");
+    symbol.dataset.icon = DESIGN_WIDGET_ICONS[definition.id];
     symbol.append(designIcon(DESIGN_WIDGET_ICONS[definition.id]));
 
     const title = el("div", "widget-catalog-title");
