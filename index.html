@@ -2504,6 +2504,7 @@ h3.task-title { margin:0; }
 #editor .lg-new-block-form .form-actions { margin-top:14px; }
 @media (max-width:350px) { #editor .lg-block-icon-grid { gap:6px; } }
 </style>
+<link rel="stylesheet" href="assets/strategy.css">
 <link rel="stylesheet" href="assets/splash-sunrise.css">
 <script src="assets/splash-sunrise.js" defer></script>
 <style>
@@ -2970,6 +2971,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 <button type="button" class="button secondary full" id="close-backup">Закрыть</button>
 </dialog>
 
+<script src="assets/strategy.js"></script>
 <script>
 "use strict";
 
@@ -3024,6 +3026,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
 
   let state = emptyState();
+  let strategyUI = null;
   let snapshot = null;
   let healthy = true;
   let page = "hero";
@@ -3069,6 +3072,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   // Для готового виджета: available=true и render — функция,
   // возвращающая DOM-узел. Сохранение содержит только его стабильный ID.
   const WIDGET_REGISTRY = Object.freeze({
+    strategy:Object.freeze({id:"strategy",title:"Стратегия",symbol:"◈",description:"Сферы жизни, будущие ветки и ближайшие действия.",note:"Карта использует существующие дела и цели. Будущее включается в работу вручную.",category:"Вызовы и цели",system:true,available:true,placements:Object.freeze(["widgets","day"]),render:()=>strategyCard()}),
     goalStep:Object.freeze({id:'goalStep',title:'Шаг к цели',symbol:'⚑',description:'Ближайшее связанное дело и короткий подход к нему.',note:'План, выполнение дела и достижение цели — отдельные действия.',category:'Вызовы и цели',system:true,available:true,placements:Object.freeze(['widgets','day']),render:()=>goalStepCard()}),
     weekRhythm:Object.freeze({id:'weekRhythm',title:'Ритм недели',symbol:'▦',description:'Дни с подтверждёнными результатами и свой ориентир.',note:'Отдых без штрафов. Планирование и запуск таймера не считаются результатом.',category:'Итоги и мотивация',system:true,available:true,placements:Object.freeze(['widgets','day']),render:()=>weekRhythmCard()}),
     dayBudget:Object.freeze({id:'dayBudget',title:'Посильный план',symbol:'◷',description:'Оценки дел и время, которое есть на сегодня.',note:'Перегрузка — подсказка; облегчение применяется по твоему выбору.',category:'Организация дня',system:true,available:true,placements:Object.freeze(['widgets','day']),render:()=>dayBudgetCard()}),
@@ -3522,7 +3526,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       soundEnabled: true,
       motivationEnabled: true,
       motivationText: "",
-      widgets: { version: 8, items: [{ id: "mainDay", placement: "widgets", showInDay: true }, { id: "quickCapture", placement: "widgets", showInDay: true }, { id: "carryovers", placement: "widgets", showInDay: true }, { id: "keyActions", placement: "widgets", showInDay: true }, { id: "focus", placement: "widgets", showInDay: true }, { id: "dayResult", placement: "widgets", showInDay: true }, { id: "firstStep", placement: "widgets", showInDay: true }, { id: "myReward", placement: "widgets", showInDay: true }, { id: "dayBudget", placement: "widgets", showInDay: true }, { id: "closeDay", placement: "widgets", showInDay: true }, { id: "goalStep", placement: "widgets", showInDay: true }, { id: "weekRhythm", placement: "widgets", showInDay: true }], favorites: [] },
+      strategy: LifeGameStrategy.blank(),
+      widgets: { version: 9, items: [{ id: "strategy", placement: "widgets", showInDay: false },{ id: "mainDay", placement: "widgets", showInDay: true }, { id: "quickCapture", placement: "widgets", showInDay: true }, { id: "carryovers", placement: "widgets", showInDay: true }, { id: "keyActions", placement: "widgets", showInDay: true }, { id: "focus", placement: "widgets", showInDay: true }, { id: "dayResult", placement: "widgets", showInDay: true }, { id: "firstStep", placement: "widgets", showInDay: true }, { id: "myReward", placement: "widgets", showInDay: true }, { id: "dayBudget", placement: "widgets", showInDay: true }, { id: "closeDay", placement: "widgets", showInDay: true }, { id: "goalStep", placement: "widgets", showInDay: true }, { id: "weekRhythm", placement: "widgets", showInDay: true }], favorites: [] },
       dayGraph: dayGraphDefaults(),
       happiness: happinessDefaults(),
       keyActions: { version: 1, actions: [], conditions: [], entries: [] },
@@ -3978,6 +3983,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     if(data.rewardTargetId!==null&&!validId(data.rewardTargetId))fail('Повреждён выбор личной награды.');
     normalizeDayBalance(data);
     normalizeGoalRhythm(data);
+    LifeGameStrategy.validate(data);
     if (data.dayPlanDate === undefined) data.dayPlanDate = null;
     if (data.dayPlanDate !== null && !validDate(data.dayPlanDate)) {
       fail("Некорректная дата плана.");
@@ -4406,7 +4412,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   "check": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"m7 12 3 3 7-7\"/>",
   "star": "<path d=\"m12 2 3.1 6.3 7 .9-5.1 5 1.2 7-6.2-3.3L5.8 21 7 14.2l-5-5 7-.9Z\"/>"
 });
-  const DESIGN_WIDGET_ICONS = Object.freeze({ goalStep:"flag", weekRhythm:"calendar", dayBudget:"clock", closeDay:"check", myReward:"spark", dayResult:"chart", mainDay:"flag", quickCapture:"plus", carryovers:"calendar", keyActions: "flag", focus: "clock", dayGraph: "chart", firstStep: "play", happiness: "heart", challenge: "quest" });
+  const DESIGN_WIDGET_ICONS = Object.freeze({ strategy:"compass", goalStep:"flag", weekRhythm:"calendar", dayBudget:"clock", closeDay:"check", myReward:"spark", dayResult:"chart", mainDay:"flag", quickCapture:"plus", carryovers:"calendar", keyActions: "flag", focus: "clock", dayGraph: "chart", firstStep: "play", happiness: "heart", challenge: "quest" });
   function designIcon(name) {
     const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     icon.setAttribute("viewBox", "0 0 24 24");
@@ -4786,7 +4792,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
   function uiBackupSummary(parsed) {
     const d = parsed.data;
-    return `Дата копии: ${parsed.createdAt ? new Date(parsed.createdAt).toLocaleString('ru-RU') : 'не указана'}.\nБлоков: ${d.blocks?.length || 0}; заданий: ${d.tasks?.length || 0}; целей: ${d.goals?.length || 0}; квестов: ${d.quests?.length || 0}; моментов счастья: ${d.happiness?.collection?.length || 0}.`;
+    return `Дата копии: ${parsed.createdAt ? new Date(parsed.createdAt).toLocaleString('ru-RU') : 'не указана'}.\nБлоков: ${d.blocks?.length || 0}; заданий: ${d.tasks?.length || 0}; целей: ${d.goals?.length || 0}; квестов: ${d.quests?.length || 0}; моментов счастья: ${d.happiness?.collection?.length || 0}.\nНабросков Стратегии: ${d.strategy?.drafts?.length || 0}; связей: ${d.strategy?.links?.length || 0}.`;
   }
   function uiSetupBackupFiles() {
     const group = el('section', 'ui-backup-files');
@@ -8822,7 +8828,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     if (data.widgets === undefined) data.widgets = emptyState().widgets;
     const widgets = data.widgets;
     if (!widgets || typeof widgets !== "object" || Array.isArray(widgets) ||
-        ![1, 2, 3, 4, 5, 6, 7, 8].includes(widgets.version) || !Array.isArray(widgets.items)) {
+        ![1, 2, 3, 4, 5, 6, 7, 8, 9].includes(widgets.version) || !Array.isArray(widgets.items)) {
       fail("Повреждены настройки виджетов.");
     }
     const ids = new Set();
@@ -8871,6 +8877,10 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     if(widgets.version===7){
       for(const id of ['goalStep','weekRhythm'])if(!widgets.items.some(item=>item.id===id))widgets.items.push({id,placement:'widgets',showInDay:true});
       widgets.version=8;
+    }
+    if(widgets.version===8){
+      if(!widgets.items.some(item=>item.id==='strategy'))widgets.items.unshift({id:'strategy',placement:'widgets',showInDay:false});
+      widgets.version=9;
     }
   }
 
@@ -10348,7 +10358,60 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     screen.append(activity, money);
   }
 
+  // Strategy keeps canonical LifeGame records authoritative; map writes never award money.
+  function getStrategyUI() {
+    if(strategyUI)return strategyUI;
+    strategyUI=LifeGameStrategy.create({
+      read:()=>({data:clone(state),date:today(),healthy,planned:plannedTasks(state).map(t=>t.id),scheduled:state.tasks.filter(scheduledToday).map(t=>t.id),focusReady:state.focus.status==='ready'}),
+      uid,notify:uiFeedback,showDialog:uiShowDialog,redraw:render,navigate:()=>go('strategy'),
+      change:change=>widgetChange(data=>{
+        const mappings=data.strategy.drafts.filter(d=>d.actual).map(d=>({id:d.id,actual:JSON.stringify(d.actual)}));
+        change(data.strategy);
+        for(const old of mappings)if(!data.strategy.drafts.some(d=>d.id===old.id&&JSON.stringify(d.actual)===old.actual))fail('Связь с действующим элементом сохраняется. Изменяй его через LifeGame.');
+      }),
+      activate:(draftId,values,expected,date)=>transact(data=>{
+        if(today()!==date||JSON.stringify(data.strategy)!==expected)fail('Карта или день изменились. Открой окно заново.');
+        const draft=data.strategy.drafts.find(d=>d.id===draftId);
+        if(!draft||draft.actual||!['goal','task'].includes(draft.kind))fail('Ветка уже взята в работу или недоступна.');
+        const graph=LifeGameStrategy.project(data,date);
+        if(!graph.ready('draft:'+draftId))fail('Сначала выполни условия открытия.');
+        if(!validName(values.name)||!integer(values.reward,1,100000))fail('Проверь название и награду.');
+        const isTask=draft.kind==='task';
+        if(!(isTask?taskBlockIsActive(data,values.blockId):blockIsActive(data,values.blockId)))fail('Выбери действующую сферу.');
+        if(values.goalId&&(!isTask||!data.goals.some(g=>g.id===values.goalId&&g.blockId===values.blockId&&g.completedDate===null)))fail('Цель недоступна в этой сфере.');
+        const id=uid();
+        if(isTask)data.tasks.push({id,name:values.name,block:values.blockId,goalId:values.goalId||null,reward:values.reward,type:'once',weekdays:[],inDayBuilder:false,favorite:false,archivedAt:null});
+        else data.goals.push({id,name:values.name,blockId:values.blockId,diamonds:values.reward,completedDate:null});
+        draft.actual={kind:draft.kind,id};
+      },false),
+      open:n=>{
+        if(n.blockId===INBOX_BLOCK_ID)openInbox({target:n.kind+':'+n.id});
+        else if(blockIsActive(state,n.blockId))go('blocks',n.blockId,false,{target:['task','goal'].includes(n.kind)?n.kind+':'+n.id:'',top:!['task','goal'].includes(n.kind)});
+      },
+      plan:(id,date)=>transact(data=>{
+        const t=data.tasks.find(t=>t.id===id);
+        if(today()!==date||!t||t.archivedAt!==null||!taskBlockIsActive(data,t.block)||completion(data,t)||!scheduledToday(t))fail('Дело или день изменились. Проверь расписание.');
+        if(t.type==='daily')t.inDayBuilder=true;
+        data.daySkips[date]=(data.daySkips[date]||[]).filter(k=>k!==id);
+        data.dayPlans[date]=[...new Set([...(data.dayPlans[date]||[]),id])];ensureDay(data);
+      },false),
+      start:(id,date)=>{if(startTaskFocus(id,2,date))go('focus');},
+      complete:(kind,id,date,wasDone)=>{
+        if(today()!==date){render();uiFeedback('Наступил новый день. Проверь дело заново.');return;}
+        const item=(kind==='goal'?state.goals:state.tasks).find(t=>t.id===id);
+        const done=item&&(kind==='goal'?item.completedDate!==null:!!completion(state,item));
+        if(!item||done!==wasDone){render();uiFeedback('Элемент уже изменился. Проверь результат.');return;}
+        if(kind==='goal')toggleGoal(id,date);else toggleTask(id);
+      },
+      createTask:n=>createTask({blockId:n.blockId,goalId:n.id})
+    });
+    return strategyUI;
+  }
+  function strategyCard(){return getStrategyUI().widget();}
+  function renderStrategy(){screen.append(lgSectionNav('Стратегия'));getStrategyUI().mount(screen);}
+
   function render() {
+    strategyUI?.unmount();
     const uiPrevious = uiPendingNavigation ? null : uiCapture();
     const uiDoneBefore = uiPendingNavigation ? null : new Map([...screen.querySelectorAll("[data-ui-key]")].map(n=>[n.dataset.uiKey,n.classList.contains("done")]));
     motivationObserver?.disconnect();
@@ -10363,7 +10426,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     wallet.setAttribute("aria-label",
       `Монеты: ${view.money.balance}. Алмазы: ${view.money.diamonds}.`);
 
-    const active = ["day", "inbox", "summary", "calendar", "treats", "widgets", "widgetCatalog", "aiPreview", "focus"].includes(page) ? "hero" : page;
+    const active = ["day", "inbox", "summary", "calendar", "treats", "widgets", "widgetCatalog", "aiPreview", "focus", "strategy"].includes(page) ? "hero" : page;
     document.querySelectorAll(".nav-button").forEach(node => {
       const selected = node.dataset.page === active;
       node.classList.toggle("active", selected);
@@ -10374,7 +10437,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       hero: renderHero, blocks: renderBlocks, inbox: renderInbox, quests: renderQuests,
       bonuses: renderBonuses, day: renderDay, summary: renderSummary, calendar: renderCalendar, treats: renderTreats,
       widgets: renderWidgets, widgetCatalog: renderWidgetCatalog, focus: renderFocusSession,
-      aiPreview: renderAiPreview
+      strategy: renderStrategy, aiPreview: renderAiPreview
     };
     (screens[page] || renderHero)();
     updateFocusMini();
@@ -10450,7 +10513,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const answer = prompt(
       "Все данные LifeGame в этом браузере будут сброшены: " +
       "задания, квесты, календарь, цели, покупки, планы, монеты и алмазы, " +
-      "коллекцию и историю Игры в счастье.\n\n" +
+      "коллекцию и историю Игры в счастье, стратегию и будущие ветки.\n\n" +
       "Вернутся восемь стартовых блоков. Внешние копии не изменятся.\n\n" +
       "Для подтверждения введи СБРОС:"
     );
