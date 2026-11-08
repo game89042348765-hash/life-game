@@ -128,13 +128,16 @@
 .lg-path-aesthetics>.is-horizon>.card{background:radial-gradient(ellipse at 100% 100%,#ffffff05,transparent 65%),var(--graphite-surface);border-color:#444}
 body .card.goal-card.compact-goal-card.lg-block-goal-preview,.lg-path-aesthetics .card.goal-card.compact-goal-card.lg-block-goal-preview{background:var(--graphite-surface);border-color:#414141}
 
-/* The path continues to the end; the work view keeps it in the right lane. */
-.lg-path-aesthetics{padding-bottom:24px}.lg-path-aesthetics:before,.lg-path-aesthetics:after{bottom:0}
-.lg-work-path{position:relative;padding:0 26px 22px 0;isolation:isolate;min-width:0}
-.lg-work-path:before{content:'';position:absolute;right:5px;top:28px;bottom:0;width:1px;background:linear-gradient(#666,rgba(var(--accent-rgb),.5) 55%,var(--accent) 82%,#fff0bd);z-index:-1}
-.lg-work-path:after{content:'';position:absolute;right:5px;top:28px;transform:translate(50%,-50%);width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(var(--accent-rgb),.08)}
-.lg-work-path .lg-work-optimal:after,.lg-work-path .lg-work-horizons:after{content:'';position:absolute;right:-21px;top:50%;transform:translate(50%,-50%);width:9px;height:9px;border:1.5px solid var(--accent);border-radius:50%;background:var(--bg);box-sizing:border-box}
-.lg-work-path .lg-work-horizons:after{transform:translate(50%,-50%) rotate(45deg);border-radius:2px;border-color:#e5d9ae}
+/* Continuous path below the last stage, and only in the work outlook. */
+.lg-path-aesthetics{padding-bottom:96px}.lg-path-aesthetics:before,.lg-path-aesthetics:after{bottom:-24px}
+.lg-work-path{min-width:0}.lg-work-path:before,.lg-work-path:after{content:none}
+.lg-work-outlook{position:relative;isolation:isolate;display:grid;grid-template-columns:26px minmax(0,1fr);grid-template-rows:auto auto auto auto auto 64px}
+.lg-work-outlook:before{content:'';grid-column:1;grid-row:2/7;margin:12px 0 -24px 5px;width:1px;background:linear-gradient(rgba(var(--accent-rgb),.45),var(--accent) 65%,#fff0bd);z-index:-1}
+.lg-work-outlook-head{grid-column:1/-1;grid-row:1}
+.lg-work-near{grid-column:2;grid-row:2;padding-left:0}.lg-work-near-step{padding-left:0}.lg-work-near-step:before{left:-25px}.lg-work-near-step:not(:last-child):after{content:none}
+.lg-work-optimal{grid-column:2;grid-row:3}.lg-work-horizons{grid-column:2;grid-row:4}.lg-work-vision{grid-column:2;grid-row:5}
+.lg-work-outlook .lg-work-optimal:after,.lg-work-outlook .lg-work-horizons:after{content:'';position:absolute;left:-21px;top:50%;transform:translate(-50%,-50%);width:9px;height:9px;border:1.5px solid var(--accent);border-radius:50%;background:var(--bg);box-sizing:border-box}
+.lg-work-outlook .lg-work-horizons:after{transform:translate(-50%,-50%) rotate(45deg);border-radius:2px;border-color:#e5d9ae}
 .card.lg-work-horizons{border-style:solid;border-color:#ffffff20;background:radial-gradient(ellipse at 100% 0,#ffffff05,transparent 70%),var(--graphite-surface);color:var(--text)}
 .lg-work-horizons strong{display:block;font-size:13px;font-weight:600;line-height:1.5}.lg-work-horizons small{display:block;font-size:11px;font-weight:400;color:var(--muted);margin-top:5px;line-height:1.6}
 .lg-work-horizons .design-icon{color:#d0c6a5}.lg-work-path .lg-work-optimal{padding:16px;gap:12px}.lg-work-path .lg-work-optimal strong{font-size:18px}
