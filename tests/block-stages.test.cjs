@@ -83,7 +83,7 @@ for (let i = 0; i < 1200; i++) {
   });
 }
 stages.validate(many);
-assert.equal(many.blockStages.items.length, 1202, 'There is no arbitrary stage-count limit');
+assert.equal(many.blockStages.items.length, migrated.blockStages.items.length + 1200, 'There is no arbitrary stage-count limit');
 
 const unusualIds = { blocks: [{ id: '__proto__', name: 'Блок', meaning: '' }], goals: [], tasks: [] };
 stages.validate(unusualIds);
