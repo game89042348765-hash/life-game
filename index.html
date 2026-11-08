@@ -2885,6 +2885,19 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 .lg-appearance-dialog .ui-dialog-error[hidden] {display:none}
 @media(max-width:360px){.lg-appearance-choice{font-size:11px;min-height:64px}.lg-appearance-dialog .form-actions{bottom:-14px}}
 
+/* Quick entry and distinct meaning/goal surfaces; independent of accent palette. */
+.lg-quick-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.lg-quick-field{display:flex;flex-direction:column;gap:6px;margin:0;font-size:12px;min-width:0}
+.lg-quick-field select,.lg-quick-field input{width:100%;min-width:0;max-width:100%;min-height:44px;font:inherit;box-sizing:border-box}
+.lg-quick-field[hidden]{display:none}.lg-quick-field:has(#lg-quick-block){grid-column:1/-1}
+.lg-quick-hint{font-size:11px;margin:10px 0 0}.lg-quick-link-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:4px}.lg-quick-link-copy .meta{font-size:11px}.lg-inbox-link:has(.lg-quick-link-copy){padding:15px;border-radius:17px;background:#191919;min-height:76px}.lg-quick-transfer{margin-top:12px;min-height:44px;width:100%}
+.card.lg-block-meaning-preview{background:#302023;border-color:#694048}
+.card.lg-block-meaning-preview .lg-block-preview-title{color:#e2b1b8;font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
+.card.lg-block-meaning-preview .lg-block-meaning-text{color:#f0e2e4}
+.card.goal-card.compact-goal-card,.card.goal-card.compact-goal-card.lg-block-goal-preview{background:#1d2d25;border-color:#3d6350}
+.compact-goal-card .lg-goal-kind{color:#acd2b9;letter-spacing:1px;text-transform:uppercase}
+.button.lg-block-add-meaning{background:#302023;border-color:#694048;color:#e2b1b8}.button.lg-block-add-goal{background:#1d2d25;border-color:#3d6350;color:#acd2b9}
+.button.lg-block-add-meaning:hover:not(:disabled){background:#3c282d;border-color:#8a5963;color:#f0d4d9}.button.lg-block-add-goal:hover:not(:disabled){background:#263b30;border-color:#588568;color:#d5efdf}
 </style>
 </head>
 <body>
@@ -3095,7 +3108,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     quickCapture: Object.freeze({
       id:'quickCapture',title:'Быстрое добавление',symbol:'＋',
       description:'Запиши дело сразу, а блок и подробности выбери позже.',
-      note:'Можно добавить на сегодня или оставить во Входящих.',
+      note:'Сегодня, позже или дата в календаре; без награды или 25 монет.',
       category:'Организация дня',system:true,available:true,dayArea:'top',
       placements:Object.freeze(['widgets','day']),render:()=>quickTaskCapture('day',true)
     }),
@@ -3772,7 +3785,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     for (const task of data.tasks) {
       if (!validName(task.name) || (task.block !== INBOX_BLOCK_ID && !blocks.has(task.block)) ||
           !["once", "daily"].includes(task.type) ||
-          !integer(task.reward, 1, 100000)) {
+          !integer(task.reward, 0, 100000)) {
         fail("Повреждены данные задания.");
       }
       if(task.estimateMinutes===undefined)task.estimateMinutes=null;
@@ -3794,7 +3807,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     for (const record of data.completions) {
       if (record.taskType !== undefined && !["once", "daily", "legacy"].includes(record.taskType)) fail("Повреждён тип выполнения задания.");
       if (!validId(record.taskId) || !validDate(record.date) ||
-          !integer(record.reward, 1, 100000)) {
+          !integer(record.reward, ["once","daily"].includes(record.taskType)?0:1, 100000)) {
         fail("Повреждена история монет.");
       }
       const key = JSON.stringify([record.taskId, record.date]);
@@ -4822,6 +4835,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   function go(nextPage, selectedBlock = null, fromDayTask = false, options = {}) {
     if(nextPage==='strategy')nextPage='blocks'; // Retired route: do not resurrect the removed widget.
     if(nextPage!=="widgets")widgetManageMode=false;
+    if(nextPage!=="inbox"){inboxSettingsOpen=false;}
     if(nextPage==='blocks'&&selectedBlock!==null){
       const target=options.target?.startsWith('task:')?state.tasks.find(t=>t.id===options.target.slice(5)):options.target?.startsWith('goal:')?state.goals.find(g=>g.id===options.target.slice(5)):null;
       viewedStageId=options.stageId||target?.stageId||(!options.restore?null:viewedStageId);
@@ -5308,7 +5322,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const update=block=>{
       select.replaceChildren();const entries=LifeGameStages.list(state,block);
       for(const stage of entries){const option=el('option','',stage.name+(LifeGameStages.current(state,block)?.id===stage.id?' · текущий':!LifeGameStages.unlocked(state,stage)?' · закрыт':''));option.value=stage.id;select.append(option);}
-      if(block===INBOX_BLOCK_ID){const option=el('option','','Без этапа — Входящие');option.value='';select.append(option);}
+      if(block===INBOX_BLOCK_ID){const option=el('option','','Без этапа — Быстрое добавление');option.value='';select.append(option);}
       select.disabled=block===INBOX_BLOCK_ID;select.value=entries.some(s=>s.id===initialId)?initialId:(LifeGameStages.current(state,block)?.id||'');
     };
     update(selectedBlock);return {element,select,update,value:()=>select.value||null};
@@ -5580,12 +5594,11 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     );
 
     text.append(
-      el("div", "lg-block-preview-title", "Смысл этапа"),
+      el("div", "lg-block-preview-title", "Смысл"),
       el("div", "lg-block-meaning-text", selected.meaning)
     );
 
     card.append(
-      designIconTile("heart", "rose"),
       text,
       more
     );
@@ -5640,7 +5653,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const items = bulkItems(state, selection);
     if (selection.collection === "tasks" && selection.block) {
       const label = el("label", "", "Масштаб выбора"), select = el("select");
-      for (const [value, text] of [...(selection.stageId?[["stage","Выбранный этап"]]:[]),["block", selection.block === INBOX_BLOCK_ID ? "Входящие" : "Весь блок · все этапы"], ["all", "Все блоки и Входящие"]]) {
+      for (const [value, text] of [...(selection.stageId?[["stage","Выбранный этап"]]:[]),["block", selection.block === INBOX_BLOCK_ID ? "Быстрое добавление" : "Весь блок · все этапы"], ["all", "Все блоки и Быстрое добавление"]]) {
         const option = el("option", "", text); option.value = value; select.append(option);
       }
       select.value = selection.scope;
@@ -5653,7 +5666,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     screen.append(controls);
     for (const item of favorites(items)) {
       let status;
-      if (selection.collection === "tasks") status = (item.block === INBOX_BLOCK_ID ? "Входящие" : state.blocks.find(block => block.id === item.block)?.name || "") + (item.stageId?" · "+LifeGameStages.get(state,item.stageId).name:"") + (completion(state, item) ? " · Выполнено" : " · Активно");
+      if (selection.collection === "tasks") status = (item.block === INBOX_BLOCK_ID ? "Быстрое добавление" : state.blocks.find(block => block.id === item.block)?.name || "") + (item.stageId?" · "+LifeGameStages.get(state,item.stageId).name:"") + (completion(state, item) ? " · Выполнено" : " · Активно");
       else if (selection.collection === "quests") status = (item.type === "stages" ? "Этапы" : "Счётчик") + (item.progress >= item.target ? " · Завершён" : " · Активен");
       else status = (item.currency === "diamonds" ? "Алмазы" : "Монеты") + (state.purchases.some(purchase => purchase.bonusId === item.id) ? " · Куплено" : "");
       const row = checkbox(item.name + " — " + status, selection.ids.has(item.id), checked => {
@@ -6116,7 +6129,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     if (!task || task.archivedAt !== null || !taskBlockIsActive(state, task.block)) return;
     const options = state.blocks.filter(block => block.archivedAt === null && block.id !== task.block);
     if (!options.length) {
-      alert(task.block === INBOX_BLOCK_ID ? "Создай или восстанови блок, чтобы разобрать дело из Входящих." : "Для переноса задания нужен ещё один блок.");
+      alert(task.block === INBOX_BLOCK_ID ? "Создай или восстанови блок, чтобы разобрать дело из быстрого добавления." : "Для переноса задания нужен ещё один блок.");
       return;
     }
     const fromBlock = (page === "blocks" && blockId !== null) || page === "inbox";
@@ -6654,8 +6667,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const goalPicker = taskGoalPicker(task.block, task.goalId,task.stageId);
     openForm("Редактировать задание", [
       nameField(task.name),
-      numberField("reward", "Награда в монетах", task.reward),
-      { key: "block", label: "Блок", value: task.block, options: [[INBOX_BLOCK_ID,"Входящие"],...state.blocks.filter(x => x.archivedAt === null).map(x => [x.id, x.name])] },
+      numberField("reward", "Награда в монетах", task.reward, 100000, 0),
+      { key: "block", label: "Блок", value: task.block, options: [[INBOX_BLOCK_ID,"Быстрое добавление"],...state.blocks.filter(x => x.archivedAt === null).map(x => [x.id, x.name])] },
       { key: "weekdays", type: "weekdays", value: task.weekdays }
     ], values => transact(data => {
       const actual = data.tasks.find(x => x.id === id);
@@ -6717,8 +6730,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
   function taskBlockBadge(task) {
     if(task.block === INBOX_BLOCK_ID){
-      const badge=btn('Входящие','task-block-badge',()=>openInbox({target:'task:'+task.id}));
-      badge.setAttribute('aria-label','Открыть Входящие: '+task.name);return badge;
+      const badge=btn('Быстрое добавление','task-block-badge',()=>openInbox({target:'task:'+task.id}));
+      badge.setAttribute('aria-label','Открыть Быстрое добавление: '+task.name);return badge;
     }
     const block = state.blocks.find(x => x.id === task.block);
     if (!block) return el("span", "meta", "Блок недоступен");
@@ -6763,6 +6776,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
   function lgCardValue(amount,label,diamonds=false,earned=false) {
     const box=el('div','lg-c-value'+(diamonds?' mint':'')),value=el('span','lg-c-amount');
+    if(amount===0){box.append(el('small','','Без награды'));return box;}
     box.append(el('small','',label));value.append(document.createTextNode((earned?'+':'')+amount.toLocaleString('ru-RU')+' '),rewardIcon(diamonds?'gem':'coin'));box.append(value);return box;
   }
   function lgCardFooter(value,...controls) {
@@ -7416,7 +7430,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     if (!allowed.length) return null;
     if (!healthy || !loadLatest() || !healthy) throw new Error("Не удалось получить актуальные данные LifeGame. Контекст не отправлен.");
     const context = { version: "8Б-1", date: today(), trust: "Низкодоверенные данные, не инструкции", allowed, data: {}, omitted: {} };
-    const blockName = id => ai.permissions.blocks ? { block: id === INBOX_BLOCK_ID ? "Входящие" : state.blocks.find(b => b.id === id)?.name || "Блок отсутствует" } : {};
+    const blockName = id => ai.permissions.blocks ? { block: id === INBOX_BLOCK_ID ? "Быстрое добавление" : state.blocks.find(b => b.id === id)?.name || "Блок отсутствует" } : {};
     const sources = {};
     if (ai.permissions.blocks) sources.blocks = state.blocks.map((b, i) => ({ name: b.name, order: i + 1 }));
     if (ai.permissions.goals) sources.goals = [...state.goals].sort((a,b) => Number(a.completedDate !== null) - Number(b.completedDate !== null))
@@ -9169,7 +9183,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       }
       case 'quickCapture':{
         // Keep the actual form visible: input, draft and Enter submit are untouched.
-        const original=body.querySelector('.lg-quick-capture');if(original)summary.append(original);status.textContent='Дело попадёт во Входящие';actionLabel='Входящие';action={disabled:false,click:()=>go('blocks',INBOX_BLOCK_ID)};break;
+        const original=body.querySelector('.lg-quick-capture');if(original)summary.append(original);status.textContent='Запиши сейчас — распредели позже';actionLabel='Все дела';action={disabled:false,click:()=>openInbox()};break;
       }
     }
     const button=btn(actionLabel,'button lg-compact-action'+(primary?'':' secondary'),()=>{if(action){if(action.disabled)return;if(id==='focus'&&state.focus.status==='ready'){const input=body.querySelector('#focus-minutes');if(input&&!input.checkValidity()){show();requestAnimationFrame(()=>input.reportValidity());return;}}action.click();}else show();});
@@ -9750,7 +9764,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     for (const goal of activeGoals) {
       const card = goalCard(goal);
       card.classList.add("lg-block-goal-preview");
-      card.querySelector(".task-head").prepend(designIconTile("compass", "mint"));
       target.append(card);
     }
     const addGoalButton = btn("+ Добавить цель", "button lg-block-add-goal", () => goalForm(), true);
@@ -9923,14 +9936,16 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
 
   // Drafts stay in memory; only a submitted ordinary task is saved.
-  const quickTaskDrafts={day:{name:'',onToday:true,busy:false},inbox:{name:'',onToday:false,busy:false}};
+  let inboxSettingsOpen=false;
+  const quickTaskDrafts=Object.fromEntries(['day','inbox'].map(key=>[key,{name:'',when:key==='day'?'today':'later',date:'',reward:25,block:INBOX_BLOCK_ID,busy:false}]));
   function inboxTasks(data=state) { return data.tasks.filter(task=>task.block===INBOX_BLOCK_ID&&task.archivedAt===null); }
   function inboxPendingCount() { return inboxTasks().filter(task=>!completion(state,task)).length; }
   function openInbox(options={}) { go('inbox',INBOX_BLOCK_ID,false,options); }
   function inboxLink() {
-    const link=btn('','lg-inbox-link',()=>openInbox());
-    link.append(designIcon('inbox'),el('span','','Входящие'),el('small','',String(inboxPendingCount())));
-    link.setAttribute('aria-label','Открыть Входящие, незавершённых дел: '+inboxPendingCount());return link;
+    const link=btn('','lg-inbox-link',()=>openInbox()),copy=el('span','lg-quick-link-copy');
+    copy.append(el('strong','','Быстрое добавление'),el('span','meta','Запиши сейчас — распредели позже'));
+    link.append(designIcon('plus'),copy,el('small','',String(inboxPendingCount())),el('span','','›'));
+    link.setAttribute('aria-label','Быстрое добавление, незавершённых дел: '+inboxPendingCount());return link;
   }
   function showQuickTask(id,onToday) {
     if(!onToday){openInbox({target:'task:'+id});return;}
@@ -9942,44 +9957,53 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   function quickTaskCapture(context,embedded=false) {
     const draft=quickTaskDrafts[context],builtDay=today(),box=el('section','lg-quick-capture');
     box.setAttribute('aria-label','Быстро добавить дело');
-    const form=el('form','lg-quick-form'),label=el('label','lg-quick-label',embedded?'Новое дело':'Быстро добавить'),input=el('input');
+    const form=el('form','lg-quick-form'),label=el('label','lg-quick-label','Новое дело'),input=el('input');
     input.id='lg-quick-name';input.name='name';input.type='text';input.maxLength=120;input.required=true;input.autocomplete='off';
     input.placeholder='Что нужно сделать?';input.value=draft.name;input.disabled=!healthy||draft.busy;label.htmlFor=input.id;
     input.addEventListener('input',()=>{draft.name=input.value;input.setCustomValidity('');});
     const add=el('button','button lg-quick-submit','Добавить');add.type='submit';add.disabled=!healthy||draft.busy;
     const row=el('div','lg-quick-entry');row.append(input,add);
-    const options=el('div','lg-quick-options'),onToday=checkbox('На сегодня',draft.onToday,value=>{draft.onToday=value;},draft.busy);
-    onToday.querySelector('input').id='lg-quick-today';options.append(onToday,el('span','lg-quick-reward','Разовое · +15 монет за выполнение'));
-    form.append(label,row,options);
+    const options=el('div','lg-quick-fields');
+    const choice=(title,id,values,value,change)=>{const l=el('label','lg-quick-field'),select=el('select');select.id=id;select.disabled=!healthy||draft.busy;l.append(el('span','',title),select);for(const [key,text] of values){const o=el('option','',text);o.value=key;select.append(o)}select.value=value;select.addEventListener('change',()=>change(select.value));options.append(l);return select;};
+    const when=choice('Когда','lg-quick-when',[['later','Позже'],['today','Сегодня'],['date','Дата в календаре']],draft.when,value=>{draft.when=value;update();});
+    const reward=choice('Награда','lg-quick-reward',[[0,'Без награды'],[25,'25 монет']],String(draft.reward),value=>{draft.reward=Number(value);});
+    const dateLabel=el('label','lg-quick-field'),date=el('input');dateLabel.append(el('span','','Дата'),date);date.id='lg-quick-date';date.type='date';date.value=draft.date;date.disabled=!healthy||draft.busy;date.addEventListener('input',()=>{draft.date=date.value;date.setCustomValidity('');});options.append(dateLabel);
+    const block=choice('Куда','lg-quick-block',[[INBOX_BLOCK_ID,'Выбрать блок позже'],...state.blocks.filter(b=>b.archivedAt===null).map(b=>[b.id,b.name])],taskBlockIsActive(state,draft.block)?draft.block:INBOX_BLOCK_ID,value=>{draft.block=value;});
+    const hint=el('p','meta lg-quick-hint');
+    function update(){const dated=when.value==='date';dateLabel.hidden=!dated;date.required=dated;block.closest('label').hidden=dated;hint.textContent=dated?'Запись появится в календаре и в Конструкторе в выбранный день.':when.value==='today'?'Сразу добавится в Конструктор дня.':'Сохранится в списке дел без даты.';}
+    update();form.append(label,row,options,hint);
     form.addEventListener('submit',event=>{
       event.preventDefault();if(draft.busy||!form.isConnected||!healthy)return;
-      const raw=input.value,name=raw.trim(),todaySelected=onToday.querySelector('input').checked;
+      const raw=input.value,name=raw.trim(),mode=when.value,selectedBlock=block.value,selectedDate=date.value,amount=Number(reward.value);
       if(!validName(name)){input.setCustomValidity('Напиши название дела: от 1 до 120 символов.');input.reportValidity();return;}
-      const id=uid();draft.busy=true;draft.name='';draft.onToday=todaySelected;
+      if(mode==='date'&&!validCalendarDate(selectedDate)){date.setCustomValidity('Выбери дату.');date.reportValidity();return;}
+      const id=uid();draft.busy=true;
       const saved=transact(data=>{
-        if(todaySelected&&today()!==builtDay)fail('Наступил новый день. Проверь переключатель «На сегодня» и повтори добавление.');
-        data.tasks.push({id,name,reward:15,block:INBOX_BLOCK_ID,type:'once',weekdays:[],inDayBuilder:false,favorite:false,goalId:null,archivedAt:null});
-        if(todaySelected){const ids=new Set(data.dayPlans[today()]||[]);ids.add(id);data.dayPlans[today()]=[...ids];ensureDay(data);}
+        if(![0,25].includes(amount)||!['today','later','date'].includes(mode))fail('Проверь параметры добавления.');
+        if(mode==='date'){data.calendarEntries.push({id,name,date:selectedDate,time:'',note:'',reward:amount,completionId:null,favorite:false});return;}
+        if(mode==='today'&&today()!==builtDay)fail('Наступил новый день. Проверь выбор «Сегодня» и повтори добавление.');
+        if(!taskBlockIsActive(data,selectedBlock))fail('Выбранный блок недоступен.');
+        data.tasks.push({id,name,reward:amount,block:selectedBlock,stageId:selectedBlock===INBOX_BLOCK_ID?null:LifeGameStages.current(data,selectedBlock).id,type:'once',weekdays:[],inDayBuilder:false,favorite:false,goalId:null,archivedAt:null});
+        if(mode==='today'){const ids=new Set(data.dayPlans[today()]||[]);ids.add(id);data.dayPlans[today()]=[...ids];data.daySkips[today()]=(data.daySkips[today()]||[]).filter(x=>x!==id);ensureDay(data);}
       },false);
-      draft.busy=false;if(!saved)draft.name=raw;render();
+      draft.busy=false;draft.name=saved?'':raw;render();
       if(saved){
         screen.querySelector('#lg-quick-name')?.focus({preventScroll:true});
-        uiToast(todaySelected?'Дело добавлено на сегодня':'Дело сохранено во Входящих','Показать',()=>showQuickTask(id,todaySelected));
+        uiToast(mode==='date'?'Добавлено в календарь':mode==='today'?'Дело добавлено на сегодня':'Дело сохранено','Показать',()=>{if(mode==='date'){calendarDate=selectedDate;calendarMonth=selectedDate.slice(0,7);calendarMode='days';go('calendar',null,false,{target:'calendar:'+id});}else if(mode==='today'||selectedBlock===INBOX_BLOCK_ID)showQuickTask(id,mode==='today');else go('blocks',selectedBlock,false,{target:'task:'+id});});
       }
     });
     if(embedded)box.classList.add('lg-widget-content');box.append(form);if(context==='day')box.append(inboxLink());return box;
   }
   function renderInbox() {
-    screen.append(lgSectionNav('Входящие'),el('h1','','Входящие'),el('p','','Запиши сейчас. Выбрать блок можно позже.'));
+    const nav=lgSectionNav('Быстрое добавление'),gear=nav.querySelector('.lg-section-settings-placeholder');gear.disabled=false;gear.classList.remove('lg-section-settings-placeholder');gear.setAttribute('aria-label','Настройки быстрого добавления');gear.removeAttribute('title');gear.setAttribute('aria-expanded',String(inboxSettingsOpen));gear.setAttribute('aria-controls','lg-inbox-settings');gear.addEventListener('click',()=>{inboxSettingsOpen=!inboxSettingsOpen;if(!inboxSettingsOpen)taskReorderMode=false;render();screen.querySelector('[aria-controls="lg-inbox-settings"]')?.focus({preventScroll:true});});
+    screen.append(nav,el('h1','','Быстрое добавление'),el('p','','Запиши дело. Выполни сегодня, назначь дату или распредели позже.'));
     if(bulkSelection?.collection==='tasks'){renderBulkSelection();return;}
     screen.append(quickTaskCapture('inbox'));
     const tasks=inboxTasks(),done=task=>task.type==='once'?view.anyTask.has(task.id):view.todayTask.has(task.id),active=tasks.filter(task=>!done(task));
-    if(tasks.length){
-      const management=el('details','ui-list-management lg-inbox-management');management.open=taskReorderMode;management.append(el('summary','','Управление списком'),bulkEntry('tasks',INBOX_BLOCK_ID));
-      if(active.length>1)management.append(itemOrderToggle('tasks'));screen.append(management);
-    }
-    if(taskReorderMode&&active.length>1)renderItemOrder('tasks',active,done);else section('',favorites(active),taskCard);
-    if(!active.length)screen.append(el('div','empty','Здесь появятся дела без выбранного блока. Их можно выполнить сразу или перенести в подходящий блок через меню ⋯.'));
+    if(inboxSettingsOpen){const management=el('section','lg-inbox-management');management.id='lg-inbox-settings';management.append(el('h2','','Управление списком'),bulkEntry('tasks',INBOX_BLOCK_ID));if(active.length>1)management.append(itemOrderToggle('tasks'));screen.append(management);}
+    const captureCard=task=>{const card=taskCard(task);if(!done(task))card.append(btn('Перенести в блок','button secondary lg-quick-transfer',()=>transferTask(task.id)));return card;};
+    if(taskReorderMode&&inboxSettingsOpen&&active.length>1)renderItemOrder('tasks',active,done);else section('',favorites(active),captureCard);
+    if(!active.length)screen.append(el('div','empty','Здесь появятся дела без выбранного блока. Записи на дату находятся в календаре.'));
     historySection('inbox','ВЫПОЛНЕНО',tasks.filter(done),taskCard);
   }
 
@@ -10008,7 +10032,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   function renderCarryovers(embedded=false) {
     const entries=pendingCarryovers();if(!entries.length)return el('p','lg-carry-help','Неразобранных дел прошлых дней нет.');
     const date=today(),box=el('details','lg-carry-review');box.open=carryReviewOpen;
-    const heading=el('summary','',(embedded?'Открыть разбор · ':'Со вчера: ')+entries.length);box.append(heading,el('p','lg-carry-help','Незавершённые дела прошлых дней. Выбери, что делать дальше. «Позже» оставит дело в его блоке или Входящих.'));
+    const heading=el('summary','',(embedded?'Открыть разбор · ':'Со вчера: ')+entries.length);box.append(heading,el('p','lg-carry-help','Незавершённые дела прошлых дней. Выбери, что делать дальше. «Позже» оставит дело в его блоке или быстром добавлении.'));
     box.addEventListener('toggle',()=>{if(box.isConnected)carryReviewOpen=box.open;});
     for(const {task,from} of entries){
       const row=el('div','lg-carry-row');row.dataset.carryId=task.id;
@@ -10399,7 +10423,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const preview=balanceUi.preview;if(preview&&preview.date===date&&preview.snapshot===snapshot){
       const p=el('div','lg-balance-preview');p.append(el('strong','','Предпросмотр'));
       if(preview.ids.length){
-        p.append(el('p','meta','Эти дела останутся в блоках или Входящих для выбора позже:'));const list=el('ul');for(const id of preview.ids)list.append(el('li','',state.tasks.find(t=>t.id===id).name));p.append(list);
+        p.append(el('p','meta','Эти дела останутся в блоках или быстром добавлении для выбора позже:'));const list=el('ul');for(const id of preview.ids)list.append(el('li','',state.tasks.find(t=>t.id===id).name));p.append(list);
         const remaining=load.known-preview.ids.reduce((n,id)=>n+state.tasks.find(t=>t.id===id).estimateMinutes,0);p.append(el('p','meta','Останется ≈ '+remaining+' из '+load.budget+' мин.'+(load.unknown?' Есть дела без оценки.':'')),el('p','meta','Главное и выполненное сохраняются. Повторяемые дела пропускаются только сегодня.'));
         p.append(btn('Оставить эти дела на потом','button full',()=>{
           const before={plan:[...(state.dayPlans[date]||[])],skips:[...(state.daySkips[date]||[])],main:state.mainDayTasks[date],reviews:clone(state.planReviews)};
