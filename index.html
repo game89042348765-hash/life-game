@@ -2952,6 +2952,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 .lg-save-signal{top:auto;right:auto;margin:0;overflow:visible}.lg-save-signal::backdrop{background:transparent;pointer-events:none}
 </style>
 <link rel="stylesheet" href="assets/block-path-aesthetics.css?v=2">
+<link rel="stylesheet" href="assets/task-form.css?v=1">
 </head>
 <body>
 <div class="app">
@@ -3039,6 +3040,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
 <script src="assets/block-stages.js?v=centered-3"></script>
 <script src="assets/calendar-links.js?v=1"></script>
+<script src="assets/light-thread.js?v=1"></script>
+<script src="assets/task-form.js?v=1"></script>
 <script src="assets/legacy-data.js?v=levels-2"></script>
 <script>
 "use strict";
@@ -6840,30 +6843,55 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   // Задания.
   function createTask(options = {}) {
     const selectedBlock = options.blockId ?? blockId;
-    if (!taskBlockIsActive(state, selectedBlock)) return;
-    const initialStage=options.stageId||state.goals.find(g=>g.id===options.goalId)?.stageId||displayedStage(selectedBlock)?.id||null;
-    const stagePicker=taskStagePicker(selectedBlock,initialStage);
-    const goalPicker = taskGoalPicker(selectedBlock, options.goalId ?? null, initialStage);
-    let savedId;
-    openForm("Новое задание", [
-      nameField(options.name),
-      { key: "weekdays", type: "weekdays", value: options.weekdays ?? [] },
-      numberField("reward", "Награда в монетах", 15)
-    ], values => transact(data => {
-      if (!taskBlockIsActive(data, selectedBlock)) fail("Блок недоступен в архиве.");
-      const stageId=stagePicker.value();
-      const goalId = goalPicker.goalId();
-      if (goalPicker.checked() && !goalId) fail("Выбери цель для этого шага.");
-      if (goalId && !data.goals.some(x => x.id === goalId && x.blockId === selectedBlock && x.stageId===stageId &&
-          x.completedDate === null)) fail("Выбранная цель больше недоступна.");
-      data.tasks.push({
-        id: (savedId = uid()), ...values, type: values.weekdays.length ? "daily" : "once",
-        inDayBuilder: false, block: selectedBlock, stageId, favorite: false, goalId
-      });
-      if(selectedBlock!==INBOX_BLOCK_ID)LifeGameCalendarLinks.remember(data,"task",savedId);
-    }, false), "Создать", () => {if(page==="blocks"&&blockId===selectedBlock){viewedStageId=stagePicker.value();if(viewedStageId!==LifeGameStages.current(state,blockId)?.id)blockPathViews.set(blockId,'work');render();}if(options.onSaved)options.onSaved(savedId);});
-    editor.querySelector(".form-actions")?.before(stagePicker.element,goalPicker.element);
-    stagePicker.select.addEventListener("change",()=>goalPicker.update(selectedBlock,true,stagePicker.value()));
+    if (!healthy || !taskBlockIsActive(state, selectedBlock)) return;
+    const stageId = options.stageId || state.goals.find(g=>g.id===options.goalId)?.stageId || displayedStage(selectedBlock)?.id || null;
+    const stage = stageId ? LifeGameStages.get(state,stageId) : null;
+    const expectedCurrent = LifeGameStages.current(state,selectedBlock)?.id || null;
+    if (selectedBlock !== INBOX_BLOCK_ID && (!stage || stage.blockId !== selectedBlock)) return;
+    const goals = state.goals.filter(g=>g.blockId===selectedBlock && g.stageId===stageId && g.completedDate===null);
+    const linkedGoal = goals.find(g=>g.id===options.goalId) || goals[0] || null;
+    const date = today();
+    editor.replaceChildren();
+    editor.classList.add('lg-task-create');
+    const view = LifeGameTaskForm.create({
+      name:options.name || '', weekdays:options.weekdays || [],
+      hasGoals:!!linkedGoal, goalChecked:!!options.goalId,
+      canPlan:selectedBlock===INBOX_BLOCK_ID || stageId===expectedCurrent,
+      inDayBuilder:options.fromConstructor ?? page==='day',
+      onLevel:glow=>editor.style.setProperty('--lt',glow.toFixed(3)),
+      onCancel:()=>editor.close()
+    });
+    editor.append(view.form);
+    const cleanup = () => {editor.classList.remove('lg-task-create');editor.style.removeProperty('--lt');};
+    editor.addEventListener('close',cleanup,{once:true});
+    view.form.addEventListener('submit',event=>{
+      event.preventDefault();
+      const values=view.values();
+      if(!validName(values.name)){view.error('Напиши название задания.');return;}
+      let savedId;
+      const saved=transact(data=>{
+        if(!taskBlockIsActive(data,selectedBlock))fail('Блок недоступен в архиве.');
+        if(stageId && LifeGameStages.get(data,stageId)?.blockId!==selectedBlock)fail('Этап больше недоступен.');
+        const goalId=values.goalChecked ? linkedGoal?.id : null;
+        if(values.goalChecked && (!goalId || !data.goals.some(g=>g.id===goalId && g.blockId===selectedBlock && g.stageId===stageId && g.completedDate===null)))fail('Выбранная цель больше недоступна.');
+        if(values.inDayBuilder && (today()!==date || (selectedBlock!==INBOX_BLOCK_ID && LifeGameStages.current(data,selectedBlock)?.id!==stageId)))fail('Дата или текущий этап изменились. Проверь план дня заново.');
+        const task={id:(savedId=uid()),name:values.name,reward:values.reward,weekdays:values.weekdays,
+          type:values.weekdays.length?'daily':'once',inDayBuilder:values.inDayBuilder && !!values.weekdays.length,
+          block:selectedBlock,stageId,favorite:false,goalId,archivedAt:null};
+        data.tasks.push(task);
+        if(values.inDayBuilder && !values.weekdays.length){
+          data.dayPlans[date]=[...new Set([...(data.dayPlans[date]||[]),savedId])];
+        }
+        if(selectedBlock!==INBOX_BLOCK_ID)LifeGameCalendarLinks.remember(data,'task',savedId);
+        ensureDay(data);
+      },false);
+      if(!saved){view.error('Не удалось сохранить. Проверь сообщение приложения; введённое осталось в форме.',false);return;}
+      editor.close();
+      if(page==='blocks' && blockId===selectedBlock){viewedStageId=stageId;if(viewedStageId!==LifeGameStages.current(state,blockId)?.id)blockPathViews.set(blockId,'work');render();}
+      options.onSaved?.(savedId);
+    });
+    uiShowDialog(editor);
+    const heading=view.form.querySelector('h2');heading.tabIndex=-1;heading.focus();
   }
 
   function toggleTask(id, goalContext=null) {
