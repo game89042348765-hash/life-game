@@ -141,3 +141,24 @@ body .card.goal-card.compact-goal-card.lg-block-goal-preview,.lg-path-aesthetics
 .card.lg-work-horizons{border-style:solid;border-color:#ffffff20;background:radial-gradient(ellipse at 100% 0,#ffffff05,transparent 70%),var(--graphite-surface);color:var(--text)}
 .lg-work-horizons strong{display:block;font-size:13px;font-weight:600;line-height:1.5}.lg-work-horizons small{display:block;font-size:11px;font-weight:400;color:var(--muted);margin-top:5px;line-height:1.6}
 .lg-work-horizons .design-icon{color:#d0c6a5}.lg-work-path .lg-work-optimal{padding:16px;gap:12px}.lg-work-path .lg-work-optimal strong{font-size:18px}
+
+/* Quiet start, golden progression and a shared light at the end of the path. */
+.app:has(.lg-path-aesthetics),.app:has(.lg-work-outlook){padding-bottom:calc(78px + env(safe-area-inset-bottom,0px) + var(--lg-focus-space,0px))}
+.lg-path-aesthetics{padding-bottom:32px;background:radial-gradient(ellipse 70% 40px at 50% 100%,rgba(var(--accent-rgb),.055),transparent 75%)}
+.lg-path-aesthetics>.lg-level:last-of-type{margin-bottom:0}
+.lg-path-aesthetics:before{width:1px;bottom:-8px;background:linear-gradient(#545454 0px,rgba(var(--accent-rgb),.5) calc(var(--lg-path-now-y) - 26px),var(--accent) calc(var(--lg-path-opt-y) - 26px),#ffeab1 100%)}
+.lg-path-aesthetics:after{top:var(--lg-path-now-y);bottom:-8px;width:7px;filter:blur(4px);box-shadow:none;background:linear-gradient(transparent,rgba(var(--accent-rgb),.2) 55%,rgba(var(--accent-rgb),.5));pointer-events:none}
+.lg-path-aesthetics>.lg-path-history-node:before{width:7px;height:7px;background:var(--accent);border-color:var(--accent);box-shadow:0 0 9px rgba(var(--accent-rgb),.3)}
+.lg-path-aesthetics .lg-path-history.card{box-shadow:0 0 20px rgba(var(--accent-rgb),.035)}
+.lg-path-aesthetics>.lg-level-fact:before{width:6px;height:6px;background:#828282;border-color:#828282}
+.lg-path-aesthetics>.lg-path-missed:before{width:8px;height:8px;border-color:#777;background:var(--bg)}
+.lg-path-aesthetics>.lg-level.is-current:before{width:13px;height:13px;box-shadow:0 0 0 4px rgba(var(--accent-rgb),.1),0 0 16px rgba(var(--accent-rgb),.25)}
+.lg-path-aesthetics>.lg-path-planned:before{width:8px;height:8px;background:var(--bg);border-color:rgba(var(--accent-rgb),.7)}
+.lg-path-aesthetics>.lg-level.is-optimal:before{width:11px;height:11px;box-shadow:0 0 0 3px rgba(var(--accent-rgb),.06),0 0 13px rgba(var(--accent-rgb),.3)}
+.lg-path-aesthetics>.lg-level.is-horizon:before{width:9px;height:9px;border-color:#f3dfa5;box-shadow:0 0 12px rgba(var(--accent-rgb),.3)}
+.lg-work-outlook{grid-template-rows:auto auto auto auto auto 28px;margin-bottom:0;background:radial-gradient(ellipse 70% 36px at 50% 100%,rgba(var(--accent-rgb),.055),transparent 75%)}
+.lg-work-outlook:before{margin-bottom:-8px;background:linear-gradient(#777,rgba(var(--accent-rgb),.7) 45%,var(--accent) 75%,#ffeab1);box-shadow:0 14px 8px rgba(var(--accent-rgb),.12)}
+.lg-work-outlook .lg-work-optimal:after{box-shadow:0 0 10px rgba(var(--accent-rgb),.2)}
+.lg-work-outlook .lg-work-horizons:after{box-shadow:0 0 12px rgba(var(--accent-rgb),.28)}
+body:has(.lg-path-aesthetics)>nav,body:has(.lg-work-outlook)>nav{box-shadow:0 -8px 28px rgba(var(--accent-rgb),.055);border-top-color:rgba(var(--accent-rgb),.2)}
+body:has(.lg-path-aesthetics)>nav:before,body:has(.lg-work-outlook)>nav:before{content:'';position:absolute;left:0;right:0;top:-32px;height:32px;pointer-events:none;background:radial-gradient(ellipse 70% 38px at 50% 100%,rgba(var(--accent-rgb),.07),transparent 80%)}
