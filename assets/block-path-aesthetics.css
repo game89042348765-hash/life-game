@@ -162,3 +162,26 @@ body .card.goal-card.compact-goal-card.lg-block-goal-preview,.lg-path-aesthetics
 .lg-work-outlook .lg-work-horizons:after{box-shadow:0 0 12px rgba(var(--accent-rgb),.28)}
 body:has(.lg-path-aesthetics)>nav,body:has(.lg-work-outlook)>nav{box-shadow:0 -8px 28px rgba(var(--accent-rgb),.055);border-top-color:rgba(var(--accent-rgb),.2)}
 body:has(.lg-path-aesthetics)>nav:before,body:has(.lg-work-outlook)>nav:before{content:'';position:absolute;left:0;right:0;top:-32px;height:32px;pointer-events:none;background:radial-gradient(ellipse 70% 38px at 50% 100%,rgba(var(--accent-rgb),.07),transparent 80%)}
+
+/* Three quiet cards lead into a warmer, sunlit horizon. */
+.lg-work-near{margin-bottom:12px}
+.card.lg-work-near-step,.lg-work-path .card.lg-work-optimal,.card.lg-work-horizons{display:flex;align-items:center;justify-content:flex-start;gap:12px;min-height:76px;padding:15px 16px;border-radius:15px;border:1px solid #ffffff20;background:var(--graphite-surface);color:var(--text);box-shadow:none;text-align:left}
+.card.lg-work-near-step{margin:0 0 12px}.card.lg-work-near-step:last-child{margin-bottom:0}
+.card.lg-work-near-step strong,.lg-work-path .card.lg-work-optimal strong,.card.lg-work-horizons strong{display:block;font-size:13px;font-weight:600;line-height:1.5;margin:0;letter-spacing:0}
+.card.lg-work-near-step small,.lg-work-path .card.lg-work-optimal small,.card.lg-work-horizons small{display:block;font-size:11px;font-weight:400;line-height:1.6;margin-top:5px;letter-spacing:0;text-transform:none;color:var(--muted)}
+.card.lg-work-near-step>.design-icon,.lg-work-path .card.lg-work-optimal>.design-icon,.card.lg-work-horizons>.design-icon{width:15px;height:15px;flex:none;color:#d0c6a5}
+.lg-work-path .card.lg-work-optimal{border-color:rgba(var(--accent-rgb),.35);background:radial-gradient(ellipse at 100% 100%,rgba(var(--accent-rgb),.035),transparent 75%),var(--graphite-surface)}
+.lg-work-path .card.lg-work-optimal>.design-icon{color:var(--accent)}
+.lg-work-near-step:before{top:50%;left:-21px;transform:translate(-50%,-50%)}
+.lg-work-outlook{grid-template-rows:auto auto auto auto 0px 28px;background:radial-gradient(ellipse 85% 50px at 50% 100%,rgba(var(--accent-rgb),.12),transparent 78%)}
+.lg-work-outlook:before{margin-top:38px;width:1.5px;background:linear-gradient(#777,rgba(var(--accent-rgb),.75) 40%,var(--accent) 70%,#fff5d7)}
+.lg-work-outlook:after{content:'';grid-column:1;grid-row:2/7;margin:38px 0 -8px 2px;width:8px;filter:blur(5px);background:linear-gradient(transparent,rgba(var(--accent-rgb),.25) 55%,rgba(var(--accent-rgb),.65));z-index:-1;pointer-events:none}
+.lg-path-aesthetics{background:radial-gradient(ellipse 85% 54px at 50% 100%,rgba(var(--accent-rgb),.12),transparent 78%)}
+.lg-path-aesthetics:before{width:1.5px;background:linear-gradient(#545454 0px,rgba(var(--accent-rgb),.6) calc(var(--lg-path-now-y) - 26px),var(--accent) calc(var(--lg-path-opt-y) - 26px),#fff5d7 100%)}
+.lg-path-aesthetics:after{width:10px;filter:blur(6px);background:linear-gradient(transparent,rgba(var(--accent-rgb),.28) 50%,rgba(var(--accent-rgb),.7))}
+body:has(.lg-path-aesthetics)>nav,body:has(.lg-work-outlook)>nav{box-shadow:0 -10px 35px rgba(var(--accent-rgb),.1)}
+body:has(.lg-path-aesthetics)>nav:before,body:has(.lg-work-outlook)>nav:before{top:-50px;height:50px;background:radial-gradient(ellipse 30% 20px at 50% 100%,#fff2c617,transparent 90%),radial-gradient(ellipse 85% 54px at 50% 100%,rgba(var(--accent-rgb),.14),transparent 82%)}
+
+/* The fixed footer warms only as the reader approaches the end. */
+body:has(.lg-path-aesthetics)>nav,body:has(.lg-work-outlook)>nav{box-shadow:0 -10px 35px rgba(var(--accent-rgb),calc(.1 * var(--lg-sunlight,0)))}
+body:has(.lg-path-aesthetics)>nav:before,body:has(.lg-work-outlook)>nav:before{opacity:var(--lg-sunlight,0)}
