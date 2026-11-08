@@ -3026,7 +3026,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     <h3>Полный сброс</h3>
     <p>
       Удалит задания, квесты, цели, покупки, монеты и алмазы, а также коллекцию и историю «Игры в счастье».
-      Вернёт восемь стартовых блоков. Личные списки станут пустыми; демо-ништяки повторно не добавляются.
+      Вернёт восемь стартовых блоков и базовое оформление. Личные списки станут пустыми; демо-ништяки повторно не добавляются.
       Сначала сохрани резервную копию вне приложения.
     </p>
     <button type="button" class="button danger" id="reset-data">
@@ -10945,7 +10945,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       "Все данные LifeGame в этом браузере будут сброшены: " +
       "задания, квесты, календарь, цели, покупки, планы, монеты и алмазы, " +
       "коллекцию и историю Игры в счастье, этапы блоков и описания пути.\n\n" +
-      "Вернутся восемь стартовых блоков. Внешние копии не изменятся.\n\n" +
+      "Вернутся восемь стартовых блоков и базовое оформление. Внешние копии не изменятся.\n\n" +
       "Для подтверждения введи СБРОС:"
     );
     if (answer === null) return;
@@ -10956,7 +10956,17 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     try {
       const clean = emptyState();
       ensureDay(clean);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(normalize(clean)));
+      const serialized = JSON.stringify(normalize(clean));
+      const previousAppearance = localStorage.getItem(APPEARANCE_KEY);
+      localStorage.removeItem(APPEARANCE_KEY);
+      try {
+        localStorage.setItem(STORAGE_KEY, serialized);
+      } catch (error) {
+        if (previousAppearance !== null) localStorage.setItem(APPEARANCE_KEY, previousAppearance);
+        throw error;
+      }
+      appearancePrefs = appearanceValue(null);
+      applyAppearance(appearancePrefs);
       window.location.reload();
     } catch (error) {
       backupStatus.textContent = "Сброс не выполнен: " + error.message;
