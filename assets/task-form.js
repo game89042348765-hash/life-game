@@ -53,7 +53,7 @@
     form.addEventListener('input',()=>{form.querySelector('.lg-error-note').hidden=true;});
     update();
     return {form,thread,values:()=>({name:name.value.trim(),weekdays:selected(),reward:thread.value(),goalChecked:goal.checked,inDayBuilder:plan.checked}),
-      error(message,focus=true){const note=form.querySelector('.lg-error-note');note.textContent=message;note.hidden=false;if(focus){name.setAttribute('aria-invalid','true');name.focus();}}};
+      error(message,focus=true){const note=form.querySelector('.lg-error-note');note.hidden=focus;note.textContent=focus?'':message;if(focus){name.setAttribute('aria-invalid','true');name.focus();}}};
   }
   root.LifeGameTaskForm=Object.freeze({create});
 })(window);
