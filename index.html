@@ -2923,6 +2923,12 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 .lg-mini-calendar button{font:inherit;cursor:pointer}.lg-mini-arrow{width:40px;height:44px;border:0;background:none;color:var(--text);font-size:25px!important}.lg-mini-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;margin:8px 0}.lg-mini-weekday{padding:8px 0;text-align:center;color:var(--muted);font-size:11px}
 .lg-mini-day{height:36px;padding:0;min-width:0;border:1px solid transparent;border-radius:10px;background:none;color:var(--text);font-size:12px!important}.lg-mini-day[aria-current=date]{border-color:rgba(var(--accent-rgb),.5);color:var(--accent)}.lg-mini-day[aria-pressed=true]{background:var(--accent-fill);color:var(--on-accent);border-color:var(--accent)}
 .lg-mini-actions{display:flex;justify-content:space-between;border-top:1px solid var(--border);margin-top:12px;padding-top:8px;gap:12px}.lg-mini-actions button{min-height:44px;border:0;background:none;color:var(--muted);font-size:12px}.lg-mini-actions .lg-mini-clear{color:var(--accent)}
+
+/* Keep scheduling labels and the reward switch at the standard control size. */
+.lg-quick-schedule{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.lg-quick-schedule .lg-quick-mode{width:100%;min-width:0;box-sizing:border-box}
+.lg-quick-reward-switch.lg-c-day.check-label{grid-column:1/-1;justify-content:space-between;font-size:12px}
+.lg-quick-hint[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -6159,7 +6165,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       alert(task.block === INBOX_BLOCK_ID ? "Создай или восстанови блок, чтобы разобрать дело из быстрого добавления." : "Для переноса задания нужен ещё один блок.");
       return;
     }
-    const fromBlock = (page === "blocks" && blockId !== null) || page === "inbox";
+    const fromBlock = page === "blocks" && blockId !== null;
     openForm("Перенести задание", [{
       key: "block", label: "Блок назначения", value: options[0].id,
       options: options.map(block => [block.id, block.name])
@@ -10020,7 +10026,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const block=choice('Блок','lg-quick-block',[[INBOX_BLOCK_ID,'Выбрать блок можно позже'],...state.blocks.filter(b=>b.archivedAt===null).map(b=>[b.id,b.name])],taskBlockIsActive(state,draft.block)?draft.block:INBOX_BLOCK_ID,value=>{draft.block=value;});
     const blockOptions=block.closest('label');
     const hint=el('p','meta lg-quick-hint'),feedback=el('div','lg-quick-feedback');feedback.hidden=true;feedback.setAttribute('role','status');
-    function update(){const dated=draft.when==='date';blockOptions.hidden=dated;todayButton.setAttribute('aria-pressed',String(draft.when==='today'));dateButton.setAttribute('aria-pressed',String(dated));dateText.textContent='';dateButton.setAttribute('aria-label',dated?'Изменить дату: '+calendarLabel(draft.date):'Выбрать дату');hint.textContent=dated?localCalendarDate(draft.date).toLocaleDateString('ru-RU',{day:'numeric',month:'long'})+' · календарь':draft.when==='today'?'Сразу в Конструктор дня.':'Без даты — выберешь время позже.';}
+    function update(){const dated=draft.when==='date';blockOptions.hidden=dated;todayButton.setAttribute('aria-pressed',String(draft.when==='today'));dateButton.setAttribute('aria-pressed',String(dated));dateText.textContent=dated?'Дата · '+localCalendarDate(draft.date).toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'}):'Дата';dateButton.setAttribute('aria-label',dated?'Изменить дату: '+calendarLabel(draft.date):'Выбрать дату');hint.hidden=dated;hint.textContent=dated?'':draft.when==='today'?'Сразу в Конструктор дня.':'Без даты — выберешь время позже.';}
     update();form.append(label,row,options,hint,feedback);
     form.addEventListener('submit',event=>{
       event.preventDefault();if(draft.busy||!form.isConnected||!healthy)return;
@@ -10039,6 +10045,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       draft.busy=false;draft.name=saved?'':raw;render();
       if(saved){
         screen.querySelector('#lg-quick-name')?.focus({preventScroll:true});
+        if(mode==='date')return;
         const notice=screen.querySelector('.lg-quick-feedback');if(notice){notice.hidden=false;notice.append(el('span','',mode==='date'?'Добавлено в календарь':mode==='today'?'Добавлено на сегодня':'Дело сохранено'),btn('Показать','lg-quick-show',()=>{if(mode==='date'){calendarDate=selectedDate;calendarMonth=selectedDate.slice(0,7);calendarMode='days';go('calendar',null,false,{target:'calendar:'+id});}else if(mode==='today'||selectedBlock===INBOX_BLOCK_ID)showQuickTask(id,mode==='today');else go('blocks',selectedBlock,false,{target:'task:'+id});}));}
       }
     });
