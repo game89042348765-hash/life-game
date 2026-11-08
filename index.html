@@ -2941,7 +2941,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
 /* Original navigation, with a back affordance in the brand mark only. */
 .brand-back{display:inline-grid;place-items:center;position:relative;flex:none;width:14px;height:14px;border:0;padding:0;background:none;color:var(--accent);opacity:1!important;vertical-align:middle}
-.brand-back:before{content:'';position:absolute;inset:-15px}.brand-back .brand-mark{margin:0}.brand-back .design-icon{width:16px;height:16px}.brand-back.can-back .brand-mark{display:none}.brand-back:not(.can-back) .design-icon{display:none}.brand-back:disabled{cursor:default}.brand-back.can-back{cursor:pointer}
+.brand-back:before{content:'';position:absolute;inset:-15px}.brand-back .brand-mark{margin:0}.brand-back .design-icon{display:block;width:16px;height:16px;stroke-width:3;align-self:center;justify-self:center}.brand-back.can-back{transform:translateY(-1px)}.brand-back.can-back .brand-mark{display:none}.brand-back:not(.can-back) .design-icon{display:none}.brand-back:disabled{cursor:default}.brand-back.can-back{cursor:pointer}
 
 /* Planned calendar projection and quiet five-minute recent cards. */
 .lg-block-calendar{margin:16px 0 20px;padding:0;border-color:#454545;background:#1b1b1b}.lg-block-calendar>summary{display:flex;align-items:center;gap:9px;min-height:54px;padding:13px 15px;cursor:pointer;list-style:none}.lg-block-calendar>summary::-webkit-details-marker{display:none}.lg-block-calendar>summary>.design-icon{width:18px;height:18px;color:var(--accent)}.lg-planned-title{font-size:14px;font-weight:650;flex:1}.lg-planned-count{font-size:12px;color:var(--muted)}.lg-block-calendar>summary:after{content:'+';font-size:18px;color:var(--muted);margin-left:6px}.lg-block-calendar[open]>summary:after{content:'−'}.lg-planned-body{padding:0 13px 13px}.lg-planned-body>.card{margin-bottom:10px}.lg-planned-body>.section-label{margin-top:20px}.lg-calendar-block{display:inline-flex;align-items:center;gap:6px;margin:8px 0 0}.lg-calendar-block .design-icon{width:14px;height:14px}
@@ -4523,7 +4523,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   const uiDialogs = new Set();
   let uiDialogSerial = 0, uiFormSession = null, uiRenderSerial = 0;
   let uiPendingNavigation = null, uiHistoryIndex = 0, uiNavStartIndex = 0, uiHistorySync = false, uiPopClosing = false;
-  const UI_NAV_LIMIT=5,uiHistoryEntries=new Map(),uiHistorySession=String(Date.now())+Math.random();
+  const UI_NAV_LIMIT=1,uiHistoryEntries=new Map(),uiHistorySession=String(Date.now())+Math.random();
   let uiHistoryEnd=0,uiHistoryFloor=0,uiHistoryBusy=false;
   let uiToastTimer = null;
   const uiEntityCollections = { blocks: "block", goals: "goal", tasks: "task", quests: "quest", bonuses: "bonus", calendarEntries: "calendar", treats: "treat", purchases: "purchase" };
