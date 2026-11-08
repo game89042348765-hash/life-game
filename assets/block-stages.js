@@ -35,7 +35,7 @@
     if(!optimal(d,b.id))append(b.id,'Оптимальный','optimal','optimal');
     if(!list(d,b.id).some(x=>x.levelKind==='hidden'))append(b.id,'Неизвестный','hidden','hidden');
    }
-   const p=m.paths[b.id];if(!object(p)||!['short','full'].includes(p.mode)||typeof p.fact!=='string'||p.fact.length>2000||typeof p.configured!=='boolean')fail('Повреждено описание блока.');p.fact=p.fact.trim();
+   const p=m.paths[b.id];if(!object(p)||!['short','full'].includes(p.mode)||typeof p.fact!=='string'||p.fact.length>2000||typeof p.configured!=='boolean')fail('Повреждено описание блока.');p.fact=p.fact.trim();for(const key of ['futurePlan','futureOptimal','futureMaximum']){if(p[key]===undefined)p[key]='';if(typeof p[key]!=='string'||p[key].length>2000)fail('Повреждён будущий ориентир.');p[key]=p[key].trim();}
    if(list(d,b.id).filter(s=>s.levelKind==='optimal').length!==1)fail('У блока должен быть один оптимальный этап.');
    b.meaning=s.meaning;
   }

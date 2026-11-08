@@ -2504,7 +2504,7 @@ h3.task-title { margin:0; }
 #editor .lg-new-block-form .form-actions { margin-top:14px; }
 @media (max-width:350px) { #editor .lg-block-icon-grid { gap:6px; } }
 </style>
-<link rel="stylesheet" href="assets/block-stages.css?v=levels-2">
+<link rel="stylesheet" href="assets/block-stages.css?v=centered-3">
 <link rel="stylesheet" href="assets/splash-sunrise.css">
 <script src="assets/splash-sunrise.js" defer></script>
 <style>
@@ -3036,7 +3036,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 <button type="button" class="button secondary full" id="close-backup">Закрыть</button>
 </dialog>
 
-<script src="assets/block-stages.js?v=levels-2"></script>
+<script src="assets/block-stages.js?v=centered-3"></script>
 <script src="assets/calendar-links.js?v=1"></script>
 <script src="assets/legacy-data.js?v=levels-2"></script>
 <script>
@@ -4954,7 +4954,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     dayBlockReturn = returnPosition;
     page = nextPage;
     blockId = selectedBlock;
-    uiPendingNavigation = { target: options.target || "", position:options.position||null, top: options.top || !options.restore&&(nextPage === "hero" || sameRoot&&!options.target) };
+    uiPendingNavigation = { target: options.target || (nextPage==='blocks'&&selectedBlock&&!options.restore&&blockPathViews.get(selectedBlock)!=='work'?'path-current:'+selectedBlock:''), position:options.position||null, top: options.top || !options.restore&&(nextPage === "hero" || sameRoot&&!options.target) };
     if (options.history !== 'none' && !sameRoot) uiWriteHistory(history.state?.modal ? 'replace' : 'push');
     render();
   }
@@ -5412,7 +5412,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     };
     update(selectedBlock);return {element,select,update,value:()=>select.value||null};
   }
-  const blockPathViews=new Map(),blockCalendarOpen=new Map();
+  const blockPathViews=new Map(),blockCalendarOpen=new Map(),blockHistoryOpen=new Map();
   function blockStageForm(id=null,selectedBlock=blockId,position={}) {
     const st=id?LifeGameStages.get(state,id):null,owner=st?.blockId||selectedBlock;
     if(!blockIsActive(state,owner))return;
@@ -5425,11 +5425,11 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     ],v=>transact(d=>{
       if(!blockIsActive(d,owner))fail('Блок больше недоступен.');if(!validName(v.name))fail('Напиши название этапа.');if(v.lockMode==='stage'&&!v.requiredStage)fail('Выбери этап для условия.');
       let a=id?LifeGameStages.get(d,id):null;if(id&&(!a||JSON.stringify(a)!==expected))fail('Этап изменён. Скопируй текст и открой окно заново.');
-      if(!a){savedId=uid();a=LifeGameStages.newStage(savedId,owner,v.name);LifeGameStages.insert(d,a,anchor.id,position.direction||'after')}
+      if(!a){savedId=uid();a=LifeGameStages.newStage(savedId,owner,v.name,position.history?{passed:true,reached:true}:{});LifeGameStages.insert(d,a,anchor.id,position.direction||'after')}
       a.name=v.name;a.description=v.description;a.lock={mode:v.lockMode,stageId:v.lockMode==='stage'?v.requiredStage:null};
-    },false),'Сохранить',()=>{if(id&&blockPathViews.get(owner)==='work')viewedStageId=savedId;render();});
+    },false),'Сохранить',()=>{if(position.history)blockHistoryOpen.set(owner,true);if(id&&blockPathViews.get(owner)==='work')viewedStageId=savedId;render();});
     (()=>{const mode=editor.querySelector('#edit-lockMode'),input=editor.querySelector('#edit-requiredStage'),label=editor.querySelector('label[for="edit-requiredStage"]');const update=()=>{input.hidden=label.hidden=mode.value!=='stage';input.disabled=mode.value!=='stage'};mode.addEventListener('change',update);update()})();
-    editor.querySelector('.form-actions').before(el('p','meta',st?'Смысл, цели, задания и награды сохраняются.':`Будет добавлен ${position.direction==='before'?'перед':'после'} этапа «${anchor.name}». Текущий этап не изменится. Добавление записи само по себе не отмечает её пройденной.`));
+    editor.querySelector('.form-actions').before(el('p','meta',st?'Смысл, цели, задания и награды сохраняются.':`Будет добавлен ${position.direction==='before'?'перед':'после'} этапа «${anchor.name}». Текущий этап не изменится. ${position.history?'Будет сохранён в истории как пройденный, без начислений.':'Добавление записи само по себе не отмечает её пройденной.'}`));
   }
   function makeStageCurrent(id,passed=false) {
     const target=LifeGameStages.get(state,id);if(!target||!blockIsActive(state,target.blockId))return;
@@ -5439,14 +5439,14 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       if(LifeGameStages.current(d,target.blockId)?.id!==old.id)fail('Текущий этап изменился. Проверь выбор заново.');
       const a=LifeGameStages.get(d,id),t=d.tasks.find(t=>t.id===d.focus.taskId);if(t?.block===a?.blockId&&['running','paused'].includes(d.focus.status))fail('Сначала заверши текущий подход таймера в этом блоке.');
       LifeGameStages.switchTo(d,id,{passPrevious:markPassed});ensureDay(d);
-    },false),'Сделать текущим',()=>{viewedStageId=id;render()});
+    },false),'Сделать текущим',()=>{viewedStageId=id;render();requestAnimationFrame(()=>uiTarget('path-current:'+target.blockId));});
     const note=el('p','meta','Прежние цели и задания сохранятся в своём этапе. В Конструкторе останутся дела текущих этапов и уже выполненное сегодня. Переход не выдаёт наград и не завершает цели.');
     editor.querySelector('h2').after(el('p','',target.name),note);editor.querySelector('.form-actions').before(checkbox('Отметить «'+old.name+'» пройденным',passed,v=>markPassed=v));
   }
   function stageMenu(id) {
     const a=LifeGameStages.get(state,id);if(!a)return;const ss=LifeGameStages.list(state,a.blockId),at=ss.indexOf(a),cur=LifeGameStages.current(state,a.blockId);
     const items=[{text:'Настроить этап',run:()=>blockStageForm(id)}];
-    if(blockSettingsOpen)items.push({text:'Добавить этап перед этим',run:()=>blockStageForm(null,a.blockId,{anchorId:id,direction:'before'})},{text:'Добавить этап после этого',run:()=>blockStageForm(null,a.blockId,{anchorId:id,direction:'after'})});
+    if(blockSettingsOpen&&id!==cur.id)items.push({text:'Добавить этап перед этим',run:()=>blockStageForm(null,a.blockId,{anchorId:id,direction:'before',history:a.passed||at<ss.indexOf(cur)})},{text:'Добавить этап после этого',run:()=>blockStageForm(null,a.blockId,{anchorId:id,direction:'after',history:a.passed||at<ss.indexOf(cur)})});
     if(id!==cur.id&&LifeGameStages.unlocked(state,a))items.push({text:'Сделать текущим',run:()=>makeStageCurrent(id)});
     items.push({text:'Содержимое этапа',run:()=>{blockPathViews.set(a.blockId,'work');viewedStageId=id;render()}});
     const move=dir=>transact(d=>{const ids=LifeGameStages.list(d,a.blockId).map(s=>s.id),index=ids.indexOf(id),other=ids[index+dir];if(!other)fail('Порядок уже изменён.');const x=d.blockStages.items.findIndex(s=>s.id===id),y=d.blockStages.items.findIndex(s=>s.id===other);[d.blockStages.items[x],d.blockStages.items[y]]=[d.blockStages.items[y],d.blockStages.items[x]]},false);
@@ -5490,34 +5490,52 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const c=LifeGameStages.current(state,owner);if(a.id===c.id)return 'Сейчас';if(!LifeGameStages.unlocked(state,a))return a.levelKind==='hidden'||a.levelKind==='maximum'?'После оптимального':'Закрыт';if(a.passed)return 'Пройден';if(a.levelKind==='optimal')return '★ Оптимальный';if(a.reached)return 'Был текущим';return 'Описание';
   }
   function blockLevelAdd(owner,anchor,direction) {
-    const b=btn('+ этап','button secondary lg-level-insert',()=>blockStageForm(null,owner,{anchorId:anchor.id,direction}),true);b.setAttribute('aria-label',`Добавить этап ${direction==='before'?'перед':'после'} «${anchor.name}»`);b.dataset.insert=direction;b.dataset.anchor=anchor.id;return b;
+    const b=btn('+ этап','button secondary lg-level-insert',()=>blockStageForm(null,owner,{anchorId:anchor.id,direction,history:anchor.id!==LifeGameStages.current(state,owner).id&&(anchor.passed||LifeGameStages.list(state,owner).indexOf(anchor)<LifeGameStages.list(state,owner).indexOf(LifeGameStages.current(state,owner)))}),true);b.setAttribute('aria-label',`Добавить этап ${direction==='before'?'перед':'после'} «${anchor.name}»`);b.dataset.insert=direction;b.dataset.anchor=anchor.id;return b;
   }
   function blockStageNext(owner,body) {
-    const ss=LifeGameStages.list(state,owner),c=LifeGameStages.current(state,owner),next=ss[ss.indexOf(c)+1];if(!next)return;
+    const ss=LifeGameStages.list(state,owner),c=LifeGameStages.current(state,owner),next=ss.slice(ss.indexOf(c)+1).find(a=>!a.passed);if(!next)return;
     const b=btn('Этап пройден → следующий','button full lg-level-next',()=>makeStageCurrent(next.id,true),true);body.append(b);if(!LifeGameStages.unlocked(state,next))body.append(el('p','meta',LifeGameStages.lockText(state,next)));
   }
+  function pathOutlook(owner,key,title){
+    const row=el('article','lg-level is-outlook'),card=btn('','card lg-level-summary',()=>{
+      const path=state.blockStages.paths[owner];openForm(title,[{key:'text',label:'Как ты это представляешь',type:'textarea',required:false,maxLength:2000,value:path[key]||''}],v=>transact(d=>{d.blockStages.paths[owner][key]=v.text},false),'Сохранить');
+    });card.append(el('h2','',title),el('p','meta',state.blockStages.paths[owner][key]||'Впереди есть место для большего. Нажми, чтобы описать.'));row.append(card);return row;
+  }
   function renderBlockLevels(selected) {
-    const owner=selected.id,ss=LifeGameStages.list(state,owner),c=LifeGameStages.current(state,owner),path=state.blockStages.paths[owner];viewedStageId=c.id;
-    const controls=el('div','lg-level-controls');controls.append(btn('Блок времени','button secondary',()=>{blockPathViews.set(owner,'work');viewedStageId=c.id;render()}),btn('Описать путь','button secondary',()=>blockPathWizard(owner)));screen.append(controls,el('p','meta lg-path-caption',(path.mode==='short'?'Короткий':'Полный')+' вариант · уровней: '+(ss.length+1)),el('p','meta','Сверху — факт, дальше — этапы. Смысл, цели и задания текущего этапа помогают действовать сегодня.'));
-    const line=el('div','lg-levels'),fact=el('article','lg-level lg-level-fact'),factCard=btn('','card lg-level-summary',()=>blockFactForm(owner),true),factHead=el('div','lg-level-title');factHead.append(el('h2','','Фактический'),el('span','lg-level-tag','Исходный'));factCard.append(factHead,el('p','meta',path.fact||'Не описан · нажми, чтобы описать'));fact.append(factCard);line.append(fact);
-    ss.forEach((a,i)=>{
-      const now=a.id===c.id,locked=!LifeGameStages.unlocked(state,a),row=el('article','lg-level'+(now?' is-current':'')+(locked?' is-locked':'')+(a.levelKind==='optimal'?' is-optimal':'')+(a.passed?' is-past':''));row.dataset.stageId=a.id;
-      if(blockSettingsOpen&&(i===0||ss[i-1].id!==c.id))line.append(blockLevelAdd(owner,a,'before'));
-      const card=el('section','card lg-level-card'),head=el('div','lg-level-title'),title=el('h2','',a.name);head.append(title,el('span','lg-level-tag',levelLabel(a,owner)));const more=btn('⋯','more-button',()=>stageMenu(a.id));more.setAttribute('aria-label','Действия с этапом '+a.name);head.append(more);card.append(head);
+    const owner=selected.id,ss=LifeGameStages.list(state,owner),c=LifeGameStages.current(state,owner),path=state.blockStages.paths[owner],at=ss.indexOf(c),past=ss.filter((a,i)=>a.id!==c.id&&(i<at||a.passed)),future=ss.filter(a=>a.id!==c.id&&!past.includes(a));viewedStageId=c.id;
+    const controls=el('div','lg-level-controls');controls.append(btn('Блок времени','button secondary',()=>{blockPathViews.set(owner,'work');viewedStageId=c.id;render()}),btn('Описать путь','button secondary',()=>blockPathWizard(owner)));screen.append(controls);
+    const line=el('div','lg-levels');
+    const stageRow=(a,history=false)=>{
+      const now=a.id===c.id,locked=!LifeGameStages.unlocked(state,a),row=el('article','lg-level'+(now?' is-current':'')+(locked?' is-locked':'')+(a.levelKind==='optimal'?' is-optimal':'')+(history?' is-past':''));row.dataset.stageId=a.id;
+      if(now)row.dataset.uiKey='path-current:'+owner;
+      const card=el('section','card lg-level-card'),head=el('div','lg-level-title');head.append(el('h2','',a.name),el('span','lg-level-tag',now?'Текущий этап':history?'Пройден':levelLabel(a,owner)));const more=btn('⋯','more-button',()=>stageMenu(a.id));more.setAttribute('aria-label','Действия с этапом '+a.name);head.append(more);card.append(head);
       if(now){if(a.description)card.append(el('p','meta',a.description));const body=el('div','lg-level-body');renderBlockStageContents(selected,a,body);blockStageNext(owner,body);card.append(body)}
-      else{const text=locked&&a.levelKind==='hidden'?'Скрыто. Откроется, когда достигнешь оптимального.':a.description||'Не описан · нажми, чтобы описать';card.append(btn(text,'lg-level-description',()=>blockLevelDescription(a.id),true));if(locked)card.append(el('p','meta',LifeGameStages.lockText(state,a)));else card.append(el('p','meta','Цели и задания этого этапа доступны в его содержимом. Выполнение — когда этап станет текущим.'));
-        const countGoals=state.goals.filter(g=>g.stageId===a.id).length,countTasks=state.tasks.filter(t=>t.stageId===a.id&&t.archivedAt===null).length;if(countGoals||countTasks)card.append(btn(`Содержимое · целей: ${countGoals}, заданий: ${countTasks}`,'button secondary full',()=>{viewedStageId=a.id;blockPathViews.set(owner,'work');render()}));
-      }
-      row.append(card);line.append(row);
-      if(blockSettingsOpen&&(now||i===ss.length-1))line.append(blockLevelAdd(owner,a,'after'));
-    });screen.append(line);
+      else{card.append(btn(locked&&a.levelKind==='hidden'?'Откроется после оптимального.':a.description||'Нажми, чтобы описать этап','lg-level-description',()=>blockLevelDescription(a.id),true));if(locked)card.append(el('p','meta',LifeGameStages.lockText(state,a)));card.append(btn('Содержимое этапа','button secondary full',()=>{viewedStageId=a.id;blockPathViews.set(owner,'work');render()}));}
+      row.append(card);return row;
+    };
+    const history=el('details','lg-path-history'),summary=el('summary','','Пройденные · '+past.length);history.open=blockHistoryOpen.get(owner)||false;history.addEventListener('toggle',()=>blockHistoryOpen.set(owner,history.open));history.append(summary);
+    if(blockSettingsOpen){const add=btn('+ Описать прошлый этап','button secondary full',()=>blockStageForm(null,owner,{anchorId:past[0]?.id||c.id,direction:'before',history:true}));history.append(add)}
+    if(!past.length)history.append(el('p','meta','Здесь будет история твоего пути.'));
+    for(const a of past){if(blockSettingsOpen){history.append(btn('+ этап','button secondary lg-level-insert',()=>blockStageForm(null,owner,{anchorId:a.id,direction:'before',history:true})))}history.append(stageRow(a,true));}line.append(history);
+    const fact=el('article','lg-level lg-level-fact'),factCard=btn('','card lg-level-summary',()=>blockFactForm(owner),true),factHead=el('div','lg-level-title');factHead.append(el('h2','','Фактический'),el('span','lg-level-tag','Состояние'));factCard.append(factHead,el('p','meta',path.fact||'Нажми, чтобы описать состояние'));fact.append(factCard);line.append(fact);
+    const overdue=state.calendarEntries.filter(e=>e.blockId===owner&&e.date<today()&&e.completionId===null);
+    const missed=el('article','lg-level lg-path-missed'),missedCard=el('details','card lg-level-card'),unfinished=state.tasks.filter(t=>t.block===owner&&t.archivedAt===null&&past.some(a=>a.id===t.stageId)&&t.type==='once'&&!completion(state,t));missedCard.append(el('summary','','Невыполненное · '+(unfinished.length+overdue.length)));
+    for(const t of unfinished){const card=taskCard(t);card.append(btn('Настроить задание','button secondary full',()=>editTaskDays(t.id)));missedCard.append(card)}for(const entry of overdue.sort((a,b)=>a.date.localeCompare(b.date)))missedCard.append(calendarCard(entry));if(!unfinished.length&&!overdue.length)missedCard.append(el('p','meta','Нет оставшихся заданий прошлых этапов и просроченных календарных дел.'));missed.append(missedCard);line.append(missed);
+    line.append(stageRow(c));
+    const planned=el('article','lg-level lg-path-planned');renderBlockCalendar(selected,planned);line.append(planned);
+    line.append(el('div','section-label','ВПЕРЕДИ'));
+    for(const a of future){if(blockSettingsOpen)line.append(blockLevelAdd(owner,a,'before'));line.append(stageRow(a));}
+    if(!future.some(a=>a.levelKind==='stage'))line.append(pathOutlook(owner,'futurePlan','Планируемое'));
+    if(!future.some(a=>a.levelKind==='optimal'))line.append(pathOutlook(owner,'futureOptimal','Оптимальное'));
+    if(!future.some(a=>a.levelKind==='maximum'))line.append(pathOutlook(owner,'futureMaximum','Всегда возможно лучшее'));
+    if(blockSettingsOpen)line.append(blockLevelAdd(owner,future.at(-1)||c,'after'));screen.append(line);
   }
   function renderBlockWork(selected) {
     const owner=selected.id,a=displayedStage(owner),c=LifeGameStages.current(state,owner),ss=LifeGameStages.list(state,owner),controls=el('div','lg-level-controls');controls.append(btn('Все этапы','button secondary',()=>{blockPathViews.set(owner,'levels');viewedStageId=c.id;render()}),btn('Описать путь','button secondary',()=>blockPathWizard(owner)));screen.append(controls);
     const head=el('section','lg-work-heading'),more=btn('⋯','more-button',()=>stageMenu(a.id));more.setAttribute('aria-label','Действия с этапом '+a.name);head.append(el('div','lg-level-kicker',a.id===c.id?'Ты сейчас здесь':'Содержимое этапа'),el('h2','',a.name),more);screen.append(head);
     if(a.id!==c.id){screen.append(el('p','meta',LifeGameStages.unlocked(state,a)?'Режим подготовки. Выполнение — после перехода.':LifeGameStages.lockText(state,a)));if(LifeGameStages.unlocked(state,a))screen.append(btn('Сделать текущим','button secondary full',()=>makeStageCurrent(a.id),true));}
     renderBlockStageContents(selected,a,screen);if(a.id===c.id)blockStageNext(owner,screen);
-    if(blockSettingsOpen){const add=el('div','lg-level-controls');add.append(blockLevelAdd(owner,a,'before'),blockLevelAdd(owner,a,'after'));add.firstChild.textContent='+ Этап раньше';add.lastChild.textContent='+ Этап дальше';screen.append(add);}
+    if(blockSettingsOpen&&a.id!==c.id){const add=el('div','lg-level-controls');add.append(blockLevelAdd(owner,a,'before'),blockLevelAdd(owner,a,'after'));add.firstChild.textContent='+ Этап раньше';add.lastChild.textContent='+ Этап дальше';screen.append(add);}
     const rest=ss.filter(s=>s.id!==a.id);if(rest.length){screen.append(el('div','section-label','ОСТАЛЬНЫЕ ЭТАПЫ'));for(const s of rest){const b=btn('','lg-path-step',()=>blockLevelDescription(s.id));b.append(el('span','',s.name),el('small','',levelLabel(s,owner)));screen.append(b)}}
   }
 
@@ -6515,13 +6533,13 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
 
   function calendarBlockOptions(current=null){const options=[['','Без блока'],...state.blocks.filter(b=>b.archivedAt===null).map(b=>[b.id,b.name])];if(current&&!options.some(x=>x[0]===current)){const b=state.blocks.find(b=>b.id===current);if(b)options.push([b.id,b.name+' · архив']);}return options;}
-  function calendarBlockBadge(entry){const b=state.blocks.find(b=>b.id===entry.blockId);const badge=btn(b?.name||'Блок недоступен','task-block-badge lg-calendar-block',()=>{if(b&&b.archivedAt===null)go('blocks',b.id,false,{target:'calendar:'+entry.id})});badge.prepend(designIcon('blocks' in DESIGN_ICON_PATHS?'blocks':'grid'));badge.disabled=!b||b.archivedAt!==null;badge.setAttribute('aria-label',b?.archivedAt?'Блок в архиве: '+b.name:'Открыть блок: '+(b?.name||''));return badge;}
-  function renderBlockCalendar(selected){
-    const entries=state.calendarEntries.filter(e=>e.blockId===selected.id),active=entries.filter(e=>e.completionId===null),details=el('details','card lg-block-calendar'),summary=el('summary');
-    details.dataset.blockId=selected.id;details.open=blockCalendarOpen.has(selected.id)?blockCalendarOpen.get(selected.id):entries.length>0;summary.append(designIcon('calendar'),el('span','lg-planned-title','Запланированное'),el('span','lg-planned-count',String(active.length)));details.append(summary);details.addEventListener('toggle',()=>blockCalendarOpen.set(selected.id,details.open));
+  function calendarBlockBadge(entry){const b=state.blocks.find(b=>b.id===entry.blockId);const badge=btn(b?.name||'Блок недоступен','task-block-badge lg-calendar-block',()=>{if(b&&b.archivedAt===null)go('blocks',b.id,false,{target:entry.date<today()&&entry.completionId!==null?'path-current:'+b.id:'calendar:'+entry.id})});badge.prepend(designIcon('blocks' in DESIGN_ICON_PATHS?'blocks':'grid'));badge.disabled=!b||b.archivedAt!==null;badge.setAttribute('aria-label',b?.archivedAt?'Блок в архиве: '+b.name:'Открыть блок: '+(b?.name||''));return badge;}
+  function renderBlockCalendar(selected,target=screen){
+    const entries=state.calendarEntries.filter(e=>e.blockId===selected.id&&e.date>=today()),active=entries.filter(e=>e.completionId===null),details=el('details','card lg-block-calendar'),summary=el('summary');
+    details.dataset.blockId=selected.id;details.open=blockCalendarOpen.has(selected.id)?blockCalendarOpen.get(selected.id):true;summary.append(designIcon('calendar'),el('span','lg-planned-title','Запланированное'),el('span','lg-planned-count',String(active.length)));details.append(summary);details.addEventListener('toggle',()=>blockCalendarOpen.set(selected.id,details.open));
     const body=el('div','lg-planned-body');body.append(btn('+ Добавить по дате','button secondary full',()=>editCalendar(null,selected.id),true));
     for(const [title,filter]of [['Ранее',e=>e.date<today()],['Сегодня',e=>e.date===today()],['Далее',e=>e.date>today()]]){const group=active.filter(filter).sort((a,b)=>a.date.localeCompare(b.date));if(!group.length)continue;body.append(el('div','section-label',title));for(const date of [...new Set(group.map(e=>e.date))])for(const entry of sortCalendar(group.filter(e=>e.date===date)))body.append(calendarCard(entry));}
-    if(!active.length)body.append(el('p','meta','Здесь будут дела этого блока с выбранной датой.'));historySection('block-calendar:'+selected.id,'ВЫПОЛНЕНО',entries.filter(e=>e.completionId!==null),calendarCard,body);details.append(body);screen.append(details);
+    if(!active.length)body.append(el('p','meta','Здесь будут дела этого блока с выбранной датой.'));historySection('block-calendar:'+selected.id,'ВЫПОЛНЕНО',entries.filter(e=>e.completionId!==null),calendarCard,body);details.append(body);target.append(details);
   }
   // Отдельный календарь. Даты не преобразуются через UTC.
   function localCalendarDate(value) {
@@ -9854,7 +9872,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     if (selected.subtitle) screen.append(el("p", "lg-block-subtitle", selected.subtitle));
     screen.append(blockSettingsPanel(selected.id));
 
-    renderBlockCalendar(selected);
     if(blockPathViews.get(selected.id)==='work')renderBlockWork(selected);else renderBlockLevels(selected);
   }
 
