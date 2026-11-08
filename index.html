@@ -5605,9 +5605,9 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     if(!future.some(a=>a.levelKind==='optimal'))line.append(pathOutlook(owner,'futureOptimal','Оптимальное'));
     if(!future.some(a=>a.levelKind==='maximum'))line.append(pathOutlook(owner,'futureMaximum','Всегда возможно лучшее'));
     if(blockSettingsOpen)line.append(blockLevelAdd(owner,future.at(-1)||c,'after'));
-    const end=el('p','lg-path-end','Будущее можно менять. Этот путь принадлежит тебе.');end.prepend(designIcon('spark'));line.append(end);screen.append(line);pathRailSetup(line);
+    screen.append(line);pathRailSetup(line);
   }
-  function renderBlockWorkOutlook(selected) {
+  function renderBlockWorkOutlook(selected,target=screen) {
     const owner=selected.id,ss=LifeGameStages.list(state,owner),cur=LifeGameStages.current(state,owner),path=state.blockStages.paths[owner],future=ss.slice(ss.indexOf(cur)+1).filter(s=>!s.passed),opt=future.find(s=>s.levelKind==='optimal');
     const box=el('section','lg-work-outlook'),head=el('div','lg-work-outlook-head');head.append(el('h3','','Впереди'),el('span','',selected.name));box.append(head);
     const open=(stage,key)=>{blockPathViews.set(owner,'levels');go('blocks',owner,false,{target:stage?'path-stage:'+stage.id:'path-outlook:'+owner+':'+key});};
@@ -5617,16 +5617,16 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const optimal=btn('','card lg-work-optimal',()=>open(opt,'futureOptimal')),copy=el('span','');
     copy.append(el('small','',opt?'Оптимальный · через '+uiAmount(future.indexOf(opt)+1,['этап','этапа','этапов']):'Мой следующий ориентир'),el('strong','',opt?.name||'Оптимальное'));optimal.append(copy,designIcon('star'));box.append(optimal);
     const far=future.filter(s=>!before.includes(s)&&s!==opt&&s.levelKind!=='maximum');
-    if(far.length){const horizons=btn('','card lg-work-horizons',()=>open(far[0]));horizons.append(designIcon(far.every(s=>!LifeGameStages.unlocked(state,s))?'lock':'spark'),el('span','',far.every(s=>!LifeGameStages.unlocked(state,s))?'Дальние этапы · '+LifeGameStages.lockText(state,far[0]):'Дальше — '+uiAmount(far.length,['новый этап','новых этапа','новых этапов'])));box.append(horizons);}
-    const maximum=future.find(s=>s.levelKind==='maximum'),vision=btn('','lg-work-vision',()=>open(maximum,'futureMaximum'));vision.append(designIcon('spark'),el('span','',maximum?.description||path.futureMaximum||'Всегда возможно лучшее'));box.append(vision);screen.append(box);
+    if(far.length){const horizons=btn('','card lg-work-horizons',()=>open(far[0]));const horizonCopy=el('span','');horizonCopy.append(el('strong','','Новые горизонты'),el('small','',far.every(s=>!LifeGameStages.unlocked(state,s))?LifeGameStages.lockText(state,far[0]):far[0].name));horizons.append(designIcon('spark'),horizonCopy);box.append(horizons);}
+    const maximum=future.find(s=>s.levelKind==='maximum'),vision=btn('','lg-work-vision',()=>open(maximum,'futureMaximum'));vision.append(designIcon('spark'),el('span','',maximum?.description||path.futureMaximum||'Всегда возможно лучшее'));box.append(vision);target.append(box);
   }
   function renderBlockWork(selected) {
     const owner=selected.id,a=displayedStage(owner),c=LifeGameStages.current(state,owner),ss=LifeGameStages.list(state,owner),controls=el('div','lg-level-controls');controls.append(btn('Все этапы','button secondary',()=>{blockPathViews.set(owner,'levels');viewedStageId=c.id;render()}),btn('Описать путь','button secondary',()=>blockPathWizard(owner)));screen.append(controls);
-    const head=el('section','lg-work-heading'),more=btn('⋯','more-button',()=>stageMenu(a.id));more.setAttribute('aria-label','Действия с этапом '+a.name);head.append(el('div','lg-level-kicker',a.id===c.id?'Ты сейчас здесь':'Содержимое этапа'),el('h2','',a.name),more);screen.append(head);
-    if(a.id!==c.id){screen.append(el('p','meta',LifeGameStages.unlocked(state,a)?'Режим подготовки. Выполнение — после перехода.':LifeGameStages.lockText(state,a)));if(LifeGameStages.unlocked(state,a))screen.append(btn('Сделать текущим','button secondary full',()=>makeStageCurrent(a.id),true));}
-    renderBlockStageContents(selected,a,screen);if(a.id===c.id)blockStageNext(owner,screen);
-    if(blockSettingsOpen&&a.id!==c.id){const add=el('div','lg-level-controls');add.append(blockLevelAdd(owner,a,'before'),blockLevelAdd(owner,a,'after'));add.firstChild.textContent='+ Этап раньше';add.lastChild.textContent='+ Этап дальше';screen.append(add);}
-    renderBlockWorkOutlook(selected);
+    const work=el('div','lg-work-path');screen.append(work);const head=el('section','lg-work-heading'),more=btn('⋯','more-button',()=>stageMenu(a.id));more.setAttribute('aria-label','Действия с этапом '+a.name);head.append(el('div','lg-level-kicker',a.id===c.id?'Ты сейчас здесь':'Содержимое этапа'),el('h2','',a.name),more);work.append(head);
+    if(a.id!==c.id){work.append(el('p','meta',LifeGameStages.unlocked(state,a)?'Режим подготовки. Выполнение — после перехода.':LifeGameStages.lockText(state,a)));if(LifeGameStages.unlocked(state,a))work.append(btn('Сделать текущим','button secondary full',()=>makeStageCurrent(a.id),true));}
+    renderBlockStageContents(selected,a,work);if(a.id===c.id)blockStageNext(owner,work);
+    if(blockSettingsOpen&&a.id!==c.id){const add=el('div','lg-level-controls');add.append(blockLevelAdd(owner,a,'before'),blockLevelAdd(owner,a,'after'));add.firstChild.textContent='+ Этап раньше';add.lastChild.textContent='+ Этап дальше';work.append(add);}
+    renderBlockWorkOutlook(selected,work);
   }
 
   // Смысл блока: одна текстовая карточка без награды.

@@ -127,3 +127,14 @@
 .lg-path-aesthetics>.is-optimal>.card,.card.lg-work-optimal{background:radial-gradient(ellipse at 100% 0,rgba(var(--accent-rgb),.06),transparent 70%),var(--graphite-surface);box-shadow:0 0 22px rgba(var(--accent-rgb),.04)}
 .lg-path-aesthetics>.is-horizon>.card{background:radial-gradient(ellipse at 100% 100%,#ffffff05,transparent 65%),var(--graphite-surface);border-color:#444}
 body .card.goal-card.compact-goal-card.lg-block-goal-preview,.lg-path-aesthetics .card.goal-card.compact-goal-card.lg-block-goal-preview{background:var(--graphite-surface);border-color:#414141}
+
+/* The path continues to the end; the work view keeps it in the right lane. */
+.lg-path-aesthetics{padding-bottom:24px}.lg-path-aesthetics:before,.lg-path-aesthetics:after{bottom:0}
+.lg-work-path{position:relative;padding:0 26px 22px 0;isolation:isolate;min-width:0}
+.lg-work-path:before{content:'';position:absolute;right:5px;top:28px;bottom:0;width:1px;background:linear-gradient(#666,rgba(var(--accent-rgb),.5) 55%,var(--accent) 82%,#fff0bd);z-index:-1}
+.lg-work-path:after{content:'';position:absolute;right:5px;top:28px;transform:translate(50%,-50%);width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(var(--accent-rgb),.08)}
+.lg-work-path .lg-work-optimal:after,.lg-work-path .lg-work-horizons:after{content:'';position:absolute;right:-21px;top:50%;transform:translate(50%,-50%);width:9px;height:9px;border:1.5px solid var(--accent);border-radius:50%;background:var(--bg);box-sizing:border-box}
+.lg-work-path .lg-work-horizons:after{transform:translate(50%,-50%) rotate(45deg);border-radius:2px;border-color:#e5d9ae}
+.card.lg-work-horizons{border-style:solid;border-color:#ffffff20;background:radial-gradient(ellipse at 100% 0,#ffffff05,transparent 70%),var(--graphite-surface);color:var(--text)}
+.lg-work-horizons strong{display:block;font-size:13px;font-weight:600;line-height:1.5}.lg-work-horizons small{display:block;font-size:11px;font-weight:400;color:var(--muted);margin-top:5px;line-height:1.6}
+.lg-work-horizons .design-icon{color:#d0c6a5}.lg-work-path .lg-work-optimal{padding:16px;gap:12px}.lg-work-path .lg-work-optimal strong{font-size:18px}
