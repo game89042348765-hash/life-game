@@ -2929,6 +2929,15 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 .lg-quick-schedule .lg-quick-mode{width:100%;min-width:0;box-sizing:border-box}
 .lg-quick-reward-switch.lg-c-day.check-label{grid-column:1/-1;justify-content:space-between;font-size:12px}
 .lg-quick-hint[hidden]{display:none}
+
+/* Small save acknowledgement and a compact capture footer. */
+.lg-save-signal{position:fixed;left:50%;transform:translateX(-50%);z-index:30;display:flex;align-items:center;gap:7px;max-width:calc(100vw - 32px);padding:8px 13px;border:1px solid #4b4b4b;border-radius:99px;background:#252525;color:#ededed;font-size:12px;line-height:1.3;box-shadow:0 4px 16px #0003;pointer-events:none;white-space:nowrap}
+.lg-save-signal[hidden]{display:none}.lg-save-check{color:#acd2b9}.lg-save-signal.is-visible .lg-save-check{animation:lgSaveCheck .22s ease-out}@keyframes lgSaveCheck{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:scale(1)}}.lg-save-signal.is-visible{animation:lgSaveEnter .16s ease-out}@keyframes lgSaveEnter{from{opacity:0;translate:0 4px}to{opacity:1;translate:0 0}}
+@media(prefers-reduced-motion:reduce){.lg-save-signal.is-visible,.lg-save-signal.is-visible .lg-save-check{animation:none}}
+.lg-quick-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;margin-top:6px;min-width:0}
+.lg-quick-bottom .lg-quick-hint{padding:0;margin:0;font-size:11px;min-width:0;overflow-wrap:anywhere}
+.lg-quick-bottom .lg-quick-reward-switch.lg-c-day.check-label{flex:0 0 auto;justify-content:flex-end;gap:7px;min-height:44px;font-size:12px}
+.lg-quick-fields .lg-quick-field:has(#lg-quick-block){gap:0}
 </style>
 </head>
 <body>
@@ -4551,6 +4560,15 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const close = btn('×', 'ui-toast-close', () => { toast.hidden = true; }); close.setAttribute('aria-label', 'Закрыть уведомление'); toast.append(close);
     uiToastTimer = setTimeout(() => { if (!toast.contains(document.activeElement)) toast.hidden = true; }, 7000);
   }
+  let uiSaveSignalTimer=null;
+  function uiSaveSignalPosition(){const note=document.getElementById('lg-save-signal');if(!note||note.hidden)return;const v=window.visualViewport,visibleBottom=(v?.offsetTop||0)+(v?.height||innerHeight),menu=document.querySelector('nav[aria-label="Главное меню"]');note.style.bottom=Math.max(12,innerHeight-visibleBottom+12,menu?innerHeight-menu.getBoundingClientRect().top+10:12)+'px';}
+  function uiSaveSignal(message='Сохранено'){
+    let note=document.getElementById('lg-save-signal');if(!note){note=el('div','lg-save-signal');note.id='lg-save-signal';note.setAttribute('role','status');note.setAttribute('aria-live','polite');note.setAttribute('aria-atomic','true');document.body.append(note);}
+    clearTimeout(uiSaveSignalTimer);note.hidden=false;const check=el('span','lg-save-check','✓');check.setAttribute('aria-hidden','true');note.replaceChildren(check,document.createTextNode(message));uiSaveSignalPosition();note.classList.remove('is-visible');void note.offsetWidth;note.classList.add('is-visible');uiSaveSignalTimer=setTimeout(()=>{note.hidden=true;note.classList.remove('is-visible');},1500);
+  }
+  window.visualViewport?.addEventListener('resize',uiSaveSignalPosition);
+  window.visualViewport?.addEventListener('scroll',uiSaveSignalPosition);
+  window.addEventListener('resize',uiSaveSignalPosition);
   function uiTopDialog() { return [...uiDialogs].filter(d => d.open).sort((a,b) => Number(b.dataset.uiDialogOrder) - Number(a.dataset.uiDialogOrder))[0]; }
   function uiFeedback(message) {
     const dialog = uiTopDialog() || document.querySelector('dialog[open]');
@@ -4730,7 +4748,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   function uiPrepareForm() {
     const form = editor.querySelector('form'); if (!form) return;
     const heading = form.querySelector('h2'); if (heading) { heading.id = 'editor-title'; editor.setAttribute('aria-labelledby', heading.id); }
-    const session = { form, initial: uiFormSignature(form), view: uiViewKey(), input: false, ids: Object.fromEntries(Object.entries(uiEntityCollections).map(([name]) => [name, new Set(state[name].map(x=>x.id))])) };
+    const session = { form, initial: uiFormSignature(form), view: uiViewKey(), input: false, actionIds:new Set(state.keyActions.actions.map(a=>a.id)), ids: Object.fromEntries(Object.entries(uiEntityCollections).map(([name]) => [name, new Set(state[name].map(x=>x.id))])) };
     uiFormSession = session;
     requestAnimationFrame(() => { if (uiFormSession === session && !session.input) session.initial = uiFormSignature(form); });
     if (form.dataset.uiPrepared) return; form.dataset.uiPrepared = 'true';
@@ -4747,16 +4765,20 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     form.addEventListener('submit', () => {
       const current = uiFormSession;
       setTimeout(() => {
-        if (editor.open || !current || uiViewKey() !== current.view) return;
+        if (editor.open || !current) return;
+        let created=false;
         for (const [collection, kind] of Object.entries(uiEntityCollections)) {
           const added = state[collection].find(x => !current.ids[collection].has(x.id));
-          if (added) { uiShowCreated(collection, kind, added); break; }
+          if (added) {created=true;if(uiViewKey()===current.view)uiShowCreated(collection,kind,added);else uiSaveSignal(uiCreatedMessage(kind));break;}
         }
+        if(!created){const action=state.keyActions.actions.some(a=>!current.actionIds.has(a.id));uiSaveSignal(action?'Действие добавлено':current.form.querySelector('#meaning-text')?'Смысл сохранён':'Сохранено');}
       });
     }, true);
   }
   editor.addEventListener('cancel', event => { if (uiFormDirty() && !confirm('В форме есть несохранённые изменения. Закрыть её без сохранения?')) event.preventDefault(); });
+  function uiCreatedMessage(kind){return ({block:'Блок добавлен',goal:'Цель добавлена',task:'Задание добавлено',quest:'Квест добавлен',bonus:'Бонус добавлен',calendar:'Запись добавлена',treat:'Ништяк добавлен',purchase:'Покупка сохранена'})[kind]||'Сохранено';}
   function uiShowCreated(collection, kind, item) {
+    uiSaveSignal(uiCreatedMessage(kind));
     if (collection === 'calendarEntries') { calendarDate = item.date; calendarMonth = item.date.slice(0,7); calendarMode = 'days'; render(); }
     requestAnimationFrame(() => {
       const key = kind + ':' + item.id;
@@ -9280,6 +9302,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
       data.widgets.items.push({ id, placement: "widgets", showInDay: false });
     });
+    if(saved)uiSaveSignal('Виджет добавлен');
     return saved;
   }
 
@@ -9998,7 +10021,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       for(let n=1;n<=31;n++){const key=month+'-'+String(n).padStart(2,'0');if(!validCalendarDate(key))break;const day=btn(String(n),'lg-mini-day',()=>pick(key));day.dataset.date=key;day.setAttribute('aria-label',calendarLabel(key));day.setAttribute('aria-pressed',String(key===selected));if(key===today())day.setAttribute('aria-current','date');grid.append(day);}
     }
     actions.append(btn('Без даты','lg-mini-clear',()=>pick('')),btn('Отмена','lg-mini-cancel',()=>dialog.close()));dialog.append(heading,monthNav,grid,actions);draw();document.body.append(dialog);
-    dialog.addEventListener('close',()=>{dialog.remove();if(trigger?.isConnected)trigger.focus({preventScroll:true});},{once:true});uiShowDialog(dialog);dialog.querySelector('[aria-pressed="true"], [aria-current="date"], .lg-mini-day')?.focus({preventScroll:true});
+    dialog.addEventListener('close',()=>{dialog.remove();if(trigger?.isConnected)trigger.focus({preventScroll:true});},{once:true});uiShowDialog(dialog);(dialog.querySelector('[aria-pressed="true"]')||dialog.querySelector('[aria-current="date"]')||dialog.querySelector('.lg-mini-day'))?.focus({preventScroll:true});
   }
   function quickTaskCapture(context,embedded=false) {
     const draft=quickTaskDrafts[context],builtDay=today(),box=el('section','lg-quick-capture');
@@ -10017,12 +10040,12 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const dateText=el('span','lg-quick-date-text');dateButton.append(dateText);
     todayButton.disabled=dateButton.disabled=!healthy||draft.busy;
     const reward=checkbox('Награда',draft.reward===25,value=>{draft.reward=value?25:0;},!healthy||draft.busy);reward.classList.add('lg-quick-reward-switch','lg-c-day');reward.querySelector('input').id='lg-quick-reward';reward.querySelector('input').setAttribute('role','switch');
-    schedule.append(todayButton,dateButton,reward);options.append(schedule);
-    const block=choice('Блок','lg-quick-block',[[INBOX_BLOCK_ID,'Выбрать блок можно позже'],...state.blocks.filter(b=>b.archivedAt===null).map(b=>[b.id,b.name])],taskBlockIsActive(state,draft.block)?draft.block:INBOX_BLOCK_ID,value=>{draft.block=value;});
-    const blockOptions=block.closest('label');
-    const hint=el('p','meta lg-quick-hint'),feedback=el('div','lg-quick-feedback');feedback.hidden=true;feedback.setAttribute('role','status');
-    function update(){const dated=draft.when==='date';blockOptions.hidden=dated;todayButton.setAttribute('aria-pressed',String(draft.when==='today'));dateButton.setAttribute('aria-pressed',String(dated));dateText.textContent=dated?'Дата · '+localCalendarDate(draft.date).toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'}):'Дата';dateButton.setAttribute('aria-label',dated?'Изменить дату: '+calendarLabel(draft.date):'Выбрать дату');hint.hidden=dated;hint.textContent=dated?'':draft.when==='today'?'Сразу в Конструктор дня.':'Без даты — выберешь время позже.';}
-    update();form.append(label,row,options,hint,feedback);
+    schedule.append(todayButton,dateButton);options.append(schedule);
+    const block=choice('Блок','lg-quick-block',[[INBOX_BLOCK_ID,'Выбрать блок, можно позже'],...state.blocks.filter(b=>b.archivedAt===null).map(b=>[b.id,b.name])],taskBlockIsActive(state,draft.block)?draft.block:INBOX_BLOCK_ID,value=>{draft.block=value;});
+    const blockOptions=block.closest('label');blockOptions.querySelector('span').remove();block.setAttribute('aria-label','Выбрать блок, можно позже');
+    const hint=el('p','meta lg-quick-hint'),bottom=el('div','lg-quick-bottom');bottom.append(hint,reward);
+    function update(){const dated=draft.when==='date';blockOptions.hidden=dated;todayButton.setAttribute('aria-pressed',String(draft.when==='today'));dateButton.setAttribute('aria-pressed',String(dated));dateText.textContent='Выбрать';dateButton.setAttribute('aria-label',dated?'Изменить дату: '+calendarLabel(draft.date):'Выбрать дату');hint.textContent=dated?calendarLabel(draft.date):draft.when==='today'?'На сегодня':'Без даты';}
+    update();form.append(label,row,options,bottom);
     form.addEventListener('submit',event=>{
       event.preventDefault();if(draft.busy||!form.isConnected||!healthy)return;
       const raw=input.value,name=raw.trim(),mode=draft.when,selectedBlock=block.value,selectedDate=draft.date,amount=reward.querySelector('input').checked?25:0;
@@ -10037,12 +10060,11 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
         data.tasks.push({id,name,reward:amount,block:selectedBlock,stageId:selectedBlock===INBOX_BLOCK_ID?null:LifeGameStages.current(data,selectedBlock).id,type:'once',weekdays:[],inDayBuilder:false,favorite:false,goalId:null,archivedAt:null});
         if(mode==='today'){const ids=new Set(data.dayPlans[today()]||[]);ids.add(id);data.dayPlans[today()]=[...ids];data.daySkips[today()]=(data.daySkips[today()]||[]).filter(x=>x!==id);ensureDay(data);}
       },false);
-      draft.busy=false;draft.name=saved?'':raw;render();
-      if(saved){
-        screen.querySelector('#lg-quick-name')?.focus({preventScroll:true});
-        if(mode==='date')return;
-        const notice=screen.querySelector('.lg-quick-feedback');if(notice){notice.hidden=false;notice.append(el('span','',mode==='date'?'Добавлено в календарь':mode==='today'?'Добавлено на сегодня':'Дело сохранено'),btn('Показать','lg-quick-show',()=>{if(mode==='date'){calendarDate=selectedDate;calendarMonth=selectedDate.slice(0,7);calendarMode='days';go('calendar',null,false,{target:'calendar:'+id});}else if(mode==='today'||selectedBlock===INBOX_BLOCK_ID)showQuickTask(id,mode==='today');else go('blocks',selectedBlock,false,{target:'task:'+id});}));}
-      }
+      draft.busy=false;
+      if(saved)Object.assign(draft,{name:'',when:'later',date:'',reward:25,block:INBOX_BLOCK_ID});else draft.name=raw;
+      render();
+      if(saved){screen.querySelector('#lg-quick-name')?.focus({preventScroll:true});uiSaveSignal(mode==='date'?'Запись добавлена':'Задание добавлено');}
+
     });
     if(embedded)box.classList.add('lg-widget-content');box.append(form);if(context==='day')box.append(inboxLink());return box;
   }
@@ -10508,7 +10530,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const submit=el('button','button full','Сохранить итог');submit.type='submit';submit.disabled=!healthy||conflict;form.append(submit);
     form.addEventListener('submit',event=>{event.preventDefault();if(!form.isConnected)return;const choices=[...form.querySelectorAll('[data-evening-task]')].filter(x=>x.value).map(x=>({id:x.dataset.eveningTask,choice:x.value}));
       const ok=balanceChange(date,data=>{if(JSON.stringify(data.eveningReviews[date]||null)!==draft.base)fail('Итог уже изменён. Загрузи сохранённый вариант.');if(draft.note.length>280||draft.good.length>160)fail('Сократи текст итога.');const decisions=new Map((data.eveningReviews[date]?.decisions||[]).map(d=>[d.taskId,d]));for(const c of choices){const t=plannedTasks(data).find(t=>t.id===c.id&&!completion(data,t));if(!t||!['keep','later','tomorrow'].includes(c.choice))fail('Дело или решение изменилось. Проверь список.');if(c.choice==='keep'&&t.type==='once'&&decisions.get(t.id)?.choice==='tomorrow')data.dayPlans[nextPlanDate()]=(data.dayPlans[nextPlanDate()]||[]).filter(x=>x!==t.id);decisions.set(t.id,{taskId:t.id,name:t.name,choice:c.choice});if(c.choice!=='keep')deferToday(data,t.id,c.choice);}data.eveningReviews[date]={note:draft.note.trim(),good:draft.good.trim(),decisions:[...decisions.values()],savedAt:new Date().toISOString()};});
-      if(ok){balanceUi.drafts.delete(date);render();}
+      if(ok){balanceUi.drafts.delete(date);render();uiSaveSignal('Сохранено');}
     });box.append(form,btn('Пропустить итог','button secondary full',()=>go('day')));
     for(const [day,d]of [...balanceUi.drafts].filter(([day,d])=>day<date&&eveningDirty(d)).sort((a,b)=>b[0].localeCompare(a[0]))){const old=el('details');old.append(el('summary','','Несохранённый черновик · '+day));if(d.note)old.append(el('p','',d.note));if(d.good)old.append(el('p','','Хороший момент: '+d.good));old.append(el('p','meta','Текст можно скопировать в сегодняшний итог. Вчерашние решения не применяются автоматически.'));box.append(old);}
     const dates=Object.keys(state.eveningReviews).filter(d=>d<date).sort().reverse();if(dates.length){const history=el('details');history.append(el('summary','','Прошлые итоги · '+dates.length));for(const d of balanceUi.allHistory?dates:dates.slice(0,7))history.append(eveningSummary(state.eveningReviews[d],d));if(dates.length>7)history.append(btn(balanceUi.allHistory?'Свернуть':'Показать все итоги','button secondary full',()=>{balanceUi.allHistory=!balanceUi.allHistory;render();}));box.append(history);}return box;
@@ -11413,7 +11435,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
         confirmedAt:new Date().toISOString(),date:expectedDay,minutes:status==='recorded'?minutes:0,actionId:status==='recorded'?actionId:null,entryId});
       focusReset(f);
     },false);
-    if(saved){focusConfirmDraft=null;focusCustomMode=false;}
+    if(saved){focusConfirmDraft=null;focusCustomMode=false;uiSaveSignal('Сохранено');}
     return saved;
   }
   function focusConfirmation(f) {
