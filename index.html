@@ -4537,7 +4537,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       if (target?.disabled) target = controls.find(n => !n.disabled);
     }
     if (!target && !position.key && position.control && position.name) target = [...screen.querySelectorAll('button,input,select,textarea,a')].find(n => n.tagName === position.control && uiControlName(n) === position.name);
-    if (!target && position.key && !card) { const cards = [...screen.querySelectorAll('[data-ui-key]')]; const next = cards[Math.min(Math.max(0, position.cardIndex || 0), cards.length - 1)]; target = next?.querySelector('button:not(:disabled),h2,h3') || screen.querySelector('.widget-catalog-filters select') || screen.querySelector('h1'); if (target?.matches('h1,h2,h3')) target.tabIndex = -1; if (target) uiToast('Список обновлён с учётом выбранного фильтра.'); }
+    if (!target && position.key && !card) { const cards = [...screen.querySelectorAll('[data-ui-key]')]; const next = cards[Math.min(Math.max(0, position.cardIndex || 0), cards.length - 1)]; target = next?.querySelector('button:not(:disabled),h2,h3') || screen.querySelector('.widget-catalog-filters select') || screen.querySelector('h1'); if (target?.matches('h1,h2,h3')) target.tabIndex = -1;  }
     if (target?.isConnected && !target.disabled) { target.focus({ preventScroll: true });
       if (position.name.includes('избран') && card) uiTarget(position.key, false);
       else { const r = target.getBoundingClientRect(), top = document.querySelector('.topbar').getBoundingClientRect().bottom + 12, bottom = document.querySelector('nav[aria-label="Главное меню"]').getBoundingClientRect().top - 12; if (r.top < top) scrollBy(0,r.top-top); else if(r.bottom>bottom)scrollBy(0,r.bottom-bottom); } }
@@ -4760,11 +4760,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     if (collection === 'calendarEntries') { calendarDate = item.date; calendarMonth = item.date.slice(0,7); calendarMode = 'days'; render(); }
     requestAnimationFrame(() => {
       const key = kind + ':' + item.id;
-      if (uiTarget(key)) uiToast('Добавлено: ' + item.name);
-      else uiToast('Добавлено: ' + item.name, 'Показать', () => {
-        if (kind === 'task' || kind === 'goal') go('blocks', item.block || item.blockId, false, { target: key });
-        else go(({ block:'blocks', quest:'quests', bonus:'bonuses', calendar:'calendar', treat:'treats', purchase:'bonuses' })[kind] || page, null, false, { target: key });
-      });
+      uiTarget(key);
     });
   }
   function uiDecorate() {
@@ -9284,7 +9280,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
       data.widgets.items.push({ id, placement: "widgets", showInDay: false });
     });
-    if (saved) uiToast("Добавлен виджет «" + widgetDefinition(id).title + "»", "Перейти", () => go("widgets", null, false, { target: "widget:" + id }));
     return saved;
   }
 
@@ -10513,7 +10508,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const submit=el('button','button full','Сохранить итог');submit.type='submit';submit.disabled=!healthy||conflict;form.append(submit);
     form.addEventListener('submit',event=>{event.preventDefault();if(!form.isConnected)return;const choices=[...form.querySelectorAll('[data-evening-task]')].filter(x=>x.value).map(x=>({id:x.dataset.eveningTask,choice:x.value}));
       const ok=balanceChange(date,data=>{if(JSON.stringify(data.eveningReviews[date]||null)!==draft.base)fail('Итог уже изменён. Загрузи сохранённый вариант.');if(draft.note.length>280||draft.good.length>160)fail('Сократи текст итога.');const decisions=new Map((data.eveningReviews[date]?.decisions||[]).map(d=>[d.taskId,d]));for(const c of choices){const t=plannedTasks(data).find(t=>t.id===c.id&&!completion(data,t));if(!t||!['keep','later','tomorrow'].includes(c.choice))fail('Дело или решение изменилось. Проверь список.');if(c.choice==='keep'&&t.type==='once'&&decisions.get(t.id)?.choice==='tomorrow')data.dayPlans[nextPlanDate()]=(data.dayPlans[nextPlanDate()]||[]).filter(x=>x!==t.id);decisions.set(t.id,{taskId:t.id,name:t.name,choice:c.choice});if(c.choice!=='keep')deferToday(data,t.id,c.choice);}data.eveningReviews[date]={note:draft.note.trim(),good:draft.good.trim(),decisions:[...decisions.values()],savedAt:new Date().toISOString()};});
-      if(ok){balanceUi.drafts.delete(date);render();uiToast('Итог дня сохранён');}
+      if(ok){balanceUi.drafts.delete(date);render();}
     });box.append(form,btn('Пропустить итог','button secondary full',()=>go('day')));
     for(const [day,d]of [...balanceUi.drafts].filter(([day,d])=>day<date&&eveningDirty(d)).sort((a,b)=>b[0].localeCompare(a[0]))){const old=el('details');old.append(el('summary','','Несохранённый черновик · '+day));if(d.note)old.append(el('p','',d.note));if(d.good)old.append(el('p','','Хороший момент: '+d.good));old.append(el('p','meta','Текст можно скопировать в сегодняшний итог. Вчерашние решения не применяются автоматически.'));box.append(old);}
     const dates=Object.keys(state.eveningReviews).filter(d=>d<date).sort().reverse();if(dates.length){const history=el('details');history.append(el('summary','','Прошлые итоги · '+dates.length));for(const d of balanceUi.allHistory?dates:dates.slice(0,7))history.append(eveningSummary(state.eveningReviews[d],d));if(dates.length>7)history.append(btn(balanceUi.allHistory?'Свернуть':'Показать все итоги','button secondary full',()=>{balanceUi.allHistory=!balanceUi.allHistory;render();}));box.append(history);}return box;
@@ -11418,7 +11413,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
         confirmedAt:new Date().toISOString(),date:expectedDay,minutes:status==='recorded'?minutes:0,actionId:status==='recorded'?actionId:null,entryId});
       focusReset(f);
     },false);
-    if(saved){focusConfirmDraft=null;focusCustomMode=false;uiToast(status==='recorded'?'Время подхода записано':'Подход закрыт без записи времени');}
+    if(saved){focusConfirmDraft=null;focusCustomMode=false;}
     return saved;
   }
   function focusConfirmation(f) {
