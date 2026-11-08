@@ -126,4 +126,4 @@
 .lg-path-aesthetics .lg-path-history.card{background:radial-gradient(ellipse at 0 0,rgba(var(--accent-rgb),.04),transparent 70%),var(--graphite-surface)}
 .lg-path-aesthetics>.is-optimal>.card,.card.lg-work-optimal{background:radial-gradient(ellipse at 100% 0,rgba(var(--accent-rgb),.06),transparent 70%),var(--graphite-surface);box-shadow:0 0 22px rgba(var(--accent-rgb),.04)}
 .lg-path-aesthetics>.is-horizon>.card{background:radial-gradient(ellipse at 100% 100%,#ffffff05,transparent 65%),var(--graphite-surface);border-color:#444}
-.card.goal-card.lg-block-goal-preview,.lg-path-aesthetics .card.goal-card.lg-block-goal-preview{background:var(--graphite-surface);border-color:#414141}
+body .card.goal-card.compact-goal-card.lg-block-goal-preview,.lg-path-aesthetics .card.goal-card.compact-goal-card.lg-block-goal-preview{background:var(--graphite-surface);border-color:#414141}
