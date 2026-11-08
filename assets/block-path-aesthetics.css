@@ -185,3 +185,14 @@ body:has(.lg-path-aesthetics)>nav:before,body:has(.lg-work-outlook)>nav:before{t
 /* The fixed footer warms only as the reader approaches the end. */
 body:has(.lg-path-aesthetics)>nav,body:has(.lg-work-outlook)>nav{box-shadow:0 -10px 35px rgba(var(--accent-rgb),calc(.1 * var(--lg-sunlight,0)))}
 body:has(.lg-path-aesthetics)>nav:before,body:has(.lg-work-outlook)>nav:before{opacity:var(--lg-sunlight,0)}
+
+/* Optimal is the last concrete work destination; beyond it is light. */
+.lg-work-outlook{grid-template-rows:auto auto auto 0px 0px 32px}
+.lg-work-outlook:before{margin-top:29px;background:linear-gradient(#686868,rgba(var(--accent-rgb),.6) 65%,var(--accent) 82%,#fff5d7)}
+.lg-work-outlook:after{grid-row:3/7;margin-top:38px;background:linear-gradient(transparent,rgba(var(--accent-rgb),.28),rgba(var(--accent-rgb),.75))}
+.card.lg-work-near-step{min-height:58px;padding:10px 14px;background:#181818;border-color:#ffffff16}
+.card.lg-work-near-step strong{font-size:12px}.card.lg-work-near-step small{font-size:10px;margin-top:3px}.card.lg-work-near-step>.design-icon{width:12px;height:12px;color:#aaa}
+.lg-path-aesthetics:after{top:var(--lg-path-opt-y)}
+.lg-path-aesthetics>.lg-level.is-optimal:before,.lg-path-aesthetics>.lg-level.is-maximum:before{content:'';width:17px;height:17px;border:0;border-radius:0;background:var(--accent);clip-path:polygon(50% 0%,61% 34%,98% 35%,69% 57%,79% 94%,50% 73%,21% 94%,31% 57%,2% 35%,39% 34%);transform:translate(-50%,-50%);box-shadow:none;filter:drop-shadow(0 0 5px rgba(var(--accent-rgb),.5))}
+.lg-path-aesthetics>.lg-level.is-horizon:not(.is-maximum):before{content:'?';display:grid;place-items:center;width:15px;height:15px;font-size:10px;font-weight:600;line-height:1;border:1px solid #b0a78c;border-radius:50%;background:var(--bg);color:#d0c7ab;transform:translate(-50%,-50%);box-shadow:0 0 8px rgba(var(--accent-rgb),.12)}
+.lg-path-aesthetics>.lg-level.is-maximum:before{width:23px;height:23px;background:#ffebaf;filter:drop-shadow(0 0 8px rgba(var(--accent-rgb),.6))}
