@@ -2938,19 +2938,33 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 .lg-quick-bottom .lg-quick-hint{padding:0;margin:0;font-size:11px;min-width:0;overflow-wrap:anywhere}
 .lg-quick-bottom .lg-quick-reward-switch.lg-c-day.check-label{flex:0 0 auto;justify-content:flex-end;gap:7px;min-height:44px;font-size:12px}
 .lg-quick-fields .lg-quick-field:has(#lg-quick-block){gap:0}
+
+/* Screen history in the header; independent four-section strip below. */
+.topbar{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;gap:4px;padding:calc(8px + env(safe-area-inset-top,0px)) 6px 8px}
+.lg-header-center{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px;min-width:0}.lg-header-center .brand{font-size:10px;letter-spacing:1px;gap:3px}.lg-header-center #wallet{gap:3px;font-size:11px;min-width:0;flex-wrap:wrap;justify-content:flex-end}.lg-header-center #wallet>span{padding:4px 5px}
+.lg-history-button{display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:12px;padding:0;background:none;color:var(--text)}.lg-history-button .design-icon{width:22px;height:22px}.lg-history-button:disabled{opacity:.3;cursor:default}.lg-history-button:not(:disabled):active{background:#ffffff0b}
+.app{padding-top:calc(var(--lg-topbar-height,72px) + 20px)}html{scroll-padding-top:calc(var(--lg-topbar-height,72px) + 18px)}
+nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;padding-left:4px;padding-right:4px}
+.lg-nav-strip{display:flex;flex:1;gap:0;min-width:0;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain;scroll-snap-type:x mandatory}.lg-nav-strip::-webkit-scrollbar{display:none}.lg-nav-strip .nav-button{flex:1 0 25%;min-width:60px;padding-inline:2px;scroll-snap-align:start;font-size:10px}.lg-nav-strip .nav-icon .design-icon{width:21px;height:21px}
+.lg-nav-scroll{flex:0 0 28px;min-height:48px;display:grid;place-items:center;border:0;border-radius:9px;padding:0;background:none;color:var(--muted)}.lg-nav-scroll .design-icon{width:12px;height:12px}.lg-nav-scroll:disabled{opacity:.3;cursor:default}.lg-nav-scroll:not(:disabled):active{background:#ffffff0b}
+@media(max-width:350px){.lg-header-center #wallet{font-size:10px}.lg-header-center .brand{font-size:9px;letter-spacing:.7px}.lg-nav-strip .nav-button{font-size:9px}}
 </style>
 </head>
 <body>
 <div class="app">
   <header class="topbar">
-    <span class="brand"><span class="brand-mark" aria-hidden="true"></span>LIFE <span class="brand-divider">/</span> GAME</span>
-    <span id="wallet" aria-live="polite"></span>
+    <button type="button" class="lg-history-button" id="lg-history-back" aria-label="Назад" disabled></button>
+    <div class="lg-header-center"><span class="brand"><span class="brand-mark" aria-hidden="true"></span>LIFE <span class="brand-divider">/</span> GAME</span>
+    <span id="wallet" aria-live="polite"></span></div>
+    <button type="button" class="lg-history-button" id="lg-history-forward" aria-label="Вперёд" disabled></button>
   </header>
   <p id="save-warning" role="alert" hidden></p>
   <main id="screen"></main>
 </div>
 
 <nav aria-label="Главное меню">
+  <button type="button" class="lg-nav-scroll" id="lg-nav-left" aria-label="Прокрутить разделы влево" aria-controls="lg-nav-strip" disabled></button>
+  <div class="lg-nav-strip" id="lg-nav-strip">
   <button type="button" class="nav-button" data-page="hero">
     <span class="nav-icon" aria-hidden="true"><svg class="design-icon" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="5"/></svg></span>Главная
   </button>
@@ -2963,6 +2977,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   <button type="button" class="nav-button" data-page="bonuses">
     <span class="nav-icon" aria-hidden="true"><svg class="design-icon" viewBox="0 0 24 24" focusable="false"><path d="m12 2 2.7 7.3L22 12l-7.3 2.7L12 22l-2.7-7.3L2 12l7.3-2.7Z"/></svg></span>Бонусы
   </button>
+  </div>
+  <button type="button" class="lg-nav-scroll" id="lg-nav-right" aria-label="Прокрутить разделы вправо" aria-controls="lg-nav-strip" disabled></button>
 </nav>
 
 <dialog id="editor" aria-labelledby="editor-title"></dialog>
@@ -4509,6 +4525,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   const uiDialogs = new Set();
   let uiDialogSerial = 0, uiFormSession = null, uiRenderSerial = 0;
   let uiPendingNavigation = null, uiHistoryIndex = 0, uiNavStartIndex = 0, uiHistorySync = false, uiPopClosing = false;
+  const UI_NAV_LIMIT=5,uiHistoryEntries=new Map(),uiHistorySession=String(Date.now())+Math.random();
+  let uiHistoryEnd=0,uiHistoryFloor=0,uiHistoryBusy=false,uiNavActive=null;
   let uiToastTimer = null;
   const uiEntityCollections = { blocks: "block", goals: "goal", tasks: "task", quests: "quest", bonuses: "bonus", calendarEntries: "calendar", treats: "treat", purchases: "purchase" };
   const uiViewKey = () => page + ":" + (blockId || "");
@@ -4578,18 +4596,46 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       error.textContent = message; error.hidden = false; error.scrollIntoView({ block: 'nearest' });
     } else uiToast(message);
   }
-  function uiHistoryState(modal = false) { return { lifeGameUI: 1, page, blockId, index: uiHistoryIndex, modal }; }
-  function uiWriteHistory(mode = 'push', modal = false) {
-    try {
-      if (mode === 'push') { uiHistoryIndex++; history.pushState(uiHistoryState(modal), '', location.href); }
-      else history.replaceState(uiHistoryState(modal), '', location.href);
-    } catch { /* Local file contexts may restrict History API. Navigation remains usable. */ }
+  function uiOwnHistory(entry){return !!entry?.lifeGameUI&&entry.session===uiHistorySession;}
+  function uiHistorySnapshot(){return {stageId:viewedStageId,pathView:blockPathViews.get(blockId)||'levels',calendar:{date:calendarDate,month:calendarMonth,mode:calendarMode,past:calendarPast}};}
+  function uiRememberHistoryEntry(){const entry=uiHistoryEntries.get(uiHistoryIndex);if(entry)Object.assign(entry,uiHistorySnapshot(),{position:uiCapture()});}
+  function uiHistoryState(modal=false){return {lifeGameUI:1,session:uiHistorySession,page,blockId,index:uiHistoryIndex,modal};}
+  function uiEnsureHistoryRoot(){if(uiOwnHistory(history.state))return;uiHistoryEntries.clear();uiHistoryIndex=0;uiHistoryFloor=0;uiHistoryEnd=0;uiNavStartIndex=0;uiWriteHistory('replace');}
+  function uiTrimHistory(){const screens=[...uiHistoryEntries.values()].filter(e=>!e.modal&&!e.closed).sort((a,b)=>a.index-b.index);const oldest=screens.length>UI_NAV_LIMIT+1?screens[screens.length-UI_NAV_LIMIT-1].index:uiHistoryFloor;uiHistoryFloor=Math.max(uiHistoryFloor,oldest,uiHistoryIndex-history.length+1);uiNavStartIndex=uiHistoryFloor;for(const key of uiHistoryEntries.keys())if(key<uiHistoryFloor)uiHistoryEntries.delete(key);}
+  function uiHistoryCandidate(direction){if(uiHistoryBusy||!uiOwnHistory(history.state))return null;for(let i=direction>0?Math.max(uiHistoryIndex+1,uiHistoryFloor):uiHistoryIndex-1;i>=uiHistoryFloor&&i<=uiHistoryEnd;i+=direction){const entry=uiHistoryEntries.get(i);if(entry&&!entry.modal&&!entry.closed)return entry;}return null;}
+  function uiUpdateHistoryButtons(){const back=$('lg-history-back'),forward=$('lg-history-forward');if(back)back.disabled=!uiHistoryCandidate(-1);if(forward)forward.disabled=!uiHistoryCandidate(1);}
+  function uiNavigateHistory(direction){const entry=uiHistoryCandidate(direction);if(!entry)return;uiRememberHistoryEntry();uiHistoryBusy=true;uiUpdateHistoryButtons();try{history.go(entry.index-uiHistoryIndex)}catch{uiHistoryBusy=false;uiUpdateHistoryButtons();}}
+  function uiWriteHistory(mode='push',modal=false){
+    try{
+      if(mode==='push'&&!uiOwnHistory(history.state))uiEnsureHistoryRoot();
+      if(modal&&!history.state?.modal)uiRememberHistoryEntry();
+      if(mode==='push'){
+        for(const key of uiHistoryEntries.keys())if(key>uiHistoryIndex)uiHistoryEntries.delete(key);
+        uiHistoryIndex++;history.pushState(uiHistoryState(modal),'',location.href);uiHistoryEnd=uiHistoryIndex;
+      }else history.replaceState(uiHistoryState(modal),'',location.href);
+      const previous=uiHistoryEntries.get(uiHistoryIndex);uiHistoryEntries.set(uiHistoryIndex,{...uiHistoryState(modal),...uiHistorySnapshot(),position:previous?.position||null,closed:previous?.closed||false});
+      uiTrimHistory();
+    }catch{ /* History API may be restricted for a local file. No data transaction depends on it. */ }
+    uiHistoryBusy=false;uiUpdateHistoryButtons();
   }
-  function uiSyncDialogs() {
-    if (uiHistorySync || uiPopClosing) return;
-    const open = uiTopDialog();
-    if (open && !history.state?.modal && !open.dataset.uiNoHistory) uiWriteHistory('push', true);
-    else if (!open && history.state?.lifeGameUI && history.state.modal) { uiHistorySync = true; history.back(); }
+  function uiSyncDialogs(){
+    if(uiHistorySync||uiPopClosing)return;const open=uiTopDialog();
+    if(open&&!history.state?.modal&&!open.dataset.uiNoHistory)uiWriteHistory('push',true);
+    else if(!open&&uiOwnHistory(history.state)&&history.state.modal){const e=uiHistoryEntries.get(uiHistoryIndex);if(e)e.closed=true;uiHistorySync=true;history.back();}
+    uiUpdateHistoryButtons();
+  }
+  function uiNavScrollButtons(){const strip=$('lg-nav-strip');if(!strip)return;$('lg-nav-left').disabled=strip.scrollLeft<=1;$('lg-nav-right').disabled=strip.scrollLeft+strip.clientWidth>=strip.scrollWidth-1;}
+  function uiUpdateNavigation(){
+    uiUpdateHistoryButtons();const active=document.querySelector('.nav-button[aria-current="page"]'),strip=$('lg-nav-strip');
+    if(active&&strip&&active.dataset.page!==uiNavActive){uiNavActive=active.dataset.page;const left=active.offsetLeft-strip.offsetLeft,right=left+active.offsetWidth;if(left<strip.scrollLeft)strip.scrollLeft=left;else if(right>strip.scrollLeft+strip.clientWidth)strip.scrollLeft=right-strip.clientWidth;}
+    uiNavScrollButtons();
+  }
+  function uiSetupNavigation(){
+    const back=$('lg-history-back'),forward=$('lg-history-forward'),strip=$('lg-nav-strip');back.append(designIcon('back'));forward.append(designIcon('chevron'));back.addEventListener('click',()=>uiNavigateHistory(-1));forward.addEventListener('click',()=>uiNavigateHistory(1));
+    for(const [id,direction,icon]of [['lg-nav-left',-1,'back'],['lg-nav-right',1,'chevron']]){const b=$(id);b.append(designIcon(icon));b.addEventListener('click',()=>strip.scrollBy({left:direction*(strip.clientWidth/4),behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth'}));}
+    strip.addEventListener('scroll',uiNavScrollButtons,{passive:true});
+    const resize=()=>{document.documentElement.style.setProperty('--lg-topbar-height',document.querySelector('.topbar').getBoundingClientRect().height+'px');uiNavScrollButtons();};
+    window.addEventListener('resize',resize);if(typeof ResizeObserver==='function')new ResizeObserver(resize).observe(document.querySelector('.topbar'));resize();
   }
   // Browser appearance preferences are independent of progress and its JSON schema.
   const APPEARANCE_KEY='lifegame-appearance-v1';
@@ -4721,26 +4767,27 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     if(typeof effect?.showPopover==="function"&&effect.matches(":popover-open")){effect.hidePopover();effect.showPopover();}
     setTimeout(uiSyncDialogs, 0);
   }
-  function uiInitHistory() {
-    uiHistoryIndex = Number.isInteger(history.state?.index) ? history.state.index : 0;
-    uiNavStartIndex = uiHistoryIndex;
-    uiWriteHistory('replace');
-    window.addEventListener('popstate', event => {
-      const target = event.state;
-      if (uiHistorySync) { uiHistorySync = false; if (target?.lifeGameUI) uiHistoryIndex = target.index; return; }
-      const dialog = uiTopDialog();
-      if (dialog) {
-        if (dialog === editor && uiFormDirty() && !confirm('В форме есть несохранённые изменения. Закрыть её без сохранения?')) { uiWriteHistory('push', true); return; }
-        uiPopClosing = true; dialog.close();
-        setTimeout(() => { uiPopClosing = false; if (target?.lifeGameUI) uiHistoryIndex = target.index; uiSyncDialogs(); }, 0);
-        return;
+  function uiApplyHistoryTarget(target){
+      if(!uiOwnHistory(target)){uiUpdateHistoryButtons();return;}
+      const entry=uiHistoryEntries.get(target.index);uiHistoryIndex=target.index;
+      if(target.modal){if(entry)entry.closed=true;uiWriteHistory('replace');}
+      if(target.page===page&&target.blockId===blockId){uiUpdateHistoryButtons();return;}
+      if(entry?.calendar){calendarDate=entry.calendar.date;calendarMonth=entry.calendar.month;calendarMode=entry.calendar.mode;calendarPast=entry.calendar.past;}
+      if(target.blockId&&entry?.pathView)blockPathViews.set(target.blockId,entry.pathView);
+      go(target.page,target.blockId,false,{history:'none',restore:true,stageId:entry?.stageId,position:entry?.position});uiUpdateHistoryButtons();
+  }
+  function uiInitHistory(){
+    uiHistoryIndex=0;uiNavStartIndex=0;uiHistoryFloor=0;uiHistoryEnd=0;uiSetupNavigation();uiWriteHistory('replace');
+    window.addEventListener('popstate',event=>{
+      const target=event.state;uiHistoryBusy=false;
+      if(uiHistorySync){uiHistorySync=false;if(uiOwnHistory(target))uiHistoryIndex=target.index;uiUpdateHistoryButtons();return;}
+      uiRememberHistoryEntry();const dialog=uiTopDialog();
+      if(dialog){
+        if(dialog===editor&&uiFormDirty()&&!confirm('В форме есть несохранённые изменения. Закрыть её без сохранения?')){if(uiOwnHistory(target))uiHistoryIndex=target.index;uiWriteHistory('push',true);return;}
+        uiPopClosing=true;dialog.close();
+        setTimeout(()=>{uiPopClosing=false;if(!uiTopDialog())uiApplyHistoryTarget(target);else if(uiOwnHistory(target))uiHistoryIndex=target.index;uiSyncDialogs();uiUpdateHistoryButtons();},0);return;
       }
-      if (!target?.lifeGameUI) return;
-      if (target.page === page && target.blockId === blockId) { uiHistoryIndex = target.index; if(target.modal) uiWriteHistory('replace'); return; }
-
-      uiHistoryIndex = target.index;
-      go(target.page, target.blockId, false, { history: 'none', restore: true });
-      if (target.modal) uiWriteHistory('replace');
+      uiApplyHistoryTarget(target);
     });
   }
   function uiFormSignature(form) { return JSON.stringify([...form.querySelectorAll('input,textarea,select')].filter(n => n.type !== 'file').map(n => [n.id || n.name || n.type, n.value, n.checked])); }
@@ -4834,12 +4881,12 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
   }
   function uiAfterRender(previous, doneBefore = null) {
-    uiDecorate();
+    uiDecorate();uiUpdateNavigation();
     const serial = ++uiRenderSerial, pending = uiPendingNavigation; uiPendingNavigation = null;
     requestAnimationFrame(() => {
       if (serial !== uiRenderSerial) return;
       if (pending?.target && uiTarget(pending.target)) return;
-      uiRestore(pending ? (pending.top ? null : uiPositions.get(uiViewKey())) : previous);
+      uiRestore(pending ? (pending.top ? null : pending.position||uiPositions.get(uiViewKey())) : previous);
     });
   }
   function uiPlural(value, forms) { const n = Math.abs(Number(value)), x = n % 100; return forms[(x >= 11 && x <= 14) || !Number.isInteger(n) ? 2 : n % 10 === 1 ? 0 : n % 10 >= 2 && n % 10 <= 4 ? 1 : 2]; }
@@ -4884,6 +4931,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
 
   function go(nextPage, selectedBlock = null, fromDayTask = false, options = {}) {
+    if(options.history!=='none'){uiEnsureHistoryRoot();uiRememberHistoryEntry();}
     if(nextPage==='strategy')nextPage='blocks'; // Retired route: do not resurrect the removed widget.
     if(nextPage!=="widgets")widgetManageMode=false;
     if(nextPage!=="inbox"){inboxSettingsOpen=false;}
@@ -4912,7 +4960,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     dayBlockReturn = returnPosition;
     page = nextPage;
     blockId = selectedBlock;
-    uiPendingNavigation = { target: options.target || "", top: options.top || nextPage === "hero" || sameRoot && !options.restore && !options.target };
+    uiPendingNavigation = { target: options.target || "", position:options.position||null, top: options.top || !options.restore&&(nextPage === "hero" || sameRoot&&!options.target) };
     if (options.history !== 'none' && !sameRoot) uiWriteHistory(history.state?.modal ? 'replace' : 'push');
     render();
   }
@@ -4927,15 +4975,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
 
   // Возврат по существующей истории UI, без выхода за начальную запись текущего открытия.
-  function lgNavBack() {
-    const current = history.state;
-    if (current?.lifeGameUI && current.index === uiHistoryIndex &&
-        !current.modal && uiHistoryIndex > uiNavStartIndex) {
-      history.back();
-    } else if (page !== "hero" || blockId !== null) {
-      go("hero");
-    }
-  }
+  function lgNavBack(){if(uiHistoryCandidate(-1))uiNavigateHistory(-1);else if(page!=='hero'||blockId!==null)go('hero');}
 
   // Общий набор переходов; Конструктор сохраняет собственное меню.
   function lgSectionLinks(openDay = () => go("day")) {
