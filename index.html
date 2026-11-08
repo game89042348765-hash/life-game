@@ -2939,32 +2939,30 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 .lg-quick-bottom .lg-quick-reward-switch.lg-c-day.check-label{flex:0 0 auto;justify-content:flex-end;gap:7px;min-height:44px;font-size:12px}
 .lg-quick-fields .lg-quick-field:has(#lg-quick-block){gap:0}
 
-/* Screen history in the header; independent four-section strip below. */
-.topbar{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;gap:4px;padding:calc(8px + env(safe-area-inset-top,0px)) 6px 8px}
-.lg-header-center{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px;min-width:0}.lg-header-center .brand{font-size:10px;letter-spacing:1px;gap:3px}.lg-header-center #wallet{gap:3px;font-size:11px;min-width:0;flex-wrap:wrap;justify-content:flex-end}.lg-header-center #wallet>span{padding:4px 5px}
-.lg-history-button{display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:12px;padding:0;background:none;color:var(--text)}.lg-history-button .design-icon{width:22px;height:22px}.lg-history-button:disabled{opacity:.3;cursor:default}.lg-history-button:not(:disabled):active{background:#ffffff0b}
-.app{padding-top:calc(var(--lg-topbar-height,72px) + 20px)}html{scroll-padding-top:calc(var(--lg-topbar-height,72px) + 18px)}
-nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;padding-left:4px;padding-right:4px}
-.lg-nav-strip{display:flex;flex:1;gap:0;min-width:0;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain;scroll-snap-type:x mandatory}.lg-nav-strip::-webkit-scrollbar{display:none}.lg-nav-strip .nav-button{flex:1 0 25%;min-width:60px;padding-inline:2px;scroll-snap-align:start;font-size:10px}.lg-nav-strip .nav-icon .design-icon{width:21px;height:21px}
-.lg-nav-scroll{flex:0 0 28px;min-height:48px;display:grid;place-items:center;border:0;border-radius:9px;padding:0;background:none;color:var(--muted)}.lg-nav-scroll .design-icon{width:12px;height:12px}.lg-nav-scroll:disabled{opacity:.3;cursor:default}.lg-nav-scroll:not(:disabled):active{background:#ffffff0b}
-@media(max-width:350px){.lg-header-center #wallet{font-size:10px}.lg-header-center .brand{font-size:9px;letter-spacing:.7px}.lg-nav-strip .nav-button{font-size:9px}}
+/* Original navigation, with a back affordance in the brand mark only. */
+.brand-back{display:inline-grid;place-items:center;position:relative;flex:none;width:14px;height:14px;border:0;padding:0;background:none;color:var(--accent);opacity:1!important;vertical-align:middle}
+.brand-back:before{content:'';position:absolute;inset:-15px}.brand-back .brand-mark{margin:0}.brand-back .design-icon{width:16px;height:16px}.brand-back.can-back .brand-mark{display:none}.brand-back:not(.can-back) .design-icon{display:none}.brand-back:disabled{cursor:default}.brand-back.can-back{cursor:pointer}
+
+/* Planned calendar projection and quiet five-minute recent cards. */
+.lg-block-calendar{margin:16px 0 20px;padding:0;border-color:#454545;background:#1b1b1b}.lg-block-calendar>summary{display:flex;align-items:center;gap:9px;min-height:54px;padding:13px 15px;cursor:pointer;list-style:none}.lg-block-calendar>summary::-webkit-details-marker{display:none}.lg-block-calendar>summary>.design-icon{width:18px;height:18px;color:var(--accent)}.lg-planned-title{font-size:14px;font-weight:650;flex:1}.lg-planned-count{font-size:12px;color:var(--muted)}.lg-block-calendar>summary:after{content:'+';font-size:18px;color:var(--muted);margin-left:6px}.lg-block-calendar[open]>summary:after{content:'−'}.lg-planned-body{padding:0 13px 13px}.lg-planned-body>.card{margin-bottom:10px}.lg-planned-body>.section-label{margin-top:20px}.lg-calendar-block{display:inline-flex;align-items:center;gap:6px;margin:8px 0 0}.lg-calendar-block .design-icon{width:14px;height:14px}
+.lg-recent-captures{margin:15px 0 6px}.lg-recent-captures[hidden]{display:none}.lg-recent-title{font-size:11px;color:var(--muted);margin:0 0 9px}.lg-recent-card.card{padding:10px 12px;margin:0 0 8px;border-radius:13px;background:#1b1b1b;box-shadow:none}.lg-recent-head{display:flex;align-items:flex-start;gap:8px}.lg-recent-head h3{flex:1;min-width:0;margin:0;font-size:13px;line-height:1.45;overflow-wrap:anywhere}.lg-recent-head .more-button{min-width:32px;width:32px;min-height:32px;height:32px;margin:-6px -6px 0 0}.lg-recent-context{display:flex;align-items:center;gap:5px 10px;flex-wrap:wrap;margin-top:4px}.lg-recent-context .task-block-badge,.lg-recent-destination{display:inline-flex;align-items:center;gap:5px;min-height:28px;padding:0;margin:0;font-size:10px;background:none;border:0;color:var(--muted);max-width:100%;text-align:left;overflow-wrap:anywhere}.lg-recent-context .design-icon{width:12px;height:12px}.lg-recent-footer{display:flex;align-items:center;justify-content:space-between;gap:9px}.lg-recent-time{font-size:10px;color:#818181}.lg-recent-complete{min-height:36px;padding:6px 0 6px 12px;border:0;background:none;color:var(--green);font-size:11px}.lg-recent-track{height:1px;background:#ffffff0a;overflow:hidden;border-radius:2px}.lg-recent-track i{display:block;height:100%;background:#ffffff2a}.lg-recent-more summary{font-size:11px;color:var(--muted);min-height:36px;padding:8px 0;cursor:pointer}
+.lg-save-signal{padding:10px 16px;font-size:13px;font-weight:600;color:#fafaf5;border-color:rgba(var(--accent-rgb),.38);background:linear-gradient(130deg,#30302b,#222);box-shadow:0 5px 24px #0005}.lg-save-check{display:grid;place-items:center;width:20px;height:20px;border:1px solid #acd2b94d;border-radius:50%;font-size:13px}.lg-add-success{animation:lgAddPulse .4s ease-out}.lg-add-success>.design-icon{width:20px;height:20px}@keyframes lgAddPulse{50%{box-shadow:0 0 0 5px rgba(var(--accent-rgb),.12)}}
+@media(prefers-reduced-motion:reduce){.lg-add-success{animation:none}}
+
+.lg-save-signal{top:auto;right:auto;margin:0;overflow:visible}.lg-save-signal::backdrop{background:transparent;pointer-events:none}
 </style>
 </head>
 <body>
 <div class="app">
   <header class="topbar">
-    <button type="button" class="lg-history-button" id="lg-history-back" aria-label="Назад" disabled></button>
-    <div class="lg-header-center"><span class="brand"><span class="brand-mark" aria-hidden="true"></span>LIFE <span class="brand-divider">/</span> GAME</span>
-    <span id="wallet" aria-live="polite"></span></div>
-    <button type="button" class="lg-history-button" id="lg-history-forward" aria-label="Вперёд" disabled></button>
+    <span class="brand"><button type="button" class="brand-back" id="lg-brand-back" aria-label="Назад" disabled><span class="brand-mark" aria-hidden="true"></span></button>LIFE <span class="brand-divider">/</span> GAME</span>
+    <span id="wallet" aria-live="polite"></span>
   </header>
   <p id="save-warning" role="alert" hidden></p>
   <main id="screen"></main>
 </div>
 
 <nav aria-label="Главное меню">
-  <button type="button" class="lg-nav-scroll" id="lg-nav-left" aria-label="Прокрутить разделы влево" aria-controls="lg-nav-strip" disabled></button>
-  <div class="lg-nav-strip" id="lg-nav-strip">
   <button type="button" class="nav-button" data-page="hero">
     <span class="nav-icon" aria-hidden="true"><svg class="design-icon" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="5"/></svg></span>Главная
   </button>
@@ -2977,8 +2975,6 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
   <button type="button" class="nav-button" data-page="bonuses">
     <span class="nav-icon" aria-hidden="true"><svg class="design-icon" viewBox="0 0 24 24" focusable="false"><path d="m12 2 2.7 7.3L22 12l-7.3 2.7L12 22l-2.7-7.3L2 12l7.3-2.7Z"/></svg></span>Бонусы
   </button>
-  </div>
-  <button type="button" class="lg-nav-scroll" id="lg-nav-right" aria-label="Прокрутить разделы вправо" aria-controls="lg-nav-strip" disabled></button>
 </nav>
 
 <dialog id="editor" aria-labelledby="editor-title"></dialog>
@@ -3041,6 +3037,7 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
 </dialog>
 
 <script src="assets/block-stages.js?v=levels-2"></script>
+<script src="assets/calendar-links.js?v=1"></script>
 <script src="assets/legacy-data.js?v=levels-2"></script>
 <script>
 "use strict";
@@ -4088,6 +4085,7 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
       fail("Некорректный баланс монет или алмазов.");
     }
 
+    LifeGameCalendarLinks.normalize(data);
     return data;
   }
 
@@ -4526,7 +4524,7 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
   let uiDialogSerial = 0, uiFormSession = null, uiRenderSerial = 0;
   let uiPendingNavigation = null, uiHistoryIndex = 0, uiNavStartIndex = 0, uiHistorySync = false, uiPopClosing = false;
   const UI_NAV_LIMIT=5,uiHistoryEntries=new Map(),uiHistorySession=String(Date.now())+Math.random();
-  let uiHistoryEnd=0,uiHistoryFloor=0,uiHistoryBusy=false,uiNavActive=null;
+  let uiHistoryEnd=0,uiHistoryFloor=0,uiHistoryBusy=false;
   let uiToastTimer = null;
   const uiEntityCollections = { blocks: "block", goals: "goal", tasks: "task", quests: "quest", bonuses: "bonus", calendarEntries: "calendar", treats: "treat", purchases: "purchase" };
   const uiViewKey = () => page + ":" + (blockId || "");
@@ -4542,6 +4540,7 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
   }
   function uiTarget(key, focus = true) {
     const node = uiFind(key); if (!node) return false;
+    for(let parent=node.parentElement;parent&&parent!==screen;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;
     const top = document.querySelector('.topbar').getBoundingClientRect().bottom + 18;
     const bottom = document.querySelector('nav[aria-label="Главное меню"]').getBoundingClientRect().top - 18;
     const rect = node.getBoundingClientRect();
@@ -4578,11 +4577,15 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
     const close = btn('×', 'ui-toast-close', () => { toast.hidden = true; }); close.setAttribute('aria-label', 'Закрыть уведомление'); toast.append(close);
     uiToastTimer = setTimeout(() => { if (!toast.contains(document.activeElement)) toast.hidden = true; }, 7000);
   }
-  let uiSaveSignalTimer=null;
+  let uiSaveSignalTimer=null,lastSaveChime=-Infinity;
+  document.addEventListener("pointerdown",primeAudio,{passive:true});
+  document.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" ")primeAudio();});
   function uiSaveSignalPosition(){const note=document.getElementById('lg-save-signal');if(!note||note.hidden)return;const v=window.visualViewport,visibleBottom=(v?.offsetTop||0)+(v?.height||innerHeight),menu=document.querySelector('nav[aria-label="Главное меню"]');note.style.bottom=Math.max(12,innerHeight-visibleBottom+12,menu?innerHeight-menu.getBoundingClientRect().top+10:12)+'px';}
   function uiSaveSignal(message='Сохранено'){
-    let note=document.getElementById('lg-save-signal');if(!note){note=el('div','lg-save-signal');note.id='lg-save-signal';note.setAttribute('role','status');note.setAttribute('aria-live','polite');note.setAttribute('aria-atomic','true');document.body.append(note);}
-    clearTimeout(uiSaveSignalTimer);note.hidden=false;const check=el('span','lg-save-check','✓');check.setAttribute('aria-hidden','true');note.replaceChildren(check,document.createTextNode(message));uiSaveSignalPosition();note.classList.remove('is-visible');void note.offsetWidth;note.classList.add('is-visible');uiSaveSignalTimer=setTimeout(()=>{note.hidden=true;note.classList.remove('is-visible');},1500);
+    let note=document.getElementById('lg-save-signal');if(!note){note=el('div','lg-save-signal');note.id='lg-save-signal';if(typeof note.showPopover==='function')note.setAttribute('popover','manual');note.setAttribute('role','status');note.setAttribute('aria-live','polite');note.setAttribute('aria-atomic','true');document.body.append(note);}
+    if(document.hidden)return;
+    const now=performance.now();if(now-lastSaveChime>240){tones([740,990],.075,.14,.07);lastSaveChime=now;}
+    clearTimeout(uiSaveSignalTimer);note.hidden=false;if(typeof note.showPopover==='function'&&!note.matches(':popover-open')){try{note.showPopover()}catch{}}const check=el('span','lg-save-check','✓');check.setAttribute('aria-hidden','true');note.replaceChildren(check,document.createTextNode(message));uiSaveSignalPosition();note.classList.remove('is-visible');void note.offsetWidth;note.classList.add('is-visible');uiSaveSignalTimer=setTimeout(()=>{if(typeof note.hidePopover==='function'&&note.matches(':popover-open'))note.hidePopover();note.hidden=true;note.classList.remove('is-visible');},2100);
   }
   window.visualViewport?.addEventListener('resize',uiSaveSignalPosition);
   window.visualViewport?.addEventListener('scroll',uiSaveSignalPosition);
@@ -4597,13 +4600,13 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
     } else uiToast(message);
   }
   function uiOwnHistory(entry){return !!entry?.lifeGameUI&&entry.session===uiHistorySession;}
-  function uiHistorySnapshot(){return {stageId:viewedStageId,pathView:blockPathViews.get(blockId)||'levels',calendar:{date:calendarDate,month:calendarMonth,mode:calendarMode,past:calendarPast}};}
+  function uiHistorySnapshot(){return {stageId:viewedStageId,pathView:blockPathViews.get(blockId)||'levels',plannedOpen:blockCalendarOpen.get(blockId),calendar:{date:calendarDate,month:calendarMonth,mode:calendarMode,past:calendarPast}};}
   function uiRememberHistoryEntry(){const entry=uiHistoryEntries.get(uiHistoryIndex);if(entry)Object.assign(entry,uiHistorySnapshot(),{position:uiCapture()});}
   function uiHistoryState(modal=false){return {lifeGameUI:1,session:uiHistorySession,page,blockId,index:uiHistoryIndex,modal};}
   function uiEnsureHistoryRoot(){if(uiOwnHistory(history.state))return;uiHistoryEntries.clear();uiHistoryIndex=0;uiHistoryFloor=0;uiHistoryEnd=0;uiNavStartIndex=0;uiWriteHistory('replace');}
   function uiTrimHistory(){const screens=[...uiHistoryEntries.values()].filter(e=>!e.modal&&!e.closed).sort((a,b)=>a.index-b.index);const oldest=screens.length>UI_NAV_LIMIT+1?screens[screens.length-UI_NAV_LIMIT-1].index:uiHistoryFloor;uiHistoryFloor=Math.max(uiHistoryFloor,oldest,uiHistoryIndex-history.length+1);uiNavStartIndex=uiHistoryFloor;for(const key of uiHistoryEntries.keys())if(key<uiHistoryFloor)uiHistoryEntries.delete(key);}
   function uiHistoryCandidate(direction){if(uiHistoryBusy||!uiOwnHistory(history.state))return null;for(let i=direction>0?Math.max(uiHistoryIndex+1,uiHistoryFloor):uiHistoryIndex-1;i>=uiHistoryFloor&&i<=uiHistoryEnd;i+=direction){const entry=uiHistoryEntries.get(i);if(entry&&!entry.modal&&!entry.closed)return entry;}return null;}
-  function uiUpdateHistoryButtons(){const back=$('lg-history-back'),forward=$('lg-history-forward');if(back)back.disabled=!uiHistoryCandidate(-1);if(forward)forward.disabled=!uiHistoryCandidate(1);}
+  function uiUpdateHistoryButtons(){const back=$('lg-brand-back');if(back){const enabled=!!uiHistoryCandidate(-1);back.disabled=!enabled;back.classList.toggle('can-back',enabled);back.setAttribute('aria-hidden',String(!enabled));back.title=enabled?'Назад':'';}}
   function uiNavigateHistory(direction){const entry=uiHistoryCandidate(direction);if(!entry)return;uiRememberHistoryEntry();uiHistoryBusy=true;uiUpdateHistoryButtons();try{history.go(entry.index-uiHistoryIndex)}catch{uiHistoryBusy=false;uiUpdateHistoryButtons();}}
   function uiWriteHistory(mode='push',modal=false){
     try{
@@ -4624,19 +4627,8 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
     else if(!open&&uiOwnHistory(history.state)&&history.state.modal){const e=uiHistoryEntries.get(uiHistoryIndex);if(e)e.closed=true;uiHistorySync=true;history.back();}
     uiUpdateHistoryButtons();
   }
-  function uiNavScrollButtons(){const strip=$('lg-nav-strip');if(!strip)return;$('lg-nav-left').disabled=strip.scrollLeft<=1;$('lg-nav-right').disabled=strip.scrollLeft+strip.clientWidth>=strip.scrollWidth-1;}
-  function uiUpdateNavigation(){
-    uiUpdateHistoryButtons();const active=document.querySelector('.nav-button[aria-current="page"]'),strip=$('lg-nav-strip');
-    if(active&&strip&&active.dataset.page!==uiNavActive){uiNavActive=active.dataset.page;const left=active.offsetLeft-strip.offsetLeft,right=left+active.offsetWidth;if(left<strip.scrollLeft)strip.scrollLeft=left;else if(right>strip.scrollLeft+strip.clientWidth)strip.scrollLeft=right-strip.clientWidth;}
-    uiNavScrollButtons();
-  }
-  function uiSetupNavigation(){
-    const back=$('lg-history-back'),forward=$('lg-history-forward'),strip=$('lg-nav-strip');back.append(designIcon('back'));forward.append(designIcon('chevron'));back.addEventListener('click',()=>uiNavigateHistory(-1));forward.addEventListener('click',()=>uiNavigateHistory(1));
-    for(const [id,direction,icon]of [['lg-nav-left',-1,'back'],['lg-nav-right',1,'chevron']]){const b=$(id);b.append(designIcon(icon));b.addEventListener('click',()=>strip.scrollBy({left:direction*(strip.clientWidth/4),behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth'}));}
-    strip.addEventListener('scroll',uiNavScrollButtons,{passive:true});
-    const resize=()=>{document.documentElement.style.setProperty('--lg-topbar-height',document.querySelector('.topbar').getBoundingClientRect().height+'px');uiNavScrollButtons();};
-    window.addEventListener('resize',resize);if(typeof ResizeObserver==='function')new ResizeObserver(resize).observe(document.querySelector('.topbar'));resize();
-  }
+  function uiUpdateNavigation(){uiUpdateHistoryButtons();}
+  function uiSetupNavigation(){const back=$('lg-brand-back');back.append(designIcon('back'));back.addEventListener('click',()=>uiNavigateHistory(-1));}
   // Browser appearance preferences are independent of progress and its JSON schema.
   const APPEARANCE_KEY='lifegame-appearance-v1';
   const APPEARANCE_PALETTES=Object.freeze([
@@ -4774,6 +4766,7 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
       if(target.page===page&&target.blockId===blockId){uiUpdateHistoryButtons();return;}
       if(entry?.calendar){calendarDate=entry.calendar.date;calendarMonth=entry.calendar.month;calendarMode=entry.calendar.mode;calendarPast=entry.calendar.past;}
       if(target.blockId&&entry?.pathView)blockPathViews.set(target.blockId,entry.pathView);
+      if(target.blockId&&typeof entry?.plannedOpen==='boolean')blockCalendarOpen.set(target.blockId,entry.plannedOpen);
       go(target.page,target.blockId,false,{history:'none',restore:true,stageId:entry?.stageId,position:entry?.position});uiUpdateHistoryButtons();
   }
   function uiInitHistory(){
@@ -4826,7 +4819,7 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
   function uiCreatedMessage(kind){return ({block:'Блок добавлен',goal:'Цель добавлена',task:'Задание добавлено',quest:'Квест добавлен',bonus:'Бонус добавлен',calendar:'Запись добавлена',treat:'Ништяк добавлен',purchase:'Покупка сохранена'})[kind]||'Сохранено';}
   function uiShowCreated(collection, kind, item) {
     uiSaveSignal(uiCreatedMessage(kind));
-    if (collection === 'calendarEntries') { calendarDate = item.date; calendarMonth = item.date.slice(0,7); calendarMode = 'days'; render(); }
+    if (collection === 'calendarEntries') { calendarDate = item.date; calendarMonth = item.date.slice(0,7); calendarMode = 'days';if(page==='blocks'&&item.blockId===blockId)blockCalendarOpen.set(blockId,true);render(); }
     requestAnimationFrame(() => {
       const key = kind + ':' + item.id;
       uiTarget(key);
@@ -4932,6 +4925,7 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
 
   function go(nextPage, selectedBlock = null, fromDayTask = false, options = {}) {
     if(options.history!=='none'){uiEnsureHistoryRoot();uiRememberHistoryEntry();}
+    if(nextPage==='blocks'&&options.target?.startsWith('calendar:'))blockCalendarOpen.set(selectedBlock,true);
     if(nextPage==='strategy')nextPage='blocks'; // Retired route: do not resurrect the removed widget.
     if(nextPage!=="widgets")widgetManageMode=false;
     if(nextPage!=="inbox"){inboxSettingsOpen=false;}
@@ -5418,7 +5412,7 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
     };
     update(selectedBlock);return {element,select,update,value:()=>select.value||null};
   }
-  const blockPathViews=new Map();
+  const blockPathViews=new Map(),blockCalendarOpen=new Map();
   function blockStageForm(id=null,selectedBlock=blockId,position={}) {
     const st=id?LifeGameStages.get(state,id):null,owner=st?.blockId||selectedBlock;
     if(!blockIsActive(state,owner))return;
@@ -6233,6 +6227,7 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
         if (!actual || actual.archivedAt !== null || !taskBlockIsActive(data, actual.block)) fail("Задание недоступно в архиве.");
         if (!blockIsActive(data, values.block)) fail("Блок назначения недоступен в архиве.");
         if (actual.block === values.block) fail("Задание уже находится в этом блоке.");
+        if(actual.block===INBOX_BLOCK_ID)LifeGameCalendarLinks.remember(data,"task",actual.id);
         actual.block = values.block;
         actual.stageId=LifeGameStages.current(data,values.block).id;
         actual.goalId=null;
@@ -6519,6 +6514,15 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
     return card;
   }
 
+  function calendarBlockOptions(current=null){const options=[['','Без блока'],...state.blocks.filter(b=>b.archivedAt===null).map(b=>[b.id,b.name])];if(current&&!options.some(x=>x[0]===current)){const b=state.blocks.find(b=>b.id===current);if(b)options.push([b.id,b.name+' · архив']);}return options;}
+  function calendarBlockBadge(entry){const b=state.blocks.find(b=>b.id===entry.blockId);const badge=btn(b?.name||'Блок недоступен','task-block-badge lg-calendar-block',()=>{if(b&&b.archivedAt===null)go('blocks',b.id,false,{target:'calendar:'+entry.id})});badge.prepend(designIcon('blocks' in DESIGN_ICON_PATHS?'blocks':'grid'));badge.disabled=!b||b.archivedAt!==null;badge.setAttribute('aria-label',b?.archivedAt?'Блок в архиве: '+b.name:'Открыть блок: '+(b?.name||''));return badge;}
+  function renderBlockCalendar(selected){
+    const entries=state.calendarEntries.filter(e=>e.blockId===selected.id),active=entries.filter(e=>e.completionId===null),details=el('details','card lg-block-calendar'),summary=el('summary');
+    details.dataset.blockId=selected.id;details.open=blockCalendarOpen.has(selected.id)?blockCalendarOpen.get(selected.id):entries.length>0;summary.append(designIcon('calendar'),el('span','lg-planned-title','Запланированное'),el('span','lg-planned-count',String(active.length)));details.append(summary);details.addEventListener('toggle',()=>blockCalendarOpen.set(selected.id,details.open));
+    const body=el('div','lg-planned-body');body.append(btn('+ Добавить по дате','button secondary full',()=>editCalendar(null,selected.id),true));
+    for(const [title,filter]of [['Ранее',e=>e.date<today()],['Сегодня',e=>e.date===today()],['Далее',e=>e.date>today()]]){const group=active.filter(filter).sort((a,b)=>a.date.localeCompare(b.date));if(!group.length)continue;body.append(el('div','section-label',title));for(const date of [...new Set(group.map(e=>e.date))])for(const entry of sortCalendar(group.filter(e=>e.date===date)))body.append(calendarCard(entry));}
+    if(!active.length)body.append(el('p','meta','Здесь будут дела этого блока с выбранной датой.'));historySection('block-calendar:'+selected.id,'ВЫПОЛНЕНО',entries.filter(e=>e.completionId!==null),calendarCard,body);details.append(body);screen.append(details);
+  }
   // Отдельный календарь. Даты не преобразуются через UTC.
   function localCalendarDate(value) {
     const [y, m, d] = value.split("-").map(Number);
@@ -6536,26 +6540,30 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
   function calendarLabel(value) {
     return localCalendarDate(value).toLocaleDateString("ru-RU", {day:"numeric", month:"long", year:"numeric"});
   }
-  function editCalendar(id = null) {
+  function editCalendar(id = null, initialBlockId=null) {
     const entry = id ? state.calendarEntries.find(x => x.id === id) : null;
     if (id && !entry) return;
-    const locked = !!entry?.completionId;
+    const locked = !!entry?.completionId;let savedId=id;
     openForm(entry ? "Изменить запись" : "Событие или дело", [
       nameField(entry?.name),
+      {key:"blockId",label:"Блок — необязательно",required:false,value:entry?.blockId||initialBlockId||"",options:calendarBlockOptions(entry?.blockId)},
       {key:"date", label:"Дата", type:"date", value:entry?.date || (calendarMode === "all" ? today() : calendarDate), disabled:locked},
       {key:"time", label:"Время", type:"time", value:entry?.time || "", required:false, disabled:locked},
       {key:"note", label:"Заметка", type:"textarea", value:entry?.note || "", required:false, maxLength:1000},
       {...numberField("reward", "Награда в монетах", entry?.reward || 0, 100000, 0), disabled:locked,
         hint:locked ? "0 — без награды. Для изменения даты, времени и награды сначала отмени выполнение." : "0 — без награды"}
     ], values => transact(data => {
-      if (!id) data.calendarEntries.push({id:uid(), ...values, completionId:null, favorite:false});
+      values.blockId=values.blockId||null;
+      if(values.blockId!==null&&values.blockId!==entry?.blockId&&!blockIsActive(data,values.blockId))fail("Выбранный блок недоступен.");
+      if (!id){data.calendarEntries.push({id:(savedId=uid()), ...values, completionId:null, favorite:false});LifeGameCalendarLinks.remember(data,"calendar",savedId);}
       else {
         const actual = data.calendarEntries.find(x => x.id === id);
         if (!actual) fail("Запись не найдена.");
         if (actual.completionId !== null && (values.date !== actual.date || values.time !== actual.time || values.reward !== actual.reward)) fail("Сначала отмени выполнение.");
+        if(actual.blockId===null&&values.blockId!==null)LifeGameCalendarLinks.remember(data,"calendar",actual.id);
         Object.assign(actual, values);
       }
-    }, false), entry ? "Сохранить" : "Создать");
+    }, false), entry ? "Сохранить" : "Создать",values=>{if(page==='calendar'){calendarDate=values.date;calendarMonth=values.date.slice(0,7);calendarMode='days';render();requestAnimationFrame(()=>uiTarget('calendar:'+savedId));}else if(page==='blocks'&&values.blockId===blockId){blockCalendarOpen.set(blockId,true);render();}});
   }
   function completeCalendar(id, done) {
     const change=data => {
@@ -6601,7 +6609,8 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
     const more = btn("⋯", "more-button", () => calendarMenu(entry.id));
     more.setAttribute("aria-label", "Действия: " + entry.name);
     head.append(el("div", "task-title", entry.name), more);
-    card.append(favoriteBar("calendarEntries", entry),head, el("div", "meta", entry.time || "Без времени"));
+    card.append(favoriteBar("calendarEntries", entry),head,el("div","meta",calendarLabel(entry.date)+(entry.time?" · "+entry.time:"")));
+    if(entry.blockId)card.append(calendarBlockBadge(entry));
     if (entry.note) card.append(el("p", "calendar-note", entry.note));
     if (entry.reward) card.append(el("div", "reward", `+${entry.reward} монет`));
     const done = entry.completionId !== null;
@@ -6725,6 +6734,7 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
         id: (savedId = uid()), ...values, type: values.weekdays.length ? "daily" : "once",
         inDayBuilder: false, block: selectedBlock, stageId, favorite: false, goalId
       });
+      if(selectedBlock!==INBOX_BLOCK_ID)LifeGameCalendarLinks.remember(data,"task",savedId);
     }, false), "Создать", () => {if(page==="blocks"&&blockId===selectedBlock){viewedStageId=stagePicker.value();if(viewedStageId!==LifeGameStages.current(state,blockId)?.id)blockPathViews.set(blockId,'work');render();}if(options.onSaved)options.onSaved(savedId);});
     editor.querySelector(".form-actions")?.before(stagePicker.element,goalPicker.element);
     stagePicker.select.addEventListener("change",()=>goalPicker.update(selectedBlock,true,stagePicker.value()));
@@ -6779,6 +6789,7 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
       actual.weekdays = values.weekdays;
       actual.name = values.name;
       actual.reward = values.reward;
+      if(actual.block===INBOX_BLOCK_ID&&values.block!==INBOX_BLOCK_ID)LifeGameCalendarLinks.remember(data,"task",actual.id);
       actual.block = values.block;
       actual.stageId = stagePicker.value();
       actual.goalId = goalId;
@@ -7318,7 +7329,8 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
   }
   function blockCounts(id) {
     const tasks=state.tasks.filter(x=>x.block===id && taskIsActive(state,x));
-    return `Заданий: ${tasks.filter(x=>x.type!=="once"||!completion(state,x)).length} · На сегодня: ${tasks.filter(x=>view.planIds.has(x.id)&&!completion(state,x)&&scheduledToday(x)).length}`;
+    const calendar=state.calendarEntries.filter(e=>e.blockId===id&&e.completionId===null);
+    return `Дел: ${tasks.filter(x=>x.type!=="once"||!completion(state,x)).length+calendar.length} · На сегодня: ${tasks.filter(x=>view.planIds.has(x.id)&&!completion(state,x)&&scheduledToday(x)).length+calendar.filter(e=>e.date===today()).length}`;
   }
   function motivationWidth() {
     const hero = screen.querySelector(".hero");
@@ -9842,6 +9854,7 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
     if (selected.subtitle) screen.append(el("p", "lg-block-subtitle", selected.subtitle));
     screen.append(blockSettingsPanel(selected.id));
 
+    renderBlockCalendar(selected);
     if(blockPathViews.get(selected.id)==='work')renderBlockWork(selected);else renderBlockLevels(selected);
   }
 
@@ -10026,6 +10039,20 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
     return true;
   }
 
+  function recentCaptureCard(reference){
+    const item=reference.item,isCalendar=reference.kind==='calendar',record=isCalendar?item.completionId:completion(state,item),card=el('article','card lg-recent-card');card.dataset.recentKey=reference.kind+':'+item.id;card.dataset.uiKey='recent:'+reference.kind+':'+item.id;if(record)card.classList.add('done');
+    const head=el('div','lg-recent-head'),title=el('h3','',item.name),more=btn('⋯','more-button',()=>isCalendar?calendarMenu(item.id):openCardMenu('tasks',item.id));more.setAttribute('aria-label','Действия: '+item.name);head.append(title,more);card.append(head);
+    const context=el('div','lg-recent-context');if(isCalendar){const open=btn(calendarLabel(item.date),'lg-recent-destination',()=>{calendarDate=item.date;calendarMonth=item.date.slice(0,7);calendarMode='days';go('calendar',null,false,{target:'calendar:'+item.id})});open.prepend(designIcon('calendar'));context.append(open);if(item.blockId)context.append(calendarBlockBadge(item));}else context.append(taskBlockBadge(item));card.append(context);
+    const footer=el('div','lg-recent-footer'),time=el('span','lg-recent-time',Math.max(1,Math.ceil((reference.until-Date.now())/60000))+' мин'),action=btn(record?'Отменить':'Готово','lg-recent-complete',()=>isCalendar?completeCalendar(item.id,!record):toggleTask(item.id),true);action.setAttribute('aria-label',(record?'Отменить выполнение: ':'Выполнить: ')+item.name);if(!isCalendar&&!record&&!taskIsActive(state,item))action.disabled=true;time.title='Осталось в «Недавно добавлено». Само дело сохранится.';time.setAttribute('aria-label',time.textContent+' в недавних записях');footer.append(time,action);card.append(footer);const track=el('div','lg-recent-track'),fill=el('i');fill.style.width=Math.max(0,Math.min(100,(reference.until-Date.now())/LifeGameCalendarLinks.TTL*100))+'%';track.append(fill);card.append(track);return card;
+  }
+  function renderRecentSection(section){
+    const references=LifeGameCalendarLinks.recent(state),signature=references.map(r=>r.kind+':'+r.id+':'+Math.ceil((r.until-Date.now())/60000)).join('|');
+    if(section.dataset.signature===signature)return;const expanded=section.querySelector('details')?.open;section.dataset.signature=signature;section.hidden=!references.length;section.replaceChildren();if(!references.length)return;
+    section.append(el('div','lg-recent-title','Недавно добавлено'));for(const r of references.slice(0,3))section.append(recentCaptureCard(r));
+    if(references.length>3){const more=el('details','lg-recent-more');more.open=!!expanded;more.append(el('summary','','Ещё '+(references.length-3)));for(const r of references.slice(3))more.append(recentCaptureCard(r));section.append(more);}
+  }
+  function appendRecentCaptures(container){const section=el('section','lg-recent-captures');section.setAttribute('aria-label','Недавно добавлено');container.append(section);renderRecentSection(section);}
+  setInterval(()=>{if(!document.hidden)for(const section of document.querySelectorAll('.lg-recent-captures'))renderRecentSection(section);},1000);
   // Drafts stay in memory; only a submitted ordinary task is saved.
   let inboxSettingsOpen=false;
   const quickTaskDrafts=Object.fromEntries(['day','inbox'].map(key=>[key,{name:'',when:'later',date:'',reward:25,block:INBOX_BLOCK_ID,busy:false}]));
@@ -10084,7 +10111,7 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
     const block=choice('Блок','lg-quick-block',[[INBOX_BLOCK_ID,'Выбрать блок, можно позже'],...state.blocks.filter(b=>b.archivedAt===null).map(b=>[b.id,b.name])],taskBlockIsActive(state,draft.block)?draft.block:INBOX_BLOCK_ID,value=>{draft.block=value;});
     const blockOptions=block.closest('label');blockOptions.querySelector('span').remove();block.setAttribute('aria-label','Выбрать блок, можно позже');
     const hint=el('p','meta lg-quick-hint'),bottom=el('div','lg-quick-bottom');bottom.append(hint,reward);
-    function update(){const dated=draft.when==='date';blockOptions.hidden=dated;todayButton.setAttribute('aria-pressed',String(draft.when==='today'));dateButton.setAttribute('aria-pressed',String(dated));dateText.textContent='Выбрать';dateButton.setAttribute('aria-label',dated?'Изменить дату: '+calendarLabel(draft.date):'Выбрать дату');hint.textContent=dated?calendarLabel(draft.date):draft.when==='today'?'На сегодня':'Без даты';}
+    function update(){const dated=draft.when==='date';blockOptions.hidden=false;todayButton.setAttribute('aria-pressed',String(draft.when==='today'));dateButton.setAttribute('aria-pressed',String(dated));dateText.textContent='Выбрать';dateButton.setAttribute('aria-label',dated?'Изменить дату: '+calendarLabel(draft.date):'Выбрать дату');hint.textContent=dated?calendarLabel(draft.date):draft.when==='today'?'На сегодня':'Без даты';}
     update();form.append(label,row,options,bottom);
     form.addEventListener('submit',event=>{
       event.preventDefault();if(draft.busy||!form.isConnected||!healthy)return;
@@ -10094,19 +10121,21 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
       const id=uid();draft.busy=true;
       const saved=transact(data=>{
         if(![0,25].includes(amount)||!['today','later','date'].includes(mode))fail('Проверь параметры добавления.');
-        if(mode==='date'){data.calendarEntries.push({id,name,date:selectedDate,time:'',note:'',reward:amount,completionId:null,favorite:false});return;}
+        if(!taskBlockIsActive(data,selectedBlock))fail('Выбранный блок недоступен.');
+        if(mode==='date'){data.calendarEntries.push({id,name,date:selectedDate,time:'',note:'',reward:amount,blockId:selectedBlock===INBOX_BLOCK_ID?null:selectedBlock,completionId:null,favorite:false});LifeGameCalendarLinks.remember(data,'calendar',id);return;}
         if(mode==='today'&&today()!==builtDay)fail('Наступил новый день. Проверь выбор «Сегодня» и повтори добавление.');
         if(!taskBlockIsActive(data,selectedBlock))fail('Выбранный блок недоступен.');
         data.tasks.push({id,name,reward:amount,block:selectedBlock,stageId:selectedBlock===INBOX_BLOCK_ID?null:LifeGameStages.current(data,selectedBlock).id,type:'once',weekdays:[],inDayBuilder:false,favorite:false,goalId:null,archivedAt:null});
+        if(selectedBlock!==INBOX_BLOCK_ID)LifeGameCalendarLinks.remember(data,'task',id);
         if(mode==='today'){const ids=new Set(data.dayPlans[today()]||[]);ids.add(id);data.dayPlans[today()]=[...ids];data.daySkips[today()]=(data.daySkips[today()]||[]).filter(x=>x!==id);ensureDay(data);}
       },false);
       draft.busy=false;
       if(saved)Object.assign(draft,{name:'',when:'later',date:'',reward:25,block:INBOX_BLOCK_ID});else draft.name=raw;
       render();
-      if(saved){screen.querySelector('#lg-quick-name')?.focus({preventScroll:true});uiSaveSignal(mode==='date'?'Запись добавлена':'Задание добавлено');}
+      if(saved){screen.querySelector('#lg-quick-name')?.focus({preventScroll:true});const button=screen.querySelector('.lg-quick-submit');if(button){button.classList.add('lg-add-success');button.replaceChildren(designIcon('check'));button.setAttribute('aria-label','Добавлено');setTimeout(()=>{if(button.isConnected){button.classList.remove('lg-add-success');button.textContent='Добавить';button.removeAttribute('aria-label');}},650);}uiSaveSignal(mode==='date'?'Запись добавлена':'Задание добавлено');}
 
     });
-    if(embedded)box.classList.add('lg-widget-content');box.append(form);if(context==='day')box.append(inboxLink());return box;
+    if(embedded)box.classList.add('lg-widget-content');box.append(form);appendRecentCaptures(box);if(context==='day')box.append(inboxLink());return box;
   }
   function renderInbox() {
     const nav=lgSectionNav('Быстрое добавление'),gear=nav.querySelector('.lg-section-settings-placeholder');gear.disabled=false;gear.classList.remove('lg-section-settings-placeholder');gear.setAttribute('aria-label','Настройки быстрого добавления');gear.removeAttribute('title');gear.setAttribute('aria-expanded',String(inboxSettingsOpen));gear.setAttribute('aria-controls','lg-inbox-settings');gear.addEventListener('click',()=>{inboxSettingsOpen=!inboxSettingsOpen;if(!inboxSettingsOpen)taskReorderMode=false;render();screen.querySelector('[aria-controls="lg-inbox-settings"]')?.focus({preventScroll:true});});
@@ -10117,7 +10146,7 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
     if(inboxSettingsOpen){const management=el('section','lg-inbox-management');management.id='lg-inbox-settings';management.append(el('h2','','Управление списком'),bulkEntry('tasks',INBOX_BLOCK_ID));if(active.length>1)management.append(itemOrderToggle('tasks'));screen.append(management);}
     const captureCard=task=>{const card=taskCard(task);if(!done(task)){const tools=el('div','lg-quick-task-tools'),plan=card.querySelector('.lg-c-day'),move=btn('','lg-quick-transfer',()=>transferTask(task.id));plan.querySelector('span').replaceChildren(designIcon('calendar'),document.createTextNode('Сегодня'));move.append(designIcon('grid'),el('span','','Выбрать блок'),designIcon('chevron'));move.setAttribute('aria-label','Перенести в блок: '+task.name);tools.append(plan,move);card.append(tools);}return card;};
     if(taskReorderMode&&inboxSettingsOpen&&active.length>1)renderItemOrder('tasks',active,done);else section('',favorites(active),captureCard);
-    if(!active.length)screen.append(el('div','empty','Здесь появятся дела без выбранного блока. Записи на дату находятся в календаре.'));
+    if(!active.length&&!LifeGameCalendarLinks.recent(state).length)screen.append(el('div','empty','Здесь появятся дела без выбранного блока. Записи на дату находятся в календаре.'));
     historySection('inbox','ВЫПОЛНЕНО',tasks.filter(done),taskCard);
   }
 
@@ -10245,6 +10274,7 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
     renderDayWidgets(screen,'top');
     lgDayFold("widgets", "Виджеты", target => renderDayWidgets(target));
     const events = state.calendarEntries.filter(x => x.date === today());
+    const calendarDoneToday=new Set(state.calendarCompletions.filter(f=>f.date===today()).map(f=>f.id));
     lgDayFold("calendar", "Календарь", target =>
       section("", sortCalendar(events.filter(x => x.completionId === null)), calendarCard, target));
     lgDayFold("tasks", "Задания", target =>
@@ -10253,7 +10283,7 @@ nav[aria-label="Главное меню"]{display:flex;align-items:center;gap:0;
     lgDayFold("quests", "Квесты", target =>
       section("", favorites(quests.filter(x => x.progress < x.target)), quest => questCard(quest, true), target));
     const completed = [
-      ...events.filter(x => x.completionId !== null).map(x => ({ ...x, kind: "calendar" })),
+      ...state.calendarEntries.filter(x=>calendarDoneToday.has(x.completionId)).map(x => ({ ...x, kind: "calendar" })),
       ...view.plannedDone.map(x => ({ ...x, kind: "task" })),
       ...quests.filter(x => x.progress >= x.target).map(x => ({ ...x, kind: "quest" }))
     ];
