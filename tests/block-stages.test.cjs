@@ -90,3 +90,13 @@ stages.validate(unusualIds);
 assert.equal(Object.hasOwn(unusualIds.blockStages.current, '__proto__'), true);
 assert.equal(stages.current(unusualIds, '__proto__').blockId, '__proto__');
 console.log('PASS block stages: migration, eligibility, conditions, history, receipts, validation, archive, 1200 stages, unusual IDs');
+
+// Optional preparation flag survives validation without affecting progression or receipts.
+const prepared = copy(migrated);
+prepared.blockStages.items[0].prepared = true;
+stages.validate(prepared);
+assert.equal(prepared.blockStages.items[0].prepared, true);
+assert.equal(stages.current(prepared, 'health').id, stages.current(migrated, 'health').id);
+assert.deepEqual([prepared.completions, prepared.diamondRecords, prepared.purchases], originalReceipts);
+prepared.blockStages.items[0].prepared = 'yes';
+assert.throws(() => stages.validate(prepared), /подготовка/);

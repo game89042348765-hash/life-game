@@ -18,7 +18,7 @@
   if(m.paths===undefined)m.paths={};if(!object(m.paths))fail('Повреждены описания путей.');
   const blocks=new Map(d.blocks.map(b=>[b.id,b])),ids=new Set();
   for(const s of m.items){
-   if(!object(s))fail();
+   if(!object(s))fail();if(s.prepared!==undefined&&typeof s.prepared!=='boolean')fail('Повреждена подготовка этапа.');
    if(s.description===undefined)s.description='';if(s.levelKind===undefined)s.levelKind='stage';if(s.slot===undefined)s.slot=null;if(s.passed===undefined)s.passed=false;
    if(!object(s)||!id(s.id)||ids.has(s.id)||!blocks.has(s.blockId)||typeof s.name!=='string'||!s.name.trim()||s.name.length>120||typeof s.meaning!=='string'||s.meaning.length>2000||typeof s.description!=='string'||s.description.length>2000||!['stage','optimal','hidden','maximum'].includes(s.levelKind)||(s.slot!==null&&!['next','pre','optimal','hidden','maximum'].includes(s.slot))||typeof s.reached!=='boolean'||typeof s.passed!=='boolean'||!object(s.lock)||!['open','manual','stage'].includes(s.lock.mode)||(s.lock.mode==='stage'?!id(s.lock.stageId):s.lock.stageId!==null))fail();
    ids.add(s.id);s.name=s.name.trim();s.meaning=s.meaning.trim();s.description=s.description.trim();
