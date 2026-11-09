@@ -3041,7 +3041,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 <script src="assets/block-stages.js?v=centered-3"></script>
 <script src="assets/calendar-links.js?v=1"></script>
 <script src="assets/light-thread.js?v=2"></script>
-<script src="assets/task-form.js?v=5"></script>
+<script src="assets/task-form.js?v=6"></script>
 <script src="assets/legacy-data.js?v=levels-2"></script>
 <script>
 "use strict";
@@ -7059,7 +7059,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     if(page==='day'){const context=el('div','lg-c-context');context.append(designIcon(task.block===INBOX_BLOCK_ID?'inbox':'book'),taskBlockBadge(task));card.append(context);}
     const goal=task.goalId?state.goals.find(x=>x.id===task.goalId):null;
     if(goal){const context=el('div','lg-c-context goal-context');context.append(designIcon('flag'),el('span','','Цель: '+goal.name+(goal.completedDate===null?'':' · достигнута')));card.append(context);}
-    if(task.leadsToGoal){const tag=el('div','lg-c-context lg-task-goal-tag');tag.append(designIcon('flag'),el('span','','Ведёт к цели'));card.append(tag);}
+    if(task.leadsToGoal){const tag=el('div','lg-c-context lg-task-goal-tag');tag.append(designIcon('flag'),el('span','','Шаг к цели'));card.append(tag);}
     const complete=btn(record?'Отменить':'Выполнить','button lg-c-action'+(record?' secondary':''),()=>toggleTask(task.id),true);
     complete.disabled=!record&&!taskIsActive(state,task);
     complete.setAttribute('aria-label',(record?'Отменить выполнение: ':'Выполнить: ')+task.name);

@@ -17,7 +17,7 @@
         <div class="lg-toggle-card"><div class="lg-toggle-row"><span class="lg-toggle-copy">
           <label class="lg-toggle-title" for="toggle-goal">Этот шаг ведёт тебя к цели?</label>
           <div class="lg-goal-slot"><label class="lg-toggle-sub lg-goal-off" for="toggle-goal"></label>
-          <label class="lg-toggle-sub lg-goal-on" for="toggle-goal" style="color:#8e948e">У этого будет тег «<span style="color:#9fe0b6">Ведёт к цели</span>»</label></div></span>
+          <label class="lg-toggle-sub lg-goal-on" for="toggle-goal" style="color:#8e948e">У этого будет тег «<span style="color:#9fe0b6">Шаг к цели</span>»</label></div></span>
           <input id="toggle-goal" class="lg-switch" type="checkbox" role="switch"></div></div>
         <div class="lg-toggle-card"><label class="lg-toggle-row" for="toggle-day-builder"><span class="lg-toggle-copy">
           <span class="lg-toggle-title">Добавить в Конструктор дня?</span><span class="lg-toggle-sub" id="task-day-hint"></span></span>
