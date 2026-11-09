@@ -2956,6 +2956,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 <link rel="stylesheet" href="assets/path-v2.css?v=3">
 <link rel="stylesheet" href="assets/path-fx.css?v=1">
 <link rel="stylesheet" href="assets/task-form.css?v=4">
+<link rel="stylesheet" href="assets/wallet-counter.css?v=1">
 </head>
 <body>
 <div class="app">
@@ -3129,6 +3130,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   let blockReorderMode = false;
   let taskReorderMode = false;
   let blockSettingsOpen = false;
+  let blockWalletEffect = null;
   let questReorderMode = false;
   let bulkSelection = null;
   let bulkProcedure = null;
@@ -4147,7 +4149,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   function launchPathCompletion(source){
     if(!source||page!=='blocks'||blockId!==source.blockId)return;
     const line=screen.querySelector('.lg-path-aesthetics');if(!line)return;
-    try{pathRailLayout(line);LifeGamePathStar.launch(source.mode);}catch(error){console.warn('Эффект пути недоступен:',error);}
+    try{pathRailLayout(line);blockWalletAfterPath(LifeGamePathStar.launch(source.mode));}catch(error){console.warn('Эффект пути недоступен:',error);}
   }
   function taskVisibleInDay(data,task) {return taskIsActive(data,task)||!!task&&task.archivedAt===null&&taskBlockIsActive(data,task.block)&&!!completion(data,task,true);}
   function goalIsActive(data,goal) {return !!goal&&blockIsActive(data,goal.blockId)&&LifeGameStages.active(data,goal);}
@@ -4350,6 +4352,46 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     }
   }
 
+  // The ledger is already saved. Only the visible digits count from zero.
+  function cancelBlockWalletEffect(){
+    const effect=blockWalletEffect;if(!effect)return;
+    blockWalletEffect=null;clearTimeout(effect.timer);cancelAnimationFrame(effect.frame);
+    for(const voice of effect.voices||[]){try{voice.stop()}catch{}}
+    const node=wallet.firstElementChild;if(node){node.classList.remove('lg-wallet-counting','lg-wallet-landed');node.textContent=totals(state).balance+' ●';node.removeAttribute('aria-hidden');}
+  }
+  function queueBlockWalletReward(from,to,amount){
+    cancelBlockWalletEffect();const effect={from,to,amount,timer:0,frame:0};blockWalletEffect=effect;
+    const node=wallet.firstElementChild;node.textContent=from+' ●';node.setAttribute('aria-hidden','true');
+    effect.timer=setTimeout(()=>runBlockWalletReward(effect),160);
+  }
+  function blockWalletAfterPath(animation){
+    const effect=blockWalletEffect;if(!effect)return;
+    clearTimeout(effect.timer);
+    Promise.resolve(animation).catch(()=>{}).then(()=>{if(blockWalletEffect===effect)runBlockWalletReward(effect)});
+  }
+  function runBlockWalletReward(effect){
+    if(blockWalletEffect!==effect||page!=='blocks'||document.hidden){cancelBlockWalletEffect();return;}
+    const node=wallet.firstElementChild,reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+    const gain=el('small','lg-wallet-gain','+'+effect.amount);gain.setAttribute('aria-hidden','true');
+    node.classList.add('lg-wallet-counting');const digits=el('span','lg-wallet-digits',reduced?String(effect.to):'0');node.replaceChildren(digits,document.createTextNode(' ●'),gain);
+    const duration=reduced?0:1050,start=performance.now();
+    const voicesBefore=new Set(activeSounds.keys());
+    tones(reduced?[880,1174]:[587,659,740,784,880,988,1174],.115,.1,.025);
+    effect.voices=[...activeSounds.keys()].filter(voice=>!voicesBefore.has(voice));
+    const finish=()=>{
+      if(blockWalletEffect!==effect)return;
+      digits.textContent=String(totals(state).balance);node.classList.remove('lg-wallet-counting');node.classList.add('lg-wallet-landed');
+      effect.timer=setTimeout(()=>{if(blockWalletEffect===effect)cancelBlockWalletEffect()},1200);
+    };
+    const step=now=>{
+      if(blockWalletEffect!==effect)return;
+      const t=duration?Math.min(1,(now-start)/duration):1;
+      digits.textContent=String(Math.round(effect.to*(1-Math.pow(1-t,3))));
+      if(t<1)effect.frame=requestAnimationFrame(step);else finish();
+    };effect.frame=requestAnimationFrame(step);
+  }
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelBlockWalletEffect()});
+
   // One feedback event per saved transaction; newer events replace older effects.
   const rewardVoices = new Set();
   function stopRewardSound() {
@@ -4422,6 +4464,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const values=[...(coins?[signedReward(coins,"монет")]:[]),...(gems?[signedReward(gems,"алмазов")]:[]),...(spent?[signedReward(-spent,"монет")]:[]),...(gemSpent?[signedReward(-gemSpent,"алмазов")]:[])].join(" · ");
     if(coins&&!gems&&!spent&&!gemSpent){
       clearEffects();
+      if(page==='blocks'&&coins>0){queueBlockWalletReward(before.balance,after.balance,coins);return;}
       uiSaveSignal(values+(bonus?' · бонус дня':revokedBonus?' · включая отмену бонуса дня':'')+(oldLevel!==newLevel?' · уровень '+newLevel:''));
       return;
     }
@@ -10902,6 +10945,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
 
   function render() {
+    cancelBlockWalletEffect();
     const uiPrevious = uiPendingNavigation ? null : uiCapture();
     const uiDoneBefore = uiPendingNavigation ? null : new Map([...screen.querySelectorAll("[data-ui-key]")].map(n=>[n.dataset.uiKey,n.classList.contains("done")]));
     LifeGamePathStar.clear();
