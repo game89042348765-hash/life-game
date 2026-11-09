@@ -5632,11 +5632,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     card.append(el('div','lg-path-kicker',key==='futureMaximum'?'За горизонтом':key==='futureOptimal'?'Мой ориентир':'Впереди'),el('h2','',title),el('p','meta',state.blockStages.paths[owner][key]||'Впереди есть место для большего. Нажми, чтобы описать.'));
     card.dataset.uiKey='path-outlook:'+owner+':'+key;const edit=el('span','lg-path-outlook-edit','Помечтать');edit.append(designIcon('chevron'));card.append(edit);row.append(card);return row;
   }
-  function renderBlockLevels(selected) {
-    const owner=selected.id,ss=LifeGameStages.list(state,owner),c=LifeGameStages.current(state,owner),path=state.blockStages.paths[owner],at=ss.indexOf(c),optimalAt=ss.findIndex(a=>a.levelKind==='optimal'),past=ss.filter((a,i)=>a.id!==c.id&&(i<at||a.passed)),future=ss.filter(a=>a.id!==c.id&&!past.includes(a));viewedStageId=c.id;
-    blockViewSwitch(owner,'levels');
-    const line=el('div','lg-levels lg-path-aesthetics');
-    const stageRow=a=>{
+  function blockStageRow(selected,a,c,ss,future) {
+    const owner=selected.id,optimalAt=ss.findIndex(s=>s.levelKind==='optimal'),at=ss.indexOf(c);
       const now=a.id===c.id,locked=!LifeGameStages.unlocked(state,a),horizon=['hidden','maximum'].includes(a.levelKind)||optimalAt>=0&&ss.indexOf(a)>optimalAt,row=el('article','lg-level'+(now?' is-current':'')+(locked?' is-locked':'')+(a.levelKind==='optimal'?' is-optimal':'')+(horizon?' is-horizon':'')+(a.levelKind==='maximum'?' is-maximum':horizon?' is-unknown':''));row.dataset.stageId=a.id;
       if(now)row.dataset.uiKey='path-current:'+owner;
       const card=el('section','card lg-level-card'),head=el('div','lg-level-title'),copy=el('div','lg-path-stage-copy');
@@ -5652,7 +5649,22 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
         const contents=btn(locked?'Подробнее':hasContents?'Открыть этап':'Помечтать','lg-path-text-button',()=>{if(!locked&&!hasContents){blockLevelDescription(a.id);return;}viewedStageId=a.id;blockPathViews.set(owner,'work');render()});contents.append(designIcon('chevron'));footer.append(contents);card.append(footer);
       }
       row.append(card);return row;
-    };
+  }
+
+  function blockFutureRows(selected,line,ss,c,future) {
+    const owner=selected.id;
+    for(const a of future){if(blockSettingsOpen&&blockCanInsert(state,owner,a.id,'before'))line.append(blockLevelAdd(owner,a,'before'));line.append(blockStageRow(selected,a,c,ss,future));}
+    if(!future.some(a=>a.levelKind==='stage'))line.append(pathOutlook(owner,'futurePlan','Планируемое'));
+    if(!future.some(a=>a.levelKind==='optimal'))line.append(pathOutlook(owner,'futureOptimal','Оптимальное'));
+    if(!future.some(a=>a.levelKind==='maximum'))line.append(pathOutlook(owner,'futureMaximum','Всегда возможно лучшее'));
+    if(blockSettingsOpen&&blockCanInsert(state,owner,(future.at(-1)||c).id,'after'))line.append(blockLevelAdd(owner,future.at(-1)||c,'after'));
+  }
+
+  function renderBlockLevels(selected) {
+    const owner=selected.id,ss=LifeGameStages.list(state,owner),c=LifeGameStages.current(state,owner),path=state.blockStages.paths[owner],at=ss.indexOf(c),optimalAt=ss.findIndex(a=>a.levelKind==='optimal'),past=ss.filter((a,i)=>a.id!==c.id&&(i<at||a.passed)),future=ss.filter(a=>a.id!==c.id&&!past.includes(a));viewedStageId=c.id;
+    blockViewSwitch(owner,'levels');
+    const line=el('div','lg-levels lg-path-aesthetics');
+    const stageRow=a=>blockStageRow(selected,a,c,ss,future);
     const historyRow=el('article','lg-level lg-path-history-node is-past'),history=el('details','card lg-path-history');history.open=blockHistoryOpen.get(owner)||false;
     history.append(pathSummary('Мои достижения','Пройдено этапов: '+past.length,'trophy'));
     history.querySelector('summary > .lg-path-chevron')?.remove();
@@ -5672,22 +5684,15 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     missedCard.append(missedBody);pathDisclosure(missedCard,open=>blockMissedOpen.set(owner,open));missed.append(missedCard);line.append(missed);
     line.append(stageRow(c));const planned=el('article','lg-level lg-path-planned');renderBlockCalendar(selected,planned);line.append(planned);
     line.append(el('div','section-label','ВПЕРЕДИ — ТВОИ ВОЗМОЖНОСТИ'));
-    for(const a of future){if(blockSettingsOpen&&blockCanInsert(state,owner,a.id,'before'))line.append(blockLevelAdd(owner,a,'before'));line.append(stageRow(a));}
-    if(!future.some(a=>a.levelKind==='stage'))line.append(pathOutlook(owner,'futurePlan','Планируемое'));
-    if(!future.some(a=>a.levelKind==='optimal'))line.append(pathOutlook(owner,'futureOptimal','Оптимальное'));
-    if(!future.some(a=>a.levelKind==='maximum'))line.append(pathOutlook(owner,'futureMaximum','Всегда возможно лучшее'));
-    if(blockSettingsOpen&&blockCanInsert(state,owner,(future.at(-1)||c).id,'after'))line.append(blockLevelAdd(owner,future.at(-1)||c,'after'));
+    blockFutureRows(selected,line,ss,c,future);
     screen.append(line);LifeGamePathStar.init(line);pathRailSetup(line);pathSunlight();
   }
   function renderBlockWorkOutlook(selected,target=screen) {
-    const owner=selected.id,ss=LifeGameStages.list(state,owner),cur=LifeGameStages.current(state,owner),path=state.blockStages.paths[owner],future=ss.slice(ss.indexOf(cur)+1).filter(s=>!s.passed),opt=future.find(s=>s.levelKind==='optimal');
-    const box=el('section','lg-work-outlook'),head=el('div','lg-work-outlook-head'),dawn=el('div','lg-work-dawn');dawn.setAttribute('aria-hidden','true');head.append(el('h3','','Впереди'),el('span','',selected.name));box.append(dawn,head);
-    const open=(stage,key)=>{blockPathViews.set(owner,'levels');go('blocks',owner,false,{target:stage?'path-stage:'+stage.id:'path-outlook:'+owner+':'+key});};
-    const before=future.filter(s=>s.levelKind==='stage'&&(!opt||future.indexOf(s)<future.indexOf(opt))),near=el('div','lg-work-near');
-    if(before.length){const stage=before[0],b=btn('','card lg-work-near-step',()=>open(stage)),copy=el('span','');copy.append(el('strong','','Планируемый'),el('small','',stage.name==='Планируемый'?'Следующий шаг':stage.name));b.append(designIcon('chevron'),copy);near.append(b);}box.append(near);
-    const optimal=btn('','card lg-work-optimal',()=>open(opt,'futureOptimal')),copy=el('span','');
-    copy.append(el('strong','',opt?.name||'Оптимальное'),el('small','',opt?'Оптимальный · через '+uiAmount(future.indexOf(opt)+1,['этап','этапа','этапов']):'Мой следующий ориентир'));optimal.append(designIcon('star'),copy);box.append(optimal);
-    target.append(box);
+    const owner=selected.id,ss=LifeGameStages.list(state,owner),c=LifeGameStages.current(state,owner),at=ss.indexOf(c),past=ss.filter((a,i)=>a.id!==c.id&&(i<at||a.passed)),future=ss.filter(a=>a.id!==c.id&&!past.includes(a));
+    const line=el('div','lg-levels lg-path-aesthetics lg-work-future-path');
+    blockFutureRows(selected,line,ss,c,future);
+    target.append(el('div','section-label','ВПЕРЕДИ — ТВОИ ВОЗМОЖНОСТИ'),line);
+    LifeGamePathStar.init(line);pathRailSetup(line);pathSunlight();
   }
   function renderBlockWork(selected) {
     const owner=selected.id,a=displayedStage(owner),c=LifeGameStages.current(state,owner),ss=LifeGameStages.list(state,owner);
