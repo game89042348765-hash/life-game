@@ -317,3 +317,16 @@ body:has(.lg-path-aesthetics)>nav:before,body:has(.lg-work-outlook)>nav:before{o
 #screen .lg-path-fold:not([open]) .lg-level-title h2{font-size:16px}
 #screen .lg-path-fold .lg-fold-body>.lg-path-future-footer{margin-top:15px}
 #screen .lg-path-fold>summary>.lg-work-heading{margin-bottom:0}
+/* Block context inside the current stage, without a second path rail. */
+#screen .lg-stage-support{margin:16px 0}
+#screen .lg-stage-support>details.card{padding:0;margin:0;border:1px solid #ffffff18;border-radius:14px;background:#ffffff02;box-shadow:none}
+#screen .lg-stage-support>details>summary{display:flex;align-items:center;gap:10px;min-height:62px;padding:14px;list-style:none;cursor:pointer}
+#screen .lg-stage-support>details>summary::-webkit-details-marker{display:none}
+#screen .lg-stage-support>details>summary:after{content:none}
+#screen .lg-stage-support .lg-path-disclosure-copy{flex:1;min-width:0}
+#screen .lg-stage-support .lg-path-disclosure-copy strong{display:block;font-size:13px;line-height:1.4}
+#screen .lg-stage-support .lg-path-disclosure-copy small{display:block;margin-top:5px;font-size:10px;line-height:1.5;color:var(--muted)}
+#screen .lg-stage-support summary>.design-icon,#screen .lg-stage-support .lg-path-chevron{width:15px;height:15px;flex:none}
+#screen .lg-stage-support .lg-path-disclosure-body{padding:0 14px 14px}
+#screen .lg-path-aesthetics>.lg-level>.lg-stage-preparation.card{height:auto;min-height:188px;border-color:#383838;background:var(--graphite-surface)}
+#screen .lg-stage-preparation .lg-path-stage-copy h2{font-size:18px}
