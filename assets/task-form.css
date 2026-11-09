@@ -406,3 +406,12 @@
 #editor.lg-task-create .lg-light-thread-title,
 #editor.lg-task-create .lg-light-thread-name {white-space:nowrap;overflow-wrap:normal;min-width:0;}
 .lg-c-context.lg-task-goal-tag {color:var(--green);font-size:11px;}
+
+/* The same rays as the path; only light intensity changes with the reward thread. */
+#editor.lg-task-create{isolation:isolate;background:linear-gradient(180deg,#151515,#101010)}
+#editor.lg-task-create::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;
+  background:var(--lg-dawn-rays),radial-gradient(ellipse 110% 85% at 50% 110%,rgba(255,190,80,.48),rgba(var(--accent-rgb),.16) 55%,transparent 90%);
+  -webkit-mask-image:linear-gradient(transparent 8%,#000 65%);mask-image:linear-gradient(transparent 8%,#000 65%);
+  opacity:var(--lt);
+}

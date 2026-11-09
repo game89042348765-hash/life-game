@@ -1,4 +1,4 @@
-/* Supplied path-v2 animation frames, with lifecycle cleanup for real application renders. */
+/* Light feedback for completed steps. Visuals only; the application owns all receipts. */
 'use strict';
 (()=>{
 let current=null;
@@ -13,68 +13,67 @@ function init(line){
   const wait=ms=>new Promise((resolve,reject)=>{if(disposed){reject(aborted());return;}const id=later(()=>{waiters.delete(id);resolve();},ms);waiters.set(id,reject);});
   const requestFrame=fn=>{const id=requestAnimationFrame(t=>{frames.delete(id);if(!disposed)fn(t);});frames.add(id);return id;};
   const animate=(node,keyframes,options)=>{if(disposed)throw aborted();const a=node.animate(keyframes,options);animations.add(a);a.finished.then(()=>animations.delete(a),()=>animations.delete(a));return a;};
-const pick=sel=>line.querySelector(':scope>'+sel);
-function marker(el){const cs=getComputedStyle(line),rail=parseFloat(cs.getPropertyValue('--lg-path-rail'))||0,lane=parseFloat(cs.getPropertyValue('--lg-path-lane'))||0;
-  const box=line.getBoundingClientRect(),r=el.getBoundingClientRect();return {x:r.left-box.left+rail-lane,y:r.top-box.top+26}}
-const put=(cls,p)=>{const e=document.createElement('div');e.className=cls;e.style.left=p.x+'px';e.style.top=p.y+'px';e.setAttribute('aria-hidden','true');line.append(e);return e};
-const glow=(px,warm=1)=>`drop-shadow(0 0 ${px}px rgba(${warm?'255,213,74':'239,107,116'},1)) drop-shadow(0 0 ${px*2}px rgba(${warm?'255,213,74,.8':'239,107,116,.7'}))`;
-
-// Звезда рождается на линии — на знаке этапа, где выполнено задание («Сейчас» или «Невыполненное»), и летит вниз.
-function route(check,article){const p0=marker(article),end=pick('.is-maximum')||[...line.querySelectorAll(':scope>.lg-level')].at(-1),pE=marker(end);
-  return {p0,dx:0,dy:0,d:pE.y-p0.y,k:0,end,len:pE.y-p0.y}}
-const T=(r,x,y,sc)=>`translate(${x}px,${y}px) scale(${sc})`;
-function arrive(end){end.classList.remove('lg-star-arrived');void end.offsetWidth;end.classList.add('lg-star-arrived');later(()=>end.classList.remove('lg-star-arrived'),800)}
-const MODES={
-  // «Сейчас»: звезда ярко вспыхивает на знаке, летит вниз и разгорается; линия за ней загорается золотом,
-  // пройденные знаки на миг вспыхивают; у цели золотая линия плавно гаснет.
-  async NOW(check,article){const r=route(check,article);
-    const star=put('lg-flying-star lg-bright',r.p0),tail=document.createElement('s'),rays=document.createElement('i'),core=document.createElement('b');star.append(tail,rays,core);
-    // вспышка на знаке «Сейчас» — звезда загорается сразу ярко
-    const halo=put('lg-charge',r.p0);animate(halo,[{transform:'scale(.2)',opacity:1},{transform:'scale(2.2)',opacity:0}],{duration:700,easing:'cubic-bezier(.2,.7,.3,1)'}).onfinish=()=>halo.remove();
-    animate(core,[{transform:'translate(-50%,-50%) scale(.3)',opacity:0,filter:glow(4)},{transform:'translate(-50%,-50%) scale(2.2) rotate(25deg)',opacity:1,filter:glow(16),offset:.5},{transform:'translate(-50%,-50%) scale(1.5)',opacity:1,filter:glow(12)}],{duration:380,easing:'ease-out',fill:'forwards'});
-    animate(rays,[{opacity:0,transform:'translate(-50%,-50%) scale(.4)'},{opacity:1,transform:'translate(-50%,-50%) scale(1.5)'}],{duration:380,fill:'forwards'});
-    await wait(330);
-    const F=Math.min(2600,1100+r.d*.8),o={duration:F,easing:'cubic-bezier(.4,0,.3,1)',fill:'forwards'};
-    animate(core,[{transform:'translate(-50%,-50%) scale(1.5)',filter:glow(12)},{transform:'translate(-50%,-50%) scale(2.1)',filter:glow(18)}],o);
-    animate(rays,[{opacity:1,transform:'translate(-50%,-50%) scale(1.5)'},{opacity:1,transform:'translate(-50%,-50%) scale(2.2)',offset:.9},{opacity:0,transform:'translate(-50%,-50%) scale(2.6)'}],o);
-    animate(tail,[{opacity:.6,height:'30px'},{opacity:1,height:'210px',offset:.7},{opacity:0,height:'40px'}],o);
-    const a=animate(star,[{transform:T(r,0,0,1)},{transform:T(r,0,r.d*.93,1),offset:.92},{transform:T(r,0,r.d,1),opacity:0}],o);
-    // линия загорается за звездой, пройденные знаки вспыхивают
-    const markers=[...line.querySelectorAll(':scope>.lg-level')].filter(el=>el!==article).map(el=>({el,y:marker(el).y})).filter(m=>m.y>r.p0.y);
-    const railGlow=put('lg-rail-glow',r.p0);
-    const box0=()=>line.getBoundingClientRect();
-    const tick=t=>{if(a.playState!=='running')return;const cy=core.getBoundingClientRect().top+core.getBoundingClientRect().height/2-box0().top;
-      railGlow.style.height=Math.max(0,cy-r.p0.y)+'px';
-      for(const m of markers)if(!m.done&&cy>=m.y){m.done=true;m.el.classList.add('lg-pass');later(()=>m.el.classList.remove('lg-pass'),900)}
-      requestFrame(tick)};requestFrame(tick);
-    await a.finished;star.remove();
-    animate(railGlow,[{opacity:1},{opacity:0}],{duration:900,fill:'forwards'}).onfinish=()=>railGlow.remove();
-    arrive(r.end)},
-
-  // «Невыполненное»: звезда набирает свет на месте (сияние, лучи), затем летит вниз, пролетая «Сейчас» насквозь; у цели растворяется
-  async MISSED(check,article){const r=route(check,article);
-    const star=put('lg-flying-star',r.p0),tail=document.createElement('s'),rays=document.createElement('i'),core=document.createElement('b');star.append(tail,rays,core);
-    const halo=put('lg-charge',r.p0),C=1400;
-    animate(halo,[{transform:'scale(.2)',opacity:0},{transform:'scale(1.6)',opacity:.9}],{duration:C,easing:'ease-in',fill:'forwards'});
-    animate(core,[{transform:'translate(-50%,-50%) scale(.2)',opacity:0,filter:glow(1)},{transform:'translate(-50%,-50%) scale(1.3)',opacity:1,filter:glow(9)}],{duration:C,easing:'ease-in',fill:'forwards'});
-    animate(rays,[{opacity:0,transform:'translate(-50%,-50%) scale(.3)'},{opacity:.8,transform:'translate(-50%,-50%) scale(1.2)'}],{duration:C,easing:'ease-in',fill:'forwards'});
-    await wait(C+50);
-    animate(halo,[{opacity:.9},{opacity:0,transform:'scale(2.4)'}],{duration:900,fill:'forwards'}).onfinish=()=>halo.remove();
-    const F=Math.min(2800,1000+r.len*.85),o={duration:F,easing:'cubic-bezier(.45,0,.3,1)',fill:'forwards'};
-    animate(core,[{transform:'translate(-50%,-50%) scale(1.3)',filter:glow(9)},{transform:'translate(-50%,-50%) scale(1.8)',filter:glow(13)}],o);
-    animate(tail,[{opacity:0,height:'0px'},{opacity:.7,height:'60px',offset:.3},{opacity:1,height:'130px',offset:.85},{opacity:0,height:'30px'}],o);
-    animate(rays,[{opacity:.8},{opacity:1,offset:.9},{opacity:0}],o);
-    await animate(star,[{transform:T(r,0,0,1)},{transform:T(r,r.dx,r.dy+r.d*.92,1),offset:.92},{transform:T(r,r.dx,r.dy+r.d,1),opacity:0}],o).finished;
-    star.remove();arrive(r.end)}
-};
-
-  async function launch(mode){
+  const pick=sel=>line.querySelector(':scope>'+sel);
+  function marker(node){
+    const cs=getComputedStyle(line),rail=parseFloat(cs.getPropertyValue('--lg-path-rail'))||0,lane=parseFloat(cs.getPropertyValue('--lg-path-lane'))||0;
+    const box=line.getBoundingClientRect(),r=node.getBoundingClientRect();
+    return {x:r.left-box.left+rail-lane,y:r.top-box.top+26};
+  }
+  function put(cls,p){const n=document.createElement('div');n.className='lg-path-effect '+cls;n.style.left=p.x+'px';n.style.top=p.y+'px';n.setAttribute('aria-hidden','true');line.append(n);return n;}
+  function echo(node,reduced=false){
+    const ring=put('lg-path-arrival',marker(node));
+    animate(ring,[{transform:'translate(-50%,-50%) scale('+ (reduced?'1':'.45') +')',opacity:.8},{transform:'translate(-50%,-50%) scale('+ (reduced?'1':'2.6') +')',opacity:0}],{duration:reduced?220:760,easing:'ease-out'}).onfinish=()=>ring.remove();
+  }
+  function lightMarker(node){
+    node.classList.add('lg-pass');later(()=>node.classList.remove('lg-pass'),850);
+    if(node.classList.contains('is-optimal'))echo(node);
+  }
+  async function recover(article){
+    // Closing an unfinished loop: scattered points converge and the open ring becomes whole.
+    const recovery=put('lg-path-recovery',marker(article));recovery.dataset.phase='restore';
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 28 28');
+    const circle=document.createElementNS(svg.namespaceURI,'circle');circle.setAttribute('cx','14');circle.setAttribute('cy','14');circle.setAttribute('r','10');svg.append(circle);recovery.append(svg);
+    animate(circle,[{strokeDashoffset:63,opacity:.25},{strokeDashoffset:0,opacity:1}],{duration:780,easing:'cubic-bezier(.3,0,.3,1)',fill:'forwards'});
+    for(const [x,y] of [[-23,-17],[22,-20],[-24,17],[23,19]]){
+      const point=document.createElement('i');recovery.append(point);
+      animate(point,[{transform:`translate(${x}px,${y}px) scale(.6)`,opacity:0},{opacity:1,offset:.2},{transform:'translate(0,0) scale(.3)',opacity:0}],{duration:780,easing:'cubic-bezier(.4,0,.5,1)',fill:'forwards'});
+    }
+    await wait(850);echo(article);
+    animate(recovery,[{opacity:1},{opacity:0}],{duration:320,fill:'forwards'}).onfinish=()=>recovery.remove();
+  }
+  async function travel(article,mode){
+    const start=marker(article),end=pick('.is-maximum')||[...line.querySelectorAll(':scope>.lg-level')].at(-1),distance=Math.max(0,marker(end).y-start.y);
+    const pulse=put('lg-path-pulse '+(mode==='MISSED'?'is-restored':'is-forward'),start);pulse.dataset.mode=mode;
+    for(const tag of ['s','i','b'])pulse.append(document.createElement(tag));
+    const origin=put('lg-path-origin',start);
+    animate(origin,[{transform:'translate(-50%,-50%) scale(.45)',opacity:.9},{transform:'translate(-50%,-50%) scale(2.1)',opacity:0}],{duration:520,easing:'ease-out'}).onfinish=()=>origin.remove();
+    const duration=Math.min(2500,1050+distance*.65),options={duration,easing:'cubic-bezier(.35,0,.25,1)',fill:'forwards'};
+    animate(pulse.querySelector('s'),[{height:'18px',opacity:0},{height:'120px',opacity:.9,offset:.3},{height:'180px',opacity:.8,offset:.8},{height:'36px',opacity:0}],options);
+    animate(pulse.querySelector('i'),[{transform:'translate(-50%,-50%) scale(.6)',opacity:.5},{transform:'translate(-50%,-50%) scale(1.3)',opacity:1,offset:.6},{transform:'translate(-50%,-50%) scale(1.8)',opacity:0}],options);
+    const flight=animate(pulse,[{transform:'translateY(0)',opacity:1},{transform:`translateY(${distance}px)`,opacity:0}],options);
+    const rail=put('lg-rail-glow',start),marks=[...line.querySelectorAll(':scope>.lg-level')].filter(n=>n!==article).map(node=>({node,y:marker(node).y,lit:false})).filter(m=>m.y>start.y);
+    const tick=()=>{
+      if(flight.playState!=='running')return;
+      const front=pulse.getBoundingClientRect().top-line.getBoundingClientRect().top;
+      rail.style.height=Math.max(0,front-start.y)+'px';
+      for(const m of marks)if(!m.lit&&front>=m.y){m.lit=true;lightMarker(m.node);}
+      requestFrame(tick);
+    };requestFrame(tick);
+    await flight.finished;pulse.remove();
+    for(const m of marks)if(!m.lit)lightMarker(m.node);
+    animate(rail,[{opacity:1},{opacity:0}],{duration:750,fill:'forwards'}).onfinish=()=>rail.remove();
+    echo(end);
+  }
+  async function launch(source){
     if(disposed||busy||!line.isConnected)return;
-    const article=typeof mode==='string'?pick(mode==='MISSED'?'.lg-path-missed':'.is-current'):mode?.closest('.lg-path-aesthetics>.lg-level');
+    const article=typeof source==='string'?pick(source==='MISSED'?'.lg-path-missed':'.is-current'):source?.closest('.lg-path-aesthetics>.lg-level');
     if(!article||!line.contains(article)||!pick('.is-maximum'))return;
-    busy=true;
-    try{await (article.classList.contains('lg-path-missed')?MODES.MISSED:MODES.NOW)(null,article);}
-    catch(error){if(error.name!=='AbortError')console.warn('Эффект пути недоступен:',error);}
+    const mode=article.classList.contains('lg-path-missed')?'MISSED':'NOW';busy=true;
+    try{
+      if(matchMedia('(prefers-reduced-motion: reduce)').matches){echo(article,true);return;}
+      if(mode==='MISSED')await recover(article);
+      await travel(article,mode);
+    }catch(error){if(error.name!=='AbortError')console.warn('Эффект пути недоступен:',error);}
     finally{busy=false;}
   }
   function dispose(){
@@ -83,11 +82,12 @@ const MODES={
     for(const id of timers)clearTimeout(id);timers.clear();
     for(const id of frames)cancelAnimationFrame(id);frames.clear();
     for(const a of animations)a.cancel();animations.clear();
-    line.querySelectorAll('.lg-flying-star,.lg-charge,.lg-rail-glow,.lg-dawn-back').forEach(n=>n.remove());
-    line.querySelectorAll('.lg-pass,.lg-star-arrived').forEach(n=>n.classList.remove('lg-pass','lg-star-arrived'));
+    line.querySelectorAll('.lg-path-effect,.lg-dawn-back').forEach(n=>n.remove());
+    line.querySelectorAll('.lg-pass').forEach(n=>n.classList.remove('lg-pass'));
   }
   current={line,launch,dispose};
 }
 function clear(){current?.dispose();current=null;}
+// Keep the existing application integration; only the visual language has changed.
 window.LifeGamePathStar=Object.freeze({init,clear,launch:source=>current?.launch(source)});
 })();
