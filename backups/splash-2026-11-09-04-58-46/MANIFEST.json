@@ -1,0 +1,21 @@
+{
+  "saved_at": "2026-11-09-04-58-46",
+  "app_backup": "index-2026-11-09-04-58-46.html",
+  "files": [
+    {
+      "path": "assets/splash-sunrise.js",
+      "bytes": 11887,
+      "sha256": "fcdb21886e60ba26b5acff248d424c742ee7cad07e65af476ad38194c5ff83fa"
+    },
+    {
+      "path": "assets/splash-sunrise.css",
+      "bytes": 7669,
+      "sha256": "a90acf5b469439da8aa808b7fbeeb5bc123ce1c648f8b813c445c17eed056c9a"
+    },
+    {
+      "path": "assets/images/sunrise-splash.jpg",
+      "bytes": 419537,
+      "sha256": "8ad58071d67495b47ae3d5bd8f594405ce63d96c14f3f52b8f8b18d70e0edd93"
+    }
+  ]
+}

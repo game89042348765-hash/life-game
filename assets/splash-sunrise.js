@@ -42,56 +42,12 @@
   splash.className = 'lg-sunrise';
   splash.setAttribute('aria-label','Заставка LifeGame. Больше жизни. В каждом дне.');
   splash.setAttribute('tabindex','-1');
-  splash.innerHTML = ` <div class="lg-sunrise-ambient-back"></div>
- <div class="lg-sunrise-frame">
-  <div class="lg-sunrise-poster"></div>
-  <div class="lg-sunrise-top-veil"></div>
-  <div class="lg-sunrise-sun-glow"></div>
-  <svg class="lg-sunrise-ring" viewBox="0 0 941 1672" aria-hidden="true" preserveAspectRatio="none">
-   <circle cx="468" cy="641" r="459"></circle>
-  </svg>
-  <div class="lg-sunrise-horizon-flare"></div>
-  <div class="lg-sunrise-embers" aria-hidden="true"><i class="lg-sunrise-ember" style="--x:94%;--y:21%;--delay:-3.02s;--dur:2.64s;--s:4px"></i>
-<i class="lg-sunrise-ember" style="--x:62%;--y:35%;--delay:1.26s;--dur:2.13s;--s:2px"></i>
-<i class="lg-sunrise-ember" style="--x:25%;--y:31%;--delay:-2.03s;--dur:2.42s;--s:4px"></i>
-<i class="lg-sunrise-ember" style="--x:85%;--y:26%;--delay:-1.67s;--dur:3.66s;--s:3px"></i>
-<i class="lg-sunrise-ember" style="--x:75%;--y:18%;--delay:-3.08s;--dur:4.2s;--s:5px"></i>
-<i class="lg-sunrise-ember" style="--x:77%;--y:32%;--delay:0.24s;--dur:4.27s;--s:4px"></i>
-<i class="lg-sunrise-ember" style="--x:64%;--y:52%;--delay:-1.17s;--dur:2.28s;--s:5px"></i>
-<i class="lg-sunrise-ember" style="--x:22%;--y:54%;--delay:-1.98s;--dur:2.5s;--s:5px"></i>
-<i class="lg-sunrise-ember" style="--x:66%;--y:31%;--delay:-1.06s;--dur:2.83s;--s:2px"></i>
-<i class="lg-sunrise-ember" style="--x:38%;--y:20%;--delay:-1.06s;--dur:3.37s;--s:2px"></i>
-<i class="lg-sunrise-ember" style="--x:95%;--y:26%;--delay:-2.45s;--dur:3.54s;--s:2px"></i>
-<i class="lg-sunrise-ember" style="--x:71%;--y:36%;--delay:-2.26s;--dur:2.15s;--s:2px"></i>
-<i class="lg-sunrise-ember" style="--x:21%;--y:41%;--delay:-1.04s;--dur:2.16s;--s:2px"></i>
-<i class="lg-sunrise-ember" style="--x:87%;--y:48%;--delay:-2.39s;--dur:2.13s;--s:4px"></i>
-<i class="lg-sunrise-ember" style="--x:55%;--y:75%;--delay:-0.4s;--dur:2.89s;--s:4px"></i>
-<i class="lg-sunrise-ember" style="--x:80%;--y:19%;--delay:0.9s;--dur:3.03s;--s:3px"></i>
-<i class="lg-sunrise-ember" style="--x:23%;--y:50%;--delay:1.29s;--dur:2.69s;--s:4px"></i>
-<i class="lg-sunrise-ember" style="--x:71%;--y:40%;--delay:0.15s;--dur:3.97s;--s:4px"></i>
-<i class="lg-sunrise-ember" style="--x:14%;--y:51%;--delay:-1.07s;--dur:3.3s;--s:2px"></i>
-<i class="lg-sunrise-ember" style="--x:94%;--y:41%;--delay:-2.21s;--dur:2.27s;--s:4px"></i>
-<i class="lg-sunrise-ember" style="--x:47%;--y:47%;--delay:-1.36s;--dur:3.18s;--s:5px"></i>
-<i class="lg-sunrise-ember" style="--x:67%;--y:59%;--delay:-1.31s;--dur:3.76s;--s:3px"></i>
-<i class="lg-sunrise-ember" style="--x:85%;--y:31%;--delay:-0.24s;--dur:3.1s;--s:4px"></i>
-<i class="lg-sunrise-ember" style="--x:64%;--y:68%;--delay:-2.61s;--dur:2.82s;--s:3px"></i>
-<i class="lg-sunrise-ember" style="--x:58%;--y:23%;--delay:-0.37s;--dur:2.68s;--s:3px"></i>
-<i class="lg-sunrise-ember" style="--x:96%;--y:61%;--delay:0.46s;--dur:3.77s;--s:4px"></i>
-<i class="lg-sunrise-ember" style="--x:32%;--y:25%;--delay:-3.23s;--dur:3.61s;--s:2px"></i>
-<i class="lg-sunrise-ember" style="--x:58%;--y:61%;--delay:1.46s;--dur:4.23s;--s:4px"></i>
-<i class="lg-sunrise-ember" style="--x:48%;--y:26%;--delay:0.18s;--dur:3.89s;--s:5px"></i>
-<i class="lg-sunrise-ember" style="--x:90%;--y:76%;--delay:-0.9s;--dur:2.22s;--s:5px"></i></div>
-  <div class="lg-sunrise-light-sweep"></div>
-  <div class="lg-sunrise-bar-eraser"></div>
-  <div class="lg-sunrise-loading" aria-hidden="true"><div class="lg-sunrise-loading-fill"></div></div>
- </div>
-    <div class="lg-sunrise-controls">
-      <button type="button" data-sunrise="sound" aria-label="Включить звук" aria-pressed="false"></button>
-    </div>
-    <button type="button" class="lg-sunrise-disable" data-sunrise="disable">Не показывать при запуске</button>`;
+  splash.innerHTML = `<div class="lg-sunrise-controls"><button type="button" class="lg-splash-ui lg-splash-snd" data-sunrise="sound" aria-label="Включить звук" aria-pressed="false"></button></div><button type="button" class="lg-sunrise-disable lg-splash-ui lg-splash-skip" data-sunrise="disable">Не показывать при запуске</button>`;
   document.body.append(splash);
   const enableSound = splash.querySelector('[data-sunrise="sound"]');
-  let active = false, pending = false, closeTimer, previousFocus;
+  let active = false, pending = false, closing = false, generation = 0, scene = null, closeTimer, previousFocus;
+  const ART_URL = new URL('images/splash-path.jpg',document.currentScript.src).href;
+  splash.style.setProperty('--art',`url("${ART_URL}")`);
   let audio = null, played = false;
   const voices = [];
   let imageReady;
@@ -99,7 +55,7 @@
     if (!imageReady) imageReady = new Promise((resolve,reject) => {
       const img = new Image();
       img.onload = resolve; img.onerror = reject;
-      img.src = new URL('images/sunrise-splash.jpg', document.currentScript?.src || new URL('assets/splash-sunrise.js',document.baseURI)).href;
+      img.src = ART_URL;
     });
     return imageReady;
   }
@@ -152,20 +108,27 @@
   }
   function finish() {
     clearTimeout(closeTimer);
-    active = false;
+    generation++;active = false;pending = false;closing = false;
+    scene?.stop();scene=null;
     stopAudio();
-    splash.classList.remove('is-playing');
+    splash.classList.remove('is-playing','lg-splash-out');
     if (splash.open) splash.close();
     document.documentElement.classList.remove('lg-sunrise-open');
     if (previousFocus?.isConnected) previousFocus.focus({preventScroll:true});
   }
+  function dismiss(){
+    if(!active||closing)return;
+    closing=true;clearTimeout(closeTimer);scene?.stop(false);stopAudio();
+    splash.classList.add('lg-splash-out');closeTimer=setTimeout(finish,650);
+  }
   async function show(manual = false) {
-    if (active || pending) return;
-    pending = true;
+    if (active || pending || closing) return;
+    const ticket=++generation;pending = true;
     // Keep this request inside the manual click's user activation.
     if (manual) requestSound();
     try {
       await artReady();
+      if(ticket!==generation)return;
       if (document.hidden) { stopAudio(); return; }
       if (!manual) {
         prefs = readPrefs(); mode.value = prefs.mode;
@@ -179,17 +142,21 @@
       active = true;
       document.documentElement.classList.add('lg-sunrise-open');
       splash.classList.add('is-playing');
+      splash.querySelector('[data-sunrise="disable"]').textContent='Не показывать при запуске';
+      scene=LifeGameSplashScene.mount(splash,{onComplete:dismiss,onError:()=>{status.textContent='Не удалось показать анимацию. Приложение доступно как обычно.';finish();}});
       requestSound(); playNotes(); syncSoundButton();
-      closeTimer = setTimeout(finish,4500);
+      closeTimer = setTimeout(finish,7300);
+      scene.start();
     } catch {
       status.textContent = 'Не удалось открыть заставку. Приложение доступно как обычно.';
       finish();
       imageReady = null;
-    } finally { pending = false; }
+    } finally { if(ticket===generation)pending = false; }
   }
   enableSound.addEventListener('click',() => {
-    if (soundOn() && audio?.state === 'running') {
-      sounds.click();
+    if (enableSound.getAttribute('aria-pressed') === 'true') {
+      if (sounds.checked && !sounds.disabled) sounds.click();
+      stopAudio();
     } else {
       if (!sounds.checked && !sounds.disabled) sounds.click();
       requestSound();
@@ -197,12 +164,13 @@
     syncSoundButton();
   });
   splash.querySelector('[data-sunrise="disable"]').addEventListener('click',() => {
-    if (save({...prefs,mode:'off'})) { status.textContent = 'Автопоказ выключен. Ручной просмотр доступен.'; finish(); }
+    if (save({...prefs,mode:'off'})) { status.textContent = 'Автопоказ выключен. Ручной просмотр доступен.'; dismiss(); }
     else splash.querySelector('[data-sunrise="disable"]').textContent = 'Не удалось сохранить · повторить';
   });
-  splash.addEventListener('cancel',e => { e.preventDefault(); finish(); });
+  splash.addEventListener('click',e=>{if(!e.target.closest('button'))dismiss();});
+  splash.addEventListener('cancel',e => { e.preventDefault(); dismiss(); });
   splash.addEventListener('close',() => { if (active) finish(); });
-  splash.addEventListener('animationend',e => { if (e.target === splash && e.animationName === 'lg-sunrise-splash-exit') finish(); });
+  splash.addEventListener('animationend',e => { if (e.target === splash && e.animationName === 'lg-splash-out' && closing) finish(); });
   mode.addEventListener('change',() => {
     if (save({...prefs,mode:mode.value})) status.textContent = prefs.mode === 'off' ? 'Автопоказ выключен. Ручной просмотр доступен.' : 'Режим показа сохранён.';
     else mode.value = prefs.mode;
