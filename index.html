@@ -2956,7 +2956,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 <link rel="stylesheet" href="assets/block-path-aesthetics.css?v=2">
 <link rel="stylesheet" href="assets/path-v2.css?v=3">
 <link rel="stylesheet" href="assets/path-fx.css?v=1">
-<link rel="stylesheet" href="assets/task-form.css?v=4">
+<link rel="stylesheet" href="assets/task-form.css?v=5">
 <link rel="stylesheet" href="assets/wallet-counter.css?v=1">
 </head>
 <body>
@@ -3047,7 +3047,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 <script src="assets/calendar-links.js?v=1"></script>
 <script src="assets/light-thread.js?v=2"></script>
 <script src="assets/path-v2.js?v=4"></script>
-<script src="assets/task-form.js?v=7"></script>
+<script src="assets/task-form.js?v=8"></script>
 <script src="assets/legacy-data.js?v=levels-2"></script>
 <script>
 "use strict";
@@ -6978,16 +6978,30 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
 
   function editTaskDays(id) {
-    const task = state.tasks.find(x => x.id === id);
-    if (!task || task.archivedAt !== null || !taskBlockIsActive(state, task.block)) return;
-    const stagePicker=taskStagePicker(task.block,task.stageId);
-    const goalPicker = taskGoalPicker(task.block, task.goalId,task.stageId);
-    openForm("Редактировать задание", [
-      nameField(task.name),
-      numberField("reward", "Награда в монетах", task.reward, 100000, 0),
-      { key: "block", label: "Блок", value: task.block, options: [[INBOX_BLOCK_ID,"Быстрое добавление"],...state.blocks.filter(x => x.archivedAt === null).map(x => [x.id, x.name])] },
-      { key: "weekdays", type: "weekdays", value: task.weekdays }
-    ], values => transact(data => {
+    const task=state.tasks.find(x=>x.id===id);
+    if(!healthy||!task||task.archivedAt!==null||!taskBlockIsActive(state,task.block))return;
+    const expected=JSON.stringify(task),date=today(),record=completion(state,task),old=task.type==='once'&&record&&record.date!==date;
+    const initialSelected=task.type==='daily'?task.inDayBuilder:!!state.dayPlans[date]?.includes(id);
+    const initialVisiblePlan=taskIsActive(state,task)&&!old&&(task.type==='daily'?initialSelected&&!(state.daySkips[date]||[]).includes(id):initialSelected);
+    const stagePicker=taskStagePicker(task.block,task.stageId),goalPicker=taskGoalPicker(task.block,task.goalId,task.stageId);
+    editor.replaceChildren();editor.classList.add('lg-task-create');
+    const view=LifeGameTaskForm.create({title:'Редактировать задание',submitLabel:'Сохранить',name:task.name,reward:task.reward,weekdays:task.weekdays,goalChecked:task.leadsToGoal,
+      canPlan:taskIsActive(state,task)&&!old,inDayBuilder:initialVisiblePlan,planDisabledHint:old?'Выполнено в другой день':undefined,
+      onLevel:glow=>editor.style.setProperty('--lt',glow.toFixed(3)),onCancel:()=>editor.close()});
+    const plan=view.form.querySelector('#toggle-day-builder');
+    const advanced=el('details','lg-task-edit-advanced');advanced.append(el('summary','','Расположение и связь с целью'));
+    const label=el('label','lg-label','Блок'),block=el('select','lg-input');block.id='edit-block';label.htmlFor=block.id;
+    for(const [value,text]of [[INBOX_BLOCK_ID,'Быстрое добавление'],...state.blocks.filter(b=>b.archivedAt===null).map(b=>[b.id,b.name])]){const option=el('option','',text);option.value=value;block.append(option);}block.value=task.block;
+    goalPicker.element.querySelector('legend').textContent='Связь с конкретной целью';
+    goalPicker.element.querySelector('.task-goal-toggle span').textContent='Привязать к цели';
+    const exactLabel=el('label','lg-label','Точная награда'),exact=el('input','lg-input');exact.type='number';exact.id='edit-task-exact-reward';exact.min=0;exact.max=100000;exact.step=1;exact.inputMode='numeric';exact.value=task.reward;exactLabel.htmlFor=exact.id;
+    exact.addEventListener('input',()=>{if(exact.value!==''&&integer(Number(exact.value),0,100000))view.thread.set(Number(exact.value));});
+    const syncReward=()=>{exact.value=view.thread.value();};view.thread.input.addEventListener('input',syncReward);view.thread.input.addEventListener('change',syncReward);
+    advanced.append(label,block,stagePicker.element,goalPicker.element,exactLabel,exact);view.form.querySelector('.lg-actions').before(advanced);
+    const updateContext=()=>{plan.disabled=block.value!==INBOX_BLOCK_ID&&stagePicker.value()!==LifeGameStages.current(state,block.value)?.id||!!old;if(plan.disabled)plan.checked=false;view.refresh();};
+    stagePicker.select.addEventListener('change',()=>{goalPicker.update(block.value,true,stagePicker.value());updateContext()});
+    block.addEventListener('change',()=>{stagePicker.update(block.value);goalPicker.update(block.value,true,stagePicker.value());updateContext()});
+    const save=values => transact(data => {
       const actual = data.tasks.find(x => x.id === id);
       if (!actual || actual.archivedAt !== null || !taskBlockIsActive(data, actual.block) ||
           !taskBlockIsActive(data, values.block)) fail("Блок или задание недоступны в архиве.");
@@ -7000,11 +7014,14 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
           fail("Выбранная цель больше недоступна.");
         }
       }
-      const selected = actual.type === "daily" ? actual.inDayBuilder
-        : data.dayPlans[today()].includes(id);
+      if(JSON.stringify(actual)!==expected)fail('Задание изменилось. Открой редактор заново.');
+      if(values.inDayBuilder && today()!==date)fail('Наступил новый день. Проверь Конструктор заново.');
+      const planChanged=values.inDayBuilder!==initialVisiblePlan||values.block!==task.block||stagePicker.value()!==task.stageId;
+      const selected=planChanged?values.inDayBuilder:initialSelected;
       actual.weekdays = values.weekdays;
       actual.name = values.name;
       actual.reward = values.reward;
+      actual.leadsToGoal = values.goalChecked;
       if(actual.block===INBOX_BLOCK_ID&&values.block!==INBOX_BLOCK_ID)LifeGameCalendarLinks.remember(data,"task",actual.id);
       actual.block = values.block;
       actual.stageId = stagePicker.value();
@@ -7018,14 +7035,22 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       }
       actual.type = nextType;
       actual.inDayBuilder = actual.type === "daily" && selected;
+      if(!plan.disabled&&planChanged){
+        const ids=new Set(data.dayPlans[today()]||[]);
+        if(selected&&taskIsActive(data,actual)){ids.add(id);data.daySkips[today()]=(data.daySkips[today()]||[]).filter(x=>x!==id);}else ids.delete(id);
+        data.dayPlans[today()]=[...ids];
+      }
       ensureDay(data);
-    }, false), "Сохранить", values=>{if(page==="blocks"&&blockId===values.block){viewedStageId=stagePicker.value();if(viewedStageId!==LifeGameStages.current(state,blockId)?.id)blockPathViews.set(blockId,'work');render();}});
-    editor.querySelector(".form-actions")?.before(stagePicker.element,goalPicker.element);
-    stagePicker.select.addEventListener("change",()=>goalPicker.update(editor.querySelector("#edit-block").value,true,stagePicker.value()));
-    editor.querySelector("#edit-block")?.addEventListener("change", event => {
-      stagePicker.update(event.target.value);
-      goalPicker.update(event.target.value, true,stagePicker.value());
+    }, false);
+    view.form.addEventListener('submit',event=>{
+      event.preventDefault();const values={...view.values(),block:block.value};
+      if(!validName(values.name)){view.error('Напиши название задания.');return;}
+      if(exact.value===''||!integer(Number(exact.value),0,100000)){view.error('Награда — целое число от 0 до 100000.',false);exact.focus();return;}
+      if(!save(values)){view.error('Не удалось сохранить. Проверь сообщение приложения; введённое осталось в форме.',false);return;}
+      editor.close();if(page==='blocks'&&blockId===values.block){viewedStageId=stagePicker.value();if(viewedStageId!==LifeGameStages.current(state,blockId)?.id)blockPathViews.set(blockId,'work');render();}
     });
+    editor.append(view.form);editor.addEventListener('close',()=>{editor.classList.remove('lg-task-create');editor.style.removeProperty('--lt');},{once:true});
+    uiShowDialog(editor);const heading=view.form.querySelector('h2');heading.tabIndex=-1;heading.focus();
   }
 
   function togglePlan(id, checked) {
@@ -7101,7 +7126,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const row=el('div','lg-c-footer');row.append(value,...controls);return row;
   }
   function lgCardDay(control) {
-    control.classList.add('lg-c-day');const span=control.querySelector('span');span.prepend(designIcon('calendar'));return control;
+    control.classList.add('lg-c-day');const span=control.querySelector('span');span.prepend(LifeGameTaskForm.constructorIcon());return control;
   }
   function lgCardProgress(q,stages=false) {
     const box=el('div','lg-c-progress'),line=el('div','lg-c-progress-line');
@@ -7113,6 +7138,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   function taskCard(task) {
     const record=completion(state,task),old=task.type==='once'&&record&&record.date!==today();
     const card=el('article','card compact-task-card lg-card-v2'+(record?' done':''));uiEntity(card,'task',task.id);
+    if(page==='blocks'){card.classList.add('lg-task-reward-glow');card.style.setProperty('--task-glow',Math.pow(LifeGameLightThread.nearestIndex(record?record.reward:task.reward)/6,1.4).toFixed(3));}
     const schedule=!task.weekdays.length?'Разовое':task.weekdays.length===7?'Ежедневно':task.weekdays.map(day=>WEEKDAYS[day-1]).join(', ');
     card.append(lgCardTop(task,'tasks',record?(record.date===today()?'Выполнено сегодня':'Выполнено '+record.date):schedule,'list',!!record),el('div','task-title lg-c-title',task.name));
     if(mainDayTask()?.id===task.id){const mark=el('div','lg-c-context lg-main-mark');mark.append(designIcon('flag'),el('span','','Главное сегодня'));card.append(mark);}
@@ -7124,7 +7150,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     complete.disabled=!record&&!taskIsActive(state,task)&&!taskIsPathBacklog(state,task);
     complete.setAttribute('aria-label',(record?'Отменить выполнение: ':'Выполнить: ')+task.name);
     card.append(lgCardFooter(lgCardValue(record?record.reward:task.reward,record?'Получено':'За выполнение',false,!record),complete));
-    card.append(lgCardDay(checkbox(!taskIsActive(state,task)?'После перехода к этапу':old?'Выполнено в другой день':'Конструктор дня',taskIsActive(state,task)&&(task.type==='daily'?task.inDayBuilder&&!(state.daySkips[today()]||[]).includes(task.id):view.planIds.has(task.id)),checked=>togglePlan(task.id,checked),!!old||!taskIsActive(state,task))));
+    card.append(lgCardDay(checkbox('Конструктор',taskIsActive(state,task)&&(task.type==='daily'?task.inDayBuilder&&!(state.daySkips[today()]||[]).includes(task.id):view.planIds.has(task.id)),checked=>togglePlan(task.id,checked),!!old||!taskIsActive(state,task))));
     if(task.type==='once'&&record&&record.taskType!=='once')card.append(el('p','meta','Выполнение относится к прежнему расписанию или старой истории. Отмена через разовую карточку недоступна.'));
     return card;
   }
@@ -7211,7 +7237,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const final=state.completions.find(x=>x.id===q.finalCompletionId),expand=btn(expandedStages.has(q.id)?'Скрыть этапы':'Открыть этапы','button secondary lg-c-action',()=>{if(expandedStages.has(q.id))expandedStages.delete(q.id);else expandedStages.add(q.id);render();});
     expand.setAttribute('aria-expanded',String(expandedStages.has(q.id)));expand.setAttribute('aria-label',(expandedStages.has(q.id)?'Скрыть':'Открыть')+' этапы: '+q.name);
     card.append(lgCardFooter(lgCardValue(final?.reward??q.reward,done?'Достижение получено':'За достижение',false,!done),expand));
-    card.append(lgCardDay(checkbox('Конструктор дня',q.showInDay,checked=>transact(d=>{const actual=d.quests.find(x=>x.id===q.id);if(!actual||actual.archivedAt!==null)fail('Квест находится в архиве.');actual.showInDay=checked;},false))));
+    card.append(lgCardDay(checkbox('Конструктор',q.showInDay,checked=>transact(d=>{const actual=d.quests.find(x=>x.id===q.id);if(!actual||actual.archivedAt!==null)fail('Квест находится в архиве.');actual.showInDay=checked;},false))));
     return card;
   }
 
