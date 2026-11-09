@@ -2953,10 +2953,10 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
 .lg-save-signal{top:auto;right:auto;margin:0;overflow:visible}.lg-save-signal::backdrop{background:transparent;pointer-events:none}
 </style>
-<link rel="stylesheet" href="assets/block-path-aesthetics.css?v=10">
+<link rel="stylesheet" href="assets/block-path-aesthetics.css?v=11">
 <link rel="stylesheet" href="assets/path-v2.css?v=3">
 <link rel="stylesheet" href="assets/path-fx.css?v=1">
-<link rel="stylesheet" href="assets/task-form.css?v=9">
+<link rel="stylesheet" href="assets/task-form.css?v=10">
 <link rel="stylesheet" href="assets/wallet-counter.css?v=2">
 </head>
 <body>
@@ -5760,8 +5760,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     for(const a of [...past].reverse()){if(blockSettingsOpen)reel.append(btn('Добавить этап','button secondary lg-level-insert',()=>blockStageForm(null,owner,{anchorId:a.id,direction:'before',history:true})));reel.append(pathStageMemory(a,owner,ss.indexOf(a)));}
     historyBody.append(reel);history.append(historyBody);pathDisclosure(history,open=>blockHistoryOpen.set(owner,open));historyRow.append(history);line.append(historyRow);
     const fact=el('article','lg-level lg-level-fact'),factCard=btn('','card lg-level-summary',()=>blockFactForm(owner),true),factHead=el('div','lg-level-title');factHead.append(el('h2','','Фактический'),el('span','lg-level-tag','Точка опоры'));factCard.append(factHead,el('p','meta',path.fact||'Нажми, чтобы описать состояние'));fact.append(factCard);line.append(fact);
-    const missed=el('article','lg-level lg-path-missed');missed.append(blockMissedDetails(owner));line.append(missed);
-    line.append(stageRow(c));const planned=el('article','lg-level lg-path-planned');renderBlockCalendar(selected,planned);line.append(planned);
+    line.append(stageRow(c));
     line.append(el('div','section-label','ВПЕРЕДИ — ТВОИ ВОЗМОЖНОСТИ'));
     blockFutureRows(selected,line,ss,c,future);
     screen.append(line);LifeGamePathStar.init(line);pathRailSetup(line);pathSunlight();
@@ -5784,9 +5783,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     blockViewSwitch(owner,a.id===c.id?'work':null);
     const work=el('div','lg-work-path'),stageCard=el('section','card lg-stage-design');screen.append(work);work.append(stageCard);const head=el('section','lg-work-heading'),more=btn('⋯','more-button',()=>stageMenu(a.id));more.setAttribute('aria-label','Действия с этапом '+a.name);head.append(el('div','lg-level-kicker',a.id===c.id?'Текущий этап':'Содержимое этапа'),el('h2','',a.name),more);stageCard.append(head);
     if(a.id!==c.id){stageCard.append(el('p','meta',LifeGameStages.unlocked(state,a)?'Режим подготовки. Выполнение — после перехода.':LifeGameStages.lockText(state,a)));if(LifeGameStages.unlocked(state,a))stageCard.append(btn('Сделать текущим','button secondary full',()=>makeStageCurrent(a.id),true));}
-    if(a.id===c.id){const missed=el('div','lg-stage-support');missed.append(blockMissedDetails(owner));stageCard.append(missed);}
     renderBlockStageContents(selected,a,stageCard);
-    if(a.id===c.id){const planned=el('div','lg-stage-support');renderBlockCalendar(selected,planned);stageCard.append(planned);blockStageNext(owner,stageCard);}
+    if(a.id===c.id)blockStageNext(owner,stageCard);
     if(blockSettingsOpen&&a.id!==c.id){const add=el('div','lg-level-controls');for(const direction of ['before','after'])if(blockCanInsert(state,owner,a.id,direction)){const button=blockLevelAdd(owner,a,direction);button.textContent='Добавить этап';add.append(button);}if(add.children.length)work.append(add);}
     pathSunlight();
   }
@@ -6981,6 +6979,14 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       goalId: () => check.checked ? select.value || null : null };
   }
 
+  function fitTaskCreationPage(form){
+    let frame=0;
+    const fit=()=>{frame=0;if(!editor.open||!form.isConnected)return;const cs=getComputedStyle(editor),available=Math.max(1,editor.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom)-1),natural=Math.max(form.offsetHeight,form.scrollHeight,1);editor.style.setProperty('--task-page-scale',String(Math.min(1,available/natural)));editor.scrollTop=0;};
+    const schedule=()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(fit);};
+    const observer=typeof ResizeObserver==='function'?new ResizeObserver(schedule):null;observer?.observe(form);observer?.observe(editor);
+    window.addEventListener('resize',schedule);window.visualViewport?.addEventListener('resize',schedule);schedule();
+    return ()=>{cancelAnimationFrame(frame);observer?.disconnect();window.removeEventListener('resize',schedule);window.visualViewport?.removeEventListener('resize',schedule);};
+  }
   // Задания.
   function createTask(options = {}) {
     const selectedBlock = options.blockId ?? blockId;
@@ -7003,7 +7009,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       onCancel:()=>editor.close()
     });
     editor.append(view.form);
-    const cleanup = () => {if(editor.open)return;editor.classList.remove('lg-task-create','lg-task-page');editor.style.removeProperty('--lt');};
+    const stopFitting=fitTaskCreationPage(view.form);
+    const cleanup = () => {stopFitting();if(editor.open)return;editor.style.removeProperty('--task-page-scale');editor.classList.remove('lg-task-create','lg-task-page');editor.style.removeProperty('--lt');};
     editor.addEventListener('close',cleanup,{once:true});
     view.form.addEventListener('submit',event=>{
       event.preventDefault();
@@ -10198,8 +10205,9 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     copy.append(el('strong','',goal?'Добавить цель':'Добавить смысл'),el('small','',goal?'К какому результату хочешь прийти?':'Почему это важно для тебя?'));
     button.append(icon,copy,el('span','lg-stage-plus','+'));return button;
   }
+  const stageTaskListsOpen=new Map();
   function renderBlockStageContents(selected,stage,target=screen) {
-    const compact=target.classList.contains('lg-level-body'),renderTask=compact?pathTaskCard:taskCard;
+    const stageTarget=target,compact=target.classList.contains('lg-level-body'),renderTask=compact?pathTaskCard:taskCard;
     const goals=state.goals.filter(x=>x.blockId===selected.id&&x.stageId===stage.id),activeGoals=goals.filter(x=>x.completedDate===null);
     target.classList.add('lg-stage-contents');target.classList.toggle('lg-path-has-goals',compact&&activeGoals.length>0);
     target.append(stage.meaning?meaningCard(selected,stage):stageContextButton('meaning',()=>editMeaning(selected.id,{stageId:stage.id})));
@@ -10207,6 +10215,12 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const addGoalButton=activeGoals.length?btn('+ Добавить цель','button lg-block-add-goal',()=>goalForm(null,{blockId:selected.id,stageId:stage.id}),true):stageContextButton('goal',()=>goalForm(null,{blockId:selected.id,stageId:stage.id}));
     addGoalButton.setAttribute('aria-label','Добавить цель');target.append(addGoalButton);
     const tasks=state.tasks.filter(x=>x.block===selected.id&&x.stageId===stage.id&&x.archivedAt===null);
+    {
+      if(stage.id===LifeGameStages.current(state,selected.id).id){const missed=el('div','lg-stage-support');missed.append(blockMissedDetails(selected.id));target.append(missed);}
+      const section=el('div','lg-stage-support'),details=el('details','card lg-stage-task-list'),body=el('div','lg-path-disclosure-body');
+      details.open=stageTaskListsOpen.get(stage.id)||false;details.append(pathSummary('Задания','Добавляй небольшие шаги',null,tasks.length),body);section.append(details);target.append(section);
+      pathDisclosure(details,open=>stageTaskListsOpen.set(stage.id,open));target=body;
+    }
     const addTaskButton=btn('+ Добавить задание','button lg-block-add-task',()=>createTask({blockId:selected.id,stageId:stage.id}),true);addTaskButton.setAttribute('aria-label','Добавить задание');
     if(!tasks.length){
       addTaskButton.textContent='Добавь первый небольшой шаг';addTaskButton.setAttribute('aria-label','Добавь первый небольшой шаг');addTaskButton.classList.add('lg-stage-first-action');
@@ -10221,6 +10235,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const completed=[...tasks.filter(done).map(item=>({kind:'task',item})),...goals.filter(x=>x.completedDate!==null).reverse().map(item=>({kind:'goal',item}))];
     historySection(page==='day'?'day':'block:'+selected.id+':'+stage.id,'ВЫПОЛНЕНО',completed,entry=>entry.kind==='goal'?goalCard(entry.item):renderTask(entry.item),target);
     if(compact&&tasks.length){addTaskButton.classList.add('lg-path-add-step');target.append(addTaskButton);}
+    if(stage.id===LifeGameStages.current(state,selected.id).id){const planned=el('div','lg-stage-support');renderBlockCalendar(selected,planned);stageTarget.append(planned);}
   }
 
   function renderQuests() {
@@ -11041,7 +11056,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       el("span", "wallet-diamonds", `${view.money.diamonds} ◆`)
     );
     wallet.setAttribute("aria-label",
-      `Монеты: ${view.money.balance}. Алмазы: ${view.money.diamonds}.`);
+      `Монеты: ${view.money.balance}.`);
 
     const active = ["day", "inbox", "summary", "calendar", "treats", "widgets", "widgetCatalog", "aiPreview", "focus"].includes(page) ? "hero" : page;
     document.querySelectorAll(".nav-button").forEach(node => {
@@ -11063,6 +11078,10 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     if (happinessCollectionDialog?.open) happinessDrawCollection();
     if (happinessPlayDialog?.open) happinessDrawPlay();
     pathAccordionSetup();
+    for(const stage of screen.querySelectorAll('.lg-stage-contents')){
+      const sections=[...stage.querySelectorAll('.lg-stage-support>details')];
+      let first=false;for(const item of sections){if(item.open){if(first)item.lgPathSetOpen?.(false,false);first=true;}item.querySelector(':scope>summary')?.addEventListener('click',()=>{if(!item.open)for(const other of sections)if(other!==item)other.lgPathSetOpen?.(false,false);},true);}
+    }
     uiAfterRender(uiPrevious, uiDoneBefore);
   }
 

@@ -455,3 +455,5 @@
 #editor.lg-task-create.lg-task-page{position:fixed;inset:0;top:var(--lg-dialog-top,0px);translate:none;transform:none;margin:0;width:100vw;max-width:none;height:var(--lg-dialog-height,100dvh);max-height:none;border:0;border-radius:0;box-shadow:none;padding:max(24px,env(safe-area-inset-top)) 18px max(24px,env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;scroll-padding:20px 0 24px}
 #editor.lg-task-create.lg-task-page::backdrop{background:#101010;backdrop-filter:none}
 #editor.lg-task-create.lg-task-page>form{width:100%;max-width:400px;margin:0 auto}
+#editor.lg-task-create.lg-task-page{overflow:hidden}
+#editor.lg-task-create.lg-task-page>form{transform:scale(var(--task-page-scale,1));transform-origin:top center}

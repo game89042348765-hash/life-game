@@ -330,3 +330,15 @@ body:has(.lg-path-aesthetics)>nav:before,body:has(.lg-work-outlook)>nav:before{o
 #screen .lg-stage-support .lg-path-disclosure-body{padding:0 14px 14px}
 #screen .lg-path-aesthetics>.lg-level>.lg-stage-preparation.card{height:auto;min-height:188px;border-color:#383838;background:var(--graphite-surface)}
 #screen .lg-stage-preparation .lg-path-stage-copy h2{font-size:18px}
+/* Temporary simplification pending discussion of goal rewards and diamonds. */
+#wallet .wallet-diamonds{display:none}
+#editor .numeric-row:has(#edit-diamonds){display:none}
+#screen .goal-card .compact-goal-footer{display:none}
+#screen .card.goal-card.compact-goal-card{background:#1d2d25;border:1px solid #3d6350;border-radius:16px;padding:17px;min-height:0;box-shadow:none}
+#screen .goal-card .task-head{margin:0;align-items:center}
+#screen .goal-card .task-title{font-size:14px;font-weight:500;line-height:1.55;margin:5px 0 0}
+#screen .goal-card .lg-goal-kind{color:#acd2b9;font-size:11px;letter-spacing:1.5px}
+#screen .lg-work-path>.lg-stage-design.card{border:0;border-radius:0;background:none;box-shadow:none;padding:0}
+#screen .lg-work-path .lg-stage-task-list .lg-stage-first-step{border:0;padding-top:4px;margin-top:0}
+#screen .lg-stage-support>details .lg-path-chevron{transform:rotate(90deg);transition:transform .2s}
+#screen .lg-stage-support>details[open] .lg-path-chevron{transform:rotate(-90deg)}
