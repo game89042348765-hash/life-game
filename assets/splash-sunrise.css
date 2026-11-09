@@ -59,7 +59,6 @@ html.lg-sunrise-open{overflow:hidden}
 .lg-sunrise-controls{display:contents}
 .lg-sunrise .lg-splash-snd{padding:0;cursor:pointer}
 .lg-sunrise button:focus-visible{outline:2px solid #ffda29;outline-offset:3px}
-@media(prefers-reduced-motion:reduce){.lg-sunrise.lg-splash-out{animation-duration:.15s}.lg-sunrise .lg-splash-loading-fill{animation:none;width:100%}}
 
 /* Existing settings controls. */
 .lg-sunrise-options{margin:16px 0;padding:14px;border:1px solid var(--border);border-radius:10px}
