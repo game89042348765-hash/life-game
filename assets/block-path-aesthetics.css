@@ -235,3 +235,28 @@ body:has(.lg-path-aesthetics)>nav:before,body:has(.lg-work-outlook)>nav:before{o
 .lg-path-aesthetics{padding-bottom:0}
 .lg-path-aesthetics>.lg-level:last-of-type{margin-bottom:0}
 .lg-path-aesthetics>.lg-dawn-back{bottom:calc(-1 * (var(--lg-path-footer-height,78px) + 24px + var(--lg-focus-space,0px)))}
+/* Consistent service-card summaries; disclosure contents can still grow when opened. */
+.lg-path-aesthetics>.lg-path-history-node>.card>summary,
+.lg-path-aesthetics>.lg-path-missed>.card>summary{height:78px;min-height:78px;padding:12px 17px}
+.lg-path-aesthetics>.lg-level-fact>.card{height:80px;padding:12px 17px;display:flex;flex-direction:column;justify-content:center;gap:0}
+.lg-path-aesthetics>.lg-level-fact .lg-level-title{align-items:center}
+.lg-path-aesthetics>.lg-level-fact .lg-level-title h2{font-size:15px}
+.lg-path-aesthetics>.lg-level-fact>.card>p.meta{font-size:11px;line-height:1.5;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* All future stages share the optimal card's base size. Work previews retain their scales. */
+.lg-path-aesthetics>.lg-level[data-stage-id]:not(.is-current)>.card,
+.lg-path-aesthetics>.is-outlook>.card{height:188px;min-height:188px;display:flex;flex-direction:column;position:relative;box-sizing:border-box;text-align:left}
+.lg-path-aesthetics>.lg-level[data-stage-id]:not(.is-current)>.card .lg-level-title{flex:none}
+.lg-path-aesthetics>.lg-level[data-stage-id]:not(.is-current) .lg-path-stage-copy h2,
+.lg-path-aesthetics>.is-outlook h2{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.lg-path-aesthetics>.lg-level[data-stage-id]:not(.is-current) .lg-level-description{min-height:36px;max-height:48px;flex:1;overflow:hidden;font-size:12px;line-height:1.5;padding-top:8px}
+.lg-path-aesthetics>.lg-level[data-stage-id]:not(.is-current) .lg-path-future-footer{flex:none;margin-top:auto;padding-top:6px}
+.lg-path-aesthetics>.is-outlook>.card>p.meta{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:12px;line-height:1.5;margin-top:9px}
+.lg-path-aesthetics>.is-outlook>.card>.lg-path-outlook-edit{margin-top:auto}
+.lg-path-aesthetics>.is-horizon>.card:after{position:absolute;bottom:9px;left:17px;right:17px;width:auto;margin:0;pointer-events:none}
+.lg-path-aesthetics>.lg-level.is-horizon .lg-path-future-footer,
+.lg-path-aesthetics>.is-outlook.is-horizon .lg-path-outlook-edit{margin-bottom:8px}
+/* One centered, readable stage insertion action. */
+.button.lg-level-insert{display:flex;align-items:center;justify-content:center;width:min(100%,200px);min-height:44px;margin:0 auto 24px;padding:10px 16px;border:1px dashed rgba(var(--accent-rgb),.3);border-radius:13px;background:linear-gradient(145deg,rgba(var(--accent-rgb),.035),#ffffff02);color:var(--accent);font-size:11px;font-weight:550;line-height:1.4;text-align:center;box-shadow:inset 0 1px 0 #ffffff03}
+.button.lg-level-insert:hover:not(:disabled){border-color:rgba(var(--accent-rgb),.6);background:rgba(var(--accent-rgb),.06)}
+.button.lg-level-insert[hidden]{display:none}
+.lg-path-aesthetics>.lg-level[data-stage-id]:not(.is-current) .lg-level-description{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}
