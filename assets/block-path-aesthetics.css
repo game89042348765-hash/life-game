@@ -305,9 +305,7 @@ body:has(.lg-path-aesthetics)>nav:before,body:has(.lg-work-outlook)>nav:before{o
 #screen .lg-stage-design .lg-stage-first-step>.lg-stage-first-action{font-size:11px}
 @media(prefers-reduced-motion:reduce){#screen .lg-stage-next-arrow{transition:none}}
 #screen .lg-stage-prepare .lg-stage-next-arrow .design-icon{transform:none}
-/* Trial: right-hand path with a single expanded card. */
-#screen .lg-path-aesthetics{padding-left:0;padding-right:30px}
-#screen .lg-path-aesthetics>.lg-level:before,#screen .lg-path-aesthetics>.lg-level:after{left:var(--lg-path-rail)}
+/* Upper path cards share an accordion; future milestones stay expanded. */
 #screen .lg-path-fold>summary{list-style:none;cursor:pointer;min-height:40px;display:block}
 #screen .lg-path-fold>summary::-webkit-details-marker{display:none}
 #screen .lg-path-fold:not([open]){height:auto!important;min-height:80px;padding-block:18px}

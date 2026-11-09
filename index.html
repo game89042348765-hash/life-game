@@ -2953,7 +2953,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
 .lg-save-signal{top:auto;right:auto;margin:0;overflow:visible}.lg-save-signal::backdrop{background:transparent;pointer-events:none}
 </style>
-<link rel="stylesheet" href="assets/block-path-aesthetics.css?v=8">
+<link rel="stylesheet" href="assets/block-path-aesthetics.css?v=9">
 <link rel="stylesheet" href="assets/path-v2.css?v=3">
 <link rel="stylesheet" href="assets/path-fx.css?v=1">
 <link rel="stylesheet" href="assets/task-form.css?v=8">
@@ -5540,7 +5540,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
   function blockViewSwitch(owner,active) {
     const controls=el('div','lg-level-controls');controls.setAttribute('role','group');controls.setAttribute('aria-label','Вид этапов блока');
-    for(const [key,title]of [['levels','Все этапы'],['work','Текущий этап']]){
+    for(const [key,title]of [['work','Текущий этап'],['levels','Все этапы']]){
       const button=btn(title,'button secondary',()=>{blockPathViews.set(owner,key);viewedStageId=LifeGameStages.current(state,owner).id;render();});
       button.setAttribute('aria-pressed',String(active===key));controls.append(button);
     }screen.append(controls);
@@ -5615,6 +5615,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       const key=blockId+(line.classList.contains('lg-work-future-path')?':outlook':':levels');
       const cards=[];
       for(const row of line.querySelectorAll(':scope>.lg-level')){
+        if(row.classList.contains('is-outlook')||row.dataset.stageId&&!row.classList.contains('is-current'))continue;
+        if(line.classList.contains('lg-work-future-path'))continue;
         let card=row.querySelector(':scope>.card');if(!card)continue;
         const id=row.dataset.stageId||[...row.classList].filter(c=>c!=='lg-level').join(' ');
         if(card.tagName!=='DETAILS'){
@@ -5671,8 +5673,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     }
     const app=document.querySelector('.app').getBoundingClientRect(),rect=line.getBoundingClientRect(),now=line.querySelector(':scope > .is-current'),opt=line.querySelector(':scope > .is-optimal');
     const first=line.querySelector(':scope > .lg-level > .card');if(!first)return;
-    const lane=0,gutter=parseFloat(getComputedStyle(line).paddingRight)||30;
-    line.style.setProperty('--lg-path-lane',lane+'px');line.style.setProperty('--lg-path-rail',(rect.width-gutter/2)+'px');
+    const lane=first.getBoundingClientRect().left-rect.left,gutter=rect.left-app.left;
+    line.style.setProperty('--lg-path-lane',lane+'px');line.style.setProperty('--lg-path-rail',(lane-gutter)/2+'px');
     const y=node=>Math.max(26,node.getBoundingClientRect().top-rect.top+26);
     line.style.setProperty('--lg-path-now-y',(now?y(now):26)+'px');line.style.setProperty('--lg-path-opt-y',(opt?y(opt):Math.max(26,rect.height*.8))+'px');
   }
