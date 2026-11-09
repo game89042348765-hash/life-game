@@ -2952,7 +2952,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 .lg-save-signal{top:auto;right:auto;margin:0;overflow:visible}.lg-save-signal::backdrop{background:transparent;pointer-events:none}
 </style>
 <link rel="stylesheet" href="assets/block-path-aesthetics.css?v=2">
-<link rel="stylesheet" href="assets/task-form.css?v=1">
+<link rel="stylesheet" href="assets/task-form.css?v=3">
 </head>
 <body>
 <div class="app">
@@ -3040,8 +3040,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
 <script src="assets/block-stages.js?v=centered-3"></script>
 <script src="assets/calendar-links.js?v=1"></script>
-<script src="assets/light-thread.js?v=1"></script>
-<script src="assets/task-form.js?v=2"></script>
+<script src="assets/light-thread.js?v=2"></script>
+<script src="assets/task-form.js?v=3"></script>
 <script src="assets/legacy-data.js?v=levels-2"></script>
 <script>
 "use strict";
@@ -3848,6 +3848,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       if(task.estimateMinutes===undefined)task.estimateMinutes=null;
       if(task.estimateMinutes!==null&&!integer(task.estimateMinutes,1,1440))fail('Повреждена оценка длительности задания.');
       bool(task, "favorite");
+      bool(task, "leadsToGoal");
       if (task.weekdays === undefined) {
         task.weekdays = task.type === "daily" ? [1, 2, 3, 4, 5, 6, 7] : [];
       }
@@ -6849,13 +6850,13 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const expectedCurrent = LifeGameStages.current(state,selectedBlock)?.id || null;
     if (selectedBlock !== INBOX_BLOCK_ID && (!stage || stage.blockId !== selectedBlock)) return;
     const goals = state.goals.filter(g=>g.blockId===selectedBlock && g.stageId===stageId && g.completedDate===null);
-    const linkedGoal = goals.find(g=>g.id===options.goalId) || goals[0] || null;
+    const linkedGoal = goals.find(g=>g.id===options.goalId) || null;
     const date = today();
     editor.replaceChildren();
     editor.classList.add('lg-task-create');
     const view = LifeGameTaskForm.create({
       name:options.name || '', weekdays:options.weekdays || [],
-      hasGoals:!!linkedGoal, goalChecked:!!options.goalId,
+      goalChecked:!!options.goalId,
       canPlan:selectedBlock===INBOX_BLOCK_ID || stageId===expectedCurrent,
       inDayBuilder:options.fromConstructor ?? page==='day',
       onLevel:glow=>editor.style.setProperty('--lt',glow.toFixed(3)),
@@ -6873,11 +6874,12 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
         if(!taskBlockIsActive(data,selectedBlock))fail('Блок недоступен в архиве.');
         if(stageId && LifeGameStages.get(data,stageId)?.blockId!==selectedBlock)fail('Этап больше недоступен.');
         const goalId=values.goalChecked ? linkedGoal?.id : null;
-        if(values.goalChecked && (!goalId || !data.goals.some(g=>g.id===goalId && g.blockId===selectedBlock && g.stageId===stageId && g.completedDate===null)))fail('Выбранная цель больше недоступна.');
+        if(values.goalChecked && options.goalId && !goalId)fail('Выбранная цель больше недоступна.');
+        if(goalId && !data.goals.some(g=>g.id===goalId && g.blockId===selectedBlock && g.stageId===stageId && g.completedDate===null))fail('Выбранная цель больше недоступна.');
         if(values.inDayBuilder && (today()!==date || (selectedBlock!==INBOX_BLOCK_ID && LifeGameStages.current(data,selectedBlock)?.id!==stageId)))fail('Дата или текущий этап изменились. Проверь план дня заново.');
         const task={id:(savedId=uid()),name:values.name,reward:values.reward,weekdays:values.weekdays,
           type:values.weekdays.length?'daily':'once',inDayBuilder:values.inDayBuilder && !!values.weekdays.length,
-          block:selectedBlock,stageId,favorite:false,goalId,archivedAt:null};
+          block:selectedBlock,stageId,favorite:false,goalId,leadsToGoal:values.goalChecked,archivedAt:null};
         data.tasks.push(task);
         if(values.inDayBuilder && !values.weekdays.length){
           data.dayPlans[date]=[...new Set([...(data.dayPlans[date]||[]),savedId])];
@@ -7057,6 +7059,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     if(page==='day'){const context=el('div','lg-c-context');context.append(designIcon(task.block===INBOX_BLOCK_ID?'inbox':'book'),taskBlockBadge(task));card.append(context);}
     const goal=task.goalId?state.goals.find(x=>x.id===task.goalId):null;
     if(goal){const context=el('div','lg-c-context goal-context');context.append(designIcon('flag'),el('span','','Цель: '+goal.name+(goal.completedDate===null?'':' · достигнута')));card.append(context);}
+    if(task.leadsToGoal){const tag=el('div','lg-c-context lg-task-goal-tag');tag.append(designIcon('flag'),el('span','','Ведёт к цели'));card.append(tag);}
     const complete=btn(record?'Отменить':'Выполнить','button lg-c-action'+(record?' secondary':''),()=>toggleTask(task.id),true);
     complete.disabled=!record&&!taskIsActive(state,task);
     complete.setAttribute('aria-label',(record?'Отменить выполнение: ':'Выполнить: ')+task.name);

@@ -5,7 +5,7 @@
 (function (root) {
   const REWARDS = Object.freeze([0, 25, 50, 100, 250, 500, 1000]);
   const LABELS = Object.freeze(["Без награды", "Маленький шаг", "Уверенный шаг",
-    "Шаг к ориентиру", "За горизонтом", "Прорыв", "Всегда возможно лучшее"]);
+    "Шаг к ориентиру", "За горизонтом", "Прорыв", "Максимум"]);
   const DEFAULT_REWARD = 25;
   const LAST = REWARDS.length - 1;
 

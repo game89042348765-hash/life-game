@@ -393,3 +393,16 @@
 
 #editor.lg-task-create .lg-path-kicker {line-height:normal;}
 #editor.lg-task-create {transition:--lt .6s ease,border-color .5s;}
+
+/* Stable labels: same line and alignment at every repeat/reward value. */
+#editor.lg-task-create .lg-repeat-preset {
+  padding-inline:2px;font-size:clamp(11px,3.1vw,12px);
+  white-space:nowrap;overflow-wrap:normal;word-break:normal;
+}
+#editor.lg-task-create .lg-day-circle span {white-space:nowrap;overflow-wrap:normal;}
+#editor.lg-task-create .lg-light-thread-head {
+  display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);align-items:center;
+}
+#editor.lg-task-create .lg-light-thread-title,
+#editor.lg-task-create .lg-light-thread-name {white-space:nowrap;overflow-wrap:normal;min-width:0;}
+.lg-c-context.lg-task-goal-tag {color:var(--green);font-size:11px;}

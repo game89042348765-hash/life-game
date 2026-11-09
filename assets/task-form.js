@@ -1,7 +1,7 @@
 /* Form layout and copy from the supplied task-form-final.html. No storage or awards. */
 (function(root){
   'use strict';
-  const presets=[['once','Разово',[]],['daily','Каждый<br>день',[1,2,3,4,5,6,7]],['weekdays','Будни',[1,2,3,4,5]],['weekend','Выходные',[6,7]]];
+  const presets=[['once','Разово',[]],['daily','Все дни',[1,2,3,4,5,6,7]],['weekdays','Будни',[1,2,3,4,5]],['weekend','Выходные',[6,7]]];
   const days=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
   function create(options={}){
     const form=document.createElement('form');form.id='task-form';form.noValidate=true;
@@ -17,7 +17,7 @@
         <div class="lg-toggle-card"><div class="lg-toggle-row"><span class="lg-toggle-copy">
           <label class="lg-toggle-title" for="toggle-goal">Этот шаг ведёт тебя к цели?</label>
           <div class="lg-goal-slot"><label class="lg-toggle-sub lg-goal-off" for="toggle-goal"></label>
-          <label class="lg-toggle-sub lg-goal-on" for="toggle-goal">Каждое выполнение приближает цель этапа</label></div></span>
+          <label class="lg-toggle-sub lg-goal-on" for="toggle-goal">На задании будет тег «Ведёт к цели»</label></div></span>
           <input id="toggle-goal" class="lg-switch" type="checkbox" role="switch"></div></div>
         <div class="lg-toggle-card"><label class="lg-toggle-row" for="toggle-day-builder"><span class="lg-toggle-copy">
           <span class="lg-toggle-title">Добавить в Конструктор дня?</span><span class="lg-toggle-sub" id="task-day-hint"></span></span>
@@ -27,9 +27,9 @@
       <div class="lg-actions"><button type="button" class="lg-btn" id="btn-cancel">Отмена</button><button type="submit" class="lg-btn lg-btn-primary">Создать</button></div>`;
     const name=form.querySelector('#task-name-input'),goal=form.querySelector('#toggle-goal'),plan=form.querySelector('#toggle-day-builder');
     name.value=options.name||'';
-    goal.disabled=!options.hasGoals;goal.checked=!!options.goalChecked && !goal.disabled;
+    goal.checked=!!options.goalChecked;
     plan.disabled=options.canPlan===false;plan.checked=!!options.inDayBuilder && !plan.disabled;
-    form.querySelector('.lg-goal-off').textContent=options.hasGoals?'Отдельное дело — живёт само по себе':'На этом этапе пока нет целей';
+    form.querySelector('.lg-goal-off').textContent='Просто дело для себя';
     const checks=[...form.querySelectorAll('[data-day]')];
     checks.forEach((c,i)=>c.checked=(options.weekdays||[]).includes(i+1));
     const selected=()=>checks.flatMap((c,i)=>c.checked?[i+1]:[]);
@@ -40,14 +40,14 @@
       goal.closest('.lg-toggle-card').classList.toggle('is-active-goal',goal.checked);
       form.querySelector('.lg-goal-slot').classList.toggle('is-open',goal.checked);
       plan.closest('.lg-toggle-card').classList.toggle('is-active-day',plan.checked);
-      form.querySelector('#task-day-hint').textContent=plan.disabled?'Доступно, когда этап станет текущим':plan.checked?(values.length?'Будет в плане дня в выбранные дни':'Появится в плане на сегодня'):'Останется в блоке — добавишь в план позже';
+      form.querySelector('#task-day-hint').textContent=plan.disabled?'После перехода к этапу':plan.checked?(values.length?'В плане по выбранным дням':'В плане на сегодня'):'Пока только в блоке';
     }
     form.querySelectorAll('[data-preset]').forEach(button=>button.addEventListener('click',()=>{
       const target=presets.find(p=>p[0]===button.dataset.preset)[2];checks.forEach((c,i)=>c.checked=target.includes(i+1));update();
       checks[0].dispatchEvent(new Event('input',{bubbles:true}));
     }));
     checks.forEach(c=>c.addEventListener('change',update));goal.addEventListener('change',update);plan.addEventListener('change',update);
-    const thread=LifeGameLightThread.create({value:options.reward??LifeGameLightThread.DEFAULT_REWARD,id:'task-reward',onLevel:options.onLevel});
+    const thread=LifeGameLightThread.create({value:options.reward??LifeGameLightThread.DEFAULT_REWARD,id:'task-reward',title:'Награда',onLevel:options.onLevel});
     form.querySelector('#light-thread-slot').replaceWith(thread.element);
     form.querySelector('#btn-cancel').addEventListener('click',()=>options.onCancel?.());
     form.addEventListener('input',()=>{form.querySelector('.lg-error-note').hidden=true;});
