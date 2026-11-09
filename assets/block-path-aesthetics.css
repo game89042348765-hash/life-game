@@ -294,3 +294,14 @@ body:has(.lg-path-aesthetics)>nav:before,body:has(.lg-work-outlook)>nav:before{o
 @media(max-width:360px){#screen .lg-stage-design.card{padding:20px 16px 0}#screen .lg-stage-design .lg-stage-context{gap:9px;padding-inline:10px}}
 #screen .lg-stage-preview-next+.lg-stage-preview-next{margin-top:17px;padding-top:17px;border-top:1px solid #ffffff0b}
 #screen .lg-stage-complete .lg-stage-next-arrow .design-icon{transform:none;width:20px;height:20px}
+/* Reversible visual trial only: these two controls never change stage data. */
+#screen .lg-stage-complete .lg-stage-next-arrow{color:#66856e;border-color:#66856e52;background:#66856e08;transition:color .22s,border-color .22s,box-shadow .22s,background .22s}
+#screen .lg-stage-prepare .lg-stage-next-arrow{color:#787362;border-color:#b3a16a33;background:#ffd54a04;transition:color .22s,border-color .22s,box-shadow .22s,background .22s}
+#screen .lg-stage-preview-footer.is-stage-done .lg-stage-complete .lg-stage-next-arrow{color:#88e6a4;border-color:#88e6a47a;background:#88e6a412;box-shadow:0 0 15px #88e6a418}
+#screen .lg-stage-preview-footer.is-stage-done .lg-stage-prepare .lg-stage-next-arrow{color:#ffe68a;border-color:#ffdc6570;background:#ffd54a0c;box-shadow:0 0 14px #ffd54a14}
+#screen .lg-stage-preview-footer.is-arrow-selected .lg-stage-prepare .lg-stage-next-arrow{color:#fff3bb;background:#ffd54a20;box-shadow:0 0 20px #ffd54a30}
+#screen .lg-stage-preview-next:disabled{opacity:1;cursor:default}
+#screen .lg-stage-preview-next:disabled:hover .lg-stage-next-arrow{background:#ffd54a04}
+#screen .lg-stage-design .lg-stage-first-step>.lg-stage-first-action{font-size:11px}
+@media(prefers-reduced-motion:reduce){#screen .lg-stage-next-arrow{transition:none}}
+#screen .lg-stage-prepare .lg-stage-next-arrow .design-icon{transform:none}

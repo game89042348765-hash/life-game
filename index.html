@@ -2953,7 +2953,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
 .lg-save-signal{top:auto;right:auto;margin:0;overflow:visible}.lg-save-signal::backdrop{background:transparent;pointer-events:none}
 </style>
-<link rel="stylesheet" href="assets/block-path-aesthetics.css?v=6">
+<link rel="stylesheet" href="assets/block-path-aesthetics.css?v=7">
 <link rel="stylesheet" href="assets/path-v2.css?v=3">
 <link rel="stylesheet" href="assets/path-fx.css?v=1">
 <link rel="stylesheet" href="assets/task-form.css?v=8">
@@ -5573,11 +5573,13 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const footer=el('div','lg-stage-preview-footer');footer.append(el('span','lg-stage-footer-label','ДАЛЬШЕ ПО ПУТИ'));
     const action=(title,hint,icon,run,className)=>{
       const button=btn('','lg-stage-preview-next '+className,run,true),copy=el('span',''),circle=el('span','lg-stage-next-arrow');
-      copy.append(el('strong','',title),el('small','',hint));const glyph=designIcon(icon);if(icon==='check')glyph.querySelector('circle')?.remove();circle.append(glyph);button.append(copy,circle);return button;
+      copy.append(el('strong','',title),el('small','',hint));const glyph=designIcon(icon);if(icon==='check')glyph.querySelector('circle')?.remove();else glyph.innerHTML='<path d="M12 4v16m-6-6 6 6 6-6"/>';circle.append(glyph);button.append(copy,circle);return button;
     };
-    footer.append(action('Этап выполнен','Завершить и перейти дальше','check',()=>openStagePreparation(next.id,()=>makeStageCurrent(next.id,true)),'lg-stage-complete'));
-    footer.append(action('Следующий этап','Открыть и подготовить','chevron',()=>openStagePreparation(next.id),'lg-stage-prepare'));
-    body.append(footer);if(!LifeGameStages.unlocked(state,next))footer.append(el('p','meta',LifeGameStages.lockText(state,next)));
+    let done=false,selected=false;
+    const finish=action('Этап выполнен','Отметь, когда будешь готов','check',()=>{done=!done;selected=false;update();},'lg-stage-complete');
+    const forward=action('Следующий этап','Дальше — в своём темпе','chevron',()=>{selected=!selected;update();},'lg-stage-prepare');
+    const update=()=>{footer.classList.toggle('is-stage-done',done);footer.classList.toggle('is-arrow-selected',selected);finish.setAttribute('aria-pressed',String(done));forward.disabled=!done;forward.setAttribute('aria-pressed',String(selected));};
+    footer.append(finish,forward);update();body.append(footer);
   }
   // Animated native disclosures keep keyboard access and programmatic targeting.
   function pathDisclosure(details,onChange) {
@@ -10158,6 +10160,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const tasks=state.tasks.filter(x=>x.block===selected.id&&x.stageId===stage.id&&x.archivedAt===null);
     const addTaskButton=btn('+ Добавить задание','button lg-block-add-task',()=>createTask({blockId:selected.id,stageId:stage.id}),true);addTaskButton.setAttribute('aria-label','Добавить задание');
     if(!tasks.length){
+      addTaskButton.textContent='Добавь первый небольшой шаг';addTaskButton.setAttribute('aria-label','Добавь первый небольшой шаг');addTaskButton.classList.add('lg-stage-first-action');
       const empty=el('section','lg-stage-first-step');empty.append(el('h3','','С чего начнёшь?'),el('p','','Добавь первое небольшое дело — это уже шаг вперёд.'),addTaskButton);target.append(empty);
     }else{
       const label=el('div','lg-path-task-heading');label.append(el('span','','Маленькие шаги'),el('small','',tasks.filter(t=>!!completion(state,t)).length+' из '+tasks.length));target.append(label);
