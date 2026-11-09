@@ -2952,7 +2952,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 .lg-save-signal{top:auto;right:auto;margin:0;overflow:visible}.lg-save-signal::backdrop{background:transparent;pointer-events:none}
 </style>
 <link rel="stylesheet" href="assets/block-path-aesthetics.css?v=2">
-<link rel="stylesheet" href="assets/task-form.css?v=2">
+<link rel="stylesheet" href="assets/task-form.css?v=1">
 </head>
 <body>
 <div class="app">
@@ -6862,7 +6862,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       onCancel:()=>editor.close()
     });
     editor.append(view.form);
-    const cleanup = () => {editor.classList.remove('lg-task-create','is-positioned');editor.style.removeProperty('--lt');editor.style.removeProperty('--lg-task-top');};
+    const cleanup = () => {editor.classList.remove('lg-task-create');editor.style.removeProperty('--lt');};
     editor.addEventListener('close',cleanup,{once:true});
     view.form.addEventListener('submit',event=>{
       event.preventDefault();
@@ -6891,9 +6891,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       options.onSaved?.(savedId);
     });
     uiShowDialog(editor);
-    // Keep the initial, fitted position when the software keyboard resizes the viewport.
-    editor.style.setProperty('--lg-task-top',Math.max(12,editor.getBoundingClientRect().top)+'px');
-    editor.classList.add('is-positioned');
     const heading=view.form.querySelector('h2');heading.tabIndex=-1;heading.focus();
   }
 
