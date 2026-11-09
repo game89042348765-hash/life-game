@@ -4370,7 +4370,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     Promise.resolve(animation).catch(()=>{}).then(()=>{if(blockWalletEffect===effect)runBlockWalletReward(effect)});
   }
   function runBlockWalletReward(effect){
-    if(blockWalletEffect!==effect||page!=='blocks'||document.hidden){cancelBlockWalletEffect();return;}
+    if(blockWalletEffect!==effect||document.hidden){cancelBlockWalletEffect();return;}
     const node=wallet.firstElementChild,reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
     const gain=el('small','lg-wallet-gain','+'+effect.amount);gain.setAttribute('aria-hidden','true');
     node.classList.add('lg-wallet-counting');const digits=el('span','lg-wallet-digits',reduced?String(effect.to):'0');node.replaceChildren(digits,document.createTextNode(' ●'),gain);
@@ -4464,7 +4464,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const values=[...(coins?[signedReward(coins,"монет")]:[]),...(gems?[signedReward(gems,"алмазов")]:[]),...(spent?[signedReward(-spent,"монет")]:[]),...(gemSpent?[signedReward(-gemSpent,"алмазов")]:[])].join(" · ");
     if(coins&&!gems&&!spent&&!gemSpent){
       clearEffects();
-      if(page==='blocks'&&coins>0){queueBlockWalletReward(before.balance,after.balance,coins);return;}
+      if(coins>0){queueBlockWalletReward(before.balance,after.balance,coins);return;}
       uiSaveSignal(values+(bonus?' · бонус дня':revokedBonus?' · включая отмену бонуса дня':'')+(oldLevel!==newLevel?' · уровень '+newLevel:''));
       return;
     }
