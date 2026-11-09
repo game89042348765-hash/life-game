@@ -13,16 +13,14 @@
       <div class="lg-weekdays-circles" role="group" aria-label="Дни недели">${days.map((name,i)=>`<label class="lg-day-circle"><input type="checkbox" data-day="${i+1}" id="task-day-${i+1}"><span>${name}</span></label>`).join('')}</div>
       <p class="lg-repeat-caption" role="status"></p></div>
       <div id="light-thread-slot"></div>
-      <div class="lg-path-section"><div class="lg-path-kicker">ЦЕЛЬ И ПЛАН ДНЯ</div><div class="lg-toggle-stack">
-        <div class="lg-toggle-card"><div class="lg-toggle-row"><span class="lg-toggle-copy">
+        <div class="lg-toggle-card lg-light-thread lg-task-option"><div class="lg-toggle-row"><span class="lg-toggle-copy">
           <label class="lg-toggle-title" for="toggle-goal">Этот шаг ведёт тебя к цели?</label>
           <div class="lg-goal-slot"><label class="lg-toggle-sub lg-goal-off" for="toggle-goal"></label>
           <label class="lg-toggle-sub lg-goal-on" for="toggle-goal" style="color:#8e948e">У этого будет тег «<span style="color:#9fe0b6">Шаг к цели</span>»</label></div></span>
           <input id="toggle-goal" class="lg-switch" type="checkbox" role="switch"></div></div>
-        <div class="lg-toggle-card"><label class="lg-toggle-row" for="toggle-day-builder"><span class="lg-toggle-copy">
+        <div class="lg-toggle-card lg-light-thread lg-task-option"><label class="lg-toggle-row" for="toggle-day-builder"><span class="lg-toggle-copy">
           <span class="lg-toggle-title lg-constructor-title">Добавить в Конструктор?</span><span class="lg-toggle-sub" id="task-day-hint"></span></span>
           <input id="toggle-day-builder" class="lg-switch" type="checkbox" role="switch"></label></div>
-      </div></div>
       <p class="lg-error-note" role="alert" hidden></p>
       <div class="lg-actions"><button type="button" class="lg-btn" id="btn-cancel">Отмена</button><button type="submit" class="lg-btn lg-btn-primary">Создать</button></div>`;
     const name=form.querySelector('#task-name-input'),goal=form.querySelector('#toggle-goal'),plan=form.querySelector('#toggle-day-builder');

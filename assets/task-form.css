@@ -432,3 +432,21 @@
 #screen[data-page=blocks] .lg-task-reward-glow.lg-path-task-row{background:radial-gradient(ellipse at 100% 50%,rgba(var(--accent-rgb),calc(var(--task-glow)*.09)),transparent 80%);border-bottom-color:rgba(var(--accent-rgb),calc(.05 + var(--task-glow)*.20))}
 #screen[data-page=blocks] .lg-task-reward-glow.done{box-shadow:none}
 #screen .lg-c-day:has(input:checked){color:var(--accent)}
+
+/* Separate goal and Constructor panels, matching the approved demo. */
+#editor.lg-task-create .lg-light-thread{min-height:114px}
+#editor.lg-task-create .lg-task-option,#editor.lg-task-create .lg-task-option:is(.is-active-goal,.is-active-day){min-height:114px;margin:4px 0 16px;padding:16px;border:1px solid #262622;border-radius:18px;background:#131312;box-shadow:none}
+#editor.lg-task-create .lg-task-option .lg-toggle-row{min-height:72px;padding:0;gap:12px}
+#editor.lg-task-create .lg-task-option .lg-toggle-title{font-size:15px;font-weight:600;line-height:1.4}
+#editor.lg-task-create .lg-task-option .lg-toggle-sub{font-size:12px;line-height:1.5;margin-top:5px}
+#editor.lg-task-create .lg-task-option.is-active-goal{border-color:#6cbe8c40;box-shadow:0 0 20px #6cbe8c0b}
+#editor.lg-task-create .lg-task-option.is-active-day{border-color:rgba(var(--accent-rgb),.3);box-shadow:0 0 20px rgba(var(--accent-rgb),.06)}
+
+/* Center both lines between the card edge and switch, using their real text height. */
+#editor.lg-task-create .lg-task-option,#editor.lg-task-create .lg-task-option:is(.is-active-goal,.is-active-day){display:flex;align-items:center;padding:0 16px 0 0}
+#editor.lg-task-create .lg-task-option .lg-toggle-row{width:100%;min-height:0;align-items:center;gap:0}
+#editor.lg-task-create .lg-task-option .lg-toggle-copy{display:block;flex:1;min-width:0;padding:10px 6px;text-align:center}
+#editor.lg-task-create .lg-task-option .lg-toggle-title{display:block;text-align:center;font-size:14px}
+#editor.lg-task-create .lg-task-option .lg-toggle-sub{min-height:0;text-align:center}
+#editor.lg-task-create .lg-task-option .lg-goal-slot{display:grid;height:auto;min-height:18px;margin-top:5px;overflow:visible}
+#editor.lg-task-create .lg-task-option .lg-goal-slot>.lg-toggle-sub{position:static;inset:auto;margin:0;transform:none;grid-area:1/1;align-self:center}
