@@ -416,8 +416,7 @@
   opacity:var(--lt);
 }
 /* Shared constructor emblem, quiet when off and golden when enabled. */
-.lg-c-day:has(input:checked),.lg-c-day:has(input:checked) .lg-constructor-icon{color:var(--accent)}
-.lg-constructor-icon{width:16px;height:16px;flex:none;vertical-align:middle}
+.lg-c-day:has(input:checked){color:var(--accent)}
 #editor.lg-task-create .lg-constructor-title{display:flex;align-items:center;gap:7px}
 #editor.lg-task-create .is-active-day .lg-constructor-title{color:var(--accent)}
 #editor.lg-task-create .lg-task-edit-advanced{margin:14px 0;border:1px solid #ffffff17;border-radius:13px;padding:0 12px;background:#ffffff02}
@@ -433,4 +432,4 @@
 #screen[data-page=blocks] .lg-task-reward-glow{background:radial-gradient(ellipse at 100% 0,rgba(var(--accent-rgb),calc(var(--task-glow)*.13)),transparent 75%),var(--graphite-surface);border-color:rgba(var(--accent-rgb),calc(.10 + var(--task-glow)*.36));box-shadow:0 0 calc(var(--task-glow)*22px) rgba(var(--accent-rgb),calc(var(--task-glow)*.15))}
 #screen[data-page=blocks] .lg-task-reward-glow.lg-path-task-row{background:radial-gradient(ellipse at 100% 50%,rgba(var(--accent-rgb),calc(var(--task-glow)*.09)),transparent 80%);border-bottom-color:rgba(var(--accent-rgb),calc(.05 + var(--task-glow)*.20))}
 #screen[data-page=blocks] .lg-task-reward-glow.done{box-shadow:none}
-.lg-path-task-row .lg-c-day .lg-constructor-icon{display:block}
+#screen .lg-c-day:has(input:checked){color:var(--accent)}

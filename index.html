@@ -2953,11 +2953,11 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
 .lg-save-signal{top:auto;right:auto;margin:0;overflow:visible}.lg-save-signal::backdrop{background:transparent;pointer-events:none}
 </style>
-<link rel="stylesheet" href="assets/block-path-aesthetics.css?v=3">
+<link rel="stylesheet" href="assets/block-path-aesthetics.css?v=4">
 <link rel="stylesheet" href="assets/path-v2.css?v=3">
 <link rel="stylesheet" href="assets/path-fx.css?v=1">
-<link rel="stylesheet" href="assets/task-form.css?v=5">
-<link rel="stylesheet" href="assets/wallet-counter.css?v=1">
+<link rel="stylesheet" href="assets/task-form.css?v=6">
+<link rel="stylesheet" href="assets/wallet-counter.css?v=2">
 </head>
 <body>
 <div class="app">
@@ -3047,7 +3047,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 <script src="assets/calendar-links.js?v=1"></script>
 <script src="assets/light-thread.js?v=2"></script>
 <script src="assets/path-v2.js?v=4"></script>
-<script src="assets/task-form.js?v=8"></script>
+<script src="assets/task-form.js?v=9"></script>
 <script src="assets/legacy-data.js?v=levels-2"></script>
 <script>
 "use strict";
@@ -4358,11 +4358,11 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const effect=blockWalletEffect;if(!effect)return;
     blockWalletEffect=null;clearTimeout(effect.timer);cancelAnimationFrame(effect.frame);
     for(const voice of effect.voices||[]){try{voice.stop()}catch{}}
-    const node=wallet.firstElementChild;if(node){node.classList.remove('lg-wallet-counting','lg-wallet-landed');node.textContent=totals(state).balance+' ●';node.removeAttribute('aria-hidden');}
+    const node=wallet.firstElementChild;if(node){node.classList.remove('lg-wallet-counting','lg-wallet-landed');node.textContent=totals(state).balance+' ●';node.removeAttribute('aria-hidden');node.style.removeProperty('min-width');}
   }
   function queueBlockWalletReward(from,to,amount){
     cancelBlockWalletEffect();const effect={from,to,amount,timer:0,frame:0};blockWalletEffect=effect;
-    const node=wallet.firstElementChild;node.textContent=from+' ●';node.setAttribute('aria-hidden','true');
+    const node=wallet.firstElementChild;node.style.minWidth=node.getBoundingClientRect().width+'px';node.textContent=from+' ●';node.setAttribute('aria-hidden','true');
     effect.timer=setTimeout(()=>runBlockWalletReward(effect),160);
   }
   function blockWalletAfterPath(animation){
@@ -4375,19 +4375,19 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const node=wallet.firstElementChild,reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
     const gain=el('small','lg-wallet-gain','+'+effect.amount);gain.setAttribute('aria-hidden','true');
     node.classList.add('lg-wallet-counting');const digits=el('span','lg-wallet-digits',reduced?String(effect.to):'0');node.replaceChildren(digits,document.createTextNode(' ●'),gain);
-    const duration=reduced?0:1050,start=performance.now();
+    const duration=reduced?0:2400,start=performance.now()+(reduced?0:180);
     const voicesBefore=new Set(activeSounds.keys());
-    tones(reduced?[880,1174]:[587,659,740,784,880,988,1174],.115,.1,.025);
+    tones(reduced?[880,1174]:[587,659,740,784,880,988,1174],reduced?.115:.34,.14,.022);
     effect.voices=[...activeSounds.keys()].filter(voice=>!voicesBefore.has(voice));
     const finish=()=>{
       if(blockWalletEffect!==effect)return;
-      digits.textContent=String(totals(state).balance);node.classList.remove('lg-wallet-counting');node.classList.add('lg-wallet-landed');
+      digits.textContent=String(totals(state).balance);if(!reduced){const beforeChime=new Set(activeSounds.keys());tones([1174,1568],.09,.18,.025);effect.voices.push(...[...activeSounds.keys()].filter(v=>!beforeChime.has(v)));}node.classList.remove('lg-wallet-counting');node.classList.add('lg-wallet-landed');
       effect.timer=setTimeout(()=>{if(blockWalletEffect===effect)cancelBlockWalletEffect()},1200);
     };
     const step=now=>{
       if(blockWalletEffect!==effect)return;
-      const t=duration?Math.min(1,(now-start)/duration):1;
-      digits.textContent=String(Math.round(effect.to*(1-Math.pow(1-t,3))));
+      const t=duration?Math.max(0,Math.min(1,(now-start)/duration)):1;
+      digits.textContent=String(Math.round(effect.to*((1-Math.cos(Math.PI*t))/2)));
       if(t<1)effect.frame=requestAnimationFrame(step);else finish();
     };effect.frame=requestAnimationFrame(step);
   }
@@ -5602,6 +5602,10 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   let pathRailObserver=null,pathRailFrame=0;
   function pathRailLayout(line) {
     if(!line?.isConnected)return;
+    if(line.classList.contains('lg-work-future-path'))for(const row of line.querySelectorAll(':scope>.lg-level')){
+      const card=row.querySelector(':scope>.card'),scale=Number(getComputedStyle(row).getPropertyValue('--lg-preview-scale'))||1;
+      if(card){const height=card.offsetHeight*scale+'px';if(row.style.height!==height)row.style.height=height;}
+    }
     const app=document.querySelector('.app').getBoundingClientRect(),rect=line.getBoundingClientRect(),now=line.querySelector(':scope > .is-current'),opt=line.querySelector(':scope > .is-optimal');
     const first=line.querySelector(':scope > .lg-level > .card');if(!first)return;
     const lane=first.getBoundingClientRect().left-rect.left,gutter=rect.left-app.left;
@@ -5612,7 +5616,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   window.addEventListener('resize',()=>pathRailLayout(screen.querySelector('.lg-path-aesthetics')));
   function pathRailSetup(line) {
     const schedule=()=>{cancelAnimationFrame(pathRailFrame);pathRailFrame=requestAnimationFrame(()=>pathRailLayout(line));};
-    if(typeof ResizeObserver==='function'){pathRailObserver=new ResizeObserver(schedule);pathRailObserver.observe(line);}
+    if(typeof ResizeObserver==='function'){pathRailObserver=new ResizeObserver(schedule);pathRailObserver.observe(line);if(line.classList.contains('lg-work-future-path'))for(const card of line.querySelectorAll(':scope>.lg-level>.card'))pathRailObserver.observe(card);}
     schedule();
   }
   function pathStageMemory(stage,owner,index) {
@@ -7133,7 +7137,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const row=el('div','lg-c-footer');row.append(value,...controls);return row;
   }
   function lgCardDay(control) {
-    control.classList.add('lg-c-day');const span=control.querySelector('span');span.prepend(LifeGameTaskForm.constructorIcon());return control;
+    control.classList.add('lg-c-day');return control;
   }
   function lgCardProgress(q,stages=false) {
     const box=el('div','lg-c-progress'),line=el('div','lg-c-progress-line');

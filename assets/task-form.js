@@ -3,10 +3,6 @@
   'use strict';
   const presets=[['once','Разово',[]],['daily','Все дни',[1,2,3,4,5,6,7]],['weekdays','Будни',[1,2,3,4,5]],['weekend','Выходные',[6,7]]];
   const days=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
-  function constructorIcon(){
-    const icon=document.createElementNS('http://www.w3.org/2000/svg','svg');icon.setAttribute('viewBox','0 0 24 24');icon.setAttribute('class','design-icon lg-constructor-icon');icon.setAttribute('fill','none');icon.setAttribute('stroke','currentColor');icon.setAttribute('stroke-width','1.5');icon.setAttribute('stroke-linejoin','round');icon.setAttribute('aria-hidden','true');
-    icon.innerHTML='<path d="m12 2 9 5v10l-9 5-9-5V7l9-5Z M3 7l9 5 9-5 M12 12v10 M7.5 4.5l9 5 M16.5 4.5l-9 5 M7.5 9.5v10 M16.5 9.5v10 M3 12l9 5 9-5"/>';return icon;
-  }
   function create(options={}){
     const form=document.createElement('form');form.id='task-form';form.noValidate=true;
     form.innerHTML=`<h2 class="lg-modal-title" id="editor-title">Новое задание</h2>
@@ -31,7 +27,6 @@
       <div class="lg-actions"><button type="button" class="lg-btn" id="btn-cancel">Отмена</button><button type="submit" class="lg-btn lg-btn-primary">Создать</button></div>`;
     const name=form.querySelector('#task-name-input'),goal=form.querySelector('#toggle-goal'),plan=form.querySelector('#toggle-day-builder');
     form.querySelector('h2').textContent=options.title||'Новое задание';form.querySelector('[type=submit]').textContent=options.submitLabel||'Создать';
-    form.querySelector('.lg-constructor-title').prepend(constructorIcon());
     name.value=options.name||'';
     goal.checked=!!options.goalChecked;
     plan.disabled=options.canPlan===false;plan.checked=!!options.inDayBuilder && !plan.disabled;
@@ -67,5 +62,5 @@
     return {form,thread,refresh:update,values:()=>({name:name.value.trim(),weekdays:selected(),reward:thread.value(),goalChecked:goal.checked,inDayBuilder:plan.checked}),
       error(message,focus=true){const note=form.querySelector('.lg-error-note');note.hidden=focus;note.textContent=focus?'':message;if(focus){name.setAttribute('aria-invalid','true');name.focus();}}};
   }
-  root.LifeGameTaskForm=Object.freeze({create,constructorIcon});
+  root.LifeGameTaskForm=Object.freeze({create});
 })(window);
