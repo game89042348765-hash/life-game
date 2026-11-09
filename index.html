@@ -5631,7 +5631,12 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
         }
         card.dataset.foldId=id;cards.push(card);
       }
-      const selected=pathActiveCards.has(key)?pathActiveCards.get(key):(line.classList.contains('lg-work-future-path')?null:LifeGameStages.current(state,blockId)?.id);
+      if(line.classList.contains('lg-work-future-path')){
+        const work=line.closest('.lg-work-path'),old=work?.querySelector(':scope>.lg-stage-design');
+        if(old){const fold=el('details',old.className+' lg-path-fold'),summary=el('summary','lg-fold-summary'),body=el('div','lg-fold-body');summary.append(old.querySelector('.lg-work-heading'));while(old.firstChild)body.append(old.firstChild);fold.append(summary,body);old.replaceWith(fold);fold.dataset.foldId=displayedStage(blockId).id;cards.unshift(fold);}
+      }
+      let selected=pathActiveCards.has(key)?pathActiveCards.get(key):(line.classList.contains('lg-work-future-path')?displayedStage(blockId).id:LifeGameStages.current(state,blockId)?.id);
+      if(selected&&!cards.some(c=>c.dataset.foldId===selected))selected=LifeGameStages.current(state,blockId)?.id;
       const set=(card,open)=>{if(card.lgPathSetOpen)card.lgPathSetOpen(open,false);else card.open=open;card.querySelector(':scope>summary')?.setAttribute('aria-expanded',String(open));};
       cards.forEach(card=>{
         set(card,card.dataset.foldId===selected);

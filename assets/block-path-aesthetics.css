@@ -318,3 +318,4 @@ body:has(.lg-path-aesthetics)>nav:before,body:has(.lg-work-outlook)>nav:before{o
 #screen .lg-path-fold .lg-level-title{margin:0}
 #screen .lg-path-fold:not([open]) .lg-level-title h2{font-size:16px}
 #screen .lg-path-fold .lg-fold-body>.lg-path-future-footer{margin-top:15px}
+#screen .lg-path-fold>summary>.lg-work-heading{margin-bottom:0}
