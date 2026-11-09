@@ -2953,7 +2953,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 
 .lg-save-signal{top:auto;right:auto;margin:0;overflow:visible}.lg-save-signal::backdrop{background:transparent;pointer-events:none}
 </style>
-<link rel="stylesheet" href="assets/block-path-aesthetics.css?v=7">
+<link rel="stylesheet" href="assets/block-path-aesthetics.css?v=8">
 <link rel="stylesheet" href="assets/path-v2.css?v=3">
 <link rel="stylesheet" href="assets/path-fx.css?v=1">
 <link rel="stylesheet" href="assets/task-form.css?v=8">
@@ -5607,6 +5607,43 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     if(count!==null)summary.append(el('span','lg-path-count',String(count)));
     const arrow=designIcon('chevron');arrow.classList.add('lg-path-chevron');summary.append(arrow);return summary;
   }
+  const pathActiveCards=new Map();
+  function pathAccordionSetup(){
+    if(page!=='blocks'||!blockId)return;
+    const lines=[...screen.querySelectorAll('.lg-path-aesthetics')];
+    for(const line of lines){
+      const key=blockId+(line.classList.contains('lg-work-future-path')?':outlook':':levels');
+      const cards=[];
+      for(const row of line.querySelectorAll(':scope>.lg-level')){
+        let card=row.querySelector(':scope>.card');if(!card)continue;
+        const id=row.dataset.stageId||[...row.classList].filter(c=>c!=='lg-level').join(' ');
+        if(card.tagName!=='DETAILS'){
+          const fold=el('details',card.className+' lg-path-fold'),summary=el('summary','lg-fold-summary');
+          const head=card.querySelector(':scope>.lg-level-title')||card.querySelector(':scope>h2');
+          if(head)summary.append(head);else summary.append(el('strong','',card.textContent.trim()));
+          const body=el('div','lg-fold-body');
+          if(card.tagName==='BUTTON'){card.className='lg-fold-fact-action';body.append(card);}
+          else while(card.firstChild)body.append(card.firstChild);
+          fold.append(summary,body);
+          if(card.tagName==='BUTTON'){row.prepend(fold);}else card.replaceWith(fold);
+          if(card.dataset.uiKey)fold.dataset.uiKey=card.dataset.uiKey;
+          card=fold;
+        }
+        card.dataset.foldId=id;cards.push(card);
+      }
+      const selected=pathActiveCards.has(key)?pathActiveCards.get(key):(line.classList.contains('lg-work-future-path')?null:LifeGameStages.current(state,blockId)?.id);
+      const set=(card,open)=>{if(card.lgPathSetOpen)card.lgPathSetOpen(open,false);else card.open=open;card.querySelector(':scope>summary')?.setAttribute('aria-expanded',String(open));};
+      cards.forEach(card=>{
+        set(card,card.dataset.foldId===selected);
+        card.querySelector(':scope>summary')?.addEventListener('click',e=>{
+          if(e.target.closest('button,input,select,textarea,a,[contenteditable=true]'))return;
+          const opening=!card.open;pathActiveCards.set(key,opening?card.dataset.foldId:null);
+          for(const other of cards)if(other!==card)set(other,false);
+          requestAnimationFrame(()=>{pathRailLayout(line);pathSunlight();});
+        },true);
+      });
+    }
+  }
   let pathSunFrame=0;
   function pathSunlight() {
     cancelAnimationFrame(pathSunFrame);
@@ -5629,8 +5666,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     }
     const app=document.querySelector('.app').getBoundingClientRect(),rect=line.getBoundingClientRect(),now=line.querySelector(':scope > .is-current'),opt=line.querySelector(':scope > .is-optimal');
     const first=line.querySelector(':scope > .lg-level > .card');if(!first)return;
-    const lane=first.getBoundingClientRect().left-rect.left,gutter=rect.left-app.left;
-    line.style.setProperty('--lg-path-lane',lane+'px');line.style.setProperty('--lg-path-rail',(lane-gutter)/2+'px');
+    const lane=0,gutter=parseFloat(getComputedStyle(line).paddingRight)||30;
+    line.style.setProperty('--lg-path-lane',lane+'px');line.style.setProperty('--lg-path-rail',(rect.width-gutter/2)+'px');
     const y=node=>Math.max(26,node.getBoundingClientRect().top-rect.top+26);
     line.style.setProperty('--lg-path-now-y',(now?y(now):26)+'px');line.style.setProperty('--lg-path-opt-y',(opt?y(opt):Math.max(26,rect.height*.8))+'px');
   }
@@ -11013,6 +11050,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     happinessSchedule();
     if (happinessCollectionDialog?.open) happinessDrawCollection();
     if (happinessPlayDialog?.open) happinessDrawPlay();
+    pathAccordionSetup();
     uiAfterRender(uiPrevious, uiDoneBefore);
   }
 

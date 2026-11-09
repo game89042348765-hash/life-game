@@ -305,3 +305,16 @@ body:has(.lg-path-aesthetics)>nav:before,body:has(.lg-work-outlook)>nav:before{o
 #screen .lg-stage-design .lg-stage-first-step>.lg-stage-first-action{font-size:11px}
 @media(prefers-reduced-motion:reduce){#screen .lg-stage-next-arrow{transition:none}}
 #screen .lg-stage-prepare .lg-stage-next-arrow .design-icon{transform:none}
+/* Trial: right-hand path with a single expanded card. */
+#screen .lg-path-aesthetics{padding-left:0;padding-right:30px}
+#screen .lg-path-aesthetics>.lg-level:before,#screen .lg-path-aesthetics>.lg-level:after{left:var(--lg-path-rail)}
+#screen .lg-path-fold>summary{list-style:none;cursor:pointer;min-height:40px;display:block}
+#screen .lg-path-fold>summary::-webkit-details-marker{display:none}
+#screen .lg-path-fold:not([open]){height:auto!important;min-height:80px;padding-block:18px}
+#screen .lg-path-fold[open]{height:auto;min-height:0}
+#screen .lg-path-fold .lg-fold-body{margin-top:12px}
+#screen .lg-fold-fact-action{display:block;width:100%;padding:0;border:0;background:none;text-align:left;color:var(--text)}
+#screen .lg-path-fold .lg-level-body{margin-top:0}
+#screen .lg-path-fold .lg-level-title{margin:0}
+#screen .lg-path-fold:not([open]) .lg-level-title h2{font-size:16px}
+#screen .lg-path-fold .lg-fold-body>.lg-path-future-footer{margin-top:15px}
