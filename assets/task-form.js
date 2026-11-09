@@ -17,7 +17,7 @@
         <div class="lg-toggle-card"><div class="lg-toggle-row"><span class="lg-toggle-copy">
           <label class="lg-toggle-title" for="toggle-goal">Этот шаг ведёт тебя к цели?</label>
           <div class="lg-goal-slot"><label class="lg-toggle-sub lg-goal-off" for="toggle-goal"></label>
-          <label class="lg-toggle-sub lg-goal-on" for="toggle-goal">На задании будет тег «Ведёт к цели»</label></div></span>
+          <label class="lg-toggle-sub lg-goal-on" for="toggle-goal">Ведёт к цели</label></div></span>
           <input id="toggle-goal" class="lg-switch" type="checkbox" role="switch"></div></div>
         <div class="lg-toggle-card"><label class="lg-toggle-row" for="toggle-day-builder"><span class="lg-toggle-copy">
           <span class="lg-toggle-title">Добавить в Конструктор дня?</span><span class="lg-toggle-sub" id="task-day-hint"></span></span>
@@ -29,7 +29,7 @@
     name.value=options.name||'';
     goal.checked=!!options.goalChecked;
     plan.disabled=options.canPlan===false;plan.checked=!!options.inDayBuilder && !plan.disabled;
-    form.querySelector('.lg-goal-off').textContent='Просто дело для себя';
+    form.querySelector('.lg-goal-off').textContent='У каждого дела свой смысл';
     const checks=[...form.querySelectorAll('[data-day]')];
     checks.forEach((c,i)=>c.checked=(options.weekdays||[]).includes(i+1));
     const selected=()=>checks.flatMap((c,i)=>c.checked?[i+1]:[]);
