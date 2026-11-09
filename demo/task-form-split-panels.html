@@ -444,6 +444,15 @@
 #editor.lg-task-create .lg-demo-option .lg-toggle-sub{font-size:12px;line-height:1.5;margin-top:5px}
 #editor.lg-task-create .lg-demo-option.is-active-goal{border-color:#6cbe8c40;box-shadow:0 0 20px #6cbe8c0b}
 #editor.lg-task-create .lg-demo-option.is-active-day{border-color:rgba(var(--accent-rgb),.3);box-shadow:0 0 20px rgba(var(--accent-rgb),.06)}
+
+/* Center the text column both horizontally and vertically; keep switches on the right. */
+#editor.lg-task-create .lg-demo-option{display:flex;align-items:center}
+#editor.lg-task-create .lg-demo-option .lg-toggle-row{width:100%;min-height:0;align-items:center}
+#editor.lg-task-create .lg-demo-option .lg-toggle-copy{display:block;flex:1;min-width:0;text-align:center}
+#editor.lg-task-create .lg-demo-option .lg-toggle-title{display:block;text-align:center;font-size:14px}
+#editor.lg-task-create .lg-demo-option .lg-toggle-sub{text-align:center}
+#editor.lg-task-create .lg-demo-option .lg-goal-slot{display:grid;height:auto;min-height:18px;margin-top:5px;overflow:visible}
+#editor.lg-task-create .lg-demo-option .lg-goal-slot>.lg-toggle-sub{position:static;inset:auto;margin:0;transform:none;grid-area:1/1;align-self:center}
 </style></head><body><main><section id="editor" class="lg-task-create" aria-labelledby="editor-title"></section></main>
 <script>"use strict";
 // LifeGame · «Нить» — выбор награды за шаг (звезда A).
