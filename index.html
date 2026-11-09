@@ -10135,7 +10135,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
           list.append(row);
           continue;
         }
-        const open = uiEntity(btn("", "block", () => go("blocks", block.id)), "block", block.id);
+        const open = uiEntity(btn("", "block", () => {blockPathViews.set(block.id,"work");pathActiveCards.set(block.id+":outlook",LifeGameStages.current(state,block.id).id);go("blocks", block.id);}), "block", block.id);
         const info = el("span", "block-info");
         info.append(el("span", "", block.name), el("div", "meta", blockCounts(block.id)));
         const blockIcons = ["heart", "body", "book", "wallet", "people", "compass", "cloud", "minus"];
