@@ -2956,7 +2956,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 <link rel="stylesheet" href="assets/path-v2.css?v=3">
 <link rel="stylesheet" href="assets/path-fx.css?v=1">
 <link rel="stylesheet" href="assets/task-form.css?v=4">
-<link rel="stylesheet" href="assets/time-blocks.css?v=2">
 </head>
 <body>
 <div class="app">
@@ -3130,7 +3129,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   let blockReorderMode = false;
   let taskReorderMode = false;
   let blockSettingsOpen = false;
-  let blockWalletEffect = null;
   let questReorderMode = false;
   let bulkSelection = null;
   let bulkProcedure = null;
@@ -3836,8 +3834,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
         fail("Некорректная краткая подпись блока.");
       }
       item.subtitle = item.subtitle.trim();
-      if (item.kind === undefined) item.kind = "journey";
-      if (!["journey", "everyday"].includes(item.kind)) fail("Некорректный тип блока.");
 
       blocks.add(item.id);
     }
@@ -4149,9 +4145,9 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     return {blockId,mode:row.classList.contains('lg-path-missed')?'MISSED':'NOW'};
   }
   function launchPathCompletion(source){
-    if(!source||page!=='blocks'||blockId!==source.blockId||blockIsEveryday(blockId))return;
+    if(!source||page!=='blocks'||blockId!==source.blockId)return;
     const line=screen.querySelector('.lg-path-aesthetics');if(!line)return;
-    try{pathRailLayout(line);blockWalletAfterPath(LifeGamePathStar.launch(source.mode));}catch(error){console.warn('Эффект пути недоступен:',error);}
+    try{pathRailLayout(line);LifeGamePathStar.launch(source.mode);}catch(error){console.warn('Эффект пути недоступен:',error);}
   }
   function taskVisibleInDay(data,task) {return taskIsActive(data,task)||!!task&&task.archivedAt===null&&taskBlockIsActive(data,task.block)&&!!completion(data,task,true);}
   function goalIsActive(data,goal) {return !!goal&&blockIsActive(data,goal.blockId)&&LifeGameStages.active(data,goal);}
@@ -4354,46 +4350,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     }
   }
 
-  // The ledger is already saved. Only the visible digits count from zero.
-  function cancelBlockWalletEffect(){
-    const effect=blockWalletEffect;if(!effect)return;
-    blockWalletEffect=null;clearTimeout(effect.timer);cancelAnimationFrame(effect.frame);
-    for(const voice of effect.voices||[]){try{voice.stop()}catch{}}
-    const node=wallet.firstElementChild;if(node){node.classList.remove('lg-wallet-counting','lg-wallet-landed');node.textContent=totals(state).balance+' ●';node.removeAttribute('aria-hidden');}
-  }
-  function queueBlockWalletReward(from,to,amount){
-    cancelBlockWalletEffect();const effect={from,to,amount,timer:0,frame:0};blockWalletEffect=effect;
-    const node=wallet.firstElementChild;node.textContent=from+' ●';node.setAttribute('aria-hidden','true');
-    effect.timer=setTimeout(()=>runBlockWalletReward(effect),160);
-  }
-  function blockWalletAfterPath(animation){
-    const effect=blockWalletEffect;if(!effect)return;
-    clearTimeout(effect.timer);
-    Promise.resolve(animation).catch(()=>{}).then(()=>{if(blockWalletEffect===effect)runBlockWalletReward(effect)});
-  }
-  function runBlockWalletReward(effect){
-    if(blockWalletEffect!==effect||page!=='blocks'||document.hidden){cancelBlockWalletEffect();return;}
-    const node=wallet.firstElementChild,reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
-    const gain=el('small','lg-wallet-gain','+'+effect.amount);gain.setAttribute('aria-hidden','true');
-    node.classList.add('lg-wallet-counting');const digits=el('span','lg-wallet-digits',reduced?String(effect.to):'0');node.replaceChildren(digits,document.createTextNode(' ●'),gain);
-    const duration=reduced?0:1050,start=performance.now();
-    const voicesBefore=new Set(activeSounds.keys());
-    tones(reduced?[880,1174]:[587,659,740,784,880,988,1174],.115,.1,.025);
-    effect.voices=[...activeSounds.keys()].filter(voice=>!voicesBefore.has(voice));
-    const finish=()=>{
-      if(blockWalletEffect!==effect)return;
-      digits.textContent=String(totals(state).balance);node.classList.remove('lg-wallet-counting');node.classList.add('lg-wallet-landed');
-      effect.timer=setTimeout(()=>{if(blockWalletEffect===effect)cancelBlockWalletEffect()},1200);
-    };
-    const step=now=>{
-      if(blockWalletEffect!==effect)return;
-      const t=duration?Math.min(1,(now-start)/duration):1;
-      digits.textContent=String(Math.round(effect.to*(1-Math.pow(1-t,3))));
-      if(t<1)effect.frame=requestAnimationFrame(step);else finish();
-    };effect.frame=requestAnimationFrame(step);
-  }
-  document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelBlockWalletEffect()});
-
   // One feedback event per saved transaction; newer events replace older effects.
   const rewardVoices = new Set();
   function stopRewardSound() {
@@ -4466,7 +4422,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const values=[...(coins?[signedReward(coins,"монет")]:[]),...(gems?[signedReward(gems,"алмазов")]:[]),...(spent?[signedReward(-spent,"монет")]:[]),...(gemSpent?[signedReward(-gemSpent,"алмазов")]:[])].join(" · ");
     if(coins&&!gems&&!spent&&!gemSpent){
       clearEffects();
-      if(page==='blocks'&&coins>0){queueBlockWalletReward(before.balance,after.balance,coins);return;}
       uiSaveSignal(values+(bonus?' · бонус дня':revokedBonus?' · включая отмену бонуса дня':'')+(oldLevel!==newLevel?' · уровень '+newLevel:''));
       return;
     }
@@ -4826,10 +4781,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   window.visualViewport?.addEventListener('scroll',uiQueueDialogSize);
 
   function uiShowDialog(dialog) {
-    dialog.classList.add('lg-adaptive-dialog');
-    dialog.classList.toggle('lg-block-dialog',page==='blocks');
-    dialog.classList.toggle('lg-everyday-dialog',page==='blocks'&&blockIsEveryday(blockId));
-    uiSizeDialogs();
+    dialog.classList.add('lg-adaptive-dialog');uiSizeDialogs();
     if (dialog === editor) uiPrepareForm();
     if (!uiDialogs.has(dialog)) { uiDialogs.add(dialog); dialog.addEventListener('close', () => { if (!dialog.isConnected) uiDialogs.delete(dialog); setTimeout(uiSyncDialogs, 0); }); }
     dialog.dataset.uiDialogOrder = ++uiDialogSerial;
@@ -5165,20 +5117,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     menu.replaceChildren();
     const heading = el("h2", "", title);
     heading.id = "menu-title";
-    if(page==='blocks') {
-      const head=el('div','lg-block-menu-head'),close=btn('','lg-block-icon-button',()=>menu.close());
-      close.append(designIcon('close'));close.setAttribute('aria-label','Закрыть');head.append(heading,close);
-      const list=el('div','lg-block-menu-list');let group='';
-      for(const action of actions){
-        if(action.group&&action.group!==group){group=action.group;list.append(el('div','lg-block-menu-group',group));}
-        const row=btn('','lg-block-menu-action'+(action.danger?' is-danger':''),()=>{menu.close();action.run();},true);
-        const icon=action.icon||(action.danger?'inbox':/этап|путь/.test(action.text)?'layers':/порядок/.test(action.text)?'list':/Конструктор/.test(action.text)?'plan':/избран/.test(action.text)?'star':'gear');
-        const copy=el('span','lg-block-menu-copy');copy.append(el('strong','',action.text));if(action.hint)copy.append(el('small','',action.hint));
-        row.append(designIcon(icon),copy,designIcon('chevron'));list.append(row);
-      }
-      menu.append(head,list,btn('Готово','button secondary full lg-block-menu-done',()=>menu.close()));
-      heading.tabIndex=-1;heading.autofocus=true;uiShowDialog(menu);heading.focus();return;
-    }
     const list = el("div", "menu-actions");
     actions.forEach(action => {
       list.append(btn(
@@ -5356,14 +5294,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       }
     });
 
-    if(collection==='tasks'&&page==='blocks'){
-      const edit=actions.find(a=>a.text==='Редактировать'),transfer=actions.find(a=>a.text==='Перенести в другой блок');
-      if(edit){edit.icon='plan';edit.hint='Название, повторение и награда';}if(transfer)transfer.icon='layers';
-      const record=completion(state,item),active=taskIsActive(state,item),inPlan=active&&(item.type==='daily'?item.inDayBuilder&&!(state.daySkips[today()]||[]).includes(id):view.planIds.has(id));
-      if(record)actions.unshift({text:'Отменить выполнение',icon:'back',hint:'С подтверждением изменения награды',run:()=>toggleTask(id)});
-      else if(active)actions.unshift({text:inPlan?'Убрать из Конструктора':'Добавить в Конструктор',icon:'plan',hint:inPlan?'Останется в этом этапе':'Появится в плане дня',run:()=>togglePlan(id,!inPlan)});
-      if(!record)actions.push({text:item.favorite?'Убрать из избранного':'В избранное',icon:'star',run:()=>favoriteBar(collection,item).querySelector('button').click()});
-    }
     openMenu(item.name, actions);
   }
 
@@ -5516,49 +5446,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     update(selectedBlock);return {element,select,update,value:()=>select.value||null};
   }
   const blockPathViews=new Map(),blockCalendarOpen=new Map(),blockHistoryOpen=new Map(),blockMissedOpen=new Map();
-  const blockDoneOpen=new Map(),blockQuickDrafts=new Map();
-  function blockIsEveryday(owner){return state.blocks.find(b=>b.id===owner)?.kind==='everyday';}
-  function blockViewControls(owner,active){
-    const tabs=el('div','lg-block-view-tabs');tabs.setAttribute('role','group');tabs.setAttribute('aria-label','Вид блока');
-    for(const [key,text,icon]of [['work','Действовать','play'],['levels',blockIsEveryday(owner)?'План':'Путь','layers']]){
-      const b=btn('','lg-block-view-tab',()=>{if(key===active)return;blockPathViews.set(owner,key);viewedStageId=LifeGameStages.current(state,owner).id;go('blocks',owner,false,{restore:true,top:true,stageId:viewedStageId});requestAnimationFrame(()=>screen.querySelector('.lg-block-view-tab[aria-pressed="true"]')?.focus({preventScroll:true}));});
-      b.append(designIcon(icon),el('span','',text));b.setAttribute('aria-pressed',String(active===key));tabs.append(b);
-    }screen.append(tabs);
-    if(blockSettingsOpen){const note=el('div','lg-block-edit-mode');note.append(el('span','','Редактирование пути'),btn('Готово','lg-path-text-button',()=>{blockSettingsOpen=false;render()}));screen.append(note);}
-  }
-  function blockKindControl(checked,change){
-    const label=el('label','lg-block-kind-switch'),input=el('input'),copy=el('span','');
-    input.type='checkbox';input.checked=checked;input.setAttribute('role','switch');
-    const title=el('strong','','Большой путь'),note=el('small','');copy.append(title,note);label.append(copy,input);
-    const update=()=>{note.textContent=input.checked?'Этапы, ориентир и звёзды':'Бытовой блок · дела и короткий план';label.classList.toggle('is-journey',input.checked);editor.classList.toggle('lg-everyday-dialog',!input.checked);};
-    input.addEventListener('change',()=>{update();change(input.checked)});update();return label;
-  }
-  function blockKindForm(owner){
-    const block=state.blocks.find(b=>b.id===owner);if(!block)return;let journey=block.kind!=='everyday';const expected=block.kind;
-    openForm('Характер блока',[],()=>transact(d=>{const b=d.blocks.find(b=>b.id===owner);if(!b||b.archivedAt!==null||b.kind!==expected)fail('Блок изменился. Открой настройки заново.');b.kind=journey?'journey':'everyday';},false),'Сохранить',()=>render());
-    editor.querySelector('.form-actions').before(blockKindControl(journey,v=>journey=v),el('p','meta','Дела, этапы и история сохранятся. Меняется оформление и количество видимых ориентиров.'));
-    uiPrepareForm();
-  }
-  function blockQuickStep(owner,stage){
-    const form=el('form','lg-block-quick'),row=el('div','lg-block-quick-row'),input=el('input'),add=el('button','lg-block-quick-submit');
-    input.type='text';input.name='step';input.maxLength=120;input.required=true;input.autocomplete='off';input.enterKeyHint='done';input.placeholder='Следующее маленькое дело';input.setAttribute('aria-label','Новое дело этапа');input.value=blockQuickDrafts.get(stage.id)||'';
-    input.addEventListener('input',()=>{blockQuickDrafts.set(stage.id,input.value);input.setCustomValidity('')});
-    add.type='submit';add.append(designIcon('plus'));add.setAttribute('aria-label','Быстро добавить дело');input.disabled=add.disabled=!healthy;
-    row.append(input,add);const advanced=btn('С параметрами','lg-block-quick-advanced',()=>createTask({blockId:owner,stageId:stage.id,name:input.value,onSaved:()=>{blockQuickDrafts.delete(stage.id);const input=screen.querySelector('.lg-block-quick input');if(input)input.value='';}}),true);advanced.append(designIcon('gear'));
-    const caption=el('div','lg-block-quick-caption');caption.append(el('small','','Разовое · +25 монет'),advanced);form.append(row,caption);
-    form.addEventListener('submit',event=>{
-      event.preventDefault();const name=input.value.trim();if(!validName(name)){input.setCustomValidity('Напиши название дела.');input.reportValidity();return;}
-      let savedId;
-      if(transact(d=>{
-        const a=LifeGameStages.get(d,stage.id);if(!blockIsActive(d,owner)||a?.blockId!==owner||!LifeGameStages.unlocked(d,a))fail('Этап больше недоступен.');
-        const task={id:(savedId=uid()),name,reward:25,weekdays:[],type:'once',inDayBuilder:false,block:owner,stageId:stage.id,favorite:false,goalId:null,leadsToGoal:false,archivedAt:null};
-        d.tasks.push(task);LifeGameCalendarLinks.remember(d,'task',savedId);
-      },false)){
-        blockQuickDrafts.delete(stage.id);render();uiSaveSignal('Дело добавлено');
-        requestAnimationFrame(()=>screen.querySelector('.lg-block-quick input')?.focus({preventScroll:true}));
-      }
-    });return form;
-  }
   function blockCanInsert(d,owner,anchorId,direction='after') {
     const stages=LifeGameStages.list(d,owner),opt=LifeGameStages.optimal(d,owner),at=stages.findIndex(s=>s.id===anchorId),limit=stages.indexOf(opt);
     return at>=0&&limit>=0&&(direction==='before'?at<=limit:at<limit);
@@ -5579,9 +5466,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       if(!a){if(!blockCanInsert(d,owner,anchor.id,position.direction||'after'))fail('Путь изменился: добавление доступно только до оптимального уровня.');savedId=uid();a=LifeGameStages.newStage(savedId,owner,v.name,position.history?{passed:true,reached:true}:{});LifeGameStages.insert(d,a,anchor.id,position.direction||'after')}
       a.name=v.name;a.description=v.description;a.lock={mode:v.lockMode,stageId:v.lockMode==='stage'?v.requiredStage:null};
     },false),'Сохранить',()=>{if(position.history)blockHistoryOpen.set(owner,true);if(id&&blockPathViews.get(owner)==='work')viewedStageId=savedId;render();});
-    const access=el('details','lg-block-advanced'),accessSummary=el('summary','','Условия доступа');access.append(accessSummary);
-    for(const key of ['lockMode','requiredStage'])for(const node of [editor.querySelector('label[for="edit-'+key+'"]'),editor.querySelector('#edit-'+key)])if(node)access.append(node);
-    editor.querySelector('.form-actions').before(access);
     (()=>{const mode=editor.querySelector('#edit-lockMode'),input=editor.querySelector('#edit-requiredStage'),label=editor.querySelector('label[for="edit-requiredStage"]');const update=()=>{input.hidden=label.hidden=mode.value!=='stage';input.disabled=mode.value!=='stage'};mode.addEventListener('change',update);update()})();
     editor.querySelector('.form-actions').before(el('p','meta',st?'Смысл, цели, задания и награды сохраняются.':`Будет добавлен ${position.direction==='before'?'перед':'после'} этапа «${anchor.name}». Текущий этап не изменится. ${position.history?'Будет сохранён в истории как пройденный, без начислений.':'Добавление записи само по себе не отмечает её пройденной.'}`));
   }
@@ -5594,18 +5478,17 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       const a=LifeGameStages.get(d,id),t=d.tasks.find(t=>t.id===d.focus.taskId);if(t?.block===a?.blockId&&['running','paused'].includes(d.focus.status))fail('Сначала заверши текущий подход таймера в этом блоке.');
       LifeGameStages.switchTo(d,id,{passPrevious:markPassed});ensureDay(d);
     },false),'Сделать текущим',()=>{viewedStageId=id;render();requestAnimationFrame(()=>uiTarget('path-current:'+target.blockId));if(markPassed)uiSaveSignal('Этап пройден · он в твоей истории');});
-    const note=el('div','lg-block-transition');
-    note.append(el('span','lg-path-kicker','Следующий шаг'),el('strong','',target.name),el('p','meta','Этап останется в истории. Незаконченные разовые дела будут в «Невыполненном». Награды за дела и цели — отдельно.'));
-    editor.querySelector('h2').after(note);editor.querySelector('.form-actions').before(checkbox('Отметить «'+old.name+'» пройденным',passed,v=>markPassed=v));
+    const note=el('p','meta','Прежние цели и задания сохранятся в своём этапе. В Конструкторе останутся дела текущих этапов и уже выполненное сегодня. Переход не выдаёт наград и не завершает цели.');
+    editor.querySelector('h2').after(el('p','',target.name),note);editor.querySelector('.form-actions').before(checkbox('Отметить «'+old.name+'» пройденным',passed,v=>markPassed=v));
   }
   function stageMenu(id) {
     const a=LifeGameStages.get(state,id);if(!a)return;const ss=LifeGameStages.list(state,a.blockId),at=ss.indexOf(a),cur=LifeGameStages.current(state,a.blockId);
     const items=[{text:'Настроить этап',run:()=>blockStageForm(id)}];
     if(blockSettingsOpen&&id!==cur.id){if(blockCanInsert(state,a.blockId,id,'before'))items.push({text:'Добавить этап перед этим',run:()=>blockStageForm(null,a.blockId,{anchorId:id,direction:'before',history:a.passed||at<ss.indexOf(cur)})});if(blockCanInsert(state,a.blockId,id,'after'))items.push({text:'Добавить этап после этого',run:()=>blockStageForm(null,a.blockId,{anchorId:id,direction:'after',history:a.passed||at<ss.indexOf(cur)})});}
     if(id!==cur.id&&LifeGameStages.unlocked(state,a))items.push({text:'Сделать текущим',run:()=>makeStageCurrent(id)});
-    if(id!==cur.id)items.push({text:'Содержимое этапа',run:()=>{blockPathViews.set(a.blockId,'work');viewedStageId=id;render()}});
+    items.push({text:'Содержимое этапа',run:()=>{blockPathViews.set(a.blockId,'work');viewedStageId=id;render()}});
     const move=dir=>transact(d=>{const ids=LifeGameStages.list(d,a.blockId).map(s=>s.id),index=ids.indexOf(id),other=ids[index+dir];if(!other)fail('Порядок уже изменён.');const x=d.blockStages.items.findIndex(s=>s.id===id),y=d.blockStages.items.findIndex(s=>s.id===other);[d.blockStages.items[x],d.blockStages.items[y]]=[d.blockStages.items[y],d.blockStages.items[x]]},false);
-    if(blockSettingsOpen&&at>0)items.push({text:'Переместить этап выше',run:()=>move(-1)});if(blockSettingsOpen&&at<ss.length-1)items.push({text:'Переместить этап ниже',run:()=>move(1)});openMenu(a.name,items);
+    if(at>0)items.push({text:'Переместить этап выше',run:()=>move(-1)});if(at<ss.length-1)items.push({text:'Переместить этап ниже',run:()=>move(1)});openMenu(a.name,items);
   }
   function blockFactForm(owner) {
     const path=state.blockStages.paths[owner],expected=path.fact;
@@ -5648,13 +5531,9 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const b=btn('+ этап','button secondary lg-level-insert',()=>blockStageForm(null,owner,{anchorId:anchor.id,direction,history:anchor.id!==LifeGameStages.current(state,owner).id&&(anchor.passed||LifeGameStages.list(state,owner).indexOf(anchor)<LifeGameStages.list(state,owner).indexOf(LifeGameStages.current(state,owner)))}),true);b.setAttribute('aria-label',`Добавить этап ${direction==='before'?'перед':'после'} «${anchor.name}»`);b.dataset.insert=direction;b.dataset.anchor=anchor.id;b.hidden=!blockCanInsert(state,owner,anchor.id,direction);return b;
   }
   function blockStageNext(owner,body) {
-    const ss=LifeGameStages.list(state,owner),c=LifeGameStages.current(state,owner),everyday=blockIsEveryday(owner),next=ss.slice(ss.indexOf(c)+1).find(a=>!a.passed&&(!everyday||!['hidden','maximum'].includes(a.levelKind)));
-    if(!next){if(everyday&&c.levelKind==='optimal'){const end=el('div','lg-block-finish');end.append(designIcon('check'),el('span','','Ты на финише. Сделанное осталось в истории.'));body.append(end);}return;}
-    const b=btn('','button full lg-level-next',()=>makeStageCurrent(next.id,true),true),copy=el('span','');
-    copy.append(el('strong','','Завершить этап'),el('small','',next.name==='Дальше'?'К следующему шагу':'Дальше · '+next.name));b.append(copy,designIcon('chevron'));b.disabled=!healthy||!LifeGameStages.unlocked(state,next);body.append(b);
-    if(!LifeGameStages.unlocked(state,next))body.append(el('p','meta',LifeGameStages.lockText(state,next)));
+    const ss=LifeGameStages.list(state,owner),c=LifeGameStages.current(state,owner),next=ss.slice(ss.indexOf(c)+1).find(a=>!a.passed);if(!next)return;
+    const b=btn('Этап пройден — дальше','button full lg-level-next',()=>makeStageCurrent(next.id,true),true);b.append(designIcon('chevron'));body.append(b);if(!LifeGameStages.unlocked(state,next))body.append(el('p','meta',LifeGameStages.lockText(state,next)));
   }
-
   // Animated native disclosures keep keyboard access and programmatic targeting.
   function pathDisclosure(details,onChange) {
     const summary=details.querySelector(':scope > summary');let animation=null,desired=details.open;
@@ -5685,7 +5564,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   function pathSunlight() {
     cancelAnimationFrame(pathSunFrame);
     pathSunFrame=requestAnimationFrame(()=>{
-      const active=screen.querySelector('.lg-path-aesthetics:not(.lg-everyday-path),.lg-work-outlook:not(.lg-everyday-outlook)'),optimal=active?.querySelector(':scope > .is-optimal,.lg-work-optimal'),navHeight=document.querySelector('body>nav')?.getBoundingClientRect().height||0;
+      const active=screen.querySelector('.lg-path-aesthetics,.lg-work-outlook'),optimal=active?.querySelector(':scope > .is-optimal,.lg-work-optimal'),navHeight=document.querySelector('body>nav')?.getBoundingClientRect().height||0;
       const start=optimal?optimal.getBoundingClientRect()[active.classList.contains('lg-path-aesthetics')?'top':'bottom']+scrollY:Infinity,end=document.documentElement.scrollHeight-navHeight,front=scrollY+innerHeight-navHeight;
       const progress=active&&end>start?Math.min(1,Math.max(0,(front-start)/(end-start))):0;
       document.body.style.setProperty('--lg-sunlight',progress.toFixed(3));
@@ -5727,37 +5606,26 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     card.append(el('div','lg-path-kicker',key==='futureMaximum'?'За горизонтом':key==='futureOptimal'?'Мой ориентир':'Впереди'),el('h2','',title),el('p','meta',state.blockStages.paths[owner][key]||'Впереди есть место для большего. Нажми, чтобы описать.'));
     card.dataset.uiKey='path-outlook:'+owner+':'+key;const edit=el('span','lg-path-outlook-edit','Помечтать');edit.append(designIcon('chevron'));card.append(edit);row.append(card);return row;
   }
-  function blockMissedCard(owner){
-    const stages=LifeGameStages.list(state,owner),c=LifeGameStages.current(state,owner),past=stages.filter((a,i)=>a.id!==c.id&&(i<stages.indexOf(c)||a.passed));
-    const overdue=state.calendarEntries.filter(e=>e.blockId===owner&&e.date<today()&&e.completionId===null),unfinished=state.tasks.filter(t=>t.block===owner&&t.archivedAt===null&&past.some(a=>a.id===t.stageId)&&t.type==='once'&&!completion(state,t));
-    const missedCard=el('details','card lg-path-disclosure-card');missedCard.open=blockMissedOpen.get(owner)||false;missedCard.append(pathSummary('Невыполненное','',null,unfinished.length+overdue.length));
-    const missedBody=el('div','lg-path-disclosure-body');
-    for(const t of unfinished)missedBody.append(pathTaskCard(t));
-    for(const entry of overdue.sort((a,b)=>a.date.localeCompare(b.date)))missedBody.append(calendarCard(entry));
-    if(!unfinished.length&&!overdue.length)missedBody.append(el('p','meta','Нет оставшихся заданий прошлых этапов и просроченных календарных дел.'));
-    missedCard.append(missedBody);pathDisclosure(missedCard,open=>blockMissedOpen.set(owner,open));return {card:missedCard,count:unfinished.length+overdue.length};
-  }
-
   function renderBlockLevels(selected) {
-    const owner=selected.id,everyday=blockIsEveryday(owner),ss=LifeGameStages.list(state,owner),c=LifeGameStages.current(state,owner),path=state.blockStages.paths[owner],at=ss.indexOf(c),optimalAt=ss.findIndex(a=>a.levelKind==='optimal'),past=ss.filter((a,i)=>a.id!==c.id&&(i<at||a.passed)),future=ss.filter(a=>a.id!==c.id&&!past.includes(a)&&(!everyday||!['hidden','maximum'].includes(a.levelKind)));viewedStageId=c.id;
+    const owner=selected.id,ss=LifeGameStages.list(state,owner),c=LifeGameStages.current(state,owner),path=state.blockStages.paths[owner],at=ss.indexOf(c),optimalAt=ss.findIndex(a=>a.levelKind==='optimal'),past=ss.filter((a,i)=>a.id!==c.id&&(i<at||a.passed)),future=ss.filter(a=>a.id!==c.id&&!past.includes(a));viewedStageId=c.id;
     const journey=el('div','lg-path-journey'),count=el('span','');count.append(el('b','',uiAmount(past.length,['этап','этапа','этапов'])),document.createTextNode(' уже позади'));
     const jump=btn('Ты сейчас здесь','lg-path-jump',()=>uiTarget('path-current:'+owner));jump.append(designIcon('chevron'));journey.append(count,jump);screen.append(journey);
-    blockViewControls(owner,'levels');
-    const line=el('div','lg-levels lg-path-aesthetics'+(everyday?' lg-everyday-path':''));
+    const controls=el('div','lg-level-controls');controls.append(btn('Блок времени','button secondary',()=>{blockPathViews.set(owner,'work');viewedStageId=c.id;render()}),btn('Описать путь','button secondary',()=>blockPathWizard(owner)));screen.append(controls);
+    const line=el('div','lg-levels lg-path-aesthetics');
     const stageRow=a=>{
       const now=a.id===c.id,locked=!LifeGameStages.unlocked(state,a),horizon=['hidden','maximum'].includes(a.levelKind)||optimalAt>=0&&ss.indexOf(a)>optimalAt,row=el('article','lg-level'+(now?' is-current':'')+(locked?' is-locked':'')+(a.levelKind==='optimal'?' is-optimal':'')+(horizon?' is-horizon':'')+(a.levelKind==='maximum'?' is-maximum':horizon?' is-unknown':''));row.dataset.stageId=a.id;
       if(now)row.dataset.uiKey='path-current:'+owner;
       const card=el('section','card lg-level-card'),head=el('div','lg-level-title'),copy=el('div','lg-path-stage-copy');
-      copy.append(el('div','lg-path-kicker',now?'Этап '+String(at+1).padStart(2,'0'):a.levelKind==='optimal'?(everyday?'Результат':'Мой ориентир'):horizon?'За горизонтом':a===future[0]?'Следующий этап':'Будущий этап'),el('h2','',a.name));
+      copy.append(el('div','lg-path-kicker',now?'Этап '+String(at+1).padStart(2,'0'):a.levelKind==='optimal'?'Мой ориентир':horizon?'За горизонтом':a===future[0]?'Следующий этап':'Будущий этап'),el('h2','',a.name));
       head.append(copy);if(now)head.append(el('span','lg-level-tag','Сейчас'));
       if(!now)card.dataset.uiKey='path-stage:'+a.id;const more=btn('⋯','more-button',()=>stageMenu(a.id));more.setAttribute('aria-label','Действия с этапом '+a.name);head.append(more);card.append(head);
       if(now){if(a.description)card.append(el('p','meta',a.description));const body=el('div','lg-level-body');renderBlockStageContents(selected,a,body);blockStageNext(owner,body);card.append(body);}
       else{
-        const text=locked&&a.levelKind==='hidden'?'Здесь откроются новые возможности.':a.description||(everyday?(a.levelKind==='optimal'?'Что будет означать «готово»?':'Что нужно сделать дальше?'):'Опиши свой ориентир.');
+        const text=locked&&a.levelKind==='hidden'?'Здесь откроются новые возможности.':a.description||'Опиши свой ориентир.';
         card.append(btn(text,'lg-level-description',()=>blockLevelDescription(a.id),true));
         const hasContents=state.goals.some(g=>g.stageId===a.id)||state.tasks.some(t=>t.stageId===a.id&&t.archivedAt===null),footer=el('div','lg-path-future-footer');
-        footer.append(el('span','lg-path-future-status',locked?levelLabel(a,owner):a.levelKind==='optimal'?(everyday?'Результат':'★ Оптимальный'):(everyday?'В плане':'В своём темпе')));
-        const contents=btn(locked?'Подробнее':hasContents?'Открыть этап':everyday?'Описать':'Помечтать','lg-path-text-button',()=>{if(!locked&&!hasContents){blockLevelDescription(a.id);return;}viewedStageId=a.id;blockPathViews.set(owner,'work');render()});contents.append(designIcon('chevron'));footer.append(contents);card.append(footer);
+        footer.append(el('span','lg-path-future-status',locked?levelLabel(a,owner):a.levelKind==='optimal'?'★ Оптимальный':'В своём темпе'));
+        const contents=btn(locked?'Подробнее':hasContents?'Открыть этап':'Помечтать','lg-path-text-button',()=>{if(!locked&&!hasContents){blockLevelDescription(a.id);return;}viewedStageId=a.id;blockPathViews.set(owner,'work');render()});contents.append(designIcon('chevron'));footer.append(contents);card.append(footer);
       }
       row.append(card);return row;
     };
@@ -5768,41 +5636,42 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const reel=el('div','lg-history-reel');reel.tabIndex=0;reel.setAttribute('role','region');reel.setAttribute('aria-label','Лента пройденных этапов');
     if(!past.length)reel.append(el('p','meta','Пройденные этапы останутся здесь. Каждое небольшое продвижение — часть твоей истории.'));
     for(const a of [...past].reverse()){if(blockSettingsOpen)reel.append(btn('+ этап','button secondary lg-level-insert',()=>blockStageForm(null,owner,{anchorId:a.id,direction:'before',history:true})));reel.append(pathStageMemory(a,owner,ss.indexOf(a)));}
-    historyBody.append(reel);history.append(historyBody);pathDisclosure(history,open=>blockHistoryOpen.set(owner,open));historyRow.append(history);if(!everyday||past.length)line.append(historyRow);
-    const fact=el('article','lg-level lg-level-fact'),factCard=btn('','card lg-level-summary',()=>blockFactForm(owner),true),factHead=el('div','lg-level-title');factHead.append(el('h2','','Фактический'),el('span','lg-level-tag','Точка опоры'));factCard.append(factHead,el('p','meta',path.fact||'Нажми, чтобы описать состояние'));fact.append(factCard);if(!everyday)line.append(fact);
-    const missed=el('article','lg-level lg-path-missed'),backlog=blockMissedCard(owner);missed.append(backlog.card);if(!everyday||backlog.count)line.append(missed);
+    historyBody.append(reel);history.append(historyBody);pathDisclosure(history,open=>blockHistoryOpen.set(owner,open));historyRow.append(history);line.append(historyRow);
+    const fact=el('article','lg-level lg-level-fact'),factCard=btn('','card lg-level-summary',()=>blockFactForm(owner),true),factHead=el('div','lg-level-title');factHead.append(el('h2','','Фактический'),el('span','lg-level-tag','Точка опоры'));factCard.append(factHead,el('p','meta',path.fact||'Нажми, чтобы описать состояние'));fact.append(factCard);line.append(fact);
+    const overdue=state.calendarEntries.filter(e=>e.blockId===owner&&e.date<today()&&e.completionId===null),unfinished=state.tasks.filter(t=>t.block===owner&&t.archivedAt===null&&past.some(a=>a.id===t.stageId)&&t.type==='once'&&!completion(state,t));
+    const missed=el('article','lg-level lg-path-missed'),missedCard=el('details','card lg-path-disclosure-card');missedCard.open=blockMissedOpen.get(owner)||false;missedCard.append(pathSummary('Невыполненное','',null,unfinished.length+overdue.length));
+    const missedBody=el('div','lg-path-disclosure-body');
+    for(const t of unfinished){const card=taskCard(t);card.append(btn('Настроить задание','button secondary full',()=>editTaskDays(t.id)));missedBody.append(card);}
+    for(const entry of overdue.sort((a,b)=>a.date.localeCompare(b.date)))missedBody.append(calendarCard(entry));
+    if(!unfinished.length&&!overdue.length)missedBody.append(el('p','meta','Нет оставшихся заданий прошлых этапов и просроченных календарных дел.'));
+    missedCard.append(missedBody);pathDisclosure(missedCard,open=>blockMissedOpen.set(owner,open));missed.append(missedCard);line.append(missed);
     line.append(stageRow(c));const planned=el('article','lg-level lg-path-planned');renderBlockCalendar(selected,planned);line.append(planned);
-    if(future.length||!everyday)line.append(el('div','section-label',everyday?'Дальнейший план':'ВПЕРЕДИ — ТВОИ ВОЗМОЖНОСТИ'));
+    line.append(el('div','section-label','ВПЕРЕДИ — ТВОИ ВОЗМОЖНОСТИ'));
     for(const a of future){if(blockSettingsOpen&&blockCanInsert(state,owner,a.id,'before'))line.append(blockLevelAdd(owner,a,'before'));line.append(stageRow(a));}
-    if(!everyday&&!future.some(a=>a.levelKind==='stage'))line.append(pathOutlook(owner,'futurePlan','Планируемое'));
-    if(!everyday&&!future.some(a=>a.levelKind==='optimal'))line.append(pathOutlook(owner,'futureOptimal','Оптимальное'));
-    if(!everyday&&!future.some(a=>a.levelKind==='maximum'))line.append(pathOutlook(owner,'futureMaximum','Всегда возможно лучшее'));
+    if(!future.some(a=>a.levelKind==='stage'))line.append(pathOutlook(owner,'futurePlan','Планируемое'));
+    if(!future.some(a=>a.levelKind==='optimal'))line.append(pathOutlook(owner,'futureOptimal','Оптимальное'));
+    if(!future.some(a=>a.levelKind==='maximum'))line.append(pathOutlook(owner,'futureMaximum','Всегда возможно лучшее'));
     if(blockSettingsOpen&&blockCanInsert(state,owner,(future.at(-1)||c).id,'after'))line.append(blockLevelAdd(owner,future.at(-1)||c,'after'));
-    screen.append(line);if(!everyday)LifeGamePathStar.init(line);pathRailSetup(line);pathSunlight();
+    screen.append(line);LifeGamePathStar.init(line);pathRailSetup(line);pathSunlight();
   }
   function renderBlockWorkOutlook(selected,target=screen) {
     const owner=selected.id,ss=LifeGameStages.list(state,owner),cur=LifeGameStages.current(state,owner),path=state.blockStages.paths[owner],future=ss.slice(ss.indexOf(cur)+1).filter(s=>!s.passed),opt=future.find(s=>s.levelKind==='optimal');
-    const box=el('section','lg-work-outlook'+(blockIsEveryday(owner)?' lg-everyday-outlook':'')),head=el('div','lg-work-outlook-head'),dawn=el('div','lg-work-dawn');dawn.setAttribute('aria-hidden','true');head.append(el('h3','','Впереди'),el('span','',selected.name));box.append(dawn,head);
+    const box=el('section','lg-work-outlook'),head=el('div','lg-work-outlook-head'),dawn=el('div','lg-work-dawn');dawn.setAttribute('aria-hidden','true');head.append(el('h3','','Впереди'),el('span','',selected.name));box.append(dawn,head);
     const open=(stage,key)=>{blockPathViews.set(owner,'levels');go('blocks',owner,false,{target:stage?'path-stage:'+stage.id:'path-outlook:'+owner+':'+key});};
     const before=future.filter(s=>s.levelKind==='stage'&&(!opt||future.indexOf(s)<future.indexOf(opt))),near=el('div','lg-work-near');
-    if(before.length){const stage=before[0],b=btn('','card lg-work-near-step',()=>open(stage)),copy=el('span','');copy.append(el('strong','',blockIsEveryday(owner)?'Дальше':'Планируемый'),el('small','',stage.name==='Планируемый'?'Следующий шаг':stage.name));b.append(designIcon('chevron'),copy);near.append(b);}box.append(near);
+    if(before.length){const stage=before[0],b=btn('','card lg-work-near-step',()=>open(stage)),copy=el('span','');copy.append(el('strong','','Планируемый'),el('small','',stage.name==='Планируемый'?'Следующий шаг':stage.name));b.append(designIcon('chevron'),copy);near.append(b);}box.append(near);
     const optimal=btn('','card lg-work-optimal',()=>open(opt,'futureOptimal')),copy=el('span','');
-    copy.append(el('strong','',opt?.name||(blockIsEveryday(owner)?'Готово':'Оптимальное')),el('small','',opt?(blockIsEveryday(owner)?'Финиш · через ':'Оптимальный · через ')+uiAmount(future.indexOf(opt)+1,['этап','этапа','этапов']):'Мой следующий ориентир'));optimal.append(designIcon(blockIsEveryday(owner)?'check':'star'),copy);if(!blockIsEveryday(owner)||opt)box.append(optimal);
-    if(!blockIsEveryday(owner)||before.length||opt)target.append(box);
+    copy.append(el('strong','',opt?.name||'Оптимальное'),el('small','',opt?'Оптимальный · через '+uiAmount(future.indexOf(opt)+1,['этап','этапа','этапов']):'Мой следующий ориентир'));optimal.append(designIcon('star'),copy);box.append(optimal);
+    target.append(box);
   }
   function renderBlockWork(selected) {
-    const owner=selected.id,a=displayedStage(owner),c=LifeGameStages.current(state,owner),ss=LifeGameStages.list(state,owner);
-    blockViewControls(owner,'work');
-    const work=el('div','lg-work-path');screen.append(work);
-    const stage=el('section','lg-stage-workspace'),head=el('div','lg-work-heading'),more=btn('⋯','more-button',()=>stageMenu(a.id));
-    stage.dataset.uiKey=(a.id===c.id?'path-current:'+owner:'path-stage:'+a.id);
-    more.setAttribute('aria-label','Действия с этапом '+a.name);head.append(el('div','lg-level-kicker',a.id===c.id?'Текущий этап':a.passed?'Пройденный этап':'Будущий этап'),el('h2','',a.name),more);stage.append(head);work.append(stage);
-    if(a.id!==c.id){stage.append(el('p','lg-block-preview-note',LifeGameStages.unlocked(state,a)?'Здесь можно подготовить дела. Выполнение — в текущем этапе.':LifeGameStages.lockText(state,a)));if(LifeGameStages.unlocked(state,a))stage.append(btn('Сделать текущим','button secondary full',()=>makeStageCurrent(a.id),true));}
-    renderBlockStageContents(selected,a,stage);if(a.id===c.id)blockStageNext(owner,stage);
-    if(a.id===c.id){const service=el('div','lg-work-service'),missed=blockMissedCard(owner);if(missed.count)service.append(missed.card);renderBlockCalendar(selected,service);work.append(service);}
+    const owner=selected.id,a=displayedStage(owner),c=LifeGameStages.current(state,owner),ss=LifeGameStages.list(state,owner),controls=el('div','lg-level-controls');controls.append(btn('Все этапы','button secondary',()=>{blockPathViews.set(owner,'levels');viewedStageId=c.id;render()}),btn('Описать путь','button secondary',()=>blockPathWizard(owner)));screen.append(controls);
+    const work=el('div','lg-work-path');screen.append(work);const head=el('section','lg-work-heading'),more=btn('⋯','more-button',()=>stageMenu(a.id));more.setAttribute('aria-label','Действия с этапом '+a.name);head.append(el('div','lg-level-kicker',a.id===c.id?'Ты сейчас здесь':'Содержимое этапа'),el('h2','',a.name),more);work.append(head);
+    if(a.id!==c.id){work.append(el('p','meta',LifeGameStages.unlocked(state,a)?'Режим подготовки. Выполнение — после перехода.':LifeGameStages.lockText(state,a)));if(LifeGameStages.unlocked(state,a))work.append(btn('Сделать текущим','button secondary full',()=>makeStageCurrent(a.id),true));}
+    renderBlockStageContents(selected,a,work);if(a.id===c.id)blockStageNext(owner,work);
+    if(blockSettingsOpen&&a.id!==c.id){const add=el('div','lg-level-controls');for(const direction of ['before','after'])if(blockCanInsert(state,owner,a.id,direction)){const button=blockLevelAdd(owner,a,direction);button.textContent=direction==='before'?'+ Этап раньше':'+ Этап дальше';add.append(button);}if(add.children.length)work.append(add);}
     renderBlockWorkOutlook(selected,work);pathSunlight();
   }
-
 
   // Смысл блока: одна текстовая карточка без награды.
 
@@ -6523,7 +6392,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
 
   function createBlock() {
-    let journey=true,savedId;
     const iconChoices = [
       ["heart", "Сердце"], ["body", "Спорт"], ["book", "Знания"],
       ["wallet", "Ресурсы"], ["cloud", "Природа"],
@@ -6535,17 +6403,14 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       { key: "icon", label: "Выбери иконку", options: iconChoices.map(([id, label]) => [id, label]), value: "heart" },
       { key: "subtitle", label: "Краткая подпись", type: "text", value: "", required: false, maxLength: 120, hint: "Необязательно, до 120 символов." }
     ], values => transact(data => {
-      data.blocks.push({ id: (savedId=uid()), name: values.name, icon: values.icon, subtitle: values.subtitle,kind:journey?'journey':'everyday' });
-      LifeGameStages.validate(data);
-      if(!journey){const stages=LifeGameStages.list(data,savedId);stages.find(a=>a.slot==='next').name='Дальше';LifeGameStages.optimal(data,savedId).name='Готово';}
-    }, false),'Создать блок',()=>{blockPathViews.set(savedId,'work');go('blocks',savedId)});
+      data.blocks.push({ id: uid(), name: values.name, icon: values.icon, subtitle: values.subtitle });
+    }, false));
     if (!editor.open) return;
     const form = editor.querySelector("form");
     const nameInput = form?.querySelector("#edit-name");
     const iconSelect = form?.querySelector("#edit-icon");
     if (!form || !nameInput || !iconSelect || form.querySelector(".lg-block-icon-grid")) return;
     form.classList.add("lg-new-block-form");
-    form.querySelector('.form-actions').before(blockKindControl(journey,v=>journey=v));
     form.querySelector(".ui-required-note")?.remove();
     const nameLabel = form.querySelector('label[for="edit-name"]');
     if (nameLabel) { nameLabel.classList.add("lg-block-visually-hidden"); }
@@ -6571,7 +6436,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       return button;
     });
     iconSelect.after(grid);
-    uiPrepareForm();
   }
 
   // Archive v1, stage 05: a block remains canonical; goals and tasks remain linked.
@@ -6606,7 +6470,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     }, false, true); // Neither ensureDay nor reconcileDayBonus nor award effects.
   }
 
-  function openBlockSettings(id) {
+  function blockSettingsPanel(id) {
     const item = state.blocks.find(x => x.id === id);
     if (!item || item.archivedAt !== null) return null;
     const actions = [
@@ -6654,14 +6518,32 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
         }
       }
     ];
-    actions[0].hint='Название и короткое описание';actions[0].icon='gear';actions[0].group='Этот блок';
-    actions.splice(1,0,{text:'Характер блока',hint:blockIsEveryday(id)?'Бытовой · простой план':'Большой путь · звёзды и свет',icon:blockIsEveryday(id)?'layers':'spark',run:()=>blockKindForm(id)});
-    actions.splice(2,0,{text:blockIsEveryday(id)?'Описать результат':'Описать путь',hint:blockIsEveryday(id)?'Что будет значить «готово»':'Сейчас, следующий шаг и ориентир',icon:'flag',group:'Планирование',run:()=>blockIsEveryday(id)?blockLevelDescription(LifeGameStages.optimal(state,id).id):blockPathWizard(id)});
-    actions.splice(3,0,{text:blockSettingsOpen?'Закончить редактирование пути':'Изменить этапы',hint:'Добавить этапы до ориентира и изменить порядок',icon:'layers',run:()=>{blockSettingsOpen=!blockSettingsOpen;blockPathViews.set(id,'levels');render()}});
-    actions.find(a=>a.text==='Изменить порядок'||a.text==='Готово').group='Дела';
-    actions.find(a=>a.text==='В архив').group='Хранение';
-    actions.find(a=>a.text==='В архив').hint='Весь блок можно будет восстановить';
-    openMenu('Настройки блока',actions);
+    const panel = el("details", "blocks-list-management block-settings-panel");
+    panel.id = "block-settings-panel";
+    panel.open = blockSettingsOpen;
+    const summary = el("summary", "", "Управление блоком");
+    summary.setAttribute("aria-label", "Управление блоком");
+    panel.append(summary);
+    for (const action of actions) {
+      const orderAction = action.text === "Изменить порядок" || action.text === "Готово";
+      const control = btn(
+        action.text,
+        "button " + (action.danger ? "danger" : "secondary") + " full spaced" + (orderAction ? " block-settings-order-toggle" : ""),
+        () => {
+          action.run();
+          if (orderAction) screen.querySelector(".block-settings-order-toggle")?.focus({ preventScroll: true });
+        },
+        true
+      );
+      if (orderAction) control.setAttribute("aria-pressed", String(taskReorderMode));
+      panel.append(control);
+    }
+    panel.append(btn("Закрыть", "button full spaced lg-settings-close", () => {
+      blockSettingsOpen = false;
+      render();
+      screen.querySelector(".block-settings-toggle")?.focus({ preventScroll: true });
+    }));
+    return panel;
   }
 
   // Цели и алмазы.
@@ -6988,22 +6870,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
 
   // Задания.
-  function everydayTaskView(config){
-    const form=el('form','lg-everyday-task-form'),heading=el('h2','','Новое дело');heading.id='editor-title';
-    const label=el('label','','Название'),input=el('input');input.id='everyday-task-name';input.type='text';input.maxLength=120;input.value=config.name;input.placeholder='Например: выбрать краску';label.htmlFor=input.id;
-    const repeatLabel=el('label','','Повторение'),repeat=el('select');repeat.id='everyday-task-repeat';repeatLabel.htmlFor=repeat.id;
-    for(const [value,text]of [['once','Один раз'],['daily','Каждый день'],['weekdays','По будням'],['weekends','В выходные']]){const option=el('option','',text);option.value=value;repeat.append(option);}
-    const weekdays=config.weekdays||[];if(weekdays.length){const preset=weekdays.length===7?'daily':weekdays.length===2&&weekdays.includes(6)&&weekdays.includes(7)?'weekends':weekdays.length===5&&weekdays.every(d=>d<=5)?'weekdays':'custom';if(preset==='custom'){const option=el('option','','Выбранные дни');option.value='custom';repeat.append(option);}repeat.value=preset;}
-    const plan=checkbox('Добавить в Конструктор дня',config.inDayBuilder,()=>{},!config.canPlan);plan.querySelector('input').setAttribute('role','switch');
-    const extra=el('details','lg-block-advanced');extra.append(el('summary','','Награда за дело'));
-    const rewardLabel=el('label','','Монеты'),reward=el('input');reward.id='everyday-task-reward';reward.type='number';reward.min=0;reward.max=100000;reward.step=1;reward.value=25;rewardLabel.htmlFor=reward.id;extra.append(rewardLabel,reward);
-    const error=el('p','meta');error.hidden=true;error.setAttribute('role','alert');
-    const actions=el('div','form-actions'),save=el('button','button','Добавить');save.type='submit';actions.append(btn('Отмена','button secondary',config.onCancel),save);
-    form.append(heading,label,input,repeatLabel,repeat,plan,extra,error,actions);
-    input.addEventListener('input',()=>{input.classList.remove('is-invalid');input.removeAttribute('aria-invalid');error.hidden=true;});
-    return {form,values:()=>({name:input.value.trim(),weekdays:repeat.value==='daily'?[1,2,3,4,5,6,7]:repeat.value==='weekdays'?[1,2,3,4,5]:repeat.value==='weekends'?[6,7]:repeat.value==='custom'?weekdays:[],reward:Number(reward.value),goalChecked:false,inDayBuilder:config.canPlan&&plan.querySelector('input').checked}),
-      error:(message,name=true)=>{if(name){input.classList.add('is-invalid');input.setAttribute('aria-invalid','true');input.focus()}else{error.textContent=message;error.hidden=false;}}};
-  }
   function createTask(options = {}) {
     const selectedBlock = options.blockId ?? blockId;
     if (!healthy || !taskBlockIsActive(state, selectedBlock)) return;
@@ -7015,9 +6881,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const linkedGoal = goals.find(g=>g.id===options.goalId) || null;
     const date = today();
     editor.replaceChildren();
-    const everyday=blockIsEveryday(selectedBlock);
-    editor.classList.toggle('lg-task-create',!everyday);
-    const view = (everyday?everydayTaskView:LifeGameTaskForm.create)({
+    editor.classList.add('lg-task-create');
+    const view = LifeGameTaskForm.create({
       name:options.name || '', weekdays:options.weekdays || [],
       goalChecked:!!options.goalId,
       canPlan:selectedBlock===INBOX_BLOCK_ID || stageId===expectedCurrent,
@@ -7236,19 +7101,16 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   // Reuse real controls and their handlers; only the path's presentation changes.
   function pathTaskCard(task) {
     const card=taskCard(task);card.classList.add('lg-path-task-row');
-    const title=card.querySelector('.lg-c-title'),action=card.querySelector('.lg-c-action'),more=card.querySelector('.more-button'),kind=card.querySelector('.lg-c-kind span'),record=completion(state,task),value=card.querySelector('.lg-c-amount')||card.querySelector('.lg-c-value small');
+    const title=card.querySelector('.lg-c-title'),action=card.querySelector('.lg-c-action'),day=card.querySelector('.lg-c-day'),tools=card.querySelector('.lg-c-tools'),favorite=tools.querySelector('.favorite-bar'),more=tools.querySelector('.more-button'),kind=card.querySelector('.lg-c-kind span');
+    const record=completion(state,task),value=card.querySelector('.lg-c-amount')||card.querySelector('.lg-c-value small');
+    const extras=[...card.querySelectorAll(':scope>.lg-c-context,:scope>p.meta')];
     const row=el('div','lg-path-task-main'),copy=el('div','lg-path-task-copy'),meta=el('div','lg-path-task-meta');
     action.replaceChildren();action.title=action.getAttribute('aria-label');action.setAttribute('aria-pressed',String(!!record));
     const mark=el('span','lg-path-task-check'),glyph=designIcon('check');glyph.querySelector('circle')?.remove();mark.append(glyph);action.append(mark);
-    meta.append(el('span','',record?'Сделано':kind.textContent),el('span','lg-path-task-dot','·'),value);
-    if(!record){const planned=taskIsActive(state,task)&&(task.type==='daily'?task.inDayBuilder&&!(state.daySkips[today()]||[]).includes(task.id):view.planIds.has(task.id));if(planned){const badge=el('span','lg-block-plan-badge','В плане');meta.append(badge);}}
-    copy.append(title,meta);
-    if(!record&&task.leadsToGoal){const tag=el('span','lg-block-goal-tag','Шаг к цели');copy.append(tag);}
-    if(!record&&task.favorite){const favorite=designIcon('star');favorite.classList.add('lg-block-favorite-mark');title.append(favorite);}
-    row.append(action,copy,more);card.replaceChildren(row);return card;
+    meta.append(el('span','',kind.textContent),el('span','lg-path-task-dot','·'),value);
+    copy.append(title,meta);for(const extra of extras)copy.append(extra);
+    row.append(action,copy,more);const bottom=el('div','lg-path-task-bottom');bottom.append(day,favorite);card.replaceChildren(row,bottom);return card;
   }
-
-
   // Квесты.
   const expandedStages = new Set();
   function normalizeStages(q, data) {
@@ -10151,9 +10013,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
         const chosenIcon = typeof block.icon === "string" &&
           ["heart", "body", "book", "wallet", "cloud", "people", "star", "spark", "compass", "hero"].includes(block.icon)
           ? block.icon : null;
-        open.classList.toggle('lg-everyday-block',block.kind==='everyday');
-        const badge=el('span','lg-block-list-kind',block.kind==='everyday'?'Бытовой':'Большой путь');info.prepend(badge);
-        open.append(designIconTile(chosenIcon || blockIcons[iconIndex] || "grid", ''), info, designIcon("chevron"));
+        open.append(designIconTile(chosenIcon || blockIcons[iconIndex] || "grid", tone), info, designIcon("chevron"));
         list.append(open);
       }
       screen.append(list);
@@ -10171,51 +10031,73 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       return;
     }
 
-    if(!blockPathViews.has(selected.id))blockPathViews.set(selected.id,'work');
     if(blockPathViews.get(selected.id)!=='work')viewedStageId=LifeGameStages.current(state,selected.id).id;
-    screen.dataset.blockKind=selected.kind;
-    const blockNav=el('div','lg-block-detail-toolbar'),back=btn('Все блоки','lg-block-back-link',()=>go('blocks'));
-    back.prepend(designIcon('back'));
-    const settingsToggle=btn('','lg-block-icon-button block-settings-toggle',()=>openBlockSettings(selected.id));settingsToggle.append(designIcon('gear'));settingsToggle.setAttribute('aria-label','Настройки блока');settingsToggle.setAttribute('aria-haspopup','dialog');
-    blockNav.append(back,el('span','lg-block-type-label',blockIsEveryday(selected.id)?'Бытовой блок':'Блок времени'),settingsToggle);screen.append(blockNav);
+    const blockNav = el("div", "page-links");
+    blockNav.setAttribute("role", "group");
+    blockNav.setAttribute("aria-label", "Переходы раздела");
+    blockNav.append(lgSectionLinks(returnToDayPlan));
+    blockNav.classList.add("blocks-nav", "lg-block-detail-nav", "lg-shared-nav");
+    const settingsToggle = btn("⚙", "blocks-manage-toggle block-settings-toggle", () => {
+      blockSettingsOpen = !blockSettingsOpen;
+      render();
+      screen.querySelector(".block-settings-toggle")?.focus({ preventScroll: true });
+    });
+    settingsToggle.setAttribute("aria-label", "Настройки блока");
+    settingsToggle.setAttribute("aria-expanded", String(blockSettingsOpen));
+    settingsToggle.setAttribute("aria-controls", "block-settings-panel");
+    blockNav.append(settingsToggle);
+    screen.append(blockNav);
     const heading = el("div", "block-heading");
     heading.append(el("h1", "", selected.name));
     screen.append(heading);
     if (selected.subtitle) screen.append(el("p", "lg-block-subtitle", selected.subtitle));
-
+    screen.append(blockSettingsPanel(selected.id));
 
     if(blockPathViews.get(selected.id)==='work')renderBlockWork(selected);else renderBlockLevels(selected);
   }
 
   function renderBlockStageContents(selected,stage,target=screen) {
-    target.classList.add('lg-stage-contents');
-    const everyday=blockIsEveryday(selected.id),goals=state.goals.filter(g=>g.blockId===selected.id&&g.stageId===stage.id),activeGoals=goals.filter(g=>g.completedDate===null);
-    if(!everyday||stage.meaning||goals.length){
-      const intent=el('div','lg-stage-intent');
-      if(stage.meaning){const meaning=meaningCard(selected);intent.append(meaning);}
-      else if(!everyday){const meaning=btn('','lg-block-intent-empty lg-block-add-meaning',()=>editMeaning(selected.id,{stageId:stage.id}),true);meaning.append(designIcon('spark'),el('span','','Ради чего этот этап?'),designIcon('plus'));intent.append(meaning);}
-      for(const goal of activeGoals){const card=goalCard(goal);card.classList.add('lg-block-goal-preview');intent.append(card);}
-      if(!everyday){const add=btn('','lg-block-intent-empty lg-block-add-goal',()=>goalForm(null,{blockId:selected.id,stageId:stage.id}),true);if(!activeGoals.length)add.append(designIcon('flag'));add.append(el('span','',activeGoals.length?'Ещё цель':'Какой результат хочу?'),designIcon('plus'));intent.append(add);}
-      target.append(intent);
-    }
-    const tasks=state.tasks.filter(t=>t.block===selected.id&&t.stageId===stage.id&&t.archivedAt===null),done=t=>!!completion(state,t),pending=favorites(tasks.filter(t=>!done(t)));
-    const heading=el('div','lg-path-task-heading');heading.append(el('span','',everyday?'Дела':'Маленькие шаги'),el('small','',pending.length?pending.length+' осталось':tasks.length?'Всё сделано':''));target.append(heading);
-    const canAdd=LifeGameStages.unlocked(state,stage);if(canAdd)target.append(blockQuickStep(selected.id,stage));
-    if(taskReorderMode)renderItemOrder('tasks',pending,done,target);else section('',pending,pathTaskCard,target);
-    if(!tasks.length)target.append(el('p','lg-block-empty-hint','Начни с одного небольшого дела.'));
-    else if(!pending.length)target.append(el('p','lg-block-empty-hint','Можно выдохнуть — или выбрать следующий шаг.'));
-    const completed=[...tasks.filter(done).map(item=>({kind:'task',item})),...goals.filter(g=>g.completedDate!==null).map(item=>({kind:'goal',item}))];
-    if(completed.length){
-      const key=selected.id+':'+stage.id,details=el('details','lg-stage-completed');details.open=blockDoneOpen.get(key)||false;details.append(pathSummary('Сделано','',null,completed.length));
-      const body=el('div','lg-stage-completed-body');
-      const stamp=e=>e.kind==='goal'?e.item.completedAt||e.item.completedDate:completion(state,e.item)?.completedAt||completion(state,e.item)?.date||'';
-      for(const entry of completed.sort((a,b)=>stamp(b).localeCompare(stamp(a)))){
-        if(entry.kind==='task')body.append(pathTaskCard(entry.item));else{const card=goalCard(entry.item);card.classList.add('lg-block-goal-preview');body.append(card);}
-      }
-      details.append(body);pathDisclosure(details,open=>blockDoneOpen.set(key,open));target.append(details);
-    }
-  }
+    // Смысл всегда расположен над целью и заданиями.
+    target.append(meaningCard(selected));
 
+    const compact=target.classList.contains('lg-level-body'),renderTask=compact?pathTaskCard:taskCard;
+    const selectedStage=stage;
+    const goals = state.goals.filter(x => x.blockId === blockId && x.stageId===selectedStage.id);
+    const activeGoals = goals.filter(x => x.completedDate === null);
+    target.classList.toggle("lg-path-has-goals",compact&&activeGoals.length>0);
+    for (const goal of activeGoals) {
+      const card = goalCard(goal);
+      card.classList.add("lg-block-goal-preview");
+      target.append(card);
+    }
+    const addGoalButton = btn("+ Добавить цель", "button lg-block-add-goal", () => goalForm(), true);
+    addGoalButton.setAttribute("aria-label", "Добавить цель");
+    target.append(addGoalButton);
+
+    const tasks = state.tasks.filter(x => x.block === blockId && x.stageId===selectedStage.id && x.archivedAt === null);
+    if(target.classList.contains('lg-level-body')){const label=el('div','lg-path-task-heading');label.append(el('span','','Маленькие шаги'),el('small','',tasks.filter(t=>!!completion(state,t)).length+' из '+tasks.length));target.append(label);}
+    const addTaskButton = btn("+ Добавить задание", "button lg-block-add-task", createTask, true);
+    addTaskButton.setAttribute("aria-label", "Добавить задание");
+    if(!compact)target.append(addTaskButton);
+    const done = task => task.type === "once"
+      ? view.anyTask.has(task.id) : view.todayTask.has(task.id);
+
+    if (taskReorderMode) renderItemOrder("tasks", tasks.filter(x => !done(x)), done,target);
+    else section("", favorites(tasks.filter(x => !done(x))), renderTask,target);
+
+    const completed = [
+      ...tasks.filter(done).map(item => ({ kind: "task", item })),
+      ...goals.filter(x => x.completedDate !== null).reverse()
+        .map(item => ({ kind: "goal", item }))
+    ];
+    historySection(page==="day"?"day":"block:"+blockId+":"+selectedStage.id,"ВЫПОЛНЕНО", completed, entry =>
+      entry.kind === "goal" ? goalCard(entry.item) : renderTask(entry.item),target);
+
+    if(compact){addTaskButton.classList.toggle("lg-path-add-step",tasks.length>0);target.append(addTaskButton);}
+    if (!tasks.length) {
+      target.append(el("div", "empty", "Пока заданий нет. Добавь первое."));
+    }
+    }
 
   function renderQuests() {
     if (bulkSelection?.collection === "quests") {
@@ -11020,7 +10902,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
 
   function render() {
-    cancelBlockWalletEffect();
     const uiPrevious = uiPendingNavigation ? null : uiCapture();
     const uiDoneBefore = uiPendingNavigation ? null : new Map([...screen.querySelectorAll("[data-ui-key]")].map(n=>[n.dataset.uiKey,n.classList.contains("done")]));
     LifeGamePathStar.clear();
@@ -11030,7 +10911,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     view = buildView();
     screen.replaceChildren();
     screen.dataset.page = page;
-    delete screen.dataset.blockKind;
     wallet.replaceChildren(
       el("span", "", `${view.money.balance} ●`),
       el("span", "wallet-diamonds", `${view.money.diamonds} ◆`)
