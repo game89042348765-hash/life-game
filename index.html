@@ -6517,10 +6517,9 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     ];
     openForm("Новый блок", [
       nameField(),
-      { key: "icon", label: "Выбери иконку", options: iconChoices.map(([id, label]) => [id, label]), value: "heart" },
-      { key: "subtitle", label: "Краткая подпись", type: "text", value: "", required: false, maxLength: 120, hint: "Необязательно, до 120 символов." }
+      { key: "icon", label: "Выбери иконку", options: iconChoices.map(([id, label]) => [id, label]), value: "heart" }
     ], values => transact(data => {
-      data.blocks.push({ id: uid(), name: values.name, icon: values.icon, subtitle: values.subtitle });
+      data.blocks.push({ id: uid(), name: values.name, icon: values.icon, subtitle: "" });
     }, false));
     if (!editor.open) return;
     const form = editor.querySelector("form");
@@ -6593,15 +6592,11 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const actions = [
       {
         text: "Переименовать",
-        run: () => openForm("Название блока", [nameField(item.name),
-          { key: "subtitle", label: "Краткая подпись", type: "text",
-            value: item.subtitle ?? "", required: false,
-            maxLength: 120, hint: "Необязательно, до 120 символов." }],
+        run: () => openForm("Название блока", [nameField(item.name)],
           values => transact(data => {
             const actual = data.blocks.find(x => x.id === id);
             if (!actual || actual.archivedAt !== null) fail("Блок недоступен в архиве.");
             actual.name = values.name;
-            actual.subtitle = values.subtitle;
           }, false), "Сохранить")
       },
       {
@@ -10193,7 +10188,6 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const heading = el("div", "block-heading");
     heading.append(el("h1", "", selected.name));
     screen.append(heading);
-    if (selected.subtitle) screen.append(el("p", "lg-block-subtitle", selected.subtitle));
     screen.append(blockSettingsPanel(selected.id));
 
     if(blockPathViews.get(selected.id)==='work')renderBlockWork(selected);else renderBlockLevels(selected);
