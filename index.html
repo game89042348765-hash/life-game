@@ -2952,6 +2952,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 .lg-save-signal{top:auto;right:auto;margin:0;overflow:visible}.lg-save-signal::backdrop{background:transparent;pointer-events:none}
 </style>
 <link rel="stylesheet" href="assets/block-path-aesthetics.css?v=2">
+<link rel="stylesheet" href="assets/path-v2.css?v=1">
 <link rel="stylesheet" href="assets/task-form.css?v=3">
 </head>
 <body>
@@ -3041,7 +3042,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
 <script src="assets/block-stages.js?v=centered-3"></script>
 <script src="assets/calendar-links.js?v=1"></script>
 <script src="assets/light-thread.js?v=2"></script>
-<script src="assets/task-form.js?v=6"></script>
+<script src="assets/path-v2.js?v=1"></script>
+<script src="assets/task-form.js?v=7"></script>
 <script src="assets/legacy-data.js?v=levels-2"></script>
 <script>
 "use strict";
@@ -4128,6 +4130,23 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   }
 
   function taskIsActive(data,task) {return !!task&&task.archivedAt===null&&taskBlockIsActive(data,task.block)&&LifeGameStages.active(data,task);}
+  // Remaining one-off tasks from stages already passed can be finished without switching stages.
+  function taskIsPathBacklog(data,task){
+    if(!task||task.type!=='once'||task.archivedAt!==null||!blockIsActive(data,task.block))return false;
+    const stages=LifeGameStages.list(data,task.block),at=stages.findIndex(s=>s.id===task.stageId),current=stages.indexOf(LifeGameStages.current(data,task.block));
+    return at>=0&&at!==current&&(at<current||stages[at].passed);
+  }
+  function pathCompletionSource(kind,id){
+    if(page!=='blocks')return null;
+    const key=kind+':'+id,card=[...screen.querySelectorAll('.lg-path-aesthetics [data-ui-key]')].find(n=>n.dataset.uiKey===key),row=card?.closest('.lg-path-aesthetics>.lg-level');
+    if(!row||(!row.classList.contains('lg-path-missed')&&!row.classList.contains('is-current')))return null;
+    return {blockId,mode:row.classList.contains('lg-path-missed')?'MISSED':'NOW'};
+  }
+  function launchPathCompletion(source){
+    if(!source||page!=='blocks'||blockId!==source.blockId)return;
+    const line=screen.querySelector('.lg-path-aesthetics');if(!line)return;
+    try{pathRailLayout(line);LifeGamePathStar.launch(source.mode);}catch(error){console.warn('Эффект пути недоступен:',error);}
+  }
   function taskVisibleInDay(data,task) {return taskIsActive(data,task)||!!task&&task.archivedAt===null&&taskBlockIsActive(data,task.block)&&!!completion(data,task,true);}
   function goalIsActive(data,goal) {return !!goal&&blockIsActive(data,goal.blockId)&&LifeGameStages.active(data,goal);}
   function displayedStage(block=blockId) {const selected=LifeGameStages.get(state,viewedStageId);return selected?.blockId===block?selected:LifeGameStages.current(state,block);}
@@ -4399,6 +4418,11 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     const oldLevel=Math.floor(before.earned/LEVEL_COST)+1,newLevel=Math.floor(after.earned/LEVEL_COST)+1;
     const negative=coins<0||gems<0, purchase=spent>0||gemSpent>0, refund=spent<0||gemSpent<0;
     const values=[...(coins?[signedReward(coins,"монет")]:[]),...(gems?[signedReward(gems,"алмазов")]:[]),...(spent?[signedReward(-spent,"монет")]:[]),...(gemSpent?[signedReward(-gemSpent,"алмазов")]:[])].join(" · ");
+    if(coins&&!gems&&!spent&&!gemSpent){
+      clearEffects();
+      uiSaveSignal(values+(bonus?' · бонус дня':revokedBonus?' · включая отмену бонуса дня':'')+(oldLevel!==newLevel?' · уровень '+newLevel:''));
+      return;
+    }
     const kind=purchase?"purchase":refund?"refund":gems?"gem":newLevel>oldLevel?"level":bonus?"bonus":"coin";
     showRewardEffect({kind,negative,major:oldLevel!==newLevel||!!bonus||!!gems,
       title:negative||purchase||refund?values:gems?"Цель достигнута":newLevel>oldLevel?"Уровень "+newLevel:bonus?"Бонус дня":values,
@@ -5539,7 +5563,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     cancelAnimationFrame(pathSunFrame);
     pathSunFrame=requestAnimationFrame(()=>{
       const active=screen.querySelector('.lg-path-aesthetics,.lg-work-outlook'),optimal=active?.querySelector(':scope > .is-optimal,.lg-work-optimal'),navHeight=document.querySelector('body>nav')?.getBoundingClientRect().height||0;
-      const start=optimal?optimal.getBoundingClientRect().bottom+scrollY:Infinity,end=document.documentElement.scrollHeight-navHeight,front=scrollY+innerHeight-navHeight;
+      const start=optimal?optimal.getBoundingClientRect()[active.classList.contains('lg-path-aesthetics')?'top':'bottom']+scrollY:Infinity,end=document.documentElement.scrollHeight-navHeight,front=scrollY+innerHeight-navHeight;
       const progress=active&&end>start?Math.min(1,Math.max(0,(front-start)/(end-start))):0;
       document.body.style.setProperty('--lg-sunlight',progress.toFixed(3));
     });
@@ -5626,7 +5650,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     if(!future.some(a=>a.levelKind==='optimal'))line.append(pathOutlook(owner,'futureOptimal','Оптимальное'));
     if(!future.some(a=>a.levelKind==='maximum'))line.append(pathOutlook(owner,'futureMaximum','Всегда возможно лучшее'));
     if(blockSettingsOpen&&blockCanInsert(state,owner,(future.at(-1)||c).id,'after'))line.append(blockLevelAdd(owner,future.at(-1)||c,'after'));
-    screen.append(line);pathRailSetup(line);pathSunlight();
+    screen.append(line);LifeGamePathStar.init(line);pathRailSetup(line);pathSunlight();
   }
   function renderBlockWorkOutlook(selected,target=screen) {
     const owner=selected.id,ss=LifeGameStages.list(state,owner),cur=LifeGameStages.current(state,owner),path=state.blockStages.paths[owner],future=ss.slice(ss.indexOf(cur)+1).filter(s=>!s.passed),opt=future.find(s=>s.levelKind==='optimal');
@@ -6696,6 +6720,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     }, false), entry ? "Сохранить" : "Создать",values=>{if(page==='calendar'){calendarDate=values.date;calendarMonth=values.date.slice(0,7);calendarMode='days';render();requestAnimationFrame(()=>uiTarget('calendar:'+savedId));}else if(page==='blocks'&&values.blockId===blockId){blockCalendarOpen.set(blockId,true);render();}});
   }
   function completeCalendar(id, done) {
+    const previous=state.calendarEntries.find(e=>e.id===id),pathSource=done&&previous?.completionId===null?pathCompletionSource('calendar',id):null;
     const change=data => {
       const entry = data.calendarEntries.find(x => x.id === id);
       if (!entry) fail("Запись не найдена.");
@@ -6713,7 +6738,8 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
         entry.completionId = null;
       }
     };
-    return done ? transact(change,false) : confirmRewardChange(change,false,{description:"Выполнение записи календаря будет снято вместе с её начислением."});
+    if(!done)return confirmRewardChange(change,false,{description:"Выполнение записи календаря будет снято вместе с её начислением."});
+    const saved=transact(change,false);if(saved)launchPathCompletion(pathSource);return saved;
   }
   function calendarMenu(id) {
     const entry = state.calendarEntries.find(x => x.id === id);
@@ -6899,7 +6925,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   function toggleTask(id, goalContext=null) {
     const task = state.tasks.find(x => x.id === id);
     if (!task || task.archivedAt !== null || !taskBlockIsActive(state, task.block)) return;
-    const done=!!completion(state,task);
+    const done=!!completion(state,task),pathSource=done?null:pathCompletionSource('task',id);
     const change=data => {
       const actual = data.tasks.find(x => x.id === id);
       if (!actual || actual.archivedAt !== null || !taskBlockIsActive(data, actual.block)) fail("Задание недоступно в архиве.");
@@ -6912,9 +6938,10 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
       if (record) {
         if (actual.type === "once" && record.taskType !== "once") fail("Выполнение относится к прежнему расписанию или старой истории. Отмена через разовую карточку недоступна.");
         data.completions = data.completions.filter(x => x.id !== record.id);
-      } else {if(!taskIsActive(data,actual))fail("Сначала сделай этап текущим.");addRecord(data, id, actual.reward, {taskType: actual.type});}
+      } else {if(!taskIsActive(data,actual)&&!taskIsPathBacklog(data,actual))fail("Сначала сделай этап текущим.");addRecord(data, id, actual.reward, {taskType: actual.type});}
     };
-    return done ? confirmRewardChange(change) : transact(change);
+    if(done)return confirmRewardChange(change);
+    const saved=transact(change);if(saved)launchPathCompletion(pathSource);return saved;
   }
 
   function editTaskDays(id) {
@@ -7061,7 +7088,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
     if(goal){const context=el('div','lg-c-context goal-context');context.append(designIcon('flag'),el('span','','Цель: '+goal.name+(goal.completedDate===null?'':' · достигнута')));card.append(context);}
     if(task.leadsToGoal){const tag=el('div','lg-c-context lg-task-goal-tag');tag.append(designIcon('flag'),el('span','','Шаг к цели'));card.append(tag);}
     const complete=btn(record?'Отменить':'Выполнить','button lg-c-action'+(record?' secondary':''),()=>toggleTask(task.id),true);
-    complete.disabled=!record&&!taskIsActive(state,task);
+    complete.disabled=!record&&!taskIsActive(state,task)&&!taskIsPathBacklog(state,task);
     complete.setAttribute('aria-label',(record?'Отменить выполнение: ':'Выполнить: ')+task.name);
     card.append(lgCardFooter(lgCardValue(record?record.reward:task.reward,record?'Получено':'За выполнение',false,!record),complete));
     card.append(lgCardDay(checkbox(!taskIsActive(state,task)?'После перехода к этапу':old?'Выполнено в другой день':'Конструктор дня',taskIsActive(state,task)&&(task.type==='daily'?task.inDayBuilder&&!(state.daySkips[today()]||[]).includes(task.id):view.planIds.has(task.id)),checked=>togglePlan(task.id,checked),!!old||!taskIsActive(state,task))));
@@ -10875,6 +10902,7 @@ dialog.lg-appearance-dialog label.lg-appearance-icon-switch {display:flex;align-
   function render() {
     const uiPrevious = uiPendingNavigation ? null : uiCapture();
     const uiDoneBefore = uiPendingNavigation ? null : new Map([...screen.querySelectorAll("[data-ui-key]")].map(n=>[n.dataset.uiKey,n.classList.contains("done")]));
+    LifeGamePathStar.clear();
     pathRailObserver?.disconnect();cancelAnimationFrame(pathRailFrame);
     motivationObserver?.disconnect();
     syncSoundSetting();

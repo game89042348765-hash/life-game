@@ -40,7 +40,13 @@
       goal.closest('.lg-toggle-card').classList.toggle('is-active-goal',goal.checked);
       form.querySelector('.lg-goal-slot').classList.toggle('is-open',goal.checked);
       plan.closest('.lg-toggle-card').classList.toggle('is-active-day',plan.checked);
-      form.querySelector('#task-day-hint').textContent=plan.disabled?'После перехода к этапу':plan.checked?(values.length?'В плане по выбранным дням':'В плане на сегодня'):'Пока только в блоке';
+      const dayHint=form.querySelector('#task-day-hint');
+      dayHint.replaceChildren();
+      if(plan.disabled)dayHint.textContent='После перехода к этапу';
+      else if(plan.checked){
+        const title=document.createElement('span');title.textContent='Конструкторе';title.style.color='var(--accent)';
+        dayHint.append(document.createTextNode('Теперь будет в «'),title,document.createTextNode('»'));
+      }else dayHint.textContent='Пока будет только в блоке';
     }
     form.querySelectorAll('[data-preset]').forEach(button=>button.addEventListener('click',()=>{
       const target=presets.find(p=>p[0]===button.dataset.preset)[2];checks.forEach((c,i)=>c.checked=target.includes(i+1));update();
