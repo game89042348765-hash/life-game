@@ -58,7 +58,7 @@
 .lg-block-quick{margin:0 0 7px;padding:0;min-width:0}
 .lg-block-quick-row{display:flex;align-items:stretch;gap:6px;border:1px solid #ffffff20;border-radius:13px;padding:4px;background:#101010}
 .lg-block-quick-row:focus-within{border-color:rgba(var(--accent-rgb),.5);box-shadow:0 0 0 3px rgba(var(--accent-rgb),.04)}
-#screen[data-page=blocks] .lg-block-quick input{width:100%;min-width:0;flex:1;padding:9px 8px;min-height:38px;border:0;border-radius:9px;background:none;color:var(--text);font-size:14px;box-shadow:none;outline:none;margin:0}
+#screen[data-page=blocks] .lg-block-quick input{width:100%;min-width:0;flex:1;padding:9px 8px;min-height:38px;border:0;border-radius:9px;background:none;color:var(--text);font-size:16px;box-shadow:none;outline:none;margin:0}
 .lg-block-quick input::placeholder{font-size:12px;color:#787878}
 .lg-block-quick-submit{display:grid;place-items:center;width:40px;min-width:40px;border:1px solid rgba(var(--accent-rgb),.35);border-radius:10px;background:rgba(var(--accent-rgb),.08);color:var(--accent);padding:9px}
 .lg-block-quick-submit .design-icon{width:19px;height:19px}
