@@ -1,0 +1,983 @@
+{
+  "fresh": {
+    "soundEnabled": true,
+    "motivationEnabled": true,
+    "motivationText": "",
+    "strategy": {
+      "version": 1,
+      "drafts": [],
+      "links": []
+    },
+    "widgets": {
+      "version": 10,
+      "items": [
+        {
+          "id": "mainDay",
+          "placement": "widgets",
+          "showInDay": true
+        },
+        {
+          "id": "quickCapture",
+          "placement": "widgets",
+          "showInDay": true
+        },
+        {
+          "id": "carryovers",
+          "placement": "widgets",
+          "showInDay": true
+        },
+        {
+          "id": "keyActions",
+          "placement": "widgets",
+          "showInDay": true
+        },
+        {
+          "id": "focus",
+          "placement": "widgets",
+          "showInDay": true
+        },
+        {
+          "id": "dayResult",
+          "placement": "widgets",
+          "showInDay": true
+        },
+        {
+          "id": "firstStep",
+          "placement": "widgets",
+          "showInDay": true
+        },
+        {
+          "id": "myReward",
+          "placement": "widgets",
+          "showInDay": true
+        },
+        {
+          "id": "dayBudget",
+          "placement": "widgets",
+          "showInDay": true
+        },
+        {
+          "id": "closeDay",
+          "placement": "widgets",
+          "showInDay": true
+        },
+        {
+          "id": "goalStep",
+          "placement": "widgets",
+          "showInDay": true
+        },
+        {
+          "id": "weekRhythm",
+          "placement": "widgets",
+          "showInDay": true
+        }
+      ],
+      "favorites": []
+    },
+    "dayGraph": {
+      "version": 1,
+      "weekday": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "weekend": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ]
+    },
+    "happiness": {
+      "version": 1,
+      "mode": "solo",
+      "collection": [],
+      "chat": [],
+      "usedIds": [],
+      "pending": null
+    },
+    "keyActions": {
+      "version": 1,
+      "actions": [],
+      "conditions": [],
+      "entries": []
+    },
+    "blocks": [
+      {
+        "id": "block-0",
+        "name": "Душевное состояние",
+        "subtitle": "Заботься о внутреннем спокойствии и эмоциональном равновесии.",
+        "meaning": "",
+        "archivedAt": null
+      },
+      {
+        "id": "block-1",
+        "name": "Физическое состояние",
+        "subtitle": "Поддерживай здоровье, энергию и силу каждый день.",
+        "meaning": "",
+        "archivedAt": null
+      },
+      {
+        "id": "block-2",
+        "name": "Знания, навыки, опыт",
+        "subtitle": "Учись новому, развивай навыки и применяй свой опыт.",
+        "meaning": "",
+        "archivedAt": null
+      },
+      {
+        "id": "block-3",
+        "name": "Ресурсы и материальное",
+        "subtitle": "Создавай материальную устойчивость и разумно управляй ресурсами.",
+        "meaning": "",
+        "archivedAt": null
+      },
+      {
+        "id": "block-4",
+        "name": "Окружение и отношения",
+        "subtitle": "Укрепляй важные отношения и окружай себя близкими по духу людьми.",
+        "meaning": "",
+        "archivedAt": null
+      },
+      {
+        "id": "block-5",
+        "name": "Наполнение и организация",
+        "subtitle": "Создавай порядок и наполняй жизнь тем, что тебе важно.",
+        "meaning": "",
+        "archivedAt": null
+      },
+      {
+        "id": "block-6",
+        "name": "Обстоятельства",
+        "subtitle": "Меняй то, что можешь, и находи опору в любых обстоятельствах.",
+        "meaning": "",
+        "archivedAt": null
+      },
+      {
+        "id": "block-7",
+        "name": "Исключить",
+        "subtitle": "Освобождай жизнь от лишнего и сохраняй место для важного.",
+        "meaning": "",
+        "archivedAt": null
+      }
+    ],
+    "goals": [],
+    "diamondRecords": [],
+    "tasks": [],
+    "quests": [],
+    "bonuses": [],
+    "completions": [],
+    "calendarEntries": [],
+    "calendarCompletions": [],
+    "purchases": [],
+    "treats": [],
+    "treatUses": [],
+    "focus": {
+      "status": "ready",
+      "id": null,
+      "minutes": 5,
+      "name": "",
+      "taskId": null,
+      "remaining": 300000,
+      "endsAt": null,
+      "notified": true,
+      "natural": false,
+      "elapsedMs": 0,
+      "endedAt": null
+    },
+    "focusLog": [],
+    "rewardTargetId": null,
+    "dayBudgets": {},
+    "daySkips": {},
+    "eveningReviews": {},
+    "goalStep": {
+      "goalId": null,
+      "taskIds": {}
+    },
+    "weekRhythm": {
+      "targets": {},
+      "restDays": {}
+    },
+    "dayPlans": {},
+    "planReviews": {},
+    "mainDayTasks": {},
+    "dayPlanDate": null,
+    "blockStages": {
+      "version": 2,
+      "items": [
+        {
+          "id": "initial-stage:block-0",
+          "blockId": "block-0",
+          "name": "Сейчас",
+          "meaning": "",
+          "description": "",
+          "levelKind": "stage",
+          "slot": null,
+          "passed": false,
+          "reached": true,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "next-stage:block-0",
+          "blockId": "block-0",
+          "name": "Планируемый",
+          "meaning": "",
+          "description": "",
+          "levelKind": "stage",
+          "slot": "next",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "optimal-stage:block-0",
+          "blockId": "block-0",
+          "name": "Оптимальный",
+          "meaning": "",
+          "description": "",
+          "levelKind": "optimal",
+          "slot": "optimal",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "hidden-stage:block-0",
+          "blockId": "block-0",
+          "name": "Неизвестный",
+          "meaning": "",
+          "description": "",
+          "levelKind": "hidden",
+          "slot": "hidden",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "initial-stage:block-1",
+          "blockId": "block-1",
+          "name": "Сейчас",
+          "meaning": "",
+          "description": "",
+          "levelKind": "stage",
+          "slot": null,
+          "passed": false,
+          "reached": true,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "next-stage:block-1",
+          "blockId": "block-1",
+          "name": "Планируемый",
+          "meaning": "",
+          "description": "",
+          "levelKind": "stage",
+          "slot": "next",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "optimal-stage:block-1",
+          "blockId": "block-1",
+          "name": "Оптимальный",
+          "meaning": "",
+          "description": "",
+          "levelKind": "optimal",
+          "slot": "optimal",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "hidden-stage:block-1",
+          "blockId": "block-1",
+          "name": "Неизвестный",
+          "meaning": "",
+          "description": "",
+          "levelKind": "hidden",
+          "slot": "hidden",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "initial-stage:block-2",
+          "blockId": "block-2",
+          "name": "Сейчас",
+          "meaning": "",
+          "description": "",
+          "levelKind": "stage",
+          "slot": null,
+          "passed": false,
+          "reached": true,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "next-stage:block-2",
+          "blockId": "block-2",
+          "name": "Планируемый",
+          "meaning": "",
+          "description": "",
+          "levelKind": "stage",
+          "slot": "next",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "optimal-stage:block-2",
+          "blockId": "block-2",
+          "name": "Оптимальный",
+          "meaning": "",
+          "description": "",
+          "levelKind": "optimal",
+          "slot": "optimal",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "hidden-stage:block-2",
+          "blockId": "block-2",
+          "name": "Неизвестный",
+          "meaning": "",
+          "description": "",
+          "levelKind": "hidden",
+          "slot": "hidden",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "initial-stage:block-3",
+          "blockId": "block-3",
+          "name": "Сейчас",
+          "meaning": "",
+          "description": "",
+          "levelKind": "stage",
+          "slot": null,
+          "passed": false,
+          "reached": true,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "next-stage:block-3",
+          "blockId": "block-3",
+          "name": "Планируемый",
+          "meaning": "",
+          "description": "",
+          "levelKind": "stage",
+          "slot": "next",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "optimal-stage:block-3",
+          "blockId": "block-3",
+          "name": "Оптимальный",
+          "meaning": "",
+          "description": "",
+          "levelKind": "optimal",
+          "slot": "optimal",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "hidden-stage:block-3",
+          "blockId": "block-3",
+          "name": "Неизвестный",
+          "meaning": "",
+          "description": "",
+          "levelKind": "hidden",
+          "slot": "hidden",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "initial-stage:block-4",
+          "blockId": "block-4",
+          "name": "Сейчас",
+          "meaning": "",
+          "description": "",
+          "levelKind": "stage",
+          "slot": null,
+          "passed": false,
+          "reached": true,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "next-stage:block-4",
+          "blockId": "block-4",
+          "name": "Планируемый",
+          "meaning": "",
+          "description": "",
+          "levelKind": "stage",
+          "slot": "next",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "optimal-stage:block-4",
+          "blockId": "block-4",
+          "name": "Оптимальный",
+          "meaning": "",
+          "description": "",
+          "levelKind": "optimal",
+          "slot": "optimal",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "hidden-stage:block-4",
+          "blockId": "block-4",
+          "name": "Неизвестный",
+          "meaning": "",
+          "description": "",
+          "levelKind": "hidden",
+          "slot": "hidden",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "initial-stage:block-5",
+          "blockId": "block-5",
+          "name": "Сейчас",
+          "meaning": "",
+          "description": "",
+          "levelKind": "stage",
+          "slot": null,
+          "passed": false,
+          "reached": true,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "next-stage:block-5",
+          "blockId": "block-5",
+          "name": "Планируемый",
+          "meaning": "",
+          "description": "",
+          "levelKind": "stage",
+          "slot": "next",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "optimal-stage:block-5",
+          "blockId": "block-5",
+          "name": "Оптимальный",
+          "meaning": "",
+          "description": "",
+          "levelKind": "optimal",
+          "slot": "optimal",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "hidden-stage:block-5",
+          "blockId": "block-5",
+          "name": "Неизвестный",
+          "meaning": "",
+          "description": "",
+          "levelKind": "hidden",
+          "slot": "hidden",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "initial-stage:block-6",
+          "blockId": "block-6",
+          "name": "Сейчас",
+          "meaning": "",
+          "description": "",
+          "levelKind": "stage",
+          "slot": null,
+          "passed": false,
+          "reached": true,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "next-stage:block-6",
+          "blockId": "block-6",
+          "name": "Планируемый",
+          "meaning": "",
+          "description": "",
+          "levelKind": "stage",
+          "slot": "next",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "optimal-stage:block-6",
+          "blockId": "block-6",
+          "name": "Оптимальный",
+          "meaning": "",
+          "description": "",
+          "levelKind": "optimal",
+          "slot": "optimal",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "hidden-stage:block-6",
+          "blockId": "block-6",
+          "name": "Неизвестный",
+          "meaning": "",
+          "description": "",
+          "levelKind": "hidden",
+          "slot": "hidden",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "initial-stage:block-7",
+          "blockId": "block-7",
+          "name": "Сейчас",
+          "meaning": "",
+          "description": "",
+          "levelKind": "stage",
+          "slot": null,
+          "passed": false,
+          "reached": true,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "next-stage:block-7",
+          "blockId": "block-7",
+          "name": "Планируемый",
+          "meaning": "",
+          "description": "",
+          "levelKind": "stage",
+          "slot": "next",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "optimal-stage:block-7",
+          "blockId": "block-7",
+          "name": "Оптимальный",
+          "meaning": "",
+          "description": "",
+          "levelKind": "optimal",
+          "slot": "optimal",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        },
+        {
+          "id": "hidden-stage:block-7",
+          "blockId": "block-7",
+          "name": "Неизвестный",
+          "meaning": "",
+          "description": "",
+          "levelKind": "hidden",
+          "slot": "hidden",
+          "passed": false,
+          "reached": false,
+          "lock": {
+            "mode": "open",
+            "stageId": null
+          }
+        }
+      ],
+      "current": {
+        "block-0": "initial-stage:block-0",
+        "block-1": "initial-stage:block-1",
+        "block-2": "initial-stage:block-2",
+        "block-3": "initial-stage:block-3",
+        "block-4": "initial-stage:block-4",
+        "block-5": "initial-stage:block-5",
+        "block-6": "initial-stage:block-6",
+        "block-7": "initial-stage:block-7"
+      },
+      "paths": {
+        "block-0": {
+          "mode": "short",
+          "fact": "",
+          "configured": false,
+          "futurePlan": "",
+          "futureOptimal": "",
+          "futureMaximum": ""
+        },
+        "block-1": {
+          "mode": "short",
+          "fact": "",
+          "configured": false,
+          "futurePlan": "",
+          "futureOptimal": "",
+          "futureMaximum": ""
+        },
+        "block-2": {
+          "mode": "short",
+          "fact": "",
+          "configured": false,
+          "futurePlan": "",
+          "futureOptimal": "",
+          "futureMaximum": ""
+        },
+        "block-3": {
+          "mode": "short",
+          "fact": "",
+          "configured": false,
+          "futurePlan": "",
+          "futureOptimal": "",
+          "futureMaximum": ""
+        },
+        "block-4": {
+          "mode": "short",
+          "fact": "",
+          "configured": false,
+          "futurePlan": "",
+          "futureOptimal": "",
+          "futureMaximum": ""
+        },
+        "block-5": {
+          "mode": "short",
+          "fact": "",
+          "configured": false,
+          "futurePlan": "",
+          "futureOptimal": "",
+          "futureMaximum": ""
+        },
+        "block-6": {
+          "mode": "short",
+          "fact": "",
+          "configured": false,
+          "futurePlan": "",
+          "futureOptimal": "",
+          "futureMaximum": ""
+        },
+        "block-7": {
+          "mode": "short",
+          "fact": "",
+          "configured": false,
+          "futurePlan": "",
+          "futureOptimal": "",
+          "futureMaximum": ""
+        }
+      }
+    },
+    "recentCaptures": []
+  },
+  "registry": [
+    {
+      "id": "goalStep",
+      "title": "Шаг к цели",
+      "available": true,
+      "system": true,
+      "placements": [
+        "widgets",
+        "day"
+      ],
+      "dayArea": null
+    },
+    {
+      "id": "weekRhythm",
+      "title": "Ритм недели",
+      "available": true,
+      "system": true,
+      "placements": [
+        "widgets",
+        "day"
+      ],
+      "dayArea": null
+    },
+    {
+      "id": "dayBudget",
+      "title": "Посильный план",
+      "available": true,
+      "system": true,
+      "placements": [
+        "widgets",
+        "day"
+      ],
+      "dayArea": null
+    },
+    {
+      "id": "closeDay",
+      "title": "Закрыть день",
+      "available": true,
+      "system": true,
+      "placements": [
+        "widgets",
+        "day"
+      ],
+      "dayArea": null
+    },
+    {
+      "id": "myReward",
+      "title": "Моя награда",
+      "available": true,
+      "system": true,
+      "placements": [
+        "widgets",
+        "day"
+      ],
+      "dayArea": null
+    },
+    {
+      "id": "dayResult",
+      "title": "Результат дня",
+      "available": true,
+      "system": true,
+      "placements": [
+        "widgets",
+        "day"
+      ],
+      "dayArea": null
+    },
+    {
+      "id": "mainDay",
+      "title": "Главное дело дня",
+      "available": true,
+      "system": true,
+      "placements": [
+        "widgets",
+        "day"
+      ],
+      "dayArea": "top"
+    },
+    {
+      "id": "quickCapture",
+      "title": "Быстрое добавление",
+      "available": true,
+      "system": true,
+      "placements": [
+        "widgets",
+        "day"
+      ],
+      "dayArea": "top"
+    },
+    {
+      "id": "carryovers",
+      "title": "Со вчера",
+      "available": true,
+      "system": true,
+      "placements": [
+        "widgets",
+        "day"
+      ],
+      "dayArea": "top"
+    },
+    {
+      "id": "keyActions",
+      "title": "Ключевые действия",
+      "available": true,
+      "system": true,
+      "placements": [
+        "widgets",
+        "day"
+      ],
+      "dayArea": null
+    },
+    {
+      "id": "focus",
+      "title": "Время для важного",
+      "available": true,
+      "system": true,
+      "placements": [
+        "widgets",
+        "day"
+      ],
+      "dayArea": null
+    },
+    {
+      "id": "dayGraph",
+      "title": "График дня",
+      "available": true,
+      "system": false,
+      "placements": [
+        "widgets",
+        "day"
+      ],
+      "dayArea": null
+    },
+    {
+      "id": "challenge",
+      "title": "Вызов себе",
+      "available": false,
+      "system": false,
+      "placements": [
+        "widgets"
+      ],
+      "dayArea": null
+    },
+    {
+      "id": "firstStep",
+      "title": "Первый шаг",
+      "available": true,
+      "system": true,
+      "placements": [
+        "widgets",
+        "day"
+      ],
+      "dayArea": null
+    },
+    {
+      "id": "happiness",
+      "title": "Игра в счастье",
+      "available": true,
+      "system": false,
+      "placements": [
+        "widgets",
+        "day"
+      ],
+      "dayArea": null
+    }
+  ],
+  "checks": {
+    "goalTagWithoutGoal": true,
+    "notInPlan": true,
+    "explicitPlan": true,
+    "inactiveStageExcluded": true,
+    "preferenceRetained": true,
+    "switchWithoutCoins": true
+  },
+  "method": "Fresh isolated Chromium context; instrumented response only; repository index.html untouched; external requests blocked."
+}

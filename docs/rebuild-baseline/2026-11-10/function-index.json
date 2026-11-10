@@ -1,0 +1,2257 @@
+[
+  {
+    "name": "defaultBlockSubtitle",
+    "file": "index.html",
+    "line": 3087
+  },
+  {
+    "name": "dayGraphDefaults",
+    "file": "index.html",
+    "line": 3278
+  },
+  {
+    "name": "dayGraphExample",
+    "file": "index.html",
+    "line": 3283
+  },
+  {
+    "name": "normalizeDayGraph",
+    "file": "index.html",
+    "line": 3306
+  },
+  {
+    "name": "dayGraphCard",
+    "file": "index.html",
+    "line": 3319
+  },
+  {
+    "name": "openDayGraphEditor",
+    "file": "index.html",
+    "line": 3360
+  },
+  {
+    "name": "widgetDefinition",
+    "file": "index.html",
+    "line": 3452
+  },
+  {
+    "name": "widgetAvailable",
+    "file": "index.html",
+    "line": 3458
+  },
+  {
+    "name": "firstStepCard",
+    "file": "index.html",
+    "line": 3464
+  },
+  {
+    "name": "openFirstStepRitual",
+    "file": "index.html",
+    "line": 3483
+  },
+  {
+    "name": "emptyState",
+    "file": "index.html",
+    "line": 3601
+  },
+  {
+    "name": "clone",
+    "file": "index.html",
+    "line": 3642
+  },
+  {
+    "name": "fail",
+    "file": "index.html",
+    "line": 3643
+  },
+  {
+    "name": "integer",
+    "file": "index.html",
+    "line": 3644
+  },
+  {
+    "name": "validId",
+    "file": "index.html",
+    "line": 3647
+  },
+  {
+    "name": "validName",
+    "file": "index.html",
+    "line": 3650
+  },
+  {
+    "name": "uid",
+    "file": "index.html",
+    "line": 3654
+  },
+  {
+    "name": "dateKey",
+    "file": "index.html",
+    "line": 3661
+  },
+  {
+    "name": "today",
+    "file": "index.html",
+    "line": 3668
+  },
+  {
+    "name": "dateLabel",
+    "file": "index.html",
+    "line": 3669
+  },
+  {
+    "name": "validDate",
+    "file": "index.html",
+    "line": 3674
+  },
+  {
+    "name": "sum",
+    "file": "index.html",
+    "line": 3681
+  },
+  {
+    "name": "totals",
+    "file": "index.html",
+    "line": 3684
+  },
+  {
+    "name": "normalize",
+    "file": "index.html",
+    "line": 3714
+  },
+  {
+    "name": "bool",
+    "file": "index.html",
+    "line": 3844
+  },
+  {
+    "name": "storageError",
+    "file": "index.html",
+    "line": 4104
+  },
+  {
+    "name": "loadLatest",
+    "file": "index.html",
+    "line": 4111
+  },
+  {
+    "name": "blockIsActive",
+    "file": "index.html",
+    "line": 4129
+  },
+  {
+    "name": "taskBlockIsActive",
+    "file": "index.html",
+    "line": 4133
+  },
+  {
+    "name": "taskIsActive",
+    "file": "index.html",
+    "line": 4137
+  },
+  {
+    "name": "taskIsPathBacklog",
+    "file": "index.html",
+    "line": 4139
+  },
+  {
+    "name": "pathCompletionSource",
+    "file": "index.html",
+    "line": 4144
+  },
+  {
+    "name": "launchPathCompletion",
+    "file": "index.html",
+    "line": 4150
+  },
+  {
+    "name": "taskVisibleInDay",
+    "file": "index.html",
+    "line": 4155
+  },
+  {
+    "name": "goalIsActive",
+    "file": "index.html",
+    "line": 4156
+  },
+  {
+    "name": "displayedStage",
+    "file": "index.html",
+    "line": 4157
+  },
+  {
+    "name": "ensureDay",
+    "file": "index.html",
+    "line": 4159
+  },
+  {
+    "name": "scheduledToday",
+    "file": "index.html",
+    "line": 4168
+  },
+  {
+    "name": "plannedTasks",
+    "file": "index.html",
+    "line": 4172
+  },
+  {
+    "name": "completion",
+    "file": "index.html",
+    "line": 4178
+  },
+  {
+    "name": "addRecord",
+    "file": "index.html",
+    "line": 4187
+  },
+  {
+    "name": "reconcileDayBonus",
+    "file": "index.html",
+    "line": 4194
+  },
+  {
+    "name": "transact",
+    "file": "index.html",
+    "line": 4213
+  },
+  {
+    "name": "syncDay",
+    "file": "index.html",
+    "line": 4287
+  },
+  {
+    "name": "syncSoundSetting",
+    "file": "index.html",
+    "line": 4295
+  },
+  {
+    "name": "primeAudio",
+    "file": "index.html",
+    "line": 4311
+  },
+  {
+    "name": "tones",
+    "file": "index.html",
+    "line": 4325
+  },
+  {
+    "name": "cancelBlockWalletEffect",
+    "file": "index.html",
+    "line": 4357
+  },
+  {
+    "name": "queueBlockWalletReward",
+    "file": "index.html",
+    "line": 4363
+  },
+  {
+    "name": "blockWalletAfterPath",
+    "file": "index.html",
+    "line": 4368
+  },
+  {
+    "name": "runBlockWalletReward",
+    "file": "index.html",
+    "line": 4373
+  },
+  {
+    "name": "stopRewardSound",
+    "file": "index.html",
+    "line": 4398
+  },
+  {
+    "name": "rewardSound",
+    "file": "index.html",
+    "line": 4404
+  },
+  {
+    "name": "rewardIcon",
+    "file": "index.html",
+    "line": 4429
+  },
+  {
+    "name": "clearEffects",
+    "file": "index.html",
+    "line": 4435
+  },
+  {
+    "name": "showRewardEffect",
+    "file": "index.html",
+    "line": 4439
+  },
+  {
+    "name": "celebrateChanges",
+    "file": "index.html",
+    "line": 4457
+  },
+  {
+    "name": "confirmRewardChange",
+    "file": "index.html",
+    "line": 4482
+  },
+  {
+    "name": "el",
+    "file": "index.html",
+    "line": 4524
+  },
+  {
+    "name": "designIcon",
+    "file": "index.html",
+    "line": 4570
+  },
+  {
+    "name": "designIconTile",
+    "file": "index.html",
+    "line": 4580
+  },
+  {
+    "name": "btn",
+    "file": "index.html",
+    "line": 4588
+  },
+  {
+    "name": "uiEntity",
+    "file": "index.html",
+    "line": 4608
+  },
+  {
+    "name": "uiFind",
+    "file": "index.html",
+    "line": 4609
+  },
+  {
+    "name": "uiControlName",
+    "file": "index.html",
+    "line": 4610
+  },
+  {
+    "name": "uiCapture",
+    "file": "index.html",
+    "line": 4611
+  },
+  {
+    "name": "uiTarget",
+    "file": "index.html",
+    "line": 4618
+  },
+  {
+    "name": "uiRestore",
+    "file": "index.html",
+    "line": 4631
+  },
+  {
+    "name": "uiToast",
+    "file": "index.html",
+    "line": 4648
+  },
+  {
+    "name": "uiSaveSignalPosition",
+    "file": "index.html",
+    "line": 4660
+  },
+  {
+    "name": "uiSaveSignal",
+    "file": "index.html",
+    "line": 4661
+  },
+  {
+    "name": "uiTopDialog",
+    "file": "index.html",
+    "line": 4670
+  },
+  {
+    "name": "uiFeedback",
+    "file": "index.html",
+    "line": 4671
+  },
+  {
+    "name": "uiOwnHistory",
+    "file": "index.html",
+    "line": 4679
+  },
+  {
+    "name": "uiHistorySnapshot",
+    "file": "index.html",
+    "line": 4680
+  },
+  {
+    "name": "uiRememberHistoryEntry",
+    "file": "index.html",
+    "line": 4681
+  },
+  {
+    "name": "uiHistoryState",
+    "file": "index.html",
+    "line": 4682
+  },
+  {
+    "name": "uiEnsureHistoryRoot",
+    "file": "index.html",
+    "line": 4683
+  },
+  {
+    "name": "uiTrimHistory",
+    "file": "index.html",
+    "line": 4684
+  },
+  {
+    "name": "uiHistoryCandidate",
+    "file": "index.html",
+    "line": 4685
+  },
+  {
+    "name": "uiUpdateHistoryButtons",
+    "file": "index.html",
+    "line": 4686
+  },
+  {
+    "name": "uiNavigateHistory",
+    "file": "index.html",
+    "line": 4687
+  },
+  {
+    "name": "uiWriteHistory",
+    "file": "index.html",
+    "line": 4688
+  },
+  {
+    "name": "uiSyncDialogs",
+    "file": "index.html",
+    "line": 4701
+  },
+  {
+    "name": "uiUpdateNavigation",
+    "file": "index.html",
+    "line": 4707
+  },
+  {
+    "name": "uiSetupNavigation",
+    "file": "index.html",
+    "line": 4708
+  },
+  {
+    "name": "appearanceValue",
+    "file": "index.html",
+    "line": 4720
+  },
+  {
+    "name": "readAppearance",
+    "file": "index.html",
+    "line": 4724
+  },
+  {
+    "name": "appearanceRgb",
+    "file": "index.html",
+    "line": 4725
+  },
+  {
+    "name": "appearanceLuminance",
+    "file": "index.html",
+    "line": 4726
+  },
+  {
+    "name": "appearanceContrast",
+    "file": "index.html",
+    "line": 4727
+  },
+  {
+    "name": "appearanceColors",
+    "file": "index.html",
+    "line": 4728
+  },
+  {
+    "name": "applyAppearance",
+    "file": "index.html",
+    "line": 4738
+  },
+  {
+    "name": "updateAppearanceSummary",
+    "file": "index.html",
+    "line": 4745
+  },
+  {
+    "name": "openAppearance",
+    "file": "index.html",
+    "line": 4750
+  },
+  {
+    "name": "uiInitAppearance",
+    "file": "index.html",
+    "line": 4795
+  },
+  {
+    "name": "uiSizeDialogs",
+    "file": "index.html",
+    "line": 4807
+  },
+  {
+    "name": "uiQueueDialogSize",
+    "file": "index.html",
+    "line": 4812
+  },
+  {
+    "name": "uiShowDialog",
+    "file": "index.html",
+    "line": 4827
+  },
+  {
+    "name": "uiApplyHistoryTarget",
+    "file": "index.html",
+    "line": 4839
+  },
+  {
+    "name": "uiInitHistory",
+    "file": "index.html",
+    "line": 4849
+  },
+  {
+    "name": "uiFormSignature",
+    "file": "index.html",
+    "line": 4863
+  },
+  {
+    "name": "uiFormDirty",
+    "file": "index.html",
+    "line": 4864
+  },
+  {
+    "name": "uiPrepareForm",
+    "file": "index.html",
+    "line": 4865
+  },
+  {
+    "name": "uiCreatedMessage",
+    "file": "index.html",
+    "line": 4896
+  },
+  {
+    "name": "uiShowCreated",
+    "file": "index.html",
+    "line": 4897
+  },
+  {
+    "name": "uiDecorate",
+    "file": "index.html",
+    "line": 4905
+  },
+  {
+    "name": "uiAfterRender",
+    "file": "index.html",
+    "line": 4953
+  },
+  {
+    "name": "uiPlural",
+    "file": "index.html",
+    "line": 4962
+  },
+  {
+    "name": "uiAmount",
+    "file": "index.html",
+    "line": 4963
+  },
+  {
+    "name": "uiGeneratedText",
+    "file": "index.html",
+    "line": 4964
+  },
+  {
+    "name": "uiDownload",
+    "file": "index.html",
+    "line": 4968
+  },
+  {
+    "name": "uiCreateBackup",
+    "file": "index.html",
+    "line": 4972
+  },
+  {
+    "name": "uiBackupSummary",
+    "file": "index.html",
+    "line": 4982
+  },
+  {
+    "name": "uiSetupBackupFiles",
+    "file": "index.html",
+    "line": 4986
+  },
+  {
+    "name": "go",
+    "file": "index.html",
+    "line": 5003
+  },
+  {
+    "name": "pageLinks",
+    "file": "index.html",
+    "line": 5039
+  },
+  {
+    "name": "lgNavBack",
+    "file": "index.html",
+    "line": 5049
+  },
+  {
+    "name": "lgSectionLinks",
+    "file": "index.html",
+    "line": 5052
+  },
+  {
+    "name": "lgSectionNav",
+    "file": "index.html",
+    "line": 5064
+  },
+  {
+    "name": "progressBar",
+    "file": "index.html",
+    "line": 5077
+  },
+  {
+    "name": "balancesPanel",
+    "file": "index.html",
+    "line": 5090
+  },
+  {
+    "name": "historySection",
+    "file": "index.html",
+    "line": 5106
+  },
+  {
+    "name": "section",
+    "file": "index.html",
+    "line": 5112
+  },
+  {
+    "name": "favorites",
+    "file": "index.html",
+    "line": 5120
+  },
+  {
+    "name": "favoriteBar",
+    "file": "index.html",
+    "line": 5124
+  },
+  {
+    "name": "checkbox",
+    "file": "index.html",
+    "line": 5149
+  },
+  {
+    "name": "openMenu",
+    "file": "index.html",
+    "line": 5160
+  },
+  {
+    "name": "setTaskArchived",
+    "file": "index.html",
+    "line": 5183
+  },
+  {
+    "name": "setQuestArchived",
+    "file": "index.html",
+    "line": 5242
+  },
+  {
+    "name": "setBonusArchived",
+    "file": "index.html",
+    "line": 5266
+  },
+  {
+    "name": "openCardMenu",
+    "file": "index.html",
+    "line": 5294
+  },
+  {
+    "name": "cardHead",
+    "file": "index.html",
+    "line": 5344
+  },
+  {
+    "name": "openForm",
+    "file": "index.html",
+    "line": 5354
+  },
+  {
+    "name": "taskStagePicker",
+    "file": "index.html",
+    "line": 5481
+  },
+  {
+    "name": "blockCanInsert",
+    "file": "index.html",
+    "line": 5493
+  },
+  {
+    "name": "blockStageForm",
+    "file": "index.html",
+    "line": 5497
+  },
+  {
+    "name": "makeStageCurrent",
+    "file": "index.html",
+    "line": 5516
+  },
+  {
+    "name": "stageMenu",
+    "file": "index.html",
+    "line": 5528
+  },
+  {
+    "name": "blockFactForm",
+    "file": "index.html",
+    "line": 5537
+  },
+  {
+    "name": "blockViewSwitch",
+    "file": "index.html",
+    "line": 5541
+  },
+  {
+    "name": "blockLevelDescription",
+    "file": "index.html",
+    "line": 5548
+  },
+  {
+    "name": "levelLabel",
+    "file": "index.html",
+    "line": 5553
+  },
+  {
+    "name": "blockLevelAdd",
+    "file": "index.html",
+    "line": 5556
+  },
+  {
+    "name": "stageIsPrepared",
+    "file": "index.html",
+    "line": 5559
+  },
+  {
+    "name": "openStagePreparation",
+    "file": "index.html",
+    "line": 5563
+  },
+  {
+    "name": "blockStageNext",
+    "file": "index.html",
+    "line": 5571
+  },
+  {
+    "name": "pathDisclosure",
+    "file": "index.html",
+    "line": 5585
+  },
+  {
+    "name": "pathSummary",
+    "file": "index.html",
+    "line": 5603
+  },
+  {
+    "name": "pathAccordionSetup",
+    "file": "index.html",
+    "line": 5611
+  },
+  {
+    "name": "pathSunlight",
+    "file": "index.html",
+    "line": 5655
+  },
+  {
+    "name": "pathRailLayout",
+    "file": "index.html",
+    "line": 5668
+  },
+  {
+    "name": "pathRailSetup",
+    "file": "index.html",
+    "line": 5682
+  },
+  {
+    "name": "pathStageMemory",
+    "file": "index.html",
+    "line": 5687
+  },
+  {
+    "name": "pathOutlook",
+    "file": "index.html",
+    "line": 5697
+  },
+  {
+    "name": "blockStageRow",
+    "file": "index.html",
+    "line": 5704
+  },
+  {
+    "name": "blockFutureRows",
+    "file": "index.html",
+    "line": 5729
+  },
+  {
+    "name": "blockMissedDetails",
+    "file": "index.html",
+    "line": 5738
+  },
+  {
+    "name": "renderBlockLevels",
+    "file": "index.html",
+    "line": 5748
+  },
+  {
+    "name": "renderBlockWorkOutlook",
+    "file": "index.html",
+    "line": 5768
+  },
+  {
+    "name": "renderBlockWork",
+    "file": "index.html",
+    "line": 5781
+  },
+  {
+    "name": "editMeaning",
+    "file": "index.html",
+    "line": 5794
+  },
+  {
+    "name": "meaningMenu",
+    "file": "index.html",
+    "line": 5888
+  },
+  {
+    "name": "meaningCard",
+    "file": "index.html",
+    "line": 5923
+  },
+  {
+    "name": "moveBlock",
+    "file": "index.html",
+    "line": 5961
+  },
+  {
+    "name": "exportProgress",
+    "file": "index.html",
+    "line": 5976
+  },
+  {
+    "name": "resetBulkSelection",
+    "file": "index.html",
+    "line": 5980
+  },
+  {
+    "name": "bulkItems",
+    "file": "index.html",
+    "line": 5986
+  },
+  {
+    "name": "bulkEntry",
+    "file": "index.html",
+    "line": 5994
+  },
+  {
+    "name": "renderBulkSelection",
+    "file": "index.html",
+    "line": 6003
+  },
+  {
+    "name": "bulkSignature",
+    "file": "index.html",
+    "line": 6042
+  },
+  {
+    "name": "beginBulkArchive",
+    "file": "index.html",
+    "line": 6048
+  },
+  {
+    "name": "beginBulkQuestArchive",
+    "file": "index.html",
+    "line": 6145
+  },
+  {
+    "name": "beginBulkBonusArchive",
+    "file": "index.html",
+    "line": 6237
+  },
+  {
+    "name": "beginBulkDelete",
+    "file": "index.html",
+    "line": 6328
+  },
+  {
+    "name": "moveOrderedItem",
+    "file": "index.html",
+    "line": 6408
+  },
+  {
+    "name": "itemOrderToggle",
+    "file": "index.html",
+    "line": 6432
+  },
+  {
+    "name": "renderItemOrder",
+    "file": "index.html",
+    "line": 6444
+  },
+  {
+    "name": "transferTask",
+    "file": "index.html",
+    "line": 6479
+  },
+  {
+    "name": "createBlock",
+    "file": "index.html",
+    "line": 6509
+  },
+  {
+    "name": "setBlockArchived",
+    "file": "index.html",
+    "line": 6556
+  },
+  {
+    "name": "blockSettingsPanel",
+    "file": "index.html",
+    "line": 6587
+  },
+  {
+    "name": "goalForm",
+    "file": "index.html",
+    "line": 6660
+  },
+  {
+    "name": "goalMenu",
+    "file": "index.html",
+    "line": 6694
+  },
+  {
+    "name": "toggleGoal",
+    "file": "index.html",
+    "line": 6719
+  },
+  {
+    "name": "goalCard",
+    "file": "index.html",
+    "line": 6750
+  },
+  {
+    "name": "calendarBlockOptions",
+    "file": "index.html",
+    "line": 6779
+  },
+  {
+    "name": "calendarBlockBadge",
+    "file": "index.html",
+    "line": 6780
+  },
+  {
+    "name": "renderBlockCalendar",
+    "file": "index.html",
+    "line": 6781
+  },
+  {
+    "name": "localCalendarDate",
+    "file": "index.html",
+    "line": 6793
+  },
+  {
+    "name": "validCalendarDate",
+    "file": "index.html",
+    "line": 6799
+  },
+  {
+    "name": "sortCalendar",
+    "file": "index.html",
+    "line": 6803
+  },
+  {
+    "name": "calendarLabel",
+    "file": "index.html",
+    "line": 6806
+  },
+  {
+    "name": "editCalendar",
+    "file": "index.html",
+    "line": 6809
+  },
+  {
+    "name": "completeCalendar",
+    "file": "index.html",
+    "line": 6834
+  },
+  {
+    "name": "calendarMenu",
+    "file": "index.html",
+    "line": 6856
+  },
+  {
+    "name": "calendarCard",
+    "file": "index.html",
+    "line": 6873
+  },
+  {
+    "name": "renderCalendar",
+    "file": "index.html",
+    "line": 6892
+  },
+  {
+    "name": "taskGoalPicker",
+    "file": "index.html",
+    "line": 6945
+  },
+  {
+    "name": "fitTaskCreationPage",
+    "file": "index.html",
+    "line": 6982
+  },
+  {
+    "name": "createTask",
+    "file": "index.html",
+    "line": 6991
+  },
+  {
+    "name": "toggleTask",
+    "file": "index.html",
+    "line": 7046
+  },
+  {
+    "name": "editTaskDays",
+    "file": "index.html",
+    "line": 7068
+  },
+  {
+    "name": "togglePlan",
+    "file": "index.html",
+    "line": 7144
+  },
+  {
+    "name": "taskBlockBadge",
+    "file": "index.html",
+    "line": 7162
+  },
+  {
+    "name": "returnToDayPlan",
+    "file": "index.html",
+    "line": 7186
+  },
+  {
+    "name": "lgCardTop",
+    "file": "index.html",
+    "line": 7198
+  },
+  {
+    "name": "lgCardValue",
+    "file": "index.html",
+    "line": 7208
+  },
+  {
+    "name": "lgCardFooter",
+    "file": "index.html",
+    "line": 7213
+  },
+  {
+    "name": "lgCardDay",
+    "file": "index.html",
+    "line": 7216
+  },
+  {
+    "name": "lgCardProgress",
+    "file": "index.html",
+    "line": 7219
+  },
+  {
+    "name": "taskCard",
+    "file": "index.html",
+    "line": 7226
+  },
+  {
+    "name": "pathTaskCard",
+    "file": "index.html",
+    "line": 7247
+  },
+  {
+    "name": "normalizeStages",
+    "file": "index.html",
+    "line": 7261
+  },
+  {
+    "name": "setStage",
+    "file": "index.html",
+    "line": 7292
+  },
+  {
+    "name": "stagesCard",
+    "file": "index.html",
+    "line": 7314
+  },
+  {
+    "name": "stageForm",
+    "file": "index.html",
+    "line": 7332
+  },
+  {
+    "name": "createQuest",
+    "file": "index.html",
+    "line": 7352
+  },
+  {
+    "name": "editQuest",
+    "file": "index.html",
+    "line": 7376
+  },
+  {
+    "name": "editBonus",
+    "file": "index.html",
+    "line": 7386
+  },
+  {
+    "name": "configureStepReward",
+    "file": "index.html",
+    "line": 7392
+  },
+  {
+    "name": "moveQuest",
+    "file": "index.html",
+    "line": 7408
+  },
+  {
+    "name": "questCard",
+    "file": "index.html",
+    "line": 7453
+  },
+  {
+    "name": "createBonus",
+    "file": "index.html",
+    "line": 7511
+  },
+  {
+    "name": "buyBonus",
+    "file": "index.html",
+    "line": 7539
+  },
+  {
+    "name": "chooseReward",
+    "file": "index.html",
+    "line": 7579
+  },
+  {
+    "name": "myRewardCard",
+    "file": "index.html",
+    "line": 7585
+  },
+  {
+    "name": "bonusCard",
+    "file": "index.html",
+    "line": 7606
+  },
+  {
+    "name": "purchaseCard",
+    "file": "index.html",
+    "line": 7618
+  },
+  {
+    "name": "buildView",
+    "file": "index.html",
+    "line": 7635
+  },
+  {
+    "name": "gameVisual",
+    "file": "index.html",
+    "line": 7657
+  },
+  {
+    "name": "blockCounts",
+    "file": "index.html",
+    "line": 7674
+  },
+  {
+    "name": "motivationWidth",
+    "file": "index.html",
+    "line": 7679
+  },
+  {
+    "name": "motivationOverflows",
+    "file": "index.html",
+    "line": 7684
+  },
+  {
+    "name": "motivationBlock",
+    "file": "index.html",
+    "line": 7693
+  },
+  {
+    "name": "editMotivation",
+    "file": "index.html",
+    "line": 7718
+  },
+  {
+    "name": "aiPreviewEntry",
+    "file": "index.html",
+    "line": 7788
+  },
+  {
+    "name": "aiDraw",
+    "file": "index.html",
+    "line": 7812
+  },
+  {
+    "name": "aiClearContext",
+    "file": "index.html",
+    "line": 7861
+  },
+  {
+    "name": "aiPermissions",
+    "file": "index.html",
+    "line": 7869
+  },
+  {
+    "name": "buildAiContext",
+    "file": "index.html",
+    "line": 7875
+  },
+  {
+    "name": "serializeAiContext",
+    "file": "index.html",
+    "line": 7902
+  },
+  {
+    "name": "aiPreviewContext",
+    "file": "index.html",
+    "line": 7906
+  },
+  {
+    "name": "aiConfirmContext",
+    "file": "index.html",
+    "line": 7915
+  },
+  {
+    "name": "aiContextMessages",
+    "file": "index.html",
+    "line": 7927
+  },
+  {
+    "name": "aiCancel",
+    "file": "index.html",
+    "line": 7936
+  },
+  {
+    "name": "aiReset",
+    "file": "index.html",
+    "line": 7943
+  },
+  {
+    "name": "aiError",
+    "file": "index.html",
+    "line": 7952
+  },
+  {
+    "name": "aiJson",
+    "file": "index.html",
+    "line": 7968
+  },
+  {
+    "name": "aiRun",
+    "file": "index.html",
+    "line": 8045
+  },
+  {
+    "name": "aiLoadModels",
+    "file": "index.html",
+    "line": 8064
+  },
+  {
+    "name": "aiSend",
+    "file": "index.html",
+    "line": 8074
+  },
+  {
+    "name": "aiUiOpen",
+    "file": "index.html",
+    "line": 8097
+  },
+  {
+    "name": "aiUiSize",
+    "file": "index.html",
+    "line": 8109
+  },
+  {
+    "name": "renderAiPreview",
+    "file": "index.html",
+    "line": 8122
+  },
+  {
+    "name": "aiFormattedText",
+    "file": "index.html",
+    "line": 8127
+  },
+  {
+    "name": "renderAiChat",
+    "file": "index.html",
+    "line": 8159
+  },
+  {
+    "name": "renderAiSettings",
+    "file": "index.html",
+    "line": 8225
+  },
+  {
+    "name": "renderHero",
+    "file": "index.html",
+    "line": 8321
+  },
+  {
+    "name": "keyMinutes",
+    "file": "index.html",
+    "line": 8365
+  },
+  {
+    "name": "keyCondition",
+    "file": "index.html",
+    "line": 8370
+  },
+  {
+    "name": "normalizeKeyActions",
+    "file": "index.html",
+    "line": 8378
+  },
+  {
+    "name": "normalizeFocusLog",
+    "file": "index.html",
+    "line": 8443
+  },
+  {
+    "name": "keyLocalNow",
+    "file": "index.html",
+    "line": 8475
+  },
+  {
+    "name": "keyActive",
+    "file": "index.html",
+    "line": 8480
+  },
+  {
+    "name": "keyReconcile",
+    "file": "index.html",
+    "line": 8486
+  },
+  {
+    "name": "keyEdit",
+    "file": "index.html",
+    "line": 8495
+  },
+  {
+    "name": "keyTime",
+    "file": "index.html",
+    "line": 8518
+  },
+  {
+    "name": "keyClose",
+    "file": "index.html",
+    "line": 8541
+  },
+  {
+    "name": "keyDuration",
+    "file": "index.html",
+    "line": 8549
+  },
+  {
+    "name": "keyDelete",
+    "file": "index.html",
+    "line": 8553
+  },
+  {
+    "name": "keyDeleteAll",
+    "file": "index.html",
+    "line": 8570
+  },
+  {
+    "name": "keySuspend",
+    "file": "index.html",
+    "line": 8588
+  },
+  {
+    "name": "keyReturn",
+    "file": "index.html",
+    "line": 8595
+  },
+  {
+    "name": "keyMenu",
+    "file": "index.html",
+    "line": 8602
+  },
+  {
+    "name": "keyShow",
+    "file": "index.html",
+    "line": 8618
+  },
+  {
+    "name": "keyExit",
+    "file": "index.html",
+    "line": 8639
+  },
+  {
+    "name": "keyProgress",
+    "file": "index.html",
+    "line": 8645
+  },
+  {
+    "name": "keyRow",
+    "file": "index.html",
+    "line": 8652
+  },
+  {
+    "name": "keyMove",
+    "file": "index.html",
+    "line": 8711
+  },
+  {
+    "name": "keyManageRow",
+    "file": "index.html",
+    "line": 8739
+  },
+  {
+    "name": "keySync",
+    "file": "index.html",
+    "line": 8766
+  },
+  {
+    "name": "keyDetails",
+    "file": "index.html",
+    "line": 8795
+  },
+  {
+    "name": "keyHistory",
+    "file": "index.html",
+    "line": 8803
+  },
+  {
+    "name": "keyCard",
+    "file": "index.html",
+    "line": 8846
+  },
+  {
+    "name": "keySection",
+    "file": "index.html",
+    "line": 8876
+  },
+  {
+    "name": "widgetChange",
+    "file": "index.html",
+    "line": 8930
+  },
+  {
+    "name": "happinessDefaults",
+    "file": "index.html",
+    "line": 8935
+  },
+  {
+    "name": "normalizeHappiness",
+    "file": "index.html",
+    "line": 8939
+  },
+  {
+    "name": "happinessCheckLibrary",
+    "file": "index.html",
+    "line": 8991
+  },
+  {
+    "name": "happinessAutoLoad",
+    "file": "index.html",
+    "line": 9013
+  },
+  {
+    "name": "happinessManualLoad",
+    "file": "index.html",
+    "line": 9036
+  },
+  {
+    "name": "happinessPickPair",
+    "file": "index.html",
+    "line": 9052
+  },
+  {
+    "name": "happinessAdvance",
+    "file": "index.html",
+    "line": 9065
+  },
+  {
+    "name": "happinessSchedule",
+    "file": "index.html",
+    "line": 9092
+  },
+  {
+    "name": "happinessSend",
+    "file": "index.html",
+    "line": 9100
+  },
+  {
+    "name": "happinessToggleLike",
+    "file": "index.html",
+    "line": 9123
+  },
+  {
+    "name": "happinessEditEntry",
+    "file": "index.html",
+    "line": 9135
+  },
+  {
+    "name": "happinessShowRules",
+    "file": "index.html",
+    "line": 9171
+  },
+  {
+    "name": "happinessShowSettings",
+    "file": "index.html",
+    "line": 9220
+  },
+  {
+    "name": "happinessOpenMenu",
+    "file": "index.html",
+    "line": 9267
+  },
+  {
+    "name": "happinessDrawCollection",
+    "file": "index.html",
+    "line": 9276
+  },
+  {
+    "name": "happinessOpenCollection",
+    "file": "index.html",
+    "line": 9318
+  },
+  {
+    "name": "happinessPlayBody",
+    "file": "index.html",
+    "line": 9332
+  },
+  {
+    "name": "happinessDrawPlay",
+    "file": "index.html",
+    "line": 9392
+  },
+  {
+    "name": "happinessOpenPlay",
+    "file": "index.html",
+    "line": 9400
+  },
+  {
+    "name": "happinessCard",
+    "file": "index.html",
+    "line": 9432
+  },
+  {
+    "name": "normalizeWidgets",
+    "file": "index.html",
+    "line": 9453
+  },
+  {
+    "name": "setWidgetDay",
+    "file": "index.html",
+    "line": 9515
+  },
+  {
+    "name": "compactWidget",
+    "file": "index.html",
+    "line": 9543
+  },
+  {
+    "name": "renderDayWidgets",
+    "file": "index.html",
+    "line": 9661
+  },
+  {
+    "name": "addWidget",
+    "file": "index.html",
+    "line": 9686
+  },
+  {
+    "name": "removeWidget",
+    "file": "index.html",
+    "line": 9705
+  },
+  {
+    "name": "moveWidget",
+    "file": "index.html",
+    "line": 9726
+  },
+  {
+    "name": "widgetControls",
+    "file": "index.html",
+    "line": 9741
+  },
+  {
+    "name": "widgetInstance",
+    "file": "index.html",
+    "line": 9778
+  },
+  {
+    "name": "renderWidgets",
+    "file": "index.html",
+    "line": 9827
+  },
+  {
+    "name": "widgetCatalogCard",
+    "file": "index.html",
+    "line": 9891
+  },
+  {
+    "name": "renderWidgetCatalog",
+    "file": "index.html",
+    "line": 9961
+  },
+  {
+    "name": "openArchiveOverview",
+    "file": "index.html",
+    "line": 10015
+  },
+  {
+    "name": "renderBlocks",
+    "file": "index.html",
+    "line": 10086
+  },
+  {
+    "name": "stageContextButton",
+    "file": "index.html",
+    "line": 10203
+  },
+  {
+    "name": "renderBlockStageContents",
+    "file": "index.html",
+    "line": 10209
+  },
+  {
+    "name": "renderQuests",
+    "file": "index.html",
+    "line": 10241
+  },
+  {
+    "name": "renderBonuses",
+    "file": "index.html",
+    "line": 10268
+  },
+  {
+    "name": "lgDayReadOpened",
+    "file": "index.html",
+    "line": 10314
+  },
+  {
+    "name": "lgDayFold",
+    "file": "index.html",
+    "line": 10335
+  },
+  {
+    "name": "update",
+    "file": "index.html",
+    "line": 10365
+  },
+  {
+    "name": "recentCaptureCard",
+    "file": "index.html",
+    "line": 10383
+  },
+  {
+    "name": "renderRecentSection",
+    "file": "index.html",
+    "line": 10390
+  },
+  {
+    "name": "appendRecentCaptures",
+    "file": "index.html",
+    "line": 10395
+  },
+  {
+    "name": "inboxTasks",
+    "file": "index.html",
+    "line": 10400
+  },
+  {
+    "name": "inboxPendingCount",
+    "file": "index.html",
+    "line": 10401
+  },
+  {
+    "name": "openInbox",
+    "file": "index.html",
+    "line": 10402
+  },
+  {
+    "name": "inboxLink",
+    "file": "index.html",
+    "line": 10403
+  },
+  {
+    "name": "showQuickTask",
+    "file": "index.html",
+    "line": 10410
+  },
+  {
+    "name": "quickDatePicker",
+    "file": "index.html",
+    "line": 10418
+  },
+  {
+    "name": "draw",
+    "file": "index.html",
+    "line": 10425
+  },
+  {
+    "name": "quickTaskCapture",
+    "file": "index.html",
+    "line": 10434
+  },
+  {
+    "name": "update",
+    "file": "index.html",
+    "line": 10455
+  },
+  {
+    "name": "renderInbox",
+    "file": "index.html",
+    "line": 10481
+  },
+  {
+    "name": "pendingCarryovers",
+    "file": "index.html",
+    "line": 10496
+  },
+  {
+    "name": "decideCarryover",
+    "file": "index.html",
+    "line": 10502
+  },
+  {
+    "name": "renderCarryovers",
+    "file": "index.html",
+    "line": 10516
+  },
+  {
+    "name": "mainDayTask",
+    "file": "index.html",
+    "line": 10534
+  },
+  {
+    "name": "chooseMainDayTask",
+    "file": "index.html",
+    "line": 10541
+  },
+  {
+    "name": "renderMainDayTask",
+    "file": "index.html",
+    "line": 10550
+  },
+  {
+    "name": "renderDay",
+    "file": "index.html",
+    "line": 10593
+  },
+  {
+    "name": "summaryRow",
+    "file": "index.html",
+    "line": 10639
+  },
+  {
+    "name": "normalizeGoalRhythm",
+    "file": "index.html",
+    "line": 10648
+  },
+  {
+    "name": "goalSteps",
+    "file": "index.html",
+    "line": 10663
+  },
+  {
+    "name": "nearestGoalStep",
+    "file": "index.html",
+    "line": 10666
+  },
+  {
+    "name": "goalStepChange",
+    "file": "index.html",
+    "line": 10670
+  },
+  {
+    "name": "goalStepCard",
+    "file": "index.html",
+    "line": 10677
+  },
+  {
+    "name": "rhythmShift",
+    "file": "index.html",
+    "line": 10753
+  },
+  {
+    "name": "rhythmMonday",
+    "file": "index.html",
+    "line": 10754
+  },
+  {
+    "name": "rhythmTarget",
+    "file": "index.html",
+    "line": 10755
+  },
+  {
+    "name": "rhythmRest",
+    "file": "index.html",
+    "line": 10756
+  },
+  {
+    "name": "rhythmFacts",
+    "file": "index.html",
+    "line": 10757
+  },
+  {
+    "name": "weeklyReviewFacts",
+    "file": "index.html",
+    "line": 10783
+  },
+  {
+    "name": "weeklyReviewCard",
+    "file": "index.html",
+    "line": 10811
+  },
+  {
+    "name": "weekRhythmCard",
+    "file": "index.html",
+    "line": 10837
+  },
+  {
+    "name": "normalizeDayBalance",
+    "file": "index.html",
+    "line": 10871
+  },
+  {
+    "name": "nextPlanDate",
+    "file": "index.html",
+    "line": 10883
+  },
+  {
+    "name": "scheduledOn",
+    "file": "index.html",
+    "line": 10884
+  },
+  {
+    "name": "planLoad",
+    "file": "index.html",
+    "line": 10885
+  },
+  {
+    "name": "deferToday",
+    "file": "index.html",
+    "line": 10886
+  },
+  {
+    "name": "balanceChange",
+    "file": "index.html",
+    "line": 10895
+  },
+  {
+    "name": "estimateField",
+    "file": "index.html",
+    "line": 10896
+  },
+  {
+    "name": "dayBudgetCard",
+    "file": "index.html",
+    "line": 10900
+  },
+  {
+    "name": "eveningDirty",
+    "file": "index.html",
+    "line": 10929
+  },
+  {
+    "name": "eveningDraft",
+    "file": "index.html",
+    "line": 10930
+  },
+  {
+    "name": "eveningSummary",
+    "file": "index.html",
+    "line": 10931
+  },
+  {
+    "name": "closeDayCard",
+    "file": "index.html",
+    "line": 10932
+  },
+  {
+    "name": "dayResult",
+    "file": "index.html",
+    "line": 10951
+  },
+  {
+    "name": "dayResultCard",
+    "file": "index.html",
+    "line": 10968
+  },
+  {
+    "name": "renderSummary",
+    "file": "index.html",
+    "line": 10986
+  },
+  {
+    "name": "render",
+    "file": "index.html",
+    "line": 11043
+  },
+  {
+    "name": "refreshVisible",
+    "file": "index.html",
+    "line": 11186
+  },
+  {
+    "name": "closeTreatDialogs",
+    "file": "index.html",
+    "line": 11208
+  },
+  {
+    "name": "treatDetails",
+    "file": "index.html",
+    "line": 11213
+  },
+  {
+    "name": "treatForm",
+    "file": "index.html",
+    "line": 11217
+  },
+  {
+    "name": "chooseTreat",
+    "file": "index.html",
+    "line": 11234
+  },
+  {
+    "name": "suggestTreat",
+    "file": "index.html",
+    "line": 11256
+  },
+  {
+    "name": "draw",
+    "file": "index.html",
+    "line": 11268
+  },
+  {
+    "name": "treatCard",
+    "file": "index.html",
+    "line": 11282
+  },
+  {
+    "name": "buildTreatReels",
+    "file": "index.html",
+    "line": 11315
+  },
+  {
+    "name": "rollTreatReelResult",
+    "file": "index.html",
+    "line": 11353
+  },
+  {
+    "name": "treatMachineCard",
+    "file": "index.html",
+    "line": 11374
+  },
+  {
+    "name": "stopReelSound",
+    "file": "index.html",
+    "line": 11402
+  },
+  {
+    "name": "startReelSound",
+    "file": "index.html",
+    "line": 11407
+  },
+  {
+    "name": "draw",
+    "file": "index.html",
+    "line": 11526
+  },
+  {
+    "name": "renderTreats",
+    "file": "index.html",
+    "line": 11663
+  },
+  {
+    "name": "drawManualList",
+    "file": "index.html",
+    "line": 11731
+  },
+  {
+    "name": "focusTime",
+    "file": "index.html",
+    "line": 11788
+  },
+  {
+    "name": "focusSave",
+    "file": "index.html",
+    "line": 11789
+  },
+  {
+    "name": "redrawFocus",
+    "file": "index.html",
+    "line": 11803
+  },
+  {
+    "name": "startMainFocus",
+    "file": "index.html",
+    "line": 11804
+  },
+  {
+    "name": "startTaskFocus",
+    "file": "index.html",
+    "line": 11808
+  },
+  {
+    "name": "renderFocusSession",
+    "file": "index.html",
+    "line": 11821
+  },
+  {
+    "name": "focusAction",
+    "file": "index.html",
+    "line": 11824
+  },
+  {
+    "name": "focusReset",
+    "file": "index.html",
+    "line": 11847
+  },
+  {
+    "name": "decideFocusTime",
+    "file": "index.html",
+    "line": 11850
+  },
+  {
+    "name": "focusConfirmation",
+    "file": "index.html",
+    "line": 11870
+  },
+  {
+    "name": "focusHistory",
+    "file": "index.html",
+    "line": 11894
+  },
+  {
+    "name": "updateFocusProgress",
+    "file": "index.html",
+    "line": 11907
+  },
+  {
+    "name": "focusCard",
+    "file": "index.html",
+    "line": 11912
+  },
+  {
+    "name": "updateFocusMini",
+    "file": "index.html",
+    "line": 11985
+  },
+  {
+    "name": "focusTick",
+    "file": "index.html",
+    "line": 12010
+  },
+  {
+    "name": "seedDemoTreatsOnce",
+    "file": "index.html",
+    "line": 12037
+  },
+  {
+    "name": "define",
+    "file": "assets/block-stages.js",
+    "line": 13
+  },
+  {
+    "name": "newStage",
+    "file": "assets/block-stages.js",
+    "line": 14
+  },
+  {
+    "name": "validate",
+    "file": "assets/block-stages.js",
+    "line": 15
+  },
+  {
+    "name": "switchTo",
+    "file": "assets/block-stages.js",
+    "line": 56
+  },
+  {
+    "name": "insert",
+    "file": "assets/block-stages.js",
+    "line": 57
+  },
+  {
+    "name": "normalize",
+    "file": "assets/calendar-links.js",
+    "line": 7
+  },
+  {
+    "name": "remember",
+    "file": "assets/calendar-links.js",
+    "line": 16
+  },
+  {
+    "name": "recent",
+    "file": "assets/calendar-links.js",
+    "line": 22
+  },
+  {
+    "name": "validate",
+    "file": "assets/legacy-data.js",
+    "line": 11
+  },
+  {
+    "name": "nearestIndex",
+    "file": "assets/light-thread.js",
+    "line": 13
+  },
+  {
+    "name": "create",
+    "file": "assets/light-thread.js",
+    "line": 25
+  },
+  {
+    "name": "paint",
+    "file": "assets/light-thread.js",
+    "line": 50
+  },
+  {
+    "name": "notify",
+    "file": "assets/light-thread.js",
+    "line": 69
+  },
+  {
+    "name": "commit",
+    "file": "assets/light-thread.js",
+    "line": 74
+  },
+  {
+    "name": "init",
+    "file": "assets/path-v2.js",
+    "line": 5
+  },
+  {
+    "name": "marker",
+    "file": "assets/path-v2.js",
+    "line": 17
+  },
+  {
+    "name": "route",
+    "file": "assets/path-v2.js",
+    "line": 23
+  },
+  {
+    "name": "arrive",
+    "file": "assets/path-v2.js",
+    "line": 26
+  },
+  {
+    "name": "runLight",
+    "file": "assets/path-v2.js",
+    "line": 32
+  },
+  {
+    "name": "launch",
+    "file": "assets/path-v2.js",
+    "line": 104
+  },
+  {
+    "name": "dispose",
+    "file": "assets/path-v2.js",
+    "line": 113
+  },
+  {
+    "name": "clear",
+    "file": "assets/path-v2.js",
+    "line": 130
+  },
+  {
+    "name": "mount",
+    "file": "assets/splash-scene.js",
+    "line": 4
+  },
+  {
+    "name": "play",
+    "file": "assets/splash-scene.js",
+    "line": 17
+  },
+  {
+    "name": "tick",
+    "file": "assets/splash-scene.js",
+    "line": 47
+  },
+  {
+    "name": "step",
+    "file": "assets/splash-scene.js",
+    "line": 61
+  },
+  {
+    "name": "bt",
+    "file": "assets/splash-scene.js",
+    "line": 78
+  },
+  {
+    "name": "stop",
+    "file": "assets/splash-scene.js",
+    "line": 89
+  },
+  {
+    "name": "readPrefs",
+    "file": "assets/splash-sunrise.js",
+    "line": 15
+  },
+  {
+    "name": "save",
+    "file": "assets/splash-sunrise.js",
+    "line": 31
+  },
+  {
+    "name": "artReady",
+    "file": "assets/splash-sunrise.js",
+    "line": 54
+  },
+  {
+    "name": "soundOn",
+    "file": "assets/splash-sunrise.js",
+    "line": 62
+  },
+  {
+    "name": "stopAudio",
+    "file": "assets/splash-sunrise.js",
+    "line": 63
+  },
+  {
+    "name": "syncSoundButton",
+    "file": "assets/splash-sunrise.js",
+    "line": 71
+  },
+  {
+    "name": "playNotes",
+    "file": "assets/splash-sunrise.js",
+    "line": 82
+  },
+  {
+    "name": "requestSound",
+    "file": "assets/splash-sunrise.js",
+    "line": 99
+  },
+  {
+    "name": "finish",
+    "file": "assets/splash-sunrise.js",
+    "line": 109
+  },
+  {
+    "name": "dismiss",
+    "file": "assets/splash-sunrise.js",
+    "line": 119
+  },
+  {
+    "name": "show",
+    "file": "assets/splash-sunrise.js",
+    "line": 124
+  },
+  {
+    "name": "create",
+    "file": "assets/task-form.js",
+    "line": 6
+  },
+  {
+    "name": "update",
+    "file": "assets/task-form.js",
+    "line": 35
+  }
+]
