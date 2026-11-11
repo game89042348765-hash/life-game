@@ -15,7 +15,7 @@ window.__LG={state:()=>S,clone:cloneState,coll:COLL,key:()=>KEYS[META.space],tod
 newItem:(k,p)=>({task:newTask,habit:newHabit,quest:newQuest,cal:newCal,offer:newOffer,decision:newDecision}[k])(p),
 stage:(bid,name)=>{const x={id:uid(),blockId:bid,name,content:'',meaning:'',reason:'',bonus:[],status:'open',order:S.stages.length+1,created:today()};S.stages.push(x);return x},
 run:fn=>runGuarded(()=>tx(fn)),complete,undo:undoFact,assign:setBonusAssign,ledger,
-autoAsk:on=>{ask=on?async()=>true:originalAsk},
+autoAsk:on=>{ask=on?async()=>typeof on==='string'?on:true:originalAsk},
 reset:()=>runGuarded(()=>{ask=originalAsk;closeAllSheets();replaceSpace(makeBlank());goTab('home');return true}),
 replace:s=>runGuarded(()=>replaceSpace(s)),edit:(k,it,p)=>editItem(k,it,p),
 submit:()=>{const f=document.querySelector('#layer form');return runGuarded(()=>FORMS[f.dataset.form](f),f)},

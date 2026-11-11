@@ -1,4 +1,4 @@
-const CACHE='lifegame-personal-shell-v1';
+const CACHE='lifegame-personal-shell-v2';
 const SHELL=['./','./index.html','./app.js','./persistence.js','./style.css','./pwa.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL))));
 self.addEventListener('message',event=>{if(event.data?.type==='SKIP_WAITING')self.skipWaiting()});

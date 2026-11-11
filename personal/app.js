@@ -1444,7 +1444,7 @@ ACT["habit-level"]=async el=>{
   const v=await ask({title:"Следующий уровень привычки",text:"Сейчас цель: "+h.goal.target+". Укажите новую цель. Счётчик и история сохраняются.",input:"Например: "+Math.round(h.goal.target*1.5),ok:"Повысить"});
   if(v===false)return;const n=parseInt(v,10);if(!(n>h.goal.target)){toast("Новая цель должна быть больше текущей");return}
   tx(()=>{h.levelLog.push({level:h.level,target:h.goal.target,date:today()});h.level++;h.goal.target=n},"Уровень "+(h.level+1)+": новая цель "+n);
-  refreshSheet("detail",()=>itemDetail("habit",h));
+  refreshSheet("detail",()=>itemDetail("habit",get("habit",h.id)));
 };
 ACT["copy"]=async el=>{
   const k=el.dataset.k,it=get(k,el.dataset.id);

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Actual service worker tests on a disposable localhost origin, fictional data only."""
-import json,threading
+import json,threading,re
 from pathlib import Path
 from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
 from datetime import datetime,timezone
@@ -12,7 +12,7 @@ class Handler(SimpleHTTPRequestHandler):
  def log_message(self,*a):pass
  def do_GET(self):
   if self.path.split('?')[0]=='/personal/sw.js':
-   body=(ROOT/'sw.js').read_text().replace('shell-v1',f'shell-v{self.version}').encode();self.send_response(200);self.send_header('Content-Type','application/javascript');self.send_header('Cache-Control','no-store');self.end_headers();self.wfile.write(body)
+   body=re.sub(r'shell-v\d+',f'shell-v{self.version}',(ROOT/'sw.js').read_text()).encode();self.send_response(200);self.send_header('Content-Type','application/javascript');self.send_header('Cache-Control','no-store');self.end_headers();self.wfile.write(body)
   else:super().do_GET()
 server=ThreadingHTTPServer(('127.0.0.1',0),Handler);threading.Thread(target=server.serve_forever,daemon=True).start();BASE=f'http://127.0.0.1:{server.server_port}'
 with sync_playwright() as pw:
