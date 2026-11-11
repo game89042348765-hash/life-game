@@ -1,0 +1,38 @@
+{
+  "sourceCommit": "dc06f46b4c5cf281532292d019955854e1414b28",
+  "runtimeFiles": 32,
+  "releaseFiles": 35,
+  "sourceFiles": 89,
+  "archives": {
+    "LifeGame-lg-personal-1.1.0.zip": {
+      "bytes": 475490,
+      "sha256": "1060d4b27d8714a130c66e9932b97ccdef4736ff415cb59c7beaa2669511c1c7"
+    },
+    "LifeGame-source-personal-1.1.0.zip": {
+      "bytes": 1006447,
+      "sha256": "ca49fb85dec2ed0f57fe4f837aab9de26536967c0605fbe197e6c1816aa9c5ab"
+    }
+  },
+  "verified": [
+    "CRC and every ZIP entry",
+    "runtime matches committed source except the documented SW cache adapter",
+    "repeat build byte-identical",
+    "source dist/lg equals deploy ZIP"
+  ],
+  "deploymentVerification": {
+    "passed": 9,
+    "total": 9,
+    "checks": [
+      "Both ZIPs: CRC, exact composition and every SHA-256",
+      "Freshly unpacked source rebuilds the deploy ZIP byte-for-byte",
+      "Current source preserved, SW-only deployment adapter",
+      "All deployment JavaScript parses",
+      "Actual /lg/ URL loads, shares the documented data namespace and completes task",
+      "LG cache is independent; Personal and old foreign caches are not deleted",
+      "Offline: current HTML/JS used instead of foreign cache; all styles/fonts and hints work",
+      "Personal still opens offline after LG installation",
+      "No browser JavaScript errors"
+    ]
+  },
+  "serviceWorkerAdapter": "Scope-bound cache names, reads and cleanup plus source-content hash. Application model, storage keys and HTML unchanged."
+}
