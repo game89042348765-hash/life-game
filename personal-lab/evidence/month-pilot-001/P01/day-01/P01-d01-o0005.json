@@ -1,0 +1,231 @@
+{
+  "title": "LifeGame Lab — лаборатория",
+  "url": "http://127.0.0.1:8041/personal-lab/",
+  "virtual_time_observed": "2026-11-16T18:00:22.675Z",
+  "modal": false,
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "visible_text": "←\nПривычки\n16 ноя\n● 0\nУр. 1\nПривычки\nПовторяющиеся практики со счётчиком, целью и уровнем.\nГде\n+ Новое\nАктивные\nЗавершённые\nНичего не найдено.\nИстория выполнения\n0\nПока пусто.\nГлавная\nДень\nКарта\nВходящие\nРазделы",
+  "elements": [
+    {
+      "element": "e1",
+      "label": "←",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 22,
+        "y": 25,
+        "width": 21,
+        "height": 29
+      },
+      "value": ""
+    },
+    {
+      "element": "e2",
+      "label": "● 0\nУр. 1",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 194,
+        "y": 22,
+        "width": 92,
+        "height": 33
+      },
+      "value": ""
+    },
+    {
+      "element": "e3",
+      "label": "Быстрое выполнение",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 292,
+        "y": 22,
+        "width": 35,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e4",
+      "label": "Поиск",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 333,
+        "y": 22,
+        "width": 35,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e5",
+      "label": "Где",
+      "type": "select",
+      "disabled": false,
+      "rect": {
+        "x": 22,
+        "y": 189,
+        "width": 346,
+        "height": 40
+      },
+      "value": "Все локации",
+      "options": [
+        {
+          "label": "Все локации",
+          "disabled": false
+        },
+        {
+          "label": "🏠 Дом",
+          "disabled": false
+        },
+        {
+          "label": "💼 Работа",
+          "disabled": false
+        },
+        {
+          "label": "🚗 В дороге",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "element": "e6",
+      "label": "Поиск по названию, категории, тегам",
+      "type": "search",
+      "disabled": false,
+      "rect": {
+        "x": 22,
+        "y": 235,
+        "width": 255,
+        "height": 42
+      },
+      "value": "",
+      "checked": false
+    },
+    {
+      "element": "e7",
+      "label": "+ Новое",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 285,
+        "y": 238,
+        "width": 83,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e8",
+      "label": "Активные",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 22,
+        "y": 285,
+        "width": 88,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e9",
+      "label": "Завершённые",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 116,
+        "y": 285,
+        "width": 114,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e10",
+      "label": "Главная",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 0,
+        "y": 784,
+        "width": 78,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e11",
+      "label": "День",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 78,
+        "y": 784,
+        "width": 78,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e12",
+      "label": "Карта",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 156,
+        "y": 784,
+        "width": 78,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e13",
+      "label": "Входящие",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 234,
+        "y": 784,
+        "width": 78,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e14",
+      "label": "Разделы",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 312,
+        "y": 784,
+        "width": 78,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e15",
+      "label": "Быстрое добавление",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 318,
+        "y": 712,
+        "width": 56,
+        "height": 56
+      },
+      "value": ""
+    }
+  ],
+  "observation_id": "P01-d01-o0005",
+  "screenshot": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0005.png",
+  "actions_used": 4,
+  "action_budget": 28
+}

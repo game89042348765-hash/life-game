@@ -1,0 +1,95 @@
+{
+  "title": "LifeGame Lab — лаборатория",
+  "url": "http://127.0.0.1:8041/personal-lab/",
+  "virtual_time_observed": "2026-11-21T08:00:11.497Z",
+  "modal": true,
+  "viewport": {
+    "width": 1100,
+    "height": 900
+  },
+  "visible_text": "Задание\n✕\nОтправить проект заказчику\nМесто\nСамостоятельное\nРасписание\nразово, 22 ноя\nКонструктор\nвключено\nКлючевое\nнет\nТемп дня\nОбычный, Фигачу\nНаграда\n+10 монет и XP\nСтатус\nактивно\nВыполнено сегодня\nДобавить на сегодня\nИзменить / перенести\nКопировать\nВ архив",
+  "elements": [
+    {
+      "element": "e1",
+      "label": "Закрыть",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 781,
+        "y": 553,
+        "width": 32,
+        "height": 32
+      },
+      "value": ""
+    },
+    {
+      "element": "e2",
+      "label": "Выполнено сегодня",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 287,
+        "y": 809,
+        "width": 167,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e3",
+      "label": "Добавить на сегодня",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 462,
+        "y": 809,
+        "width": 174,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e4",
+      "label": "Изменить / перенести",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 287,
+        "y": 853,
+        "width": 183,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e5",
+      "label": "Копировать",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 478,
+        "y": 853,
+        "width": 111,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e6",
+      "label": "В архив",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 597,
+        "y": 853,
+        "width": 82,
+        "height": 36
+      },
+      "value": ""
+    }
+  ],
+  "observation_id": "P02-d06-o0063",
+  "screenshot": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-06/P02-d06-o0063.png",
+  "actions_used": 2,
+  "action_budget": 14
+}

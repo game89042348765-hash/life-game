@@ -1,0 +1,909 @@
+{
+  "run_directory": "personal-lab/verification/month-pilot-001",
+  "finished": true,
+  "analyzed_at_utc": "2026-11-11T19:28:02.246163+00:00",
+  "summary_updated_at": "2026-11-11T19:26:50.335+00:00",
+  "planned_persona_days": 21,
+  "opened_sessions": 16,
+  "completed_sessions": 16,
+  "no_use_days": 5,
+  "unrun_persona_days": 0,
+  "actions": 120,
+  "event_kinds": {
+    "session_opened": 16,
+    "observation": 136,
+    "action": 120,
+    "session_ended": 16,
+    "no_use": 5,
+    "run_finished": 1
+  },
+  "actors": {
+    "P01": {
+      "planned": 7,
+      "opened": 5,
+      "completed": 5,
+      "no_use": 2,
+      "actions": 20,
+      "last_day": 7,
+      "active": false,
+      "days": [
+        {
+          "day": 1,
+          "status": "completed",
+          "reason": null,
+          "outcome": "Выбрала Lite, создала ежедневную привычку «Читать 10 минут вечером». В разделе День увидела её и кнопку отметки. Факта чтения сегодня в контексте не было, выполнение не отмечала.",
+          "actions": 9,
+          "frictions": [
+            "16.11, P01-d01-o0006/o0008: для одной привычки показана длинная форма с блоком, этапом, целью, наградами и нормой; кнопку Создать пришлось искать прокруткой."
+          ],
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-01/trace.zip"
+        },
+        {
+          "day": 2,
+          "status": "completed",
+          "reason": null,
+          "outcome": "Отметила сегодняшние десять минут чтения: 1/1 и 1/30, получила +5. Остаток Невыполненные оказался пропуском вчерашней даты; поняла объяснение, не стала его архивировать. На завтра рассчитываю на ежедневную привычку, отдельный завтрашний план не открывала.",
+          "actions": 3,
+          "frictions": [
+            "17.11, P01-d02-o0013: после отметки запланированной привычки появилась дополнительная строка «Выполнено вне плана — подход», значение неясно.",
+            "17.11, P01-d02-o0013 e8: Невыполненные: 1 осталось после успешной отметки; лишь переход в e8 объяснил, что это вчерашний пропуск."
+          ],
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-02/trace.zip"
+        },
+        {
+          "day": 3,
+          "status": "completed",
+          "reason": null,
+          "outcome": "Зашла ради пяти прочитанных минут. Через Ещё открыла карточку, но увидела только полное выполнение Сегодня 0 из 1. Способа отметить половину не нашла за короткую попытку; оставила привычку невыполненной и вышла.",
+          "actions": 4,
+          "frictions": [
+            "18.11, P01-d03-o0017/o0018: в меню Ещё и карточке привычки не нашла запись частичного результата (5 из 10 минут); кнопка Выполнено сегодня предлагает полную отметку."
+          ],
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-03/trace.zip"
+        },
+        {
+          "day": 4,
+          "status": "no_use",
+          "reason": "actor_choice",
+          "outcome": "Сегодня не читала и заходить не стала: полную отметку ставить нечестно, а вчера частичный результат записать не смогла. Оставлю день как есть и попробую вернуться после чтения завтра.",
+          "actions": 0,
+          "frictions": null,
+          "trace": null
+        },
+        {
+          "day": 5,
+          "status": "no_use",
+          "reason": "unavailable",
+          "outcome": "День недоступен: весь день вне дома, по контексту приложение не открываю.",
+          "actions": 0,
+          "frictions": null,
+          "trace": null
+        },
+        {
+          "day": 6,
+          "status": "completed",
+          "reason": null,
+          "outcome": "Вернулась после отсутствия: ежедневное чтение сохранилось в Дне. Отметила сегодняшние десять минут, увидела 1/1 и 2/30, +5. Старых невыполненных уже четыре, но ничего пересоздавать или разбирать для сегодняшней отметки не потребовалось.",
+          "actions": 2,
+          "frictions": [
+            "21.11, P01-d06-o0022: после выполнения ежедневной привычки снова появилась строка «Выполнено вне плана — подход»; не понимаю, почему она вне плана."
+          ],
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-06/trace.zip"
+        },
+        {
+          "day": 7,
+          "status": "completed",
+          "reason": null,
+          "outcome": "В Истории и фильтре Выполнения увидела чтение за 17 и 21 ноября — по две строки на каждую дату, Привычка и Подход привычки. Поняла, что полных отметок было два дня, но пять минут 18 ноября в чтении недели не отражены: в общем списке эта дата только Пропуск. Решила продолжить пользоваться для простых отметок десяти минут: привычка сохраняется и отмечается быстро. В дополнительные разделы пока не пойду.",
+          "actions": 2,
+          "frictions": [
+            "22.11, P01-d07-o0024/o0025: одно чтение представлено двумя строками в Истории — Привычка и Подход привычки; это усложняет быстрый подсчёт дней.",
+            "22.11, P01-d07-o0024: дата18.11 показана только как Пропуск; мои пять минут не попали в историю, потому что тогда я не нашла способа сохранить часть."
+          ],
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-07/trace.zip"
+        }
+      ]
+    },
+    "P02": {
+      "planned": 7,
+      "opened": 6,
+      "completed": 6,
+      "no_use": 1,
+      "actions": 69,
+      "last_day": 7,
+      "active": false,
+      "days": [
+        {
+          "day": 1,
+          "status": "completed",
+          "reason": null,
+          "outcome": "Начал свою жизнь в Lite. Создал три разовых задания: материалы 16 ноября, черновик 18 ноября, отправка 22 ноября. В календарь записал встречу 19 ноября в 14:00 с напоминанием за 15 минут. Выполнение не отмечал.",
+          "actions": 27,
+          "frictions": [
+            "16.11, экран 1100×900: даже в Lite простое задание открывает длинную форму с блоком, этапом, целью, темпом и наградой; Создать видно только после прокрутки. Для календарной встречи тоже потребовалась прокрутка к Создать."
+          ],
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-01/trace.zip"
+        },
+        {
+          "day": 2,
+          "status": "completed",
+          "reason": null,
+          "outcome": "Отметил материалы выполненными сегодня через Невыполненные. Открыл существующий черновик, добавил на сегодня и выделил ключевым действием. Новых заданий не создавал.",
+          "actions": 8,
+          "frictions": [],
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-02/trace.zip"
+        },
+        {
+          "day": 3,
+          "status": "no_use",
+          "reason": "unavailable",
+          "outcome": "Срочная работа, на планировщик нет времени; приложение не открывал.",
+          "actions": 0,
+          "frictions": null,
+          "trace": null
+        },
+        {
+          "day": 4,
+          "status": "completed",
+          "reason": null,
+          "outcome": "Перенёс встречу на 20 ноября 15:00, напоминание за 15 минут сохранилось. Просроченный черновик перенёс на сегодня 19 ноября, он виден ключевым действием. Старый пропуск уже выполненных материалов отправил в архив, чтобы не мешал.",
+          "actions": 12,
+          "frictions": [
+            "19.11, Невыполненные: материалы уже помечены выполненными 17.11, но остались в счётчике пропусков и рядом доступно Выполнить сегодня. Пришлось отдельно выбрать их и архивировать, чтобы убрать из рабочего списка."
+          ],
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-04/trace.zip"
+        },
+        {
+          "day": 5,
+          "status": "completed",
+          "reason": null,
+          "outcome": "Отметил встречу 20 ноября и готовый черновик выполненными. Архивировал оба пропуска черновика за 18 и 19 ноября. В заданиях осталась только отправка 22 ноября; её срок оставил.",
+          "actions": 9,
+          "frictions": [
+            "20.11, Невыполненные: один черновик показан двумя карточками за 18 и 19 ноября. После отметки выполнения обе остались в пропусках; понадобилось выбрать все и архивировать, чтобы рабочий список стал пустым."
+          ],
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-05/trace.zip"
+        },
+        {
+          "day": 6,
+          "status": "completed",
+          "reason": null,
+          "outcome": "В день без сети открыл задания, увидел ближайшую отправку 22 ноября и отметил уже отправленный по контексту результат выполненным 21 ноября. После закрытия карточки активных заданий нет, в истории все три шага проекта.",
+          "actions": 4,
+          "frictions": [],
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-06/trace.zip"
+        },
+        {
+          "day": 7,
+          "status": "completed",
+          "reason": null,
+          "outcome": "В Истории отфильтровал выполнения: материалы 17 ноября, черновик и встреча 20 ноября, отправка 21 ноября. Отметка отправки со вчера сохранилась. Старые пропуски уже в архиве и выполненный проект не мешает в активных. Через быстрое добавление создал на 23 ноября Разобрать итоги принятого проекта и выбрать следующий.",
+          "actions": 9,
+          "frictions": [],
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-07/trace.zip"
+        }
+      ]
+    },
+    "P03": {
+      "planned": 7,
+      "opened": 5,
+      "completed": 5,
+      "no_use": 2,
+      "actions": 31,
+      "last_day": 7,
+      "active": false,
+      "days": [
+        {
+          "day": 1,
+          "status": "completed",
+          "reason": null,
+          "outcome": "Выбрала Lite и создала разовое дело «Порисовать 10 минут» на сегодня. Нашла его в Конструкторе дня; выполненным не отмечала.",
+          "actions": 9,
+          "frictions": [
+            "16 ноября, старт Lite: много разделов и игровых счётчиков, с первого взгляда непонятно, что нужно для одного дела.",
+            "16 ноября, Быстрое добавление: после выбора «Задание» появились блок, этап, дата и локации; пришлось решать, что оставить пустым."
+          ],
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-01/trace.zip"
+        },
+        {
+          "day": 2,
+          "status": "no_use",
+          "reason": "unavailable",
+          "outcome": "Спонтанная поездка: приложение не открывала и не рисовала.",
+          "actions": 0,
+          "frictions": null,
+          "trace": null
+        },
+        {
+          "day": 3,
+          "status": "completed",
+          "reason": null,
+          "outcome": "После пропуска вернулась, отметила сегодняшнее небольшое рисование через «Выполнить сейчас» у старого задания. Получила +10, отправила запись пропуска в архив, увидела «Сделано 1 из 1».",
+          "actions": 5,
+          "frictions": [
+            "18 ноября, Невыполненные: после «Выполнить сейчас» выполненное дело сохранилось во вкладке «Пропуски» со счётчиком 1. Для ощущения завершённости понадобились выбор записи и архивирование."
+          ],
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-03/trace.zip"
+        },
+        {
+          "day": 4,
+          "status": "completed",
+          "reason": null,
+          "outcome": "Рисовала и засчитала это: через «Быстрое выполнение» не нашла прежнее дело, создала «Немного порисовать» на сегодня и отметила его в Конструкторе дня. Увидела 1/1 и +10. Ошибочных отметок не было.",
+          "actions": 9,
+          "frictions": [
+            "19 ноября, Быстрое выполнение: поиск «рисовать» показал «Не найдено», хотя помню созданное ранее дело. Не поняла, связано ли это с архивом или разовым выполнением.",
+            "19 ноября: для отметки незапланированного рисования прошла поиск, создание задания с датой, переход в Конструктор и выполнение — 9 действий."
+          ],
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-04/trace.zip"
+        },
+        {
+          "day": 5,
+          "status": "no_use",
+          "reason": "unavailable",
+          "outcome": "Не было сил рисовать и открывать приложение.",
+          "actions": 0,
+          "frictions": null,
+          "trace": null
+        },
+        {
+          "day": 6,
+          "status": "completed",
+          "reason": null,
+          "outcome": "Вернулась и снизила шаг: создала «Порисовать 2 минуты, когда есть силы» без даты и без Конструктора дня. В «Заданиях» увидела историю двух прошлых выполнений. Сегодня выполнение не отмечала.",
+          "actions": 6,
+          "frictions": [],
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-06/trace.zip"
+        },
+        {
+          "day": 7,
+          "status": "completed",
+          "reason": null,
+          "outcome": "Посмотрела Историю и фильтр «Выполнения»: вижу рисование 18 и 19 ноября. Решила оставить маленькое дело на две минуты без срока и историю успехов; заходить по желанию, без ежедневной отчётности. Нового выполнения не отмечала.",
+          "actions": 2,
+          "frictions": [
+            "22 ноября, История/Всё: архивный пропуск снова виден рядом с успехами; переключилась на «Выполнения», чтобы не ощущать долг."
+          ],
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-07/trace.zip"
+        }
+      ]
+    }
+  },
+  "state_snapshots": [
+    {
+      "actor": "P01",
+      "day": 1,
+      "path": "personal-lab/verification/month-pilot-001/P01/day-01/observer-state.json",
+      "sha256": "ff8409a00020a9e1582e83920a8ee7605f76125f59253b8cf0ac8d0ac6ae0c8e",
+      "keys_lab_only": true,
+      "has_personal_state": true,
+      "revision": 5,
+      "lastProcessed": "2026-11-16",
+      "counts": {
+        "tasks": 0,
+        "habits": 1,
+        "quests": 0,
+        "goals": 0,
+        "cal": 0,
+        "facts": 0,
+        "ledger": 0,
+        "misses": 0
+      },
+      "task_titles": [],
+      "habit_titles": [
+        "Читать 10 минут вечером"
+      ],
+      "calendar_titles": [],
+      "coins": 0,
+      "xp": 0
+    },
+    {
+      "actor": "P01",
+      "day": 2,
+      "path": "personal-lab/verification/month-pilot-001/P01/day-02/observer-state.json",
+      "sha256": "b9c3182b75780ea04db31c76710f55e734e2ea207e87e74edc1eba2200c57266",
+      "keys_lab_only": true,
+      "has_personal_state": true,
+      "revision": 8,
+      "lastProcessed": "2026-11-17",
+      "counts": {
+        "tasks": 0,
+        "habits": 1,
+        "quests": 0,
+        "goals": 0,
+        "cal": 0,
+        "facts": 2,
+        "ledger": 1,
+        "misses": 1
+      },
+      "task_titles": [],
+      "habit_titles": [
+        "Читать 10 минут вечером"
+      ],
+      "calendar_titles": [],
+      "coins": 5,
+      "xp": 5
+    },
+    {
+      "actor": "P01",
+      "day": 3,
+      "path": "personal-lab/verification/month-pilot-001/P01/day-03/observer-state.json",
+      "sha256": "a7139a6a7be9ea4140ce58497378b377e859027edf7aae241c0135e777ac2130",
+      "keys_lab_only": true,
+      "has_personal_state": true,
+      "revision": 10,
+      "lastProcessed": "2026-11-18",
+      "counts": {
+        "tasks": 0,
+        "habits": 1,
+        "quests": 0,
+        "goals": 0,
+        "cal": 0,
+        "facts": 2,
+        "ledger": 1,
+        "misses": 1
+      },
+      "task_titles": [],
+      "habit_titles": [
+        "Читать 10 минут вечером"
+      ],
+      "calendar_titles": [],
+      "coins": 5,
+      "xp": 5
+    },
+    {
+      "actor": "P01",
+      "day": 6,
+      "path": "personal-lab/verification/month-pilot-001/P01/day-06/observer-state.json",
+      "sha256": "011e86a3f2ca9965fc23217123593114d181978aefa908357a436cc9a7312622",
+      "keys_lab_only": true,
+      "has_personal_state": true,
+      "revision": 13,
+      "lastProcessed": "2026-11-21",
+      "counts": {
+        "tasks": 0,
+        "habits": 1,
+        "quests": 0,
+        "goals": 0,
+        "cal": 0,
+        "facts": 4,
+        "ledger": 2,
+        "misses": 4
+      },
+      "task_titles": [],
+      "habit_titles": [
+        "Читать 10 минут вечером"
+      ],
+      "calendar_titles": [],
+      "coins": 10,
+      "xp": 10
+    },
+    {
+      "actor": "P01",
+      "day": 7,
+      "path": "personal-lab/verification/month-pilot-001/P01/day-07/observer-state.json",
+      "sha256": "5daddec82921795ee792b5a5f3855f0623cb42183091f615b0d69934cd544101",
+      "keys_lab_only": true,
+      "has_personal_state": true,
+      "revision": 14,
+      "lastProcessed": "2026-11-22",
+      "counts": {
+        "tasks": 0,
+        "habits": 1,
+        "quests": 0,
+        "goals": 0,
+        "cal": 0,
+        "facts": 4,
+        "ledger": 2,
+        "misses": 4
+      },
+      "task_titles": [],
+      "habit_titles": [
+        "Читать 10 минут вечером"
+      ],
+      "calendar_titles": [],
+      "coins": 10,
+      "xp": 10
+    },
+    {
+      "actor": "P02",
+      "day": 1,
+      "path": "personal-lab/verification/month-pilot-001/P02/day-01/observer-state.json",
+      "sha256": "702faa7203cd132003b7f044511322b375588cba8811047a7585f69e165456f3",
+      "keys_lab_only": true,
+      "has_personal_state": true,
+      "revision": 7,
+      "lastProcessed": "2026-11-16",
+      "counts": {
+        "tasks": 3,
+        "habits": 0,
+        "quests": 0,
+        "goals": 0,
+        "cal": 1,
+        "facts": 0,
+        "ledger": 0,
+        "misses": 0
+      },
+      "task_titles": [
+        "Собрать материалы проекта",
+        "Подготовить черновик проекта",
+        "Отправить проект заказчику"
+      ],
+      "habit_titles": [],
+      "calendar_titles": [
+        "Встреча с заказчиком"
+      ],
+      "coins": 0,
+      "xp": 0
+    },
+    {
+      "actor": "P02",
+      "day": 2,
+      "path": "personal-lab/verification/month-pilot-001/P02/day-02/observer-state.json",
+      "sha256": "03b561d1644b24a2d7d97e7ddf3650920544bf7524aaaadd71b5d0bf57fb4198",
+      "keys_lab_only": true,
+      "has_personal_state": true,
+      "revision": 12,
+      "lastProcessed": "2026-11-17",
+      "counts": {
+        "tasks": 3,
+        "habits": 0,
+        "quests": 0,
+        "goals": 0,
+        "cal": 1,
+        "facts": 1,
+        "ledger": 1,
+        "misses": 1
+      },
+      "task_titles": [
+        "Собрать материалы проекта",
+        "Подготовить черновик проекта",
+        "Отправить проект заказчику"
+      ],
+      "habit_titles": [],
+      "calendar_titles": [
+        "Встреча с заказчиком"
+      ],
+      "coins": 10,
+      "xp": 10
+    },
+    {
+      "actor": "P02",
+      "day": 4,
+      "path": "personal-lab/verification/month-pilot-001/P02/day-04/observer-state.json",
+      "sha256": "fc0ea2e635309120154951a2233b68902a9fc3b179d40e146d134e4776989f39",
+      "keys_lab_only": true,
+      "has_personal_state": true,
+      "revision": 17,
+      "lastProcessed": "2026-11-19",
+      "counts": {
+        "tasks": 3,
+        "habits": 0,
+        "quests": 0,
+        "goals": 0,
+        "cal": 1,
+        "facts": 1,
+        "ledger": 1,
+        "misses": 2
+      },
+      "task_titles": [
+        "Собрать материалы проекта",
+        "Подготовить черновик проекта",
+        "Отправить проект заказчику"
+      ],
+      "habit_titles": [],
+      "calendar_titles": [
+        "Встреча с заказчиком"
+      ],
+      "coins": 10,
+      "xp": 10
+    },
+    {
+      "actor": "P02",
+      "day": 5,
+      "path": "personal-lab/verification/month-pilot-001/P02/day-05/observer-state.json",
+      "sha256": "64a3cb6fbe2dce6ef2b719ca5c0cba3c9ae5a950e6bb1ef99ddeeb479cd73dc3",
+      "keys_lab_only": true,
+      "has_personal_state": true,
+      "revision": 21,
+      "lastProcessed": "2026-11-20",
+      "counts": {
+        "tasks": 3,
+        "habits": 0,
+        "quests": 0,
+        "goals": 0,
+        "cal": 1,
+        "facts": 3,
+        "ledger": 3,
+        "misses": 3
+      },
+      "task_titles": [
+        "Собрать материалы проекта",
+        "Подготовить черновик проекта",
+        "Отправить проект заказчику"
+      ],
+      "habit_titles": [],
+      "calendar_titles": [
+        "Встреча с заказчиком"
+      ],
+      "coins": 25,
+      "xp": 25
+    },
+    {
+      "actor": "P02",
+      "day": 6,
+      "path": "personal-lab/verification/month-pilot-001/P02/day-06/observer-state.json",
+      "sha256": "70cf867e7d54c1c1fd7bf496095e7e4caa90a7c15ab077eaf8f795caed270e71",
+      "keys_lab_only": true,
+      "has_personal_state": true,
+      "revision": 23,
+      "lastProcessed": "2026-11-21",
+      "counts": {
+        "tasks": 3,
+        "habits": 0,
+        "quests": 0,
+        "goals": 0,
+        "cal": 1,
+        "facts": 4,
+        "ledger": 4,
+        "misses": 3
+      },
+      "task_titles": [
+        "Собрать материалы проекта",
+        "Подготовить черновик проекта",
+        "Отправить проект заказчику"
+      ],
+      "habit_titles": [],
+      "calendar_titles": [
+        "Встреча с заказчиком"
+      ],
+      "coins": 35,
+      "xp": 35
+    },
+    {
+      "actor": "P02",
+      "day": 7,
+      "path": "personal-lab/verification/month-pilot-001/P02/day-07/observer-state.json",
+      "sha256": "aa966ae45f806ee02fe884e4ed54797cb56627e4cddc49de935c0ad378b51a2a",
+      "keys_lab_only": true,
+      "has_personal_state": true,
+      "revision": 25,
+      "lastProcessed": "2026-11-22",
+      "counts": {
+        "tasks": 4,
+        "habits": 0,
+        "quests": 0,
+        "goals": 0,
+        "cal": 1,
+        "facts": 4,
+        "ledger": 4,
+        "misses": 3
+      },
+      "task_titles": [
+        "Собрать материалы проекта",
+        "Подготовить черновик проекта",
+        "Отправить проект заказчику",
+        "Разобрать итоги принятого проекта и выбрать следующий"
+      ],
+      "habit_titles": [],
+      "calendar_titles": [
+        "Встреча с заказчиком"
+      ],
+      "coins": 35,
+      "xp": 35
+    },
+    {
+      "actor": "P03",
+      "day": 1,
+      "path": "personal-lab/verification/month-pilot-001/P03/day-01/observer-state.json",
+      "sha256": "6fcae18c257f6359e3e4ff713c120c4bc39905026ffc129626b17e45ca160736",
+      "keys_lab_only": true,
+      "has_personal_state": true,
+      "revision": 5,
+      "lastProcessed": "2026-11-16",
+      "counts": {
+        "tasks": 1,
+        "habits": 0,
+        "quests": 0,
+        "goals": 0,
+        "cal": 0,
+        "facts": 0,
+        "ledger": 0,
+        "misses": 0
+      },
+      "task_titles": [
+        "Порисовать 10 минут"
+      ],
+      "habit_titles": [],
+      "calendar_titles": [],
+      "coins": 0,
+      "xp": 0
+    },
+    {
+      "actor": "P03",
+      "day": 3,
+      "path": "personal-lab/verification/month-pilot-001/P03/day-03/observer-state.json",
+      "sha256": "1eda1d8059c580949ed61c7c1e324907c138061360f90299997f8e2ef8653b46",
+      "keys_lab_only": true,
+      "has_personal_state": true,
+      "revision": 8,
+      "lastProcessed": "2026-11-18",
+      "counts": {
+        "tasks": 1,
+        "habits": 0,
+        "quests": 0,
+        "goals": 0,
+        "cal": 0,
+        "facts": 1,
+        "ledger": 1,
+        "misses": 1
+      },
+      "task_titles": [
+        "Порисовать 10 минут"
+      ],
+      "habit_titles": [],
+      "calendar_titles": [],
+      "coins": 10,
+      "xp": 10
+    },
+    {
+      "actor": "P03",
+      "day": 4,
+      "path": "personal-lab/verification/month-pilot-001/P03/day-04/observer-state.json",
+      "sha256": "1162e1924bdb62b59cacdc98631e926abba31785844fa95b16a08408b0fcf0b8",
+      "keys_lab_only": true,
+      "has_personal_state": true,
+      "revision": 12,
+      "lastProcessed": "2026-11-19",
+      "counts": {
+        "tasks": 2,
+        "habits": 0,
+        "quests": 0,
+        "goals": 0,
+        "cal": 0,
+        "facts": 2,
+        "ledger": 2,
+        "misses": 1
+      },
+      "task_titles": [
+        "Порисовать 10 минут",
+        "Немного порисовать"
+      ],
+      "habit_titles": [],
+      "calendar_titles": [],
+      "coins": 20,
+      "xp": 20
+    },
+    {
+      "actor": "P03",
+      "day": 6,
+      "path": "personal-lab/verification/month-pilot-001/P03/day-06/observer-state.json",
+      "sha256": "2b4eb769ce54e3c01d379c83ff70102353407c68ecde9b22338133c7c55b9aa9",
+      "keys_lab_only": true,
+      "has_personal_state": true,
+      "revision": 14,
+      "lastProcessed": "2026-11-21",
+      "counts": {
+        "tasks": 3,
+        "habits": 0,
+        "quests": 0,
+        "goals": 0,
+        "cal": 0,
+        "facts": 2,
+        "ledger": 2,
+        "misses": 1
+      },
+      "task_titles": [
+        "Порисовать 10 минут",
+        "Немного порисовать",
+        "Порисовать 2 минуты, когда есть силы"
+      ],
+      "habit_titles": [],
+      "calendar_titles": [],
+      "coins": 20,
+      "xp": 20
+    },
+    {
+      "actor": "P03",
+      "day": 7,
+      "path": "personal-lab/verification/month-pilot-001/P03/day-07/observer-state.json",
+      "sha256": "1fbaf33d14c1a29846be55a10b4da8c39f99dd0c2717da4d0e84b68ea7b80634",
+      "keys_lab_only": true,
+      "has_personal_state": true,
+      "revision": 15,
+      "lastProcessed": "2026-11-22",
+      "counts": {
+        "tasks": 3,
+        "habits": 0,
+        "quests": 0,
+        "goals": 0,
+        "cal": 0,
+        "facts": 2,
+        "ledger": 2,
+        "misses": 1
+      },
+      "task_titles": [
+        "Порисовать 10 минут",
+        "Немного порисовать",
+        "Порисовать 2 минуты, когда есть силы"
+      ],
+      "habit_titles": [],
+      "calendar_titles": [],
+      "coins": 20,
+      "xp": 20
+    }
+  ],
+  "schema_validation": [
+    {
+      "id": "personal-lab/verification/month-pilot-001/P01/day-01/observer-state.json",
+      "valid": true
+    },
+    {
+      "id": "personal-lab/verification/month-pilot-001/P01/day-02/observer-state.json",
+      "valid": true
+    },
+    {
+      "id": "personal-lab/verification/month-pilot-001/P01/day-03/observer-state.json",
+      "valid": true
+    },
+    {
+      "id": "personal-lab/verification/month-pilot-001/P01/day-06/observer-state.json",
+      "valid": true
+    },
+    {
+      "id": "personal-lab/verification/month-pilot-001/P01/day-07/observer-state.json",
+      "valid": true
+    },
+    {
+      "id": "personal-lab/verification/month-pilot-001/P02/day-01/observer-state.json",
+      "valid": true
+    },
+    {
+      "id": "personal-lab/verification/month-pilot-001/P02/day-02/observer-state.json",
+      "valid": true
+    },
+    {
+      "id": "personal-lab/verification/month-pilot-001/P02/day-04/observer-state.json",
+      "valid": true
+    },
+    {
+      "id": "personal-lab/verification/month-pilot-001/P02/day-05/observer-state.json",
+      "valid": true
+    },
+    {
+      "id": "personal-lab/verification/month-pilot-001/P02/day-06/observer-state.json",
+      "valid": true
+    },
+    {
+      "id": "personal-lab/verification/month-pilot-001/P02/day-07/observer-state.json",
+      "valid": true
+    },
+    {
+      "id": "personal-lab/verification/month-pilot-001/P03/day-01/observer-state.json",
+      "valid": true
+    },
+    {
+      "id": "personal-lab/verification/month-pilot-001/P03/day-03/observer-state.json",
+      "valid": true
+    },
+    {
+      "id": "personal-lab/verification/month-pilot-001/P03/day-04/observer-state.json",
+      "valid": true
+    },
+    {
+      "id": "personal-lab/verification/month-pilot-001/P03/day-06/observer-state.json",
+      "valid": true
+    },
+    {
+      "id": "personal-lab/verification/month-pilot-001/P03/day-07/observer-state.json",
+      "valid": true
+    }
+  ],
+  "all_captured_personal_states_schema_valid": true,
+  "all_captured_namespaces_lab_only": true,
+  "profile_directories_distinct": true,
+  "runtime_files_changed_during_run": [],
+  "errors": [],
+  "traces": [
+    {
+      "path": "personal-lab/verification/month-pilot-001/P01/day-01/trace.zip",
+      "bytes": 3233675,
+      "zip_valid": true,
+      "has_trace": true
+    },
+    {
+      "path": "personal-lab/verification/month-pilot-001/P01/day-02/trace.zip",
+      "bytes": 2923402,
+      "zip_valid": true,
+      "has_trace": true
+    },
+    {
+      "path": "personal-lab/verification/month-pilot-001/P01/day-03/trace.zip",
+      "bytes": 1482359,
+      "zip_valid": true,
+      "has_trace": true
+    },
+    {
+      "path": "personal-lab/verification/month-pilot-001/P01/day-06/trace.zip",
+      "bytes": 2832594,
+      "zip_valid": true,
+      "has_trace": true
+    },
+    {
+      "path": "personal-lab/verification/month-pilot-001/P01/day-07/trace.zip",
+      "bytes": 773534,
+      "zip_valid": true,
+      "has_trace": true
+    },
+    {
+      "path": "personal-lab/verification/month-pilot-001/P02/day-01/trace.zip",
+      "bytes": 7652329,
+      "zip_valid": true,
+      "has_trace": true
+    },
+    {
+      "path": "personal-lab/verification/month-pilot-001/P02/day-02/trace.zip",
+      "bytes": 3363985,
+      "zip_valid": true,
+      "has_trace": true
+    },
+    {
+      "path": "personal-lab/verification/month-pilot-001/P02/day-04/trace.zip",
+      "bytes": 2570652,
+      "zip_valid": true,
+      "has_trace": true
+    },
+    {
+      "path": "personal-lab/verification/month-pilot-001/P02/day-05/trace.zip",
+      "bytes": 4865071,
+      "zip_valid": true,
+      "has_trace": true
+    },
+    {
+      "path": "personal-lab/verification/month-pilot-001/P02/day-06/trace.zip",
+      "bytes": 2549522,
+      "zip_valid": true,
+      "has_trace": true
+    },
+    {
+      "path": "personal-lab/verification/month-pilot-001/P02/day-07/trace.zip",
+      "bytes": 2282103,
+      "zip_valid": true,
+      "has_trace": true
+    },
+    {
+      "path": "personal-lab/verification/month-pilot-001/P03/day-01/trace.zip",
+      "bytes": 3194638,
+      "zip_valid": true,
+      "has_trace": true
+    },
+    {
+      "path": "personal-lab/verification/month-pilot-001/P03/day-03/trace.zip",
+      "bytes": 3393255,
+      "zip_valid": true,
+      "has_trace": true
+    },
+    {
+      "path": "personal-lab/verification/month-pilot-001/P03/day-04/trace.zip",
+      "bytes": 5690877,
+      "zip_valid": true,
+      "has_trace": true
+    },
+    {
+      "path": "personal-lab/verification/month-pilot-001/P03/day-06/trace.zip",
+      "bytes": 2582307,
+      "zip_valid": true,
+      "has_trace": true
+    },
+    {
+      "path": "personal-lab/verification/month-pilot-001/P03/day-07/trace.zip",
+      "bytes": 730222,
+      "zip_valid": true,
+      "has_trace": true
+    }
+  ],
+  "screenshots": 136,
+  "pilot_observations": 136,
+  "artifact_bytes": 108101862,
+  "note": "completed means session closed, not goal accomplished. Schema validation is not proof of semantic correctness or human usability. Inspect traces and outcomes separately."
+}

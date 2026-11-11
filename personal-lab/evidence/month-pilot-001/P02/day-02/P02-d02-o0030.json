@@ -1,0 +1,292 @@
+{
+  "title": "LifeGame Lab — лаборатория",
+  "url": "http://127.0.0.1:8041/personal-lab/",
+  "virtual_time_observed": "2026-11-17T15:00:05.419Z",
+  "modal": false,
+  "viewport": {
+    "width": 1100,
+    "height": 900
+  },
+  "visible_text": "←\nНевыполненные\n17 ноя\n● 0\nУр. 1\nНевыполненные\nКаждый пропуск запланированного — отдельный факт со своей датой. Пропуск не штрафует и не обнуляет прогресс.\nПропуски\nАрхив\nВсе (1)\nЗадания (1)\nПривычки (0)\nКалендарь (0)\nВыбрать все (1)\nВ архив выбранные (0)\nСобрать материалы проекта\nЗадание · пропуск 16 ноября, понедельник · Самостоятельное\nПеренести\nВыполнить сейчас\nАрхив и удаление управляют записями о пропусках, а не самими заданиями, привычками и квестами. Выполнение засчитывается сегодняшней датой, старый пропуск остаётся фактом.\nГлавная\nДень\nКарта\nВходящие\nРазделы",
+  "elements": [
+    {
+      "element": "e1",
+      "label": "←",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 284,
+        "y": 25,
+        "width": 21,
+        "height": 29
+      },
+      "value": ""
+    },
+    {
+      "element": "e2",
+      "label": "● 0\nУр. 1",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 642,
+        "y": 22,
+        "width": 92,
+        "height": 33
+      },
+      "value": ""
+    },
+    {
+      "element": "e3",
+      "label": "Быстрое выполнение",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 740,
+        "y": 22,
+        "width": 35,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e4",
+      "label": "Поиск",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 781,
+        "y": 22,
+        "width": 35,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e5",
+      "label": "Пропуски",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 287,
+        "y": 164,
+        "width": 262,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e6",
+      "label": "Архив",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 552,
+        "y": 164,
+        "width": 262,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e7",
+      "label": "Все (1)",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 284,
+        "y": 211,
+        "width": 68,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e8",
+      "label": "Задания (1)",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 358,
+        "y": 211,
+        "width": 98,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e9",
+      "label": "Привычки (0)",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 462,
+        "y": 211,
+        "width": 111,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e10",
+      "label": "Календарь (0)",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 579,
+        "y": 211,
+        "width": 115,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e11",
+      "label": "Выбрать все (1)",
+      "type": "checkbox",
+      "disabled": false,
+      "rect": {
+        "x": 288,
+        "y": 256,
+        "width": 18,
+        "height": 18
+      },
+      "value": "on",
+      "checked": false
+    },
+    {
+      "element": "e12",
+      "label": "В архив выбранные (0)",
+      "type": "button",
+      "disabled": true,
+      "rect": {
+        "x": 646,
+        "y": 251,
+        "width": 170,
+        "height": 28
+      },
+      "value": ""
+    },
+    {
+      "element": "e13",
+      "label": "Выбрать",
+      "type": "checkbox",
+      "disabled": false,
+      "rect": {
+        "x": 300,
+        "y": 326,
+        "width": 18,
+        "height": 18
+      },
+      "value": "on",
+      "checked": false
+    },
+    {
+      "element": "e14",
+      "label": "Перенести",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 332,
+        "y": 343,
+        "width": 92,
+        "height": 28
+      },
+      "value": ""
+    },
+    {
+      "element": "e15",
+      "label": "Выполнить сейчас",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 432,
+        "y": 343,
+        "width": 141,
+        "height": 28
+      },
+      "value": ""
+    },
+    {
+      "element": "e16",
+      "label": "Главная",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 270,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e17",
+      "label": "День",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 382,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e18",
+      "label": "Карта",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 494,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e19",
+      "label": "Входящие",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 606,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e20",
+      "label": "Разделы",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 718,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e21",
+      "label": "Быстрое добавление",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 756,
+        "y": 768,
+        "width": 56,
+        "height": 56
+      },
+      "value": ""
+    }
+  ],
+  "observation_id": "P02-d02-o0030",
+  "screenshot": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0030.png",
+  "actions_used": 1,
+  "action_budget": 16
+}

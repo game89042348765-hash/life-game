@@ -1,0 +1,355 @@
+{
+  "title": "LifeGame Lab — лаборатория",
+  "url": "http://127.0.0.1:8041/personal-lab/",
+  "virtual_time_observed": "2026-11-17T15:00:39.014Z",
+  "modal": false,
+  "viewport": {
+    "width": 1100,
+    "height": 900
+  },
+  "visible_text": "LifeGame Lab\n17 ноября, вторник\n● 10\nУр. 1\nКонструктор дня\n17 ноября, вторник\nВезде\n▾\nвсе дела видны\nТемп сегодняшнего дня\nОтдыхаю\nОбычный\nФигачу\nНевыполненные: 1\nКлючевые действия\n0/1\nПодготовить черновик проекта\nЗадание · Самостоятельное · разово, 18 ноя\n+10\nКалендарь\n0/0\nНа сегодня календарных дел нет.\nЗадания\n1/1\nСобрать материалы проекта\nЗадание · Самостоятельное · разово, 16 ноя\n+10\nПривычки\n0/0\nПривычек на сегодня нет.\n+ Добавить в день\nБыстрое выполнение\nВечер\nИтоги дня и необязательный ритуал завершения.\nИтоги\nЗавершить день\nГлавная\nДень\nКарта\nВходящие\nРазделы\nКлючевое действие. «В Конструктор» включено",
+  "elements": [
+    {
+      "element": "e1",
+      "label": "● 10\nУр. 1",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 634,
+        "y": 24,
+        "width": 100,
+        "height": 33
+      },
+      "value": ""
+    },
+    {
+      "element": "e2",
+      "label": "Быстрое выполнение",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 740,
+        "y": 23,
+        "width": 35,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e3",
+      "label": "Поиск",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 781,
+        "y": 23,
+        "width": 35,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e4",
+      "label": "Сменить локацию",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 284,
+        "y": 142,
+        "width": 79,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e5",
+      "label": "Отдыхаю",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 287,
+        "y": 214,
+        "width": 173,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e6",
+      "label": "Обычный",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 463,
+        "y": 214,
+        "width": 173,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e7",
+      "label": "Фигачу",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 640,
+        "y": 214,
+        "width": 173,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e8",
+      "label": "Невыполненные: 1",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 284,
+        "y": 260,
+        "width": 142,
+        "height": 28
+      },
+      "value": ""
+    },
+    {
+      "element": "e9",
+      "label": "Отметить выполненным",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 296,
+        "y": 353,
+        "width": 29,
+        "height": 29
+      },
+      "value": ""
+    },
+    {
+      "element": "e10",
+      "label": "Подготовить черновик проекта\nЗадание · Самостоятельное · разово, 18 ноя",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 336,
+        "y": 348,
+        "width": 348,
+        "height": 40
+      },
+      "value": ""
+    },
+    {
+      "element": "e11",
+      "label": "Ключевое действие",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 729,
+        "y": 352,
+        "width": 32,
+        "height": 32
+      },
+      "value": ""
+    },
+    {
+      "element": "e12",
+      "label": "Ещё",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 772,
+        "y": 352,
+        "width": 32,
+        "height": 32
+      },
+      "value": ""
+    },
+    {
+      "element": "e13",
+      "label": "Снять отметку",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 296,
+        "y": 540,
+        "width": 29,
+        "height": 29
+      },
+      "value": ""
+    },
+    {
+      "element": "e14",
+      "label": "Собрать материалы проекта\nЗадание · Самостоятельное · разово, 16 ноя",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 336,
+        "y": 535,
+        "width": 348,
+        "height": 40
+      },
+      "value": ""
+    },
+    {
+      "element": "e15",
+      "label": "Ключевое действие",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 729,
+        "y": 539,
+        "width": 32,
+        "height": 32
+      },
+      "value": ""
+    },
+    {
+      "element": "e16",
+      "label": "Ещё",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 772,
+        "y": 539,
+        "width": 32,
+        "height": 32
+      },
+      "value": ""
+    },
+    {
+      "element": "e17",
+      "label": "+ Добавить в день",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 284,
+        "y": 678,
+        "width": 155,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e18",
+      "label": "Быстрое выполнение",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 447,
+        "y": 678,
+        "width": 177,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e19",
+      "label": "Итоги",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 608,
+        "y": 744,
+        "width": 60,
+        "height": 28
+      },
+      "value": ""
+    },
+    {
+      "element": "e20",
+      "label": "Завершить день",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 608,
+        "y": 780,
+        "width": 128,
+        "height": 28
+      },
+      "value": ""
+    },
+    {
+      "element": "e21",
+      "label": "Главная",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 270,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e22",
+      "label": "День",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 382,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e23",
+      "label": "Карта",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 494,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e24",
+      "label": "Входящие",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 606,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e25",
+      "label": "Разделы",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 718,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e26",
+      "label": "Быстрое добавление",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 756,
+        "y": 768,
+        "width": 56,
+        "height": 56
+      },
+      "value": ""
+    }
+  ],
+  "observation_id": "P02-d02-o0037",
+  "screenshot": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0037.png",
+  "actions_used": 8,
+  "action_budget": 16
+}

@@ -1,0 +1,26 @@
+{
+  "title": "",
+  "url": "about:blank",
+  "virtual_time_observed": "2026-11-11T19:33:38.065Z",
+  "modal": false,
+  "viewport": {
+    "width": 390,
+    "height": 400
+  },
+  "visible_text": "Видимый заголовок\nВидимоеНачало\nВидимаяСтрока\nЕщёСтрока\nТекст\nТекст\nТекст\nТекст\nТекст\nТекст\nВидимаяКнопка",
+  "elements": [
+    {
+      "element": "e1",
+      "label": "ВидимаяКнопка",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 0,
+        "y": 336,
+        "width": 115,
+        "height": 21
+      },
+      "value": ""
+    }
+  ]
+}

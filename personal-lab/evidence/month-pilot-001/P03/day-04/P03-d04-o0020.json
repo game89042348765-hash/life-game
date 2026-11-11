@@ -1,0 +1,57 @@
+{
+  "title": "LifeGame Lab — лаборатория",
+  "url": "http://127.0.0.1:8041/personal-lab/",
+  "virtual_time_observed": "2026-11-19T18:00:20.316Z",
+  "modal": true,
+  "viewport": {
+    "width": 375,
+    "height": 844
+  },
+  "visible_text": "Быстрое выполнение\n✕\nСделали что-то вне плана? Найдите существующую запись и отметьте по её правилам. Новая копия не создаётся.\nНе найдено.\nНет такой записи — создать «Немного порисовать»",
+  "elements": [
+    {
+      "element": "e1",
+      "label": "Закрыть",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 326,
+        "y": 577,
+        "width": 32,
+        "height": 32
+      },
+      "value": ""
+    },
+    {
+      "element": "e2",
+      "label": "Начните вводить название",
+      "type": "search",
+      "disabled": false,
+      "rect": {
+        "x": 17,
+        "y": 682,
+        "width": 341,
+        "height": 43
+      },
+      "value": "Немного порисовать",
+      "checked": false
+    },
+    {
+      "element": "e3",
+      "label": "Нет такой записи — создать «Немного порисовать»",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 17,
+        "y": 771,
+        "width": 341,
+        "height": 53
+      },
+      "value": ""
+    }
+  ],
+  "observation_id": "P03-d04-o0020",
+  "screenshot": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0020.png",
+  "actions_used": 3,
+  "action_budget": 12
+}

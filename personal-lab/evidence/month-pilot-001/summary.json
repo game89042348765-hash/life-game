@@ -1,0 +1,695 @@
+{
+  "app_url": "http://127.0.0.1:8041/personal-lab/",
+  "finished": true,
+  "updated_at": "2026-11-11T19:26:50.335+00:00",
+  "actors": {
+    "P01": {
+      "planned": 7,
+      "opened": 5,
+      "completed": 5,
+      "no_use": 2,
+      "actions": 20,
+      "last_day": 7,
+      "active": false,
+      "sessions": [
+        {
+          "day": 1,
+          "status": "completed",
+          "outcome": "Выбрала Lite, создала ежедневную привычку «Читать 10 минут вечером». В разделе День увидела её и кнопку отметки. Факта чтения сегодня в контексте не было, выполнение не отмечала.",
+          "actions": 9,
+          "frictions": [
+            "16.11, P01-d01-o0006/o0008: для одной привычки показана длинная форма с блоком, этапом, целью, наградами и нормой; кнопку Создать пришлось искать прокруткой."
+          ],
+          "state": {
+            "keys": [
+              "lifegame-personal-lab-meta-v1",
+              "lifegame-personal-lab-my-v1",
+              "lifegame-personal-lab-my-v1-daily",
+              "lifegame-personal-lab-my-v1-last-good"
+            ],
+            "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-01/observer-state.json",
+            "primary_valid_json": true,
+            "lastProcessed": "2026-11-16",
+            "revision": 5,
+            "counts": {
+              "tasks": 0,
+              "habits": 1,
+              "quests": 0,
+              "cal": 0,
+              "goals": 0,
+              "facts": 0,
+              "ledger": 0,
+              "misses": 0
+            },
+            "coins": 0,
+            "xp": 0
+          },
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-01/trace.zip"
+        },
+        {
+          "day": 2,
+          "status": "completed",
+          "outcome": "Отметила сегодняшние десять минут чтения: 1/1 и 1/30, получила +5. Остаток Невыполненные оказался пропуском вчерашней даты; поняла объяснение, не стала его архивировать. На завтра рассчитываю на ежедневную привычку, отдельный завтрашний план не открывала.",
+          "actions": 3,
+          "frictions": [
+            "17.11, P01-d02-o0013: после отметки запланированной привычки появилась дополнительная строка «Выполнено вне плана — подход», значение неясно.",
+            "17.11, P01-d02-o0013 e8: Невыполненные: 1 осталось после успешной отметки; лишь переход в e8 объяснил, что это вчерашний пропуск."
+          ],
+          "state": {
+            "keys": [
+              "lifegame-personal-lab-meta-v1",
+              "lifegame-personal-lab-my-v1",
+              "lifegame-personal-lab-my-v1-daily",
+              "lifegame-personal-lab-my-v1-last-good"
+            ],
+            "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-02/observer-state.json",
+            "primary_valid_json": true,
+            "lastProcessed": "2026-11-17",
+            "revision": 8,
+            "counts": {
+              "tasks": 0,
+              "habits": 1,
+              "quests": 0,
+              "cal": 0,
+              "goals": 0,
+              "facts": 2,
+              "ledger": 1,
+              "misses": 1
+            },
+            "coins": 5,
+            "xp": 5
+          },
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-02/trace.zip"
+        },
+        {
+          "day": 3,
+          "status": "completed",
+          "outcome": "Зашла ради пяти прочитанных минут. Через Ещё открыла карточку, но увидела только полное выполнение Сегодня 0 из 1. Способа отметить половину не нашла за короткую попытку; оставила привычку невыполненной и вышла.",
+          "actions": 4,
+          "frictions": [
+            "18.11, P01-d03-o0017/o0018: в меню Ещё и карточке привычки не нашла запись частичного результата (5 из 10 минут); кнопка Выполнено сегодня предлагает полную отметку."
+          ],
+          "state": {
+            "keys": [
+              "lifegame-personal-lab-meta-v1",
+              "lifegame-personal-lab-my-v1",
+              "lifegame-personal-lab-my-v1-daily",
+              "lifegame-personal-lab-my-v1-last-good"
+            ],
+            "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-03/observer-state.json",
+            "primary_valid_json": true,
+            "lastProcessed": "2026-11-18",
+            "revision": 10,
+            "counts": {
+              "tasks": 0,
+              "habits": 1,
+              "quests": 0,
+              "cal": 0,
+              "goals": 0,
+              "facts": 2,
+              "ledger": 1,
+              "misses": 1
+            },
+            "coins": 5,
+            "xp": 5
+          },
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-03/trace.zip"
+        },
+        {
+          "day": 4,
+          "status": "no_use",
+          "reason": "actor_choice",
+          "outcome": "Сегодня не читала и заходить не стала: полную отметку ставить нечестно, а вчера частичный результат записать не смогла. Оставлю день как есть и попробую вернуться после чтения завтра.",
+          "actions": 0,
+          "context": "Сегодня не читала. Хочется честно оставить этот день и спокойно продолжить завтра."
+        },
+        {
+          "day": 5,
+          "status": "no_use",
+          "reason": "unavailable",
+          "outcome": "День недоступен: весь день вне дома, по контексту приложение не открываю.",
+          "actions": 0,
+          "context": "Весь день вне дома, приложение не открываешь."
+        },
+        {
+          "day": 6,
+          "status": "completed",
+          "outcome": "Вернулась после отсутствия: ежедневное чтение сохранилось в Дне. Отметила сегодняшние десять минут, увидела 1/1 и 2/30, +5. Старых невыполненных уже четыре, но ничего пересоздавать или разбирать для сегодняшней отметки не потребовалось.",
+          "actions": 2,
+          "frictions": [
+            "21.11, P01-d06-o0022: после выполнения ежедневной привычки снова появилась строка «Выполнено вне плана — подход»; не понимаю, почему она вне плана."
+          ],
+          "state": {
+            "keys": [
+              "lifegame-personal-lab-meta-v1",
+              "lifegame-personal-lab-my-v1",
+              "lifegame-personal-lab-my-v1-daily",
+              "lifegame-personal-lab-my-v1-last-good"
+            ],
+            "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-06/observer-state.json",
+            "primary_valid_json": true,
+            "lastProcessed": "2026-11-21",
+            "revision": 13,
+            "counts": {
+              "tasks": 0,
+              "habits": 1,
+              "quests": 0,
+              "cal": 0,
+              "goals": 0,
+              "facts": 4,
+              "ledger": 2,
+              "misses": 4
+            },
+            "coins": 10,
+            "xp": 10
+          },
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-06/trace.zip"
+        },
+        {
+          "day": 7,
+          "status": "completed",
+          "outcome": "В Истории и фильтре Выполнения увидела чтение за 17 и 21 ноября — по две строки на каждую дату, Привычка и Подход привычки. Поняла, что полных отметок было два дня, но пять минут 18 ноября в чтении недели не отражены: в общем списке эта дата только Пропуск. Решила продолжить пользоваться для простых отметок десяти минут: привычка сохраняется и отмечается быстро. В дополнительные разделы пока не пойду.",
+          "actions": 2,
+          "frictions": [
+            "22.11, P01-d07-o0024/o0025: одно чтение представлено двумя строками в Истории — Привычка и Подход привычки; это усложняет быстрый подсчёт дней.",
+            "22.11, P01-d07-o0024: дата18.11 показана только как Пропуск; мои пять минут не попали в историю, потому что тогда я не нашла способа сохранить часть."
+          ],
+          "state": {
+            "keys": [
+              "lifegame-personal-lab-meta-v1",
+              "lifegame-personal-lab-my-v1",
+              "lifegame-personal-lab-my-v1-daily",
+              "lifegame-personal-lab-my-v1-last-good"
+            ],
+            "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-07/observer-state.json",
+            "primary_valid_json": true,
+            "lastProcessed": "2026-11-22",
+            "revision": 14,
+            "counts": {
+              "tasks": 0,
+              "habits": 1,
+              "quests": 0,
+              "cal": 0,
+              "goals": 0,
+              "facts": 4,
+              "ledger": 2,
+              "misses": 4
+            },
+            "coins": 10,
+            "xp": 10
+          },
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-07/trace.zip"
+        }
+      ],
+      "latest_state": {
+        "keys": [
+          "lifegame-personal-lab-meta-v1",
+          "lifegame-personal-lab-my-v1",
+          "lifegame-personal-lab-my-v1-daily",
+          "lifegame-personal-lab-my-v1-last-good"
+        ],
+        "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-07/observer-state.json",
+        "primary_valid_json": true,
+        "lastProcessed": "2026-11-22",
+        "revision": 14,
+        "counts": {
+          "tasks": 0,
+          "habits": 1,
+          "quests": 0,
+          "cal": 0,
+          "goals": 0,
+          "facts": 4,
+          "ledger": 2,
+          "misses": 4
+        },
+        "coins": 10,
+        "xp": 10
+      },
+      "profile": "/workspace/life-game/personal-lab/verification/month-pilot-001/profiles/P01"
+    },
+    "P02": {
+      "planned": 7,
+      "opened": 6,
+      "completed": 6,
+      "no_use": 1,
+      "actions": 69,
+      "last_day": 7,
+      "active": false,
+      "sessions": [
+        {
+          "day": 1,
+          "status": "completed",
+          "outcome": "Начал свою жизнь в Lite. Создал три разовых задания: материалы 16 ноября, черновик 18 ноября, отправка 22 ноября. В календарь записал встречу 19 ноября в 14:00 с напоминанием за 15 минут. Выполнение не отмечал.",
+          "actions": 27,
+          "frictions": [
+            "16.11, экран 1100×900: даже в Lite простое задание открывает длинную форму с блоком, этапом, целью, темпом и наградой; Создать видно только после прокрутки. Для календарной встречи тоже потребовалась прокрутка к Создать."
+          ],
+          "state": {
+            "keys": [
+              "lifegame-personal-lab-meta-v1",
+              "lifegame-personal-lab-my-v1",
+              "lifegame-personal-lab-my-v1-daily",
+              "lifegame-personal-lab-my-v1-last-good"
+            ],
+            "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-01/observer-state.json",
+            "primary_valid_json": true,
+            "lastProcessed": "2026-11-16",
+            "revision": 7,
+            "counts": {
+              "tasks": 3,
+              "habits": 0,
+              "quests": 0,
+              "cal": 1,
+              "goals": 0,
+              "facts": 0,
+              "ledger": 0,
+              "misses": 0
+            },
+            "coins": 0,
+            "xp": 0
+          },
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-01/trace.zip"
+        },
+        {
+          "day": 2,
+          "status": "completed",
+          "outcome": "Отметил материалы выполненными сегодня через Невыполненные. Открыл существующий черновик, добавил на сегодня и выделил ключевым действием. Новых заданий не создавал.",
+          "actions": 8,
+          "frictions": [],
+          "state": {
+            "keys": [
+              "lifegame-personal-lab-meta-v1",
+              "lifegame-personal-lab-my-v1",
+              "lifegame-personal-lab-my-v1-daily",
+              "lifegame-personal-lab-my-v1-last-good"
+            ],
+            "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-02/observer-state.json",
+            "primary_valid_json": true,
+            "lastProcessed": "2026-11-17",
+            "revision": 12,
+            "counts": {
+              "tasks": 3,
+              "habits": 0,
+              "quests": 0,
+              "cal": 1,
+              "goals": 0,
+              "facts": 1,
+              "ledger": 1,
+              "misses": 1
+            },
+            "coins": 10,
+            "xp": 10
+          },
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-02/trace.zip"
+        },
+        {
+          "day": 3,
+          "status": "no_use",
+          "reason": "unavailable",
+          "outcome": "Срочная работа, на планировщик нет времени; приложение не открывал.",
+          "actions": 0,
+          "context": "Срочная работа без времени на планировщик; приложение сегодня не открываешь."
+        },
+        {
+          "day": 4,
+          "status": "completed",
+          "outcome": "Перенёс встречу на 20 ноября 15:00, напоминание за 15 минут сохранилось. Просроченный черновик перенёс на сегодня 19 ноября, он виден ключевым действием. Старый пропуск уже выполненных материалов отправил в архив, чтобы не мешал.",
+          "actions": 12,
+          "frictions": [
+            "19.11, Невыполненные: материалы уже помечены выполненными 17.11, но остались в счётчике пропусков и рядом доступно Выполнить сегодня. Пришлось отдельно выбрать их и архивировать, чтобы убрать из рабочего списка."
+          ],
+          "state": {
+            "keys": [
+              "lifegame-personal-lab-meta-v1",
+              "lifegame-personal-lab-my-v1",
+              "lifegame-personal-lab-my-v1-daily",
+              "lifegame-personal-lab-my-v1-last-good"
+            ],
+            "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-04/observer-state.json",
+            "primary_valid_json": true,
+            "lastProcessed": "2026-11-19",
+            "revision": 17,
+            "counts": {
+              "tasks": 3,
+              "habits": 0,
+              "quests": 0,
+              "cal": 1,
+              "goals": 0,
+              "facts": 1,
+              "ledger": 1,
+              "misses": 2
+            },
+            "coins": 10,
+            "xp": 10
+          },
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-04/trace.zip"
+        },
+        {
+          "day": 5,
+          "status": "completed",
+          "outcome": "Отметил встречу 20 ноября и готовый черновик выполненными. Архивировал оба пропуска черновика за 18 и 19 ноября. В заданиях осталась только отправка 22 ноября; её срок оставил.",
+          "actions": 9,
+          "frictions": [
+            "20.11, Невыполненные: один черновик показан двумя карточками за 18 и 19 ноября. После отметки выполнения обе остались в пропусках; понадобилось выбрать все и архивировать, чтобы рабочий список стал пустым."
+          ],
+          "state": {
+            "keys": [
+              "lifegame-personal-lab-meta-v1",
+              "lifegame-personal-lab-my-v1",
+              "lifegame-personal-lab-my-v1-daily",
+              "lifegame-personal-lab-my-v1-last-good"
+            ],
+            "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-05/observer-state.json",
+            "primary_valid_json": true,
+            "lastProcessed": "2026-11-20",
+            "revision": 21,
+            "counts": {
+              "tasks": 3,
+              "habits": 0,
+              "quests": 0,
+              "cal": 1,
+              "goals": 0,
+              "facts": 3,
+              "ledger": 3,
+              "misses": 3
+            },
+            "coins": 25,
+            "xp": 25
+          },
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-05/trace.zip"
+        },
+        {
+          "day": 6,
+          "status": "completed",
+          "outcome": "В день без сети открыл задания, увидел ближайшую отправку 22 ноября и отметил уже отправленный по контексту результат выполненным 21 ноября. После закрытия карточки активных заданий нет, в истории все три шага проекта.",
+          "actions": 4,
+          "frictions": [],
+          "state": {
+            "keys": [
+              "lifegame-personal-lab-meta-v1",
+              "lifegame-personal-lab-my-v1",
+              "lifegame-personal-lab-my-v1-daily",
+              "lifegame-personal-lab-my-v1-last-good"
+            ],
+            "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-06/observer-state.json",
+            "primary_valid_json": true,
+            "lastProcessed": "2026-11-21",
+            "revision": 23,
+            "counts": {
+              "tasks": 3,
+              "habits": 0,
+              "quests": 0,
+              "cal": 1,
+              "goals": 0,
+              "facts": 4,
+              "ledger": 4,
+              "misses": 3
+            },
+            "coins": 35,
+            "xp": 35
+          },
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-06/trace.zip"
+        },
+        {
+          "day": 7,
+          "status": "completed",
+          "outcome": "В Истории отфильтровал выполнения: материалы 17 ноября, черновик и встреча 20 ноября, отправка 21 ноября. Отметка отправки со вчера сохранилась. Старые пропуски уже в архиве и выполненный проект не мешает в активных. Через быстрое добавление создал на 23 ноября Разобрать итоги принятого проекта и выбрать следующий.",
+          "actions": 9,
+          "frictions": [],
+          "state": {
+            "keys": [
+              "lifegame-personal-lab-meta-v1",
+              "lifegame-personal-lab-my-v1",
+              "lifegame-personal-lab-my-v1-daily",
+              "lifegame-personal-lab-my-v1-last-good"
+            ],
+            "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-07/observer-state.json",
+            "primary_valid_json": true,
+            "lastProcessed": "2026-11-22",
+            "revision": 25,
+            "counts": {
+              "tasks": 4,
+              "habits": 0,
+              "quests": 0,
+              "cal": 1,
+              "goals": 0,
+              "facts": 4,
+              "ledger": 4,
+              "misses": 3
+            },
+            "coins": 35,
+            "xp": 35
+          },
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-07/trace.zip"
+        }
+      ],
+      "latest_state": {
+        "keys": [
+          "lifegame-personal-lab-meta-v1",
+          "lifegame-personal-lab-my-v1",
+          "lifegame-personal-lab-my-v1-daily",
+          "lifegame-personal-lab-my-v1-last-good"
+        ],
+        "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-07/observer-state.json",
+        "primary_valid_json": true,
+        "lastProcessed": "2026-11-22",
+        "revision": 25,
+        "counts": {
+          "tasks": 4,
+          "habits": 0,
+          "quests": 0,
+          "cal": 1,
+          "goals": 0,
+          "facts": 4,
+          "ledger": 4,
+          "misses": 3
+        },
+        "coins": 35,
+        "xp": 35
+      },
+      "profile": "/workspace/life-game/personal-lab/verification/month-pilot-001/profiles/P02"
+    },
+    "P03": {
+      "planned": 7,
+      "opened": 5,
+      "completed": 5,
+      "no_use": 2,
+      "actions": 31,
+      "last_day": 7,
+      "active": false,
+      "sessions": [
+        {
+          "day": 1,
+          "status": "completed",
+          "outcome": "Выбрала Lite и создала разовое дело «Порисовать 10 минут» на сегодня. Нашла его в Конструкторе дня; выполненным не отмечала.",
+          "actions": 9,
+          "frictions": [
+            "16 ноября, старт Lite: много разделов и игровых счётчиков, с первого взгляда непонятно, что нужно для одного дела.",
+            "16 ноября, Быстрое добавление: после выбора «Задание» появились блок, этап, дата и локации; пришлось решать, что оставить пустым."
+          ],
+          "state": {
+            "keys": [
+              "lifegame-personal-lab-meta-v1",
+              "lifegame-personal-lab-my-v1",
+              "lifegame-personal-lab-my-v1-daily",
+              "lifegame-personal-lab-my-v1-last-good"
+            ],
+            "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-01/observer-state.json",
+            "primary_valid_json": true,
+            "lastProcessed": "2026-11-16",
+            "revision": 5,
+            "counts": {
+              "tasks": 1,
+              "habits": 0,
+              "quests": 0,
+              "cal": 0,
+              "goals": 0,
+              "facts": 0,
+              "ledger": 0,
+              "misses": 0
+            },
+            "coins": 0,
+            "xp": 0
+          },
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-01/trace.zip"
+        },
+        {
+          "day": 2,
+          "status": "no_use",
+          "reason": "unavailable",
+          "outcome": "Спонтанная поездка: приложение не открывала и не рисовала.",
+          "actions": 0,
+          "context": "Спонтанная поездка, приложение не открываешь и не рисуешь."
+        },
+        {
+          "day": 3,
+          "status": "completed",
+          "outcome": "После пропуска вернулась, отметила сегодняшнее небольшое рисование через «Выполнить сейчас» у старого задания. Получила +10, отправила запись пропуска в архив, увидела «Сделано 1 из 1».",
+          "actions": 5,
+          "frictions": [
+            "18 ноября, Невыполненные: после «Выполнить сейчас» выполненное дело сохранилось во вкладке «Пропуски» со счётчиком 1. Для ощущения завершённости понадобились выбор записи и архивирование."
+          ],
+          "state": {
+            "keys": [
+              "lifegame-personal-lab-meta-v1",
+              "lifegame-personal-lab-my-v1",
+              "lifegame-personal-lab-my-v1-daily",
+              "lifegame-personal-lab-my-v1-last-good"
+            ],
+            "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-03/observer-state.json",
+            "primary_valid_json": true,
+            "lastProcessed": "2026-11-18",
+            "revision": 8,
+            "counts": {
+              "tasks": 1,
+              "habits": 0,
+              "quests": 0,
+              "cal": 0,
+              "goals": 0,
+              "facts": 1,
+              "ledger": 1,
+              "misses": 1
+            },
+            "coins": 10,
+            "xp": 10
+          },
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-03/trace.zip"
+        },
+        {
+          "day": 4,
+          "status": "completed",
+          "outcome": "Рисовала и засчитала это: через «Быстрое выполнение» не нашла прежнее дело, создала «Немного порисовать» на сегодня и отметила его в Конструкторе дня. Увидела 1/1 и +10. Ошибочных отметок не было.",
+          "actions": 9,
+          "frictions": [
+            "19 ноября, Быстрое выполнение: поиск «рисовать» показал «Не найдено», хотя помню созданное ранее дело. Не поняла, связано ли это с архивом или разовым выполнением.",
+            "19 ноября: для отметки незапланированного рисования прошла поиск, создание задания с датой, переход в Конструктор и выполнение — 9 действий."
+          ],
+          "state": {
+            "keys": [
+              "lifegame-personal-lab-meta-v1",
+              "lifegame-personal-lab-my-v1",
+              "lifegame-personal-lab-my-v1-daily",
+              "lifegame-personal-lab-my-v1-last-good"
+            ],
+            "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-04/observer-state.json",
+            "primary_valid_json": true,
+            "lastProcessed": "2026-11-19",
+            "revision": 12,
+            "counts": {
+              "tasks": 2,
+              "habits": 0,
+              "quests": 0,
+              "cal": 0,
+              "goals": 0,
+              "facts": 2,
+              "ledger": 2,
+              "misses": 1
+            },
+            "coins": 20,
+            "xp": 20
+          },
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-04/trace.zip"
+        },
+        {
+          "day": 5,
+          "status": "no_use",
+          "reason": "unavailable",
+          "outcome": "Не было сил рисовать и открывать приложение.",
+          "actions": 0,
+          "context": "Не было сил ни на рисование, ни на приложение."
+        },
+        {
+          "day": 6,
+          "status": "completed",
+          "outcome": "Вернулась и снизила шаг: создала «Порисовать 2 минуты, когда есть силы» без даты и без Конструктора дня. В «Заданиях» увидела историю двух прошлых выполнений. Сегодня выполнение не отмечала.",
+          "actions": 6,
+          "frictions": [],
+          "state": {
+            "keys": [
+              "lifegame-personal-lab-meta-v1",
+              "lifegame-personal-lab-my-v1",
+              "lifegame-personal-lab-my-v1-daily",
+              "lifegame-personal-lab-my-v1-last-good"
+            ],
+            "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-06/observer-state.json",
+            "primary_valid_json": true,
+            "lastProcessed": "2026-11-21",
+            "revision": 14,
+            "counts": {
+              "tasks": 3,
+              "habits": 0,
+              "quests": 0,
+              "cal": 0,
+              "goals": 0,
+              "facts": 2,
+              "ledger": 2,
+              "misses": 1
+            },
+            "coins": 20,
+            "xp": 20
+          },
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-06/trace.zip"
+        },
+        {
+          "day": 7,
+          "status": "completed",
+          "outcome": "Посмотрела Историю и фильтр «Выполнения»: вижу рисование 18 и 19 ноября. Решила оставить маленькое дело на две минуты без срока и историю успехов; заходить по желанию, без ежедневной отчётности. Нового выполнения не отмечала.",
+          "actions": 2,
+          "frictions": [
+            "22 ноября, История/Всё: архивный пропуск снова виден рядом с успехами; переключилась на «Выполнения», чтобы не ощущать долг."
+          ],
+          "state": {
+            "keys": [
+              "lifegame-personal-lab-meta-v1",
+              "lifegame-personal-lab-my-v1",
+              "lifegame-personal-lab-my-v1-daily",
+              "lifegame-personal-lab-my-v1-last-good"
+            ],
+            "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-07/observer-state.json",
+            "primary_valid_json": true,
+            "lastProcessed": "2026-11-22",
+            "revision": 15,
+            "counts": {
+              "tasks": 3,
+              "habits": 0,
+              "quests": 0,
+              "cal": 0,
+              "goals": 0,
+              "facts": 2,
+              "ledger": 2,
+              "misses": 1
+            },
+            "coins": 20,
+            "xp": 20
+          },
+          "trace": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-07/trace.zip"
+        }
+      ],
+      "latest_state": {
+        "keys": [
+          "lifegame-personal-lab-meta-v1",
+          "lifegame-personal-lab-my-v1",
+          "lifegame-personal-lab-my-v1-daily",
+          "lifegame-personal-lab-my-v1-last-good"
+        ],
+        "path": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-07/observer-state.json",
+        "primary_valid_json": true,
+        "lastProcessed": "2026-11-22",
+        "revision": 15,
+        "counts": {
+          "tasks": 3,
+          "habits": 0,
+          "quests": 0,
+          "cal": 0,
+          "goals": 0,
+          "facts": 2,
+          "ledger": 2,
+          "misses": 1
+        },
+        "coins": 20,
+        "xp": 20
+      },
+      "profile": "/workspace/life-game/personal-lab/verification/month-pilot-001/profiles/P03"
+    }
+  }
+}

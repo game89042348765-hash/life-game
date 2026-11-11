@@ -1,0 +1,82 @@
+{
+  "title": "LifeGame Lab — лаборатория",
+  "url": "http://127.0.0.1:8041/personal-lab/",
+  "virtual_time_observed": "2026-11-18T19:00:09.960Z",
+  "modal": true,
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "visible_text": "Читать 10 минут вечером\n✕\nПривычка · Самостоятельное\nУбрать из сегодняшнего плана\nОткрыть карточку\nИзменить / перенести\nЗапустить таймер для этого дела",
+  "elements": [
+    {
+      "element": "e1",
+      "label": "Закрыть",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 341,
+        "y": 589,
+        "width": 32,
+        "height": 32
+      },
+      "value": ""
+    },
+    {
+      "element": "e2",
+      "label": "Убрать из сегодняшнего плана",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 17,
+        "y": 659,
+        "width": 356,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e3",
+      "label": "Открыть карточку",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 17,
+        "y": 703,
+        "width": 356,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e4",
+      "label": "Изменить / перенести",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 17,
+        "y": 748,
+        "width": 356,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e5",
+      "label": "Запустить таймер для этого дела",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 17,
+        "y": 792,
+        "width": 356,
+        "height": 36
+      },
+      "value": ""
+    }
+  ],
+  "observation_id": "P01-d03-o0017",
+  "screenshot": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-03/P01-d03-o0017.png",
+  "actions_used": 2,
+  "action_budget": 8
+}

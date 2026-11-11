@@ -1,0 +1,257 @@
+{
+  "title": "LifeGame Lab — лаборатория",
+  "url": "http://127.0.0.1:8041/personal-lab/",
+  "virtual_time_observed": "2026-11-21T08:00:07.117Z",
+  "modal": false,
+  "viewport": {
+    "width": 1100,
+    "height": 900
+  },
+  "visible_text": "←\nЗадания\n21 ноя\n● 25\nУр. 1\nЗадания\nВсе задания в одном месте: из этапов и самостоятельные. Здесь и в этапе — одна и та же запись.\nГде\n+ Новое\nАктивные\nЗавершённые\nОтправить проект заказчику\nСамостоятельное · разово, 22 ноя\n+10\nв Конструкторе\nИстория выполнения\n2\nПодготовить черновик проекта\n20 ноя\n+10\nСобрать материалы проекта\n17 ноя\n+10\nГлавная\nДень\nКарта\nВходящие\nРазделы",
+  "elements": [
+    {
+      "element": "e1",
+      "label": "←",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 284,
+        "y": 25,
+        "width": 21,
+        "height": 29
+      },
+      "value": ""
+    },
+    {
+      "element": "e2",
+      "label": "● 25\nУр. 1",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 634,
+        "y": 22,
+        "width": 100,
+        "height": 33
+      },
+      "value": ""
+    },
+    {
+      "element": "e3",
+      "label": "Быстрое выполнение",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 740,
+        "y": 22,
+        "width": 35,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e4",
+      "label": "Поиск",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 781,
+        "y": 22,
+        "width": 35,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e5",
+      "label": "Где",
+      "type": "select",
+      "disabled": false,
+      "rect": {
+        "x": 284,
+        "y": 189,
+        "width": 532,
+        "height": 40
+      },
+      "value": "Все локации",
+      "options": [
+        {
+          "label": "Все локации",
+          "disabled": false
+        },
+        {
+          "label": "🏠 Дом",
+          "disabled": false
+        },
+        {
+          "label": "💼 Работа",
+          "disabled": false
+        },
+        {
+          "label": "🚗 В дороге",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "element": "e6",
+      "label": "Поиск по названию, категории, тегам",
+      "type": "search",
+      "disabled": false,
+      "rect": {
+        "x": 284,
+        "y": 235,
+        "width": 441,
+        "height": 42
+      },
+      "value": "",
+      "checked": false
+    },
+    {
+      "element": "e7",
+      "label": "+ Новое",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 733,
+        "y": 238,
+        "width": 83,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e8",
+      "label": "Активные",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 284,
+        "y": 285,
+        "width": 88,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e9",
+      "label": "Завершённые",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 378,
+        "y": 285,
+        "width": 114,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e10",
+      "label": "Отправить проект заказчику\nСамостоятельное · разово, 22 ноя",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 296,
+        "y": 337,
+        "width": 354,
+        "height": 40
+      },
+      "value": ""
+    },
+    {
+      "element": "e11",
+      "label": "в Конструкторе",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 695,
+        "y": 345,
+        "width": 109,
+        "height": 23
+      },
+      "value": ""
+    },
+    {
+      "element": "e12",
+      "label": "Главная",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 270,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e13",
+      "label": "День",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 382,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e14",
+      "label": "Карта",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 494,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e15",
+      "label": "Входящие",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 606,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e16",
+      "label": "Разделы",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 718,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e17",
+      "label": "Быстрое добавление",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 756,
+        "y": 768,
+        "width": 56,
+        "height": 56
+      },
+      "value": ""
+    }
+  ],
+  "observation_id": "P02-d06-o0062",
+  "screenshot": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-06/P02-d06-o0062.png",
+  "actions_used": 1,
+  "action_budget": 14
+}

@@ -1,0 +1,225 @@
+{
+  "title": "LifeGame Lab — лаборатория",
+  "url": "http://127.0.0.1:8041/personal-lab/",
+  "virtual_time_observed": "2026-11-22T16:00:38.111Z",
+  "modal": false,
+  "viewport": {
+    "width": 1100,
+    "height": 900
+  },
+  "visible_text": "←\nИстория\n22 ноя\n● 35\nУр. 1\nИстория\nФакты прожитого. По умолчанию 10 последних записей.\nВсё\nВыполнения\nБонусы\nРешения\nПропуски\nСессии\nОтправить проект заказчику\n21 ноя · Задание\n+10\nПодготовить черновик проекта\n20 ноя · Задание\n+10\nВстреча с заказчиком\n20 ноя · Календарь\n+5\nСобрать материалы проекта\n17 ноя · Задание\n+10\nГлавная\nДень\nКарта\nВходящие\nРазделы\nСоздано: задание. 15 минут доступно во «Входящих»",
+  "elements": [
+    {
+      "element": "e1",
+      "label": "←",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 284,
+        "y": 25,
+        "width": 21,
+        "height": 29
+      },
+      "value": ""
+    },
+    {
+      "element": "e2",
+      "label": "● 35\nУр. 1",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 634,
+        "y": 22,
+        "width": 100,
+        "height": 33
+      },
+      "value": ""
+    },
+    {
+      "element": "e3",
+      "label": "Быстрое выполнение",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 740,
+        "y": 22,
+        "width": 35,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e4",
+      "label": "Поиск",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 781,
+        "y": 22,
+        "width": 35,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e5",
+      "label": "Всё",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 284,
+        "y": 139,
+        "width": 48,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e6",
+      "label": "Выполнения",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 338,
+        "y": 139,
+        "width": 105,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e7",
+      "label": "Бонусы",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 449,
+        "y": 139,
+        "width": 73,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e8",
+      "label": "Решения",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 527,
+        "y": 139,
+        "width": 82,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e9",
+      "label": "Пропуски",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 615,
+        "y": 139,
+        "width": 87,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e10",
+      "label": "Сессии",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 708,
+        "y": 139,
+        "width": 71,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e11",
+      "label": "Главная",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 270,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e12",
+      "label": "День",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 382,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e13",
+      "label": "Карта",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 494,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e14",
+      "label": "Входящие",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 606,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e15",
+      "label": "Разделы",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 718,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e16",
+      "label": "Быстрое добавление",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 756,
+        "y": 768,
+        "width": 56,
+        "height": 56
+      },
+      "value": ""
+    }
+  ],
+  "observation_id": "P02-d07-o0073",
+  "screenshot": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0073.png",
+  "actions_used": 7,
+  "action_budget": 18
+}

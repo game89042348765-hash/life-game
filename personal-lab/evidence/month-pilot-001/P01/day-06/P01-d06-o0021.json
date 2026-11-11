@@ -1,0 +1,264 @@
+{
+  "title": "LifeGame Lab — лаборатория",
+  "url": "http://127.0.0.1:8041/personal-lab/",
+  "virtual_time_observed": "2026-11-21T17:00:04.586Z",
+  "modal": false,
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "visible_text": "LifeGame Lab\n21 ноября, суббота\n● 5\nУр. 1\nКонструктор дня\n21 ноября, суббота\nВезде\n▾\nвсе дела видны\nТемп сегодняшнего дня\nОтдыхаю\nОбычный\nФигачу\nНевыполненные: 4\nКлючевые действия\n0/0\nОтметьте звёздочкой важные задания. Ключевое действие включает «В Конструктор» автоматически.\nКалендарь\n0/0\nНа сегодня календарных дел нет.\nЗадания\n0/0\nЗаданий на сегодня нет.\nПривычки\n0/1\nЧитать 10 минут вечером\n1/30\nПривычка · Самостоятельное · каждый день\n+5\n+ Добавить в день\nБыстрое выполнение\nВечер\nИтоги дня и необязательный ритуал завершения.\nИтоги\nЗавершить день\nГлавная\nДень\nКарта\nВходящие\nРазделы",
+  "elements": [
+    {
+      "element": "e1",
+      "label": "● 5\nУр. 1",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 194,
+        "y": 24,
+        "width": 92,
+        "height": 33
+      },
+      "value": ""
+    },
+    {
+      "element": "e2",
+      "label": "Быстрое выполнение",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 292,
+        "y": 23,
+        "width": 35,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e3",
+      "label": "Поиск",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 333,
+        "y": 23,
+        "width": 35,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e4",
+      "label": "Сменить локацию",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 22,
+        "y": 142,
+        "width": 79,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e5",
+      "label": "Отдыхаю",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 25,
+        "y": 214,
+        "width": 111,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e6",
+      "label": "Обычный",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 139,
+        "y": 214,
+        "width": 111,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e7",
+      "label": "Фигачу",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 254,
+        "y": 214,
+        "width": 111,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e8",
+      "label": "Невыполненные: 4",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 22,
+        "y": 260,
+        "width": 144,
+        "height": 28
+      },
+      "value": ""
+    },
+    {
+      "element": "e9",
+      "label": "Отметить выполненным",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 34,
+        "y": 644,
+        "width": 29,
+        "height": 29
+      },
+      "value": ""
+    },
+    {
+      "element": "e10",
+      "label": "Читать 10 минут вечером 1/30\nПривычка · Самостоятельное · каждый день",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 74,
+        "y": 619,
+        "width": 213,
+        "height": 81
+      },
+      "value": ""
+    },
+    {
+      "element": "e11",
+      "label": "Ещё",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 324,
+        "y": 643,
+        "width": 32,
+        "height": 32
+      },
+      "value": ""
+    },
+    {
+      "element": "e12",
+      "label": "+ Добавить в день",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 22,
+        "y": 726,
+        "width": 155,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e13",
+      "label": "Быстрое выполнение",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 185,
+        "y": 726,
+        "width": 177,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e14",
+      "label": "Главная",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 0,
+        "y": 784,
+        "width": 78,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e15",
+      "label": "День",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 78,
+        "y": 784,
+        "width": 78,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e16",
+      "label": "Карта",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 156,
+        "y": 784,
+        "width": 78,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e17",
+      "label": "Входящие",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 234,
+        "y": 784,
+        "width": 78,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e18",
+      "label": "Разделы",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 312,
+        "y": 784,
+        "width": 78,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e19",
+      "label": "Быстрое добавление",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 318,
+        "y": 712,
+        "width": 56,
+        "height": 56
+      },
+      "value": ""
+    }
+  ],
+  "observation_id": "P01-d06-o0021",
+  "screenshot": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-06/P01-d06-o0021.png",
+  "actions_used": 1,
+  "action_budget": 12
+}

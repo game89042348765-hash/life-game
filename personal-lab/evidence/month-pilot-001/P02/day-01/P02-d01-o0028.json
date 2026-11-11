@@ -1,0 +1,244 @@
+{
+  "title": "LifeGame Lab — лаборатория",
+  "url": "http://127.0.0.1:8041/personal-lab/",
+  "virtual_time_observed": "2026-11-16T06:02:06.012Z",
+  "modal": false,
+  "viewport": {
+    "width": 1100,
+    "height": 900
+  },
+  "visible_text": "←\nКалендарь\n16 ноя\n● 0\nУр. 1\nКалендарь\nДела, привязанные к реальной дате.\nГде\n+ Новое\nАктивные\nЗавершённые\nВстреча с заказчиком\n19 ноя 14:00 · Разово · Самостоятельное\n+5\nИстория выполнения\n0\nПока пусто.\nГлавная\nДень\nКарта\nВходящие\nРазделы\nСоздано",
+  "elements": [
+    {
+      "element": "e1",
+      "label": "←",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 284,
+        "y": 25,
+        "width": 21,
+        "height": 29
+      },
+      "value": ""
+    },
+    {
+      "element": "e2",
+      "label": "● 0\nУр. 1",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 642,
+        "y": 22,
+        "width": 92,
+        "height": 33
+      },
+      "value": ""
+    },
+    {
+      "element": "e3",
+      "label": "Быстрое выполнение",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 740,
+        "y": 22,
+        "width": 35,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e4",
+      "label": "Поиск",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 781,
+        "y": 22,
+        "width": 35,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e5",
+      "label": "Где",
+      "type": "select",
+      "disabled": false,
+      "rect": {
+        "x": 284,
+        "y": 167,
+        "width": 532,
+        "height": 40
+      },
+      "value": "Все локации",
+      "options": [
+        {
+          "label": "Все локации",
+          "disabled": false
+        },
+        {
+          "label": "🏠 Дом",
+          "disabled": false
+        },
+        {
+          "label": "💼 Работа",
+          "disabled": false
+        },
+        {
+          "label": "🚗 В дороге",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "element": "e6",
+      "label": "Поиск по названию, категории, тегам",
+      "type": "search",
+      "disabled": false,
+      "rect": {
+        "x": 284,
+        "y": 213,
+        "width": 441,
+        "height": 42
+      },
+      "value": "",
+      "checked": false
+    },
+    {
+      "element": "e7",
+      "label": "+ Новое",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 733,
+        "y": 217,
+        "width": 83,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e8",
+      "label": "Активные",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 284,
+        "y": 263,
+        "width": 88,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e9",
+      "label": "Завершённые",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 378,
+        "y": 263,
+        "width": 114,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e10",
+      "label": "Встреча с заказчиком\n19 ноя 14:00 · Разово · Самостоятельное",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 296,
+        "y": 315,
+        "width": 482,
+        "height": 40
+      },
+      "value": ""
+    },
+    {
+      "element": "e11",
+      "label": "Главная",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 270,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e12",
+      "label": "День",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 382,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e13",
+      "label": "Карта",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 494,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e14",
+      "label": "Входящие",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 606,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e15",
+      "label": "Разделы",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 718,
+        "y": 840,
+        "width": 112,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e16",
+      "label": "Быстрое добавление",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 756,
+        "y": 768,
+        "width": 56,
+        "height": 56
+      },
+      "value": ""
+    }
+  ],
+  "observation_id": "P02-d01-o0028",
+  "screenshot": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0028.png",
+  "actions_used": 27,
+  "action_budget": 34
+}

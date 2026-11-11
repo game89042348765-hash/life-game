@@ -1,0 +1,238 @@
+{
+  "title": "LifeGame Lab — лаборатория",
+  "url": "http://127.0.0.1:8041/personal-lab/",
+  "virtual_time_observed": "2026-11-16T17:00:15.805Z",
+  "modal": false,
+  "viewport": {
+    "width": 375,
+    "height": 844
+  },
+  "visible_text": "LifeGame Lab\n16 ноября, понедельник\n● 0\nУр. 1\n1\nГерой · уровень 1\n0\nXP\nМонеты\n0\nдо ур. 2: 1 000 XP\n+0 сегодня\nВезде\n▾\nвсе дела видны\nКонструктор дня\nСделано 0 из 0 · +0 монет\nСтратегическое планирование\nКарта жизни: 8 блоков\nБлижайшие календарные дела\nНа ближайшие три дня ничего нет.\nРазделы\nЗадания\nПривычки\nКалендарь\nНевыполненные\nИстория\nГлавная\nДень\nКарта\nВходящие\nРазделы",
+  "elements": [
+    {
+      "element": "e1",
+      "label": "● 0\nУр. 1",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 179,
+        "y": 24,
+        "width": 92,
+        "height": 33
+      },
+      "value": ""
+    },
+    {
+      "element": "e2",
+      "label": "Быстрое выполнение",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 277,
+        "y": 23,
+        "width": 35,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e3",
+      "label": "Поиск",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 318,
+        "y": 23,
+        "width": 35,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e4",
+      "label": "Сменить локацию",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 22,
+        "y": 236,
+        "width": 79,
+        "height": 34
+      },
+      "value": ""
+    },
+    {
+      "element": "e5",
+      "label": "Конструктор дня\nСделано 0 из 0 · +0 монет",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 22,
+        "y": 280,
+        "width": 161,
+        "height": 108
+      },
+      "value": ""
+    },
+    {
+      "element": "e6",
+      "label": "Стратегическое планирование\nКарта жизни: 8 блоков",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 193,
+        "y": 280,
+        "width": 161,
+        "height": 108
+      },
+      "value": ""
+    },
+    {
+      "element": "e7",
+      "label": "Задания",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 22,
+        "y": 513,
+        "width": 104,
+        "height": 70
+      },
+      "value": ""
+    },
+    {
+      "element": "e8",
+      "label": "Привычки",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 135,
+        "y": 513,
+        "width": 104,
+        "height": 70
+      },
+      "value": ""
+    },
+    {
+      "element": "e9",
+      "label": "Календарь",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 249,
+        "y": 513,
+        "width": 104,
+        "height": 70
+      },
+      "value": ""
+    },
+    {
+      "element": "e10",
+      "label": "Невыполненные",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 22,
+        "y": 592,
+        "width": 104,
+        "height": 70
+      },
+      "value": ""
+    },
+    {
+      "element": "e11",
+      "label": "История",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 135,
+        "y": 592,
+        "width": 104,
+        "height": 70
+      },
+      "value": ""
+    },
+    {
+      "element": "e12",
+      "label": "Главная",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 0,
+        "y": 784,
+        "width": 75,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e13",
+      "label": "День",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 75,
+        "y": 784,
+        "width": 75,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e14",
+      "label": "Карта",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 150,
+        "y": 784,
+        "width": 75,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e15",
+      "label": "Входящие",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 225,
+        "y": 784,
+        "width": 75,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e16",
+      "label": "Разделы",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 300,
+        "y": 784,
+        "width": 75,
+        "height": 60
+      },
+      "value": ""
+    },
+    {
+      "element": "e17",
+      "label": "Быстрое добавление",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 303,
+        "y": 712,
+        "width": 56,
+        "height": 56
+      },
+      "value": ""
+    }
+  ],
+  "observation_id": "P03-d01-o0004",
+  "screenshot": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0004.png",
+  "actions_used": 3,
+  "action_budget": 26
+}

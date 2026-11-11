@@ -1,0 +1,94 @@
+{
+  "case": "R2-partial-reading-default-one-approach",
+  "result": {
+    "habit_norm": 1,
+    "habit_schedule": {
+      "type": "daily",
+      "days": [],
+      "date": null
+    },
+    "detail_offers_whole_completion": true,
+    "detail_has_numeric_or_text_entry": false,
+    "facts_after_no_completion": 0,
+    "ledger_after_no_completion": 0,
+    "interpretation": "Default counts one approach, not minutes from the title. No partial entry in the inspected menu/detail; this is an expectation/UX mismatch, not proven data loss."
+  },
+  "steps": [
+    {
+      "step": 1,
+      "action": "open local app"
+    },
+    {
+      "step": 2,
+      "action": "click: Начать свою жизнь в LifeGame"
+    },
+    {
+      "step": 3,
+      "action": "check: Начать с LifeGame Lite"
+    },
+    {
+      "step": 4,
+      "action": "click: Начать"
+    },
+    {
+      "step": 5,
+      "action": "click: Привычки"
+    },
+    {
+      "step": 6,
+      "action": "click: + Новое"
+    },
+    {
+      "step": 7,
+      "action": "fill Название: Читать 10 минут вечером"
+    },
+    {
+      "step": 8,
+      "action": "scroll form to visible Создать"
+    },
+    {
+      "step": 9,
+      "action": "click: Создать"
+    },
+    {
+      "step": 10,
+      "action": "set browser clock to 2026-11-18T22:00:00+03:00"
+    },
+    {
+      "step": 11,
+      "action": "reload on next virtual date"
+    },
+    {
+      "step": 12,
+      "action": "click: День"
+    },
+    {
+      "step": 13,
+      "action": "click: Ещё"
+    },
+    {
+      "step": 14,
+      "action": "click: Открыть карточку"
+    },
+    {
+      "step": 15,
+      "action": "click: Закрыть"
+    }
+  ],
+  "blocked_external_requests": [],
+  "page_errors": [],
+  "native_dialogs": [],
+  "evidence": [
+    "01-new-habit-top.json",
+    "01-new-habit-top.png",
+    "02-new-habit-bottom.json",
+    "02-new-habit-bottom.png",
+    "03-day-before-partial-attempt.json",
+    "03-day-before-partial-attempt.png",
+    "04-more-menu.json",
+    "04-more-menu.png",
+    "05-habit-detail.json",
+    "05-habit-detail.png",
+    "06-after-partial-attempt-observer-state.json"
+  ]
+}

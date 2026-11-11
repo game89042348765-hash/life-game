@@ -1,0 +1,306 @@
+{
+  "title": "LifeGame Lab — лаборатория",
+  "url": "http://127.0.0.1:8041/personal-lab/",
+  "virtual_time_observed": "2026-11-16T06:01:51.763Z",
+  "modal": true,
+  "viewport": {
+    "width": 1100,
+    "height": 900
+  },
+  "visible_text": "Новое: Календарь\n✕\nНазвание\nДата\nВремя\nПовторение\nМесячный и годовой повтор используют последний день месяца, если нужной даты нет.\nНапомнить\nЗаметка\nБлок\nЭтап\nДобавить в Конструктор дня\nНапоминание\nНаграда, монет\nГде\n🏠 Дом\n💼 Работа\n🚗 В дороге\nНичего не выбрано — видно в любой локации.",
+  "elements": [
+    {
+      "element": "e1",
+      "label": "Закрыть",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 781,
+        "y": 109,
+        "width": 32,
+        "height": 32
+      },
+      "value": ""
+    },
+    {
+      "element": "e2",
+      "label": "Название",
+      "type": "text",
+      "disabled": false,
+      "rect": {
+        "x": 287,
+        "y": 175,
+        "width": 526,
+        "height": 43
+      },
+      "value": "Встреча с заказчиком",
+      "checked": false
+    },
+    {
+      "element": "e3",
+      "label": "Дата",
+      "type": "date",
+      "disabled": false,
+      "rect": {
+        "x": 287,
+        "y": 252,
+        "width": 258,
+        "height": 45
+      },
+      "value": "2026-11-19",
+      "checked": false
+    },
+    {
+      "element": "e4",
+      "label": "Время",
+      "type": "time",
+      "disabled": false,
+      "rect": {
+        "x": 555,
+        "y": 252,
+        "width": 258,
+        "height": 45
+      },
+      "value": "",
+      "checked": false
+    },
+    {
+      "element": "e5",
+      "label": "Повторение",
+      "type": "select",
+      "disabled": false,
+      "rect": {
+        "x": 287,
+        "y": 332,
+        "width": 526,
+        "height": 42
+      },
+      "value": "Разово",
+      "options": [
+        {
+          "label": "Разово",
+          "disabled": false
+        },
+        {
+          "label": "Ежедневно",
+          "disabled": false
+        },
+        {
+          "label": "Еженедельно",
+          "disabled": false
+        },
+        {
+          "label": "Выбранные дни",
+          "disabled": false
+        },
+        {
+          "label": "Ежемесячно",
+          "disabled": false
+        },
+        {
+          "label": "Ежегодно",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "element": "e6",
+      "label": "Напомнить",
+      "type": "select",
+      "disabled": false,
+      "rect": {
+        "x": 287,
+        "y": 444,
+        "width": 526,
+        "height": 42
+      },
+      "value": "За 15 минут",
+      "options": [
+        {
+          "label": "В момент события",
+          "disabled": false
+        },
+        {
+          "label": "За 15 минут",
+          "disabled": false
+        },
+        {
+          "label": "За час",
+          "disabled": false
+        },
+        {
+          "label": "За сутки",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "element": "e7",
+      "label": "Заметка",
+      "type": "textarea",
+      "disabled": false,
+      "rect": {
+        "x": 287,
+        "y": 520,
+        "width": 526,
+        "height": 66
+      },
+      "value": ""
+    },
+    {
+      "element": "e8",
+      "label": "Блок",
+      "type": "select",
+      "disabled": false,
+      "rect": {
+        "x": 287,
+        "y": 627,
+        "width": 258,
+        "height": 42
+      },
+      "value": "Без блока",
+      "options": [
+        {
+          "label": "Без блока",
+          "disabled": false
+        },
+        {
+          "label": "🌿 Душевное состояние",
+          "disabled": false
+        },
+        {
+          "label": "💪 Физическое состояние",
+          "disabled": false
+        },
+        {
+          "label": "📚 Знания, навыки, опыт",
+          "disabled": false
+        },
+        {
+          "label": "💰 Ресурсы и материальное",
+          "disabled": false
+        },
+        {
+          "label": "🤝 Окружение и отношения",
+          "disabled": false
+        },
+        {
+          "label": "🗂 Наполнение и организация",
+          "disabled": false
+        },
+        {
+          "label": "🌦 Обстоятельства",
+          "disabled": false
+        },
+        {
+          "label": "🚫 Исключить",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "element": "e9",
+      "label": "Этап",
+      "type": "select",
+      "disabled": false,
+      "rect": {
+        "x": 555,
+        "y": 627,
+        "width": 258,
+        "height": 42
+      },
+      "value": "Без этапа",
+      "options": [
+        {
+          "label": "Без этапа",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "element": "e10",
+      "label": "Добавить в Конструктор дня",
+      "type": "checkbox",
+      "disabled": false,
+      "rect": {
+        "x": 291,
+        "y": 681,
+        "width": 18,
+        "height": 18
+      },
+      "value": "on",
+      "checked": true
+    },
+    {
+      "element": "e11",
+      "label": "Напоминание",
+      "type": "checkbox",
+      "disabled": false,
+      "rect": {
+        "x": 291,
+        "y": 714,
+        "width": 18,
+        "height": 18
+      },
+      "value": "on",
+      "checked": true
+    },
+    {
+      "element": "e12",
+      "label": "Награда, монет",
+      "type": "number",
+      "disabled": false,
+      "rect": {
+        "x": 287,
+        "y": 769,
+        "width": 140,
+        "height": 43
+      },
+      "value": "5",
+      "checked": false
+    },
+    {
+      "element": "e13",
+      "label": "🏠 Дом",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 287,
+        "y": 846,
+        "width": 70,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e14",
+      "label": "💼 Работа",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 363,
+        "y": 846,
+        "width": 88,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e15",
+      "label": "🚗 В дороге",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 457,
+        "y": 846,
+        "width": 100,
+        "height": 31
+      },
+      "value": ""
+    }
+  ],
+  "observation_id": "P02-d01-o0025",
+  "screenshot": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0025.png",
+  "actions_used": 24,
+  "action_budget": 34
+}

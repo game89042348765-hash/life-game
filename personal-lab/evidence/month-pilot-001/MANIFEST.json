@@ -1,0 +1,2504 @@
+{
+  "schema": 1,
+  "run": "month-pilot-001",
+  "scope": "Fictional synthetic users only; no browser profiles/cookies/chat transcripts copied",
+  "excluded_directories": [
+    "profiles/",
+    "application-snapshot/",
+    "reproduction/20261111T192505814539Z/"
+  ],
+  "artifacts": [
+    {
+      "path": "P01/day-01/P01-d01-o0001.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0001.json",
+      "bytes": 2200,
+      "sha256": "b691a44b1aaac100dfe474408b8ec3952a132e8f3ef02f3aec7d848233eccd9f",
+      "included": true
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0002.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0002.json",
+      "bytes": 2321,
+      "sha256": "2a3a917c13142c2ad3e549d44a3d1d5cf004c67b6dafd0dc4f6a59368efec750",
+      "included": true
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0003.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0003.json",
+      "bytes": 2320,
+      "sha256": "ca7a5cf9a7191039eec1992fda1befd1d1f6af218b958e5cf36237aea843efd5",
+      "included": true
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0004.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0004.json",
+      "bytes": 5416,
+      "sha256": "1851ff69647b69e022fa09df7e743d99c04d94a9c31f9cf18f8208eb744dd98e",
+      "included": true
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0005.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0005.json",
+      "bytes": 4949,
+      "sha256": "9b053fa15ad9839ca7bc8f4539d4470877f9175dbcbfccf0536c033395b46de0",
+      "included": true
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0006.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0006.json",
+      "bytes": 6543,
+      "sha256": "c77a4a2cbe1084d7e1f3fb6ed3303d78f4dcf7f01c9a3864e670155bfcc4fef4",
+      "included": true
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0006.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0006.png",
+      "bytes": 59253,
+      "sha256": "93f316af00fb9f7ea88dc0fdb277c3bab42d254c1868852009d66a50ad36863b",
+      "included": true
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0007.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0007.json",
+      "bytes": 6584,
+      "sha256": "153b50bc23b37b230e616b4d0358381c7613139354e92e22377d700c7d99bbd1",
+      "included": true
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0008.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0008.json",
+      "bytes": 7360,
+      "sha256": "b13e9c8afc37bff9e0a70054ab4078297420fb3f86600da6ba8d94daaa77a2a9",
+      "included": true
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0008.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0008.png",
+      "bytes": 64676,
+      "sha256": "1693f4705651077c4e0242ba003478f76a406bb70bafcc5442232936da0d9f7a",
+      "included": true
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0009.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0009.json",
+      "bytes": 5658,
+      "sha256": "6f0eb5e01c472e07e4d58542e2c16908bbc94433de32a5587d6fde76085cacb1",
+      "included": true
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0010.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0010.json",
+      "bytes": 6290,
+      "sha256": "051a75aa23d82d56a50600f7ce6923099b19155341f52bc6a30e2998b15f1914",
+      "included": true
+    },
+    {
+      "path": "P01/day-01/observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/observer-state.json",
+      "bytes": 30062,
+      "sha256": "ff8409a00020a9e1582e83920a8ee7605f76125f59253b8cf0ac8d0ac6ae0c8e",
+      "included": true
+    },
+    {
+      "path": "P01/day-02/P01-d02-o0011.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-02/P01-d02-o0011.json",
+      "bytes": 5416,
+      "sha256": "4b8aa4050fc10aab4e6cb5595f769af3800582a942ec151c835d53c8b83c0650",
+      "included": true
+    },
+    {
+      "path": "P01/day-02/P01-d02-o0012.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-02/P01-d02-o0012.json",
+      "bytes": 6324,
+      "sha256": "121ff80926bc375ea8bbee3b456943456f5f487bd50a54b95ed9c9ce11280a57",
+      "included": true
+    },
+    {
+      "path": "P01/day-02/P01-d02-o0012.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-02/P01-d02-o0012.png",
+      "bytes": 72628,
+      "sha256": "de3f105e484d1e55bd3b2bd30dd53a34dd90fea499d284ed98fed9acf826a584",
+      "included": true
+    },
+    {
+      "path": "P01/day-02/P01-d02-o0013.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-02/P01-d02-o0013.json",
+      "bytes": 5402,
+      "sha256": "db9a047887d4a849344a041612c89c3640449cd470d58ff93fbf105ee1d7609a",
+      "included": true
+    },
+    {
+      "path": "P01/day-02/P01-d02-o0013.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-02/P01-d02-o0013.png",
+      "bytes": 76007,
+      "sha256": "dfaa914a1acb42402e3a0bedfb07707c46d210e4f0447c51372a616223b43718",
+      "included": true
+    },
+    {
+      "path": "P01/day-02/P01-d02-o0014.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-02/P01-d02-o0014.json",
+      "bytes": 6168,
+      "sha256": "446c3ec04016f9a12ca04ee043998a722abf5bc57ed5b30415167c5b02dc7339",
+      "included": true
+    },
+    {
+      "path": "P01/day-02/P01-d02-o0014.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-02/P01-d02-o0014.png",
+      "bytes": 64594,
+      "sha256": "a7bbf7b74b467c610c208c22cabf5003035c32c730462d241e737bb62f0f3acd",
+      "included": true
+    },
+    {
+      "path": "P01/day-02/observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-02/observer-state.json",
+      "bytes": 34519,
+      "sha256": "b9c3182b75780ea04db31c76710f55e734e2ea207e87e74edc1eba2200c57266",
+      "included": true
+    },
+    {
+      "path": "P01/day-03/P01-d03-o0015.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-03/P01-d03-o0015.json",
+      "bytes": 5409,
+      "sha256": "3a804e556195be70ba3f93d2946bb40e448f277c1fb3c6045b631d63e89aeb77",
+      "included": true
+    },
+    {
+      "path": "P01/day-03/P01-d03-o0016.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-03/P01-d03-o0016.json",
+      "bytes": 6315,
+      "sha256": "ba7dab3515cb4928fa25703960e9388fe6f802bf85547f8e72be77c86e0268a9",
+      "included": true
+    },
+    {
+      "path": "P01/day-03/P01-d03-o0017.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-03/P01-d03-o0017.json",
+      "bytes": 2070,
+      "sha256": "0cb6d5297c51c0554ddd1fd48844de20309c05e01b8c3670baba07f6848e6a4b",
+      "included": true
+    },
+    {
+      "path": "P01/day-03/P01-d03-o0017.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-03/P01-d03-o0017.png",
+      "bytes": 56141,
+      "sha256": "fcaf8a54e364d40c0b7a8408c38472696b786fffe1acbba472a8523dd0cd2bf2",
+      "included": true
+    },
+    {
+      "path": "P01/day-03/P01-d03-o0018.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-03/P01-d03-o0018.json",
+      "bytes": 2493,
+      "sha256": "e76cd44d79772e73b012d9facd8f71912390af8393262a693d9220060670a37d",
+      "included": true
+    },
+    {
+      "path": "P01/day-03/P01-d03-o0018.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-03/P01-d03-o0018.png",
+      "bytes": 56281,
+      "sha256": "09eb67507e6ea37b48a19ee9c31e9a7cf28835369747135021152189ded7e1e3",
+      "included": true
+    },
+    {
+      "path": "P01/day-03/P01-d03-o0019.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-03/P01-d03-o0019.json",
+      "bytes": 6315,
+      "sha256": "5953dafe419a91fe260d1f5dfe9ac32788e741fe671eb534821f68477c99ad5b",
+      "included": true
+    },
+    {
+      "path": "P01/day-03/observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-03/observer-state.json",
+      "bytes": 39072,
+      "sha256": "a7139a6a7be9ea4140ce58497378b377e859027edf7aae241c0135e777ac2130",
+      "included": true
+    },
+    {
+      "path": "P01/day-06/P01-d06-o0020.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-06/P01-d06-o0020.json",
+      "bytes": 5414,
+      "sha256": "9183cad14c9f1ef5cc84c67a7607c2c3228418b69237b439c4e17f2ae1a32066",
+      "included": true
+    },
+    {
+      "path": "P01/day-06/P01-d06-o0021.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-06/P01-d06-o0021.json",
+      "bytes": 6324,
+      "sha256": "50a2cccfcb1a5afaf1738e8851569718f5515d0bd1ac739ef000bd81755b6d53",
+      "included": true
+    },
+    {
+      "path": "P01/day-06/P01-d06-o0022.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-06/P01-d06-o0022.json",
+      "bytes": 5402,
+      "sha256": "376b8ae653d896c80b8ada2e9f9c8d8a8b291065a82deb5a20ef078b4a038be3",
+      "included": true
+    },
+    {
+      "path": "P01/day-06/observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-06/observer-state.json",
+      "bytes": 44302,
+      "sha256": "011e86a3f2ca9965fc23217123593114d181978aefa908357a436cc9a7312622",
+      "included": true
+    },
+    {
+      "path": "P01/day-07/P01-d07-o0023.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-07/P01-d07-o0023.json",
+      "bytes": 5427,
+      "sha256": "cccc7f61ea9b0d4b64724e7bccf9a4a2ae4373113f17b8d3075d35625732aed8",
+      "included": true
+    },
+    {
+      "path": "P01/day-07/P01-d07-o0024.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-07/P01-d07-o0024.json",
+      "bytes": 5360,
+      "sha256": "e1dbea0bc2761f991557065d3e48ce4ae209dc615d4937ceddf8a88533286ba8",
+      "included": true
+    },
+    {
+      "path": "P01/day-07/P01-d07-o0024.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-07/P01-d07-o0024.png",
+      "bytes": 69413,
+      "sha256": "646e2801990c0dbe11efa88a01f3ad1e4e6bb9e5fe441167e3498d7426cef1aa",
+      "included": true
+    },
+    {
+      "path": "P01/day-07/P01-d07-o0025.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-07/P01-d07-o0025.json",
+      "bytes": 4992,
+      "sha256": "2a6087f71ce47ac23382fa075761de17f2a12fc7146972763979df9745ac8462",
+      "included": true
+    },
+    {
+      "path": "P01/day-07/observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-07/observer-state.json",
+      "bytes": 49424,
+      "sha256": "5daddec82921795ee792b5a5f3855f0623cb42183091f615b0d69934cd544101",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0001.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0001.json",
+      "bytes": 2203,
+      "sha256": "f6dd89f5061f1cd96da34afb32cfb9aea08d938df0199c08dd097f0896ec540a",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0002.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0002.json",
+      "bytes": 2325,
+      "sha256": "ab9883f654333278868e838c29c719b1ba269c552919ec5916dc18dc6554a3c0",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0003.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0003.json",
+      "bytes": 2324,
+      "sha256": "f4d011e837d08ac547293fcc22494c4dd07e6a8074b96f283116e86f2895b829",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0004.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0004.json",
+      "bytes": 5429,
+      "sha256": "e80e92d91f8dde22d753f01f6ed88e8a16a48a70fb518ffe0d440e6263b71210",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0005.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0005.json",
+      "bytes": 5028,
+      "sha256": "7566b9ec291c7880a5b1947af5ae0d37fa343adc5ef8af391b1735f7d97d84eb",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0006.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0006.json",
+      "bytes": 7374,
+      "sha256": "1c037a5e5d3732c6045f6a7c6b178d4c12db218590b7957a8d4b87f19523d671",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0007.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0007.json",
+      "bytes": 7422,
+      "sha256": "86364f16592b590723efad69b366c2cc45385187c92549a7ab8c686527bfc792",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0008.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0008.json",
+      "bytes": 7432,
+      "sha256": "7d7edcf095b6b62f843a157ef74700966085a039178306ff1d06138db39ead08",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0008.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0008.png",
+      "bytes": 78100,
+      "sha256": "325c89b2c999c4e20729719cde4537156a2d78491296984a6d5f1c2787e6a084",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0009.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0009.json",
+      "bytes": 8887,
+      "sha256": "253c1e25e9af9a0a8501b0398243fc4fa647465c4a8774e477c96d1d47e24fa4",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0010.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0010.json",
+      "bytes": 5740,
+      "sha256": "d35169277877c5227ed22a705cfe5a508597c69481a86c33c6d84f66bd9decab",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0011.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0011.json",
+      "bytes": 7375,
+      "sha256": "e6c5baece8f3776dc43fa797422e3311ff979fa9e188800eb18a752d2faefcbd",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0012.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0012.json",
+      "bytes": 7429,
+      "sha256": "77a13e1c84fe9856013609fec233acb6b5132723a38442d1611e0f4269dfbb99",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0013.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0013.json",
+      "bytes": 7439,
+      "sha256": "4f5ecb64ada01175eabd87c3555dfeb62422e674a55324e853d431b31c13cae0",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0014.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0014.json",
+      "bytes": 8888,
+      "sha256": "26dbf0dfdc67e9b06fdaa00d38403b6e88156caaebc0c174712b5bc31167ce5e",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0015.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0015.json",
+      "bytes": 6484,
+      "sha256": "b0a431a40daae6976093d3121db43ceae3f25f3f6be07a2258145f9eac2eac70",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0016.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0016.json",
+      "bytes": 7375,
+      "sha256": "731ffbdb575eb3a21ed6ec8e641dc8f583d48fc56b738dc1d7e72f241b7f8317",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0017.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0017.json",
+      "bytes": 7425,
+      "sha256": "63c95069c981cb7318d0cf5ade27b6877822cba40ef6db68daf307b63a97bdc3",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0018.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0018.json",
+      "bytes": 7435,
+      "sha256": "ac03ed4380584d8410a176d0086eea812cf3d3ef3d304bbb997de515eed6c55a",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0019.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0019.json",
+      "bytes": 8888,
+      "sha256": "84172d11314a693d41bf27af475eb776e267210f2dbb81bc58bf3baec0c9e62e",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0020.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0020.json",
+      "bytes": 7219,
+      "sha256": "ed42d9d4c6058a98bd849faee4a6e3362f3be27d9d6aac39c8f900e34176e6f8",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0021.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0021.json",
+      "bytes": 5430,
+      "sha256": "58d6d8ada8d093caff724b28199556eacc0eca595f538093e151a79bb0e970dd",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0022.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0022.json",
+      "bytes": 4931,
+      "sha256": "221062edfeba358f6faf77e9f69ceb9137775a1500d4405bdcecd7fa0eb7c18a",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0023.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0023.json",
+      "bytes": 6984,
+      "sha256": "39ace61c9b7b698d3d01954a64c977df173094ee13ef1fedbfd73b2b0e8b844d",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0024.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0024.json",
+      "bytes": 7022,
+      "sha256": "73deea67265530140b2c5020a5c946e89cb3e9ff55368db4b3f2f081fa3c80db",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0025.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0025.json",
+      "bytes": 7022,
+      "sha256": "b5963a266dc6f922f0373c8c44678160594006ea0459af19419484746b0ccae7",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0026.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0026.json",
+      "bytes": 7027,
+      "sha256": "71e11942f7a5f46574d8c865e4f865659457cf23dda19967cf6f818a4c378a9c",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0027.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0027.json",
+      "bytes": 7534,
+      "sha256": "c30d2fb6109022c762e8c8ac56d6533f843a75d53a8c274d017a497bf77b6ff6",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0028.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0028.json",
+      "bytes": 5355,
+      "sha256": "9805bb23cac0294a89462a76a60f6697f13247033a349cac370b9ff4fee7e4c2",
+      "included": true
+    },
+    {
+      "path": "P02/day-01/observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/observer-state.json",
+      "bytes": 33199,
+      "sha256": "702faa7203cd132003b7f044511322b375588cba8811047a7585f69e165456f3",
+      "included": true
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0029.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0029.json",
+      "bytes": 5776,
+      "sha256": "42e2d65712e11db672b483a11958b2b7c786850510818691495bac98ea3c985d",
+      "included": true
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0030.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0030.json",
+      "bytes": 6708,
+      "sha256": "cd0e90c391567694beab51641fb39c3523cd04bb1b27a4334224dc59f8eeff86",
+      "included": true
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0031.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0031.json",
+      "bytes": 6305,
+      "sha256": "afe2fcd228c6f2566943869ac93edca7a6a64203cb163403b8f81c71c8ca963f",
+      "included": true
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0032.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0032.json",
+      "bytes": 5782,
+      "sha256": "864c4b62fd3e916f6673a2b2acbfc09288fbed6e1d52ef9310dedf76557ae6b8",
+      "included": true
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0033.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0033.json",
+      "bytes": 6518,
+      "sha256": "39e70b9e8e581ee7d8588cad76ed5c249f60ba18553171a80b62bf34b463b05c",
+      "included": true
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0034.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0034.json",
+      "bytes": 2474,
+      "sha256": "4a0c7934c69933b6f06710a903033e09fa355ce0bdda43a4f936a9ff2ad9d19a",
+      "included": true
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0035.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0035.json",
+      "bytes": 6558,
+      "sha256": "55b72231399ae282b92b74d77082c40b0e278d654cf643b5bc603c7cbf96308b",
+      "included": true
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0036.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0036.json",
+      "bytes": 8081,
+      "sha256": "57f076587ed3283bcfe493b1e17f4f25b1e9468e1f379463b27672fe2befe8fd",
+      "included": true
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0037.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0037.json",
+      "bytes": 8241,
+      "sha256": "9411359427ab40e4703fbc38b1e28066943cd4c44cc74f93e8f300006ee649b0",
+      "included": true
+    },
+    {
+      "path": "P02/day-02/observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/observer-state.json",
+      "bytes": 41239,
+      "sha256": "03b561d1644b24a2d7d97e7ddf3650920544bf7524aaaadd71b5d0bf57fb4198",
+      "included": true
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0038.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0038.json",
+      "bytes": 5779,
+      "sha256": "1687ceaa7bf8fa8350ffa16217b05dd1d3a3fc93d7a755481a252e204dc35513",
+      "included": true
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0039.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0039.json",
+      "bytes": 2433,
+      "sha256": "39aa34dacc9d422a239ec9d637b88a36af607c757092b7dccd49aba55858ea1f",
+      "included": true
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0040.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0040.json",
+      "bytes": 2420,
+      "sha256": "7c5b31beab992fcd7e6c09929271fefee86612e6acac83a45efbcab0779bde11",
+      "included": true
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0041.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0041.json",
+      "bytes": 2420,
+      "sha256": "d84294a4b0c3d64eca7579c6d7c1cdada16363649ead1255064800af06343eee",
+      "included": true
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0042.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0042.json",
+      "bytes": 2420,
+      "sha256": "b177cf92ed341a1aec61b7e752e2b6172f7bf8795bc3f8f15947da1c59f9f49c",
+      "included": true
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0043.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0043.json",
+      "bytes": 2733,
+      "sha256": "563f935f641ba98c52d823b1093661ab2be96245cdfc6a0c8c58e8f8f01b6d08",
+      "included": true
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0044.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0044.json",
+      "bytes": 5779,
+      "sha256": "7ce73093481d47d24c4aa5218cd8425a5346352a62e67c76de78560df45569ec",
+      "included": true
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0045.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0045.json",
+      "bytes": 7471,
+      "sha256": "5d653f5bb9abfa890bd13d5a98ada3ba07c8af497f19ceba13ffca5a4caeac18",
+      "included": true
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0046.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0046.json",
+      "bytes": 1657,
+      "sha256": "441c8db4c77f6d6cc1661ab732ef8a71e9edaffc013abe18339d84e2c9200a27",
+      "included": true
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0047.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0047.json",
+      "bytes": 7600,
+      "sha256": "f235011678be5c2d7c1df5d1969ecd39a5a63dd038f8ac88e010332bab5a5b28",
+      "included": true
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0048.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0048.json",
+      "bytes": 7511,
+      "sha256": "28be052028de2fb63207e4dfc03a28a83fa0b71eaeadebb5f3ae83829d760dca",
+      "included": true
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0049.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0049.json",
+      "bytes": 6784,
+      "sha256": "fcc718f8b15b7848962246561331ccfc052864b7136ebcf18b95425cae979472",
+      "included": true
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0050.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0050.json",
+      "bytes": 6977,
+      "sha256": "3e7ba468127bdbfa15d8a7e52d105cb38d12c2fd1713353eca25d2eb473a8454",
+      "included": true
+    },
+    {
+      "path": "P02/day-04/observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/observer-state.json",
+      "bytes": 45305,
+      "sha256": "fc0ea2e635309120154951a2233b68902a9fc3b179d40e146d134e4776989f39",
+      "included": true
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0051.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0051.json",
+      "bytes": 5779,
+      "sha256": "eccfbd32f6600bf651dfcf81e99463355d150bf5bdea7a34a2db9b296dbfc30b",
+      "included": true
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0052.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0052.json",
+      "bytes": 2433,
+      "sha256": "1e8d3045ecd54c68a7be4cdc6cafa1563bdec92e04d39f103168a289c419f6c9",
+      "included": true
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0053.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0053.json",
+      "bytes": 2296,
+      "sha256": "727ed152f64c5291b03ff1c08e3dbb65aec25134018b3c729505a22d96797353",
+      "included": true
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0054.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0054.json",
+      "bytes": 5432,
+      "sha256": "03ccd9bfd574074234b3f4915aabaf8d0ede785fd94ce606bbc82aca4f457329",
+      "included": true
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0055.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0055.json",
+      "bytes": 7724,
+      "sha256": "93b0f831ab10fed039afa2180d33a739effffc217d1e78be7f4b9aa34b15db6e",
+      "included": true
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0056.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0056.json",
+      "bytes": 6801,
+      "sha256": "cda94eb95cba0fe9a248eeab94d39080f6370f3931b2d3c743c98869fcffe736",
+      "included": true
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0056.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0056.png",
+      "bytes": 94083,
+      "sha256": "03818e11e033e30f09925759ac6d08a3867d12e08af80a5baedeaf3ffae0fd25",
+      "included": true
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0057.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0057.json",
+      "bytes": 6726,
+      "sha256": "763d9ed648c4db16afae7360c2a53f6075c4965d0bd33b05410d18d6505e0eb2",
+      "included": true
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0058.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0058.json",
+      "bytes": 5192,
+      "sha256": "22abc90ea88379bf87d093f49796f45ed8a77fd68dbc5d2648398278bbadb3b8",
+      "included": true
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0059.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0059.json",
+      "bytes": 5427,
+      "sha256": "6c179a8ff685e31ae411794582bff21e275f98a635ee26529cd9752d82384573",
+      "included": true
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0060.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0060.json",
+      "bytes": 5847,
+      "sha256": "312ce8f8e5c61bb9c50d5f156ccbc9962f53a2cbddb1103cecb865c6566c84bc",
+      "included": true
+    },
+    {
+      "path": "P02/day-05/observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/observer-state.json",
+      "bytes": 51279,
+      "sha256": "64a3cb6fbe2dce6ef2b719ca5c0cba3c9ae5a950e6bb1ef99ddeeb479cd73dc3",
+      "included": true
+    },
+    {
+      "path": "P02/day-06/P02-d06-o0061.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-06/P02-d06-o0061.json",
+      "bytes": 5424,
+      "sha256": "094909aef1feacdc1319b17ea39f60f7858de61f23cd01b1fb810307ae39a7cf",
+      "included": true
+    },
+    {
+      "path": "P02/day-06/P02-d06-o0062.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-06/P02-d06-o0062.json",
+      "bytes": 5847,
+      "sha256": "e6fa944fdd696e763845009a213bc2c604be4ec9e359da2e6780b98d1b0ef227",
+      "included": true
+    },
+    {
+      "path": "P02/day-06/P02-d06-o0063.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-06/P02-d06-o0063.json",
+      "bytes": 2470,
+      "sha256": "e3f63a904c96c6f5638a2aebf95ddb274e0d2d652de402748b4f81f38afac0f1",
+      "included": true
+    },
+    {
+      "path": "P02/day-06/P02-d06-o0064.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-06/P02-d06-o0064.json",
+      "bytes": 2310,
+      "sha256": "b30c9dcd4e50c5ae17e0145cec96480a715b66fea4afb5f186187a4d602d26f0",
+      "included": true
+    },
+    {
+      "path": "P02/day-06/P02-d06-o0065.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-06/P02-d06-o0065.json",
+      "bytes": 5215,
+      "sha256": "ee258e5e274e8c7f3e85dff9d9a366c0d50c8b83a46623c139fb2fae0ba82610",
+      "included": true
+    },
+    {
+      "path": "P02/day-06/observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-06/observer-state.json",
+      "bytes": 55352,
+      "sha256": "70cf867e7d54c1c1fd7bf496095e7e4caa90a7c15ab077eaf8f795caed270e71",
+      "included": true
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0066.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0066.json",
+      "bytes": 5432,
+      "sha256": "0cbb43053ab3d5996a734fb4fe7cd4dd7d3a17958765f35c68057838668528fb",
+      "included": true
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0067.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0067.json",
+      "bytes": 5338,
+      "sha256": "1f2bb3a67e7701c96f797c3592d813be6bf3afea79b1e344bd2cfb6a7bed95b5",
+      "included": true
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0068.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0068.json",
+      "bytes": 4978,
+      "sha256": "f52a3fd5130d72767becd35fd4587a7b7d1a9f94cdb453bc977bc75fe8efcde9",
+      "included": true
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0069.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0069.json",
+      "bytes": 3566,
+      "sha256": "c28b36c6a1463f9fe1d2315fdbe47945eedfbc6b6677f82dcceefc33c9426680",
+      "included": true
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0070.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0070.json",
+      "bytes": 3666,
+      "sha256": "63243afed2275816731a76d5aa06ee16f7daa1bdb00cf904bc653fb9f9d404f7",
+      "included": true
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0071.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0071.json",
+      "bytes": 6258,
+      "sha256": "fe5facf9569212106b986d58a234f29970dd05122c0e74f64d72ad29684c8083",
+      "included": true
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0072.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0072.json",
+      "bytes": 6268,
+      "sha256": "0fd7003aefaa1791b365d6f449d9a5b8bcae51a9738872f1770dc632e5d141d3",
+      "included": true
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0073.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0073.json",
+      "bytes": 5068,
+      "sha256": "46133d5ebb3ac1c1501a7b47321b3a3fb5dc75b83a018f902dd970e9acdb42a0",
+      "included": true
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0074.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0074.json",
+      "bytes": 5432,
+      "sha256": "593759fdebe4e0a465aed3d6798b6d638a730fc493761e32288fb843feda3269",
+      "included": true
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0075.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0075.json",
+      "bytes": 6015,
+      "sha256": "158c7ca503be425434494df599456a4449ae62e309dc10b372da591a11382665",
+      "included": true
+    },
+    {
+      "path": "P02/day-07/observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/observer-state.json",
+      "bytes": 58441,
+      "sha256": "aa966ae45f806ee02fe884e4ed54797cb56627e4cddc49de935c0ad378b51a2a",
+      "included": true
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0001.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0001.json",
+      "bytes": 2200,
+      "sha256": "5431cb595db19d903bdb703eb5e3a1edf67ed1508ba1755fd3fb3a487297cff8",
+      "included": true
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0002.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0002.json",
+      "bytes": 2321,
+      "sha256": "8e5848e285ead07cfe334ba18744b6fdf601bc03e8215d31c6502d0a5397191f",
+      "included": true
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0003.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0003.json",
+      "bytes": 2320,
+      "sha256": "005c845b52edc8b18b1fc2e77e0e76793fed6582956bbb6ff3b7c94fac2f764b",
+      "included": true
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0004.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0004.json",
+      "bytes": 5418,
+      "sha256": "2d27302e85ccec10e910135f2ac7436e4f42f02e75645d0bd18187fd9ab8597b",
+      "included": true
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0005.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0005.json",
+      "bytes": 3560,
+      "sha256": "c7fea25b9dc873ae4c3c6883b1b5e2300370ce9e09fcc2bc6b29c868d66a89be",
+      "included": true
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0006.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0006.json",
+      "bytes": 3594,
+      "sha256": "0d8679c6c1957d5127c31de316305bf29f56ce6dd4112ce96985aa00a98657cc",
+      "included": true
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0007.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0007.json",
+      "bytes": 6183,
+      "sha256": "4a93db489e79595c749b0067454fbec3ff6b405b5f7f7499a641fdc322dd3c60",
+      "included": true
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0008.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0008.json",
+      "bytes": 6193,
+      "sha256": "7907020f962a9dc54102a4513456c676479f81d56431f42f8c5858d81d8c005e",
+      "included": true
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0009.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0009.json",
+      "bytes": 5267,
+      "sha256": "b7651c7843f84b5d37ba62a66e06e461053ef3c164204bea6a08bc667eceb696",
+      "included": true
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0010.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0010.json",
+      "bytes": 6261,
+      "sha256": "d6a6f6675af831efe5316bdf7b2ddc2b79bba5e07d7be9ce139e3d1f2d83d191",
+      "included": true
+    },
+    {
+      "path": "P03/day-01/observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/observer-state.json",
+      "bytes": 29438,
+      "sha256": "6fcae18c257f6359e3e4ff713c120c4bc39905026ffc129626b17e45ca160736",
+      "included": true
+    },
+    {
+      "path": "P03/day-03/P03-d03-o0011.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-03/P03-d03-o0011.json",
+      "bytes": 5414,
+      "sha256": "9dd56d1f94585f9b85a1763918e74924bd7a101417532789a03365d3495744c4",
+      "included": true
+    },
+    {
+      "path": "P03/day-03/P03-d03-o0012.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-03/P03-d03-o0012.json",
+      "bytes": 6677,
+      "sha256": "6a1a4e715b2897929bf7ebd1b84969c457483b6583f17648842e4140b2b47ff9",
+      "included": true
+    },
+    {
+      "path": "P03/day-03/P03-d03-o0013.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-03/P03-d03-o0013.json",
+      "bytes": 6275,
+      "sha256": "6da97d10b28c3f9834b56f2929340f4fcde62ae09142f9d7ff2352263043c08b",
+      "included": true
+    },
+    {
+      "path": "P03/day-03/P03-d03-o0013.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-03/P03-d03-o0013.png",
+      "bytes": 74710,
+      "sha256": "43b6095744d7ede5195f67ad211564d8ec57270e8963b271f1e8b98561184bc3",
+      "included": true
+    },
+    {
+      "path": "P03/day-03/P03-d03-o0014.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-03/P03-d03-o0014.json",
+      "bytes": 6204,
+      "sha256": "cd9735c77942c8f042a6be2b2f56d08f6e871ba85dff5f2e7cafe746526ba068",
+      "included": true
+    },
+    {
+      "path": "P03/day-03/P03-d03-o0015.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-03/P03-d03-o0015.json",
+      "bytes": 5178,
+      "sha256": "6f161045e72b6b39bb27a636ce4937c37fce2a578b59a09733db5d72560936d4",
+      "included": true
+    },
+    {
+      "path": "P03/day-03/P03-d03-o0016.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-03/P03-d03-o0016.json",
+      "bytes": 5412,
+      "sha256": "92189323f540a743cdc86deeb1fa6c733a7a7f771e0990a554c873e6b458e0cd",
+      "included": true
+    },
+    {
+      "path": "P03/day-03/observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-03/observer-state.json",
+      "bytes": 34137,
+      "sha256": "1eda1d8059c580949ed61c7c1e324907c138061360f90299997f8e2ef8653b46",
+      "included": true
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0017.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0017.json",
+      "bytes": 5413,
+      "sha256": "73e88b8fa691c1a2e71561bb6c79f58fa962f4ca3d91e03d3822ed4b99e0ee16",
+      "included": true
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0018.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0018.json",
+      "bytes": 1259,
+      "sha256": "d766bd353d16abdad6b52b398f21c9610d68195bb7cfd59d799032f0cf481a22",
+      "included": true
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0019.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0019.json",
+      "bytes": 1642,
+      "sha256": "81541ad260f5f35ec07d066c7c34bd66e7df1cee680fc5c3037f6e6b7647a107",
+      "included": true
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0019.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0019.png",
+      "bytes": 55880,
+      "sha256": "8d6494e880c6b387290f0541aef164e3da3aadf3e531ecbe45e06f18c337db66",
+      "included": true
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0020.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0020.json",
+      "bytes": 1699,
+      "sha256": "defac3a928019ccc2b79d397f12794740cc70bac54706dbb290238fdcc8a751b",
+      "included": true
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0021.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0021.json",
+      "bytes": 3595,
+      "sha256": "b5356cfdca77b026f78c50193fab60c7012b212daff68a12bbe798807ae39ddd",
+      "included": true
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0022.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0022.json",
+      "bytes": 6184,
+      "sha256": "6c9178983d4f8779656a3fa0bb3b96fc2d7fdc7672f29a6ac9fb925b4b6caa34",
+      "included": true
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0023.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0023.json",
+      "bytes": 6194,
+      "sha256": "71253756b6e5834b9e54f15c82b3e9eb1cc39ca03459f2f9c8dc423455ed7ebc",
+      "included": true
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0024.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0024.json",
+      "bytes": 5262,
+      "sha256": "a89c4741ef9b6354faa3405ef93d9159a615102bd7dc4909ae70a75f2fdb7801",
+      "included": true
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0025.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0025.json",
+      "bytes": 6250,
+      "sha256": "4b8b35a5658054586ae58914970893a2e8b280d94bd0d6c680f6a5f3a636cfd0",
+      "included": true
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0026.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0026.json",
+      "bytes": 6263,
+      "sha256": "f91b22a852499beb97799bec284005040561a85c1bef45aa877426659dc13abd",
+      "included": true
+    },
+    {
+      "path": "P03/day-04/observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/observer-state.json",
+      "bytes": 38956,
+      "sha256": "1162e1924bdb62b59cacdc98631e926abba31785844fa95b16a08408b0fcf0b8",
+      "included": true
+    },
+    {
+      "path": "P03/day-06/P03-d06-o0027.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-06/P03-d06-o0027.json",
+      "bytes": 5413,
+      "sha256": "5b2d0f2ecde5a027b26dacde9c907ce365c7c0c8db3d2e988791e60bd46b18a5",
+      "included": true
+    },
+    {
+      "path": "P03/day-06/P03-d06-o0028.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-06/P03-d06-o0028.json",
+      "bytes": 5101,
+      "sha256": "a5af19571e304052ce2202fcc14174ab7b6a8a2468fcf7226a6be9b3fae3a84b",
+      "included": true
+    },
+    {
+      "path": "P03/day-06/P03-d06-o0029.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-06/P03-d06-o0029.json",
+      "bytes": 3560,
+      "sha256": "fdf616ddd24afb0b9dfbfb057bfae719936fe20700c8393a74966ec8a75032a5",
+      "included": true
+    },
+    {
+      "path": "P03/day-06/P03-d06-o0030.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-06/P03-d06-o0030.json",
+      "bytes": 3625,
+      "sha256": "32f603f485c755de10d0a124e5adfb2eb3fbd04b8ca08ccecdb61714cf720ce1",
+      "included": true
+    },
+    {
+      "path": "P03/day-06/P03-d06-o0031.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-06/P03-d06-o0031.json",
+      "bytes": 6214,
+      "sha256": "10c344bcc436ede86c580cd37c4140f7c77030cbf44f01fb6eadc39bacb7e6b5",
+      "included": true
+    },
+    {
+      "path": "P03/day-06/P03-d06-o0032.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-06/P03-d06-o0032.json",
+      "bytes": 6215,
+      "sha256": "a20c0077cfbacc4d48542401af8bd71f83db608fecb9537250625b9e54a05522",
+      "included": true
+    },
+    {
+      "path": "P03/day-06/P03-d06-o0033.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-06/P03-d06-o0033.json",
+      "bytes": 5895,
+      "sha256": "b8bd8d64a51686cbd109dd927357fe5e75d720a7c5492a2ed1e2fea9ff222ff4",
+      "included": true
+    },
+    {
+      "path": "P03/day-06/observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-06/observer-state.json",
+      "bytes": 43360,
+      "sha256": "2b4eb769ce54e3c01d379c83ff70102353407c68ecde9b22338133c7c55b9aa9",
+      "included": true
+    },
+    {
+      "path": "P03/day-07/P03-d07-o0034.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-07/P03-d07-o0034.json",
+      "bytes": 5421,
+      "sha256": "f989ce0330bda24b6329a438857a8ee057edacb6bca2ebff400e27a1f37d278c",
+      "included": true
+    },
+    {
+      "path": "P03/day-07/P03-d07-o0035.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-07/P03-d07-o0035.json",
+      "bytes": 4871,
+      "sha256": "ce10c1792310aca5daa9a4dec653842a7d06c01aac0fd39a97a79aa0cf6625eb",
+      "included": true
+    },
+    {
+      "path": "P03/day-07/P03-d07-o0035.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-07/P03-d07-o0035.png",
+      "bytes": 47481,
+      "sha256": "2c4540be52d4f8450bccbadbf3d4f4cd420edf59f79bcd992e2a8d16acfcfce9",
+      "included": true
+    },
+    {
+      "path": "P03/day-07/P03-d07-o0036.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-07/P03-d07-o0036.json",
+      "bytes": 4769,
+      "sha256": "204d0cba3dd8d417dd60384574bb2f5c6991566071f59e06b30d3f0a02e92c2d",
+      "included": true
+    },
+    {
+      "path": "P03/day-07/P03-d07-o0036.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-07/P03-d07-o0036.png",
+      "bytes": 43510,
+      "sha256": "cd307ed75174f6d70668f9cf6c58fdc3dd233489585574f4f2b26b93f4421fbc",
+      "included": true
+    },
+    {
+      "path": "P03/day-07/observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-07/observer-state.json",
+      "bytes": 45572,
+      "sha256": "1fbaf33d14c1a29846be55a10b4da8c39f99dd0c2717da4d0e84b68ea7b80634",
+      "included": true
+    },
+    {
+      "path": "engine-snapshot/PROMPT-USER.md",
+      "original": "personal-lab/verification/month-pilot-001/engine-snapshot/PROMPT-USER.md",
+      "bytes": 5200,
+      "sha256": "f92415f3fab94c1ba383062bc0a5959ad83d2fa77e0797c43e9ab3ecf3b39942",
+      "included": true
+    },
+    {
+      "path": "engine-snapshot/driver.py",
+      "original": "personal-lab/verification/month-pilot-001/engine-snapshot/driver.py",
+      "bytes": 21250,
+      "sha256": "0de5a0fe3d710d94f522c4e0174c0e97f778a4e9a89c1aabf8beb0f128b46f34",
+      "included": true
+    },
+    {
+      "path": "engine-snapshot/make_world.py",
+      "original": "personal-lab/verification/month-pilot-001/engine-snapshot/make_world.py",
+      "bytes": 12123,
+      "sha256": "27bfabfebecef1d91999d80f6cc47e9ed97bfa4e8efda89569d35d156abead47",
+      "included": true
+    },
+    {
+      "path": "engine-snapshot/world.month.json",
+      "original": "personal-lab/verification/month-pilot-001/engine-snapshot/world.month.json",
+      "bytes": 165648,
+      "sha256": "6c50b70f03c1ee13cc740110ccce10b3e5e1d059d4c06d607c8d7ce5aaccee2a",
+      "included": true
+    },
+    {
+      "path": "engine-snapshot/world.pilot.json",
+      "original": "personal-lab/verification/month-pilot-001/engine-snapshot/world.pilot.json",
+      "bytes": 10516,
+      "sha256": "dd20a454fec8c41753c7a96b2b406ad6c88d4877f90634ee2c1484d12e8810c7",
+      "included": true
+    },
+    {
+      "path": "environment.json",
+      "original": "personal-lab/verification/month-pilot-001/environment.json",
+      "bytes": 465,
+      "sha256": "61cc413daf994adfc6a77450da40bea28c965e6f03eb59b0d628f2012861000c",
+      "included": true
+    },
+    {
+      "path": "events.jsonl",
+      "original": "personal-lab/verification/month-pilot-001/events.jsonl",
+      "bytes": 178365,
+      "sha256": "3c0abb5ca9c25cdcad5a5a58907ff7f4656723ef665703756f664564b3a4c606",
+      "included": true
+    },
+    {
+      "path": "facts-report-first-validator-missing-dependency.json",
+      "original": "personal-lab/verification/month-pilot-001/facts-report-first-validator-missing-dependency.json",
+      "bytes": 37588,
+      "sha256": "5dc40bc283fb802f130001de06fda7db73bc3fd92d65acf1fd72eda5cd5167ec",
+      "included": true
+    },
+    {
+      "path": "facts-report.json",
+      "original": "personal-lab/verification/month-pilot-001/facts-report.json",
+      "bytes": 36502,
+      "sha256": "3cdab4e3320b0f74bce7d56eb333ff88709b29042fe8f4235a909f6adb8bb4df",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/01-new-habit-top.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/01-new-habit-top.json",
+      "bytes": 17690,
+      "sha256": "71872f2a7d6c415f0a4dd72737443edf70bfc10d6edaab0042b5891100cf78ba",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/01-new-habit-top.png",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/01-new-habit-top.png",
+      "bytes": 87261,
+      "sha256": "577f6a4566fea72e58c6e41c53dcda172e0006c84ea22f27887e0fc222b8b734",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/02-new-habit-bottom.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/02-new-habit-bottom.json",
+      "bytes": 17074,
+      "sha256": "10f11cad00d670e411359a7747300ae81c33d328bf7005e42ba527ad547634eb",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/02-new-habit-bottom.png",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/02-new-habit-bottom.png",
+      "bytes": 69685,
+      "sha256": "0c056d973e5e91955834638cd90c83608178be3b4c3f40b95e3912e53dcb6bad",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/03-before-observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/03-before-observer-state.json",
+      "bytes": 32923,
+      "sha256": "5463fc86b9d95138e8a8460094f335513ac6064b80fb6cca683ebe118f590138",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/03-planned-before-mark.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/03-planned-before-mark.json",
+      "bytes": 8407,
+      "sha256": "2f7193f5ff67e54e371c3ba62708e36b48d0b6ad7016a899242818cbc435f6ab",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/03-planned-before-mark.png",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/03-planned-before-mark.png",
+      "bytes": 72628,
+      "sha256": "de3f105e484d1e55bd3b2bd30dd53a34dd90fea499d284ed98fed9acf826a584",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/04-immediate-day-result.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/04-immediate-day-result.json",
+      "bytes": 8536,
+      "sha256": "cde6c29ac3b9ffc00ba1b981bd53356bb309fdfacd8548b963ddaed61dd2ed90",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/04-immediate-day-result.png",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/04-immediate-day-result.png",
+      "bytes": 75299,
+      "sha256": "263f33739b3c9ba348790f924db7fa99e0016ac97e8f527d28ea38bbdbd29168",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/05-after-observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/05-after-observer-state.json",
+      "bytes": 34465,
+      "sha256": "7e7218333a2bd0deb3219c4c3a33c3c5cd83a48ee2d4be6a5aa264350a2c9d03",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/05-outside-plan-row.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/05-outside-plan-row.json",
+      "bytes": 8533,
+      "sha256": "ec028d1092b750d7d41b680559b3efedb475dcdc486221eaf91988d71d981f82",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/05-outside-plan-row.png",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/05-outside-plan-row.png",
+      "bytes": 74867,
+      "sha256": "ad98392757252b4c431cb5711af99af94e3f6e1735e016fd0969c9ceb6f7513f",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/06-history.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/06-history.json",
+      "bytes": 6045,
+      "sha256": "5f0462214b0e93f77c388f535180c9e2d1691acf8a2fcb7d51bc61b811a57c14",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/06-history.png",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/06-history.png",
+      "bytes": 51420,
+      "sha256": "e41ed8578ed73716d7bdfff5f61bd8f00d2aa40cf44d8793cbda990998564721",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/07-history-completions.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/07-history-completions.json",
+      "bytes": 5968,
+      "sha256": "8a0cbf7619890e15ccffbb3993169240eccee930b005ea74c211394e75040eb8",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/07-history-completions.png",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/07-history-completions.png",
+      "bytes": 48024,
+      "sha256": "6c33f757a91d116fcd69de84ca8e365a3dadddb9e2ee27a8de6710bb22bc39ce",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/result.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/result.json",
+      "bytes": 2756,
+      "sha256": "cd19f1662fec4dd3a3cb76787fb37a22c7b7d436d80138adc319ee62cb44a948",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R1-planned-habit-labelled-outside-plan/trace.zip",
+      "bytes": 5123699,
+      "sha256": "98e4d45ac66525dc0420acf2a03494ef999c388968f2354a7fe8ebf0f0313376",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/01-new-habit-top.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/01-new-habit-top.json",
+      "bytes": 17596,
+      "sha256": "0290df81bd6f8d041cdf42cb5950619a6de7fa5b7a7f373104ae4b1a6b535e1e",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/01-new-habit-top.png",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/01-new-habit-top.png",
+      "bytes": 87261,
+      "sha256": "577f6a4566fea72e58c6e41c53dcda172e0006c84ea22f27887e0fc222b8b734",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/02-new-habit-bottom.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/02-new-habit-bottom.json",
+      "bytes": 17074,
+      "sha256": "740bcfc75fab7ae5dac9f17cb47ee0be2c12746c9bb592cd3f0925871bd982c3",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/02-new-habit-bottom.png",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/02-new-habit-bottom.png",
+      "bytes": 69685,
+      "sha256": "0c056d973e5e91955834638cd90c83608178be3b4c3f40b95e3912e53dcb6bad",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/03-day-before-partial-attempt.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/03-day-before-partial-attempt.json",
+      "bytes": 8401,
+      "sha256": "dc1131622ee668f64a6f4e4c44721245ddfed8d328c42d2bafcdf707e700f6b8",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/03-day-before-partial-attempt.png",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/03-day-before-partial-attempt.png",
+      "bytes": 73047,
+      "sha256": "e80ea980580a821b4aacf477cd43c780bea7326f914f26727c1221d5b448a6a8",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/04-more-menu.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/04-more-menu.json",
+      "bytes": 10499,
+      "sha256": "546b1a0694b3ad27e5101afb57d11eeac48031578364f566e523e9389e7dbad3",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/04-more-menu.png",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/04-more-menu.png",
+      "bytes": 71726,
+      "sha256": "118e42010909b2ab96e1bd9dcb59211f67a3af2560cb1feff96e4881a29d4688",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/05-habit-detail.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/05-habit-detail.json",
+      "bytes": 10933,
+      "sha256": "8f5d2b81306f7317895e6a06b76388d0e785c14fa2b397bf7cd3734d1e931f38",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/05-habit-detail.png",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/05-habit-detail.png",
+      "bytes": 93240,
+      "sha256": "60bbed3944c3c72b455ed9e30c046c0a6063969490ee155965748388987cbad6",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/06-after-partial-attempt-observer-state.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/06-after-partial-attempt-observer-state.json",
+      "bytes": 33967,
+      "sha256": "d9f96bc5f95de838de80dd2a40510f65774890569b5349aec0335466e3ede8ae",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/result.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/result.json",
+      "bytes": 2198,
+      "sha256": "e8f7f5db5416052fd31aa800ce75be1a5f1f74327d0c25415ee9e8fa5ff6408f",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/R2-partial-reading-default-one-approach/trace.zip",
+      "bytes": 2690142,
+      "sha256": "38f7f9b894f21f6430c4d37c1792b201dadf0b66feacb19cad7d1b52b724ce21",
+      "included": true
+    },
+    {
+      "path": "reproduction/20261111T192552711764Z/manifest.json",
+      "original": "personal-lab/verification/month-pilot-001/reproduction/20261111T192552711764Z/manifest.json",
+      "bytes": 681,
+      "sha256": "be7d7deda96d15b6485d7d8fb9c83e1a45f04e3bfdbadabcfd3b7cbc57e34bfd",
+      "included": true
+    },
+    {
+      "path": "run.json",
+      "original": "personal-lab/verification/month-pilot-001/run.json",
+      "bytes": 153,
+      "sha256": "56cd1440ff61fd97d8b7a0e8b9798830ad455b1a07796b86eeee6c4fc12e20c2",
+      "included": true
+    },
+    {
+      "path": "source-manifest.json",
+      "original": "personal-lab/verification/month-pilot-001/source-manifest.json",
+      "bytes": 8531,
+      "sha256": "ad1877aeaa3f57cd25e60bc1eb176d61e81b05e99cd922019bbddb1169c60888",
+      "included": true
+    },
+    {
+      "path": "summary.json",
+      "original": "personal-lab/verification/month-pilot-001/summary.json",
+      "bytes": 33195,
+      "sha256": "92a7d7a9d51ccff61d8d04e3e2f1982d759b36529f52fde31e4594338237b4c5",
+      "included": true
+    },
+    {
+      "path": "world.json",
+      "original": "personal-lab/verification/month-pilot-001/world.json",
+      "bytes": 10516,
+      "sha256": "dd20a454fec8c41753c7a96b2b406ad6c88d4877f90634ee2c1484d12e8810c7",
+      "included": true
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0001.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0001.png",
+      "bytes": 40731,
+      "sha256": "584c8e34254039d330e9c8f74dfc76fb6d697162209d9cc803cfc86bbb609171",
+      "included": false
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0002.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0002.png",
+      "bytes": 69766,
+      "sha256": "40582531f708e5d12e7479cb1f7ca32d8dae8050617293387885d38a7a9fa67d",
+      "included": false
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0003.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0003.png",
+      "bytes": 70816,
+      "sha256": "ede2c86d3f0665d9303837848e992a0eb6432a27ef9c1f2701e6884037e087e0",
+      "included": false
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0004.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0004.png",
+      "bytes": 61238,
+      "sha256": "bf34c8db8c0b20ea2d837a910b5608af8eb69d592e041909ca79d2cebe2ca62f",
+      "included": false
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0005.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0005.png",
+      "bytes": 45010,
+      "sha256": "1747b11c95acec5122de32ae0f0189e7138eba79387df25b7a74915678eff587",
+      "included": false
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0007.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0007.png",
+      "bytes": 61968,
+      "sha256": "18d3fa3331cf4c2ab78b5bbffebfb0962bc3d1340a63ba6c9d69c301bd05d552",
+      "included": false
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0009.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0009.png",
+      "bytes": 55213,
+      "sha256": "7c1d343df839b8fad387692b12ece78437d53e85ef41ac10f4c5e77d9a2fb8d3",
+      "included": false
+    },
+    {
+      "path": "P01/day-01/P01-d01-o0010.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0010.png",
+      "bytes": 74664,
+      "sha256": "d130c50b559c809d80de6e81b1025d49b3e2d86bf74a8b5d761544b218a5cb40",
+      "included": false
+    },
+    {
+      "path": "P01/day-01/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-01/trace.zip",
+      "bytes": 3233675,
+      "sha256": "af00b9953e28028f5c7b3019a17321fe683d5002c88c9956b009e605bdc8e56d",
+      "included": false
+    },
+    {
+      "path": "P01/day-02/P01-d02-o0011.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-02/P01-d02-o0011.png",
+      "bytes": 61355,
+      "sha256": "b7fef8492d1d2274fa8cd4dc3436cd4b3a9b8407a2a2127b8969b7ea19e0fbb6",
+      "included": false
+    },
+    {
+      "path": "P01/day-02/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-02/trace.zip",
+      "bytes": 2923402,
+      "sha256": "13c20e2ced5676c8193ecc5c060807ebd3e0d01607a4baa071ab1279dcf9aeda",
+      "included": false
+    },
+    {
+      "path": "P01/day-03/P01-d03-o0015.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-03/P01-d03-o0015.png",
+      "bytes": 61715,
+      "sha256": "57184c0f1e22aa45c50d2df1721d175e59e54a7e609cdcb2ddcb49da837f098a",
+      "included": false
+    },
+    {
+      "path": "P01/day-03/P01-d03-o0016.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-03/P01-d03-o0016.png",
+      "bytes": 72993,
+      "sha256": "d6c25c02e4c6d0bf850c0cee0da46af5f6c5ecb732b98f5b5aab2893c0d4c70f",
+      "included": false
+    },
+    {
+      "path": "P01/day-03/P01-d03-o0019.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-03/P01-d03-o0019.png",
+      "bytes": 72993,
+      "sha256": "d6c25c02e4c6d0bf850c0cee0da46af5f6c5ecb732b98f5b5aab2893c0d4c70f",
+      "included": false
+    },
+    {
+      "path": "P01/day-03/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-03/trace.zip",
+      "bytes": 1482359,
+      "sha256": "3a1c2ec65451f4e23869e68ca919de1c74858ad667f3c9c19daf54b86e3aa1dd",
+      "included": false
+    },
+    {
+      "path": "P01/day-06/P01-d06-o0020.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-06/P01-d06-o0020.png",
+      "bytes": 61777,
+      "sha256": "f80422beb46867b5cedc12c4fc491bb6aadf1f6995610252027a63eb6dfd3ae4",
+      "included": false
+    },
+    {
+      "path": "P01/day-06/P01-d06-o0021.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-06/P01-d06-o0021.png",
+      "bytes": 73290,
+      "sha256": "da70a570b3d8e682ef0412aff4c65db625c6ef89ee451c05aeb463f6aa49412f",
+      "included": false
+    },
+    {
+      "path": "P01/day-06/P01-d06-o0022.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-06/P01-d06-o0022.png",
+      "bytes": 76680,
+      "sha256": "b83fb405276d07acc72eab4dddc3168040a184bf6a2c51ece899d80ddca249dc",
+      "included": false
+    },
+    {
+      "path": "P01/day-06/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-06/trace.zip",
+      "bytes": 2832594,
+      "sha256": "2f76b5efbda495004b04518f5e151157c7c792ece851f4e78045c1df0ce6f6b2",
+      "included": false
+    },
+    {
+      "path": "P01/day-07/P01-d07-o0023.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-07/P01-d07-o0023.png",
+      "bytes": 62811,
+      "sha256": "82ff3f7a381d2a8a3288ae59d389c6f1af46b49e34bbad4d86f0046680f83ccf",
+      "included": false
+    },
+    {
+      "path": "P01/day-07/P01-d07-o0025.png",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-07/P01-d07-o0025.png",
+      "bytes": 53671,
+      "sha256": "fd6db93ca7f15a7b944af13276bc7c4fcfc64dcec6248cf08d643e9a7e6b67fc",
+      "included": false
+    },
+    {
+      "path": "P01/day-07/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/P01/day-07/trace.zip",
+      "bytes": 773534,
+      "sha256": "95356cb32b289dc204b2cc5a3c82898c48da2b1b7649ca7d5ab32e006fa7b621",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0001.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0001.png",
+      "bytes": 46235,
+      "sha256": "523b2d42fcd565f3aeb14eb3d4a7bda2d7e32d19770b5f1af8edd4634c41b413",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0002.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0002.png",
+      "bytes": 82819,
+      "sha256": "fbe3c44a783733ffe9cca03b15e9b77f319662d98ca363bca89e14bf908d0b2d",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0003.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0003.png",
+      "bytes": 82000,
+      "sha256": "19203e238790e3f4b5e546f4eb7af745a55ba2d5a2a4e52599686f1ea5a2ea0d",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0004.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0004.png",
+      "bytes": 67143,
+      "sha256": "04d7ae6b2680f7509db5bfd58bae64cc274e99dff7cddd1a7af9f2ded4df46f8",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0005.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0005.png",
+      "bytes": 54108,
+      "sha256": "4ca0937a0edc2fbc73b3244471b309aed124347b43d06dd5e1defb50aa65dc5c",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0006.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0006.png",
+      "bytes": 74388,
+      "sha256": "12e9a857e8bfebacc0c8ae85d97b0f3d9c661baa330febbd49ed5fb3fd940717",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0007.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0007.png",
+      "bytes": 77877,
+      "sha256": "6fc1412e0f3baf7c020a8c4e1f6e447151d919f7f3bb719ebeab3cf3be0cf9fe",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0009.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0009.png",
+      "bytes": 89833,
+      "sha256": "5451af4955d6acfff6907dfe75767a259e46ce5fdbfdc6c25455faf3a5c272f3",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0010.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0010.png",
+      "bytes": 64066,
+      "sha256": "9630686d8cda32c19507a5dd970b2c68b653305a1c1510485b24d8526447cb4a",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0011.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0011.png",
+      "bytes": 74388,
+      "sha256": "12e9a857e8bfebacc0c8ae85d97b0f3d9c661baa330febbd49ed5fb3fd940717",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0012.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0012.png",
+      "bytes": 77856,
+      "sha256": "38aab20d4c61bd792f1d9f66bd7af62435dcf7beeaa782868aea4b2ac6807b4f",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0013.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0013.png",
+      "bytes": 78073,
+      "sha256": "1e134717fc36f1cdb03e39b27531f156407373db1223275dfe324d79e5993a65",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0014.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0014.png",
+      "bytes": 89827,
+      "sha256": "95c39c6a8e161d0c0d3c10dec1887ee07e10f180a8dab0d978881cca4be7f82a",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0015.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0015.png",
+      "bytes": 72671,
+      "sha256": "d9299ad016a44ae1e745d54df4ed99ee4dd7e9807bbc892fb2a8d42fe7ec7eee",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0016.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0016.png",
+      "bytes": 74388,
+      "sha256": "12e9a857e8bfebacc0c8ae85d97b0f3d9c661baa330febbd49ed5fb3fd940717",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0017.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0017.png",
+      "bytes": 77522,
+      "sha256": "0d19664464d17ab877276a8b16c0da3a16cf6af1821ff95cf0a2b430cb75036d",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0018.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0018.png",
+      "bytes": 77606,
+      "sha256": "4465c9e022c86ada66d428d6a32b6af9744377fb23f245a13347b315bf1a86fc",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0019.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0019.png",
+      "bytes": 89687,
+      "sha256": "b67b7ac79f37bceeb65150ae2fe09276bce7e9055bb17cb23993f453be7d11e7",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0020.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0020.png",
+      "bytes": 80900,
+      "sha256": "ef69983e912b2cd2438eef0831d7e4255404bff60c037aeaf640d210fabd52f0",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0021.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0021.png",
+      "bytes": 66992,
+      "sha256": "4e54ae14f1f0940fe32106614f2b8cd98e165315a34d47553ab616f435d72c64",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0022.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0022.png",
+      "bytes": 48920,
+      "sha256": "c285bf41ab913e55a80ab6f2f634d506b25fe84d3fd98026ced5a7a89412feaa",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0023.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0023.png",
+      "bytes": 54378,
+      "sha256": "55160180e482101c673ac221cfbfef75d7afa1b51cdcde8bb7f4ddc73cccbe59",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0024.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0024.png",
+      "bytes": 57233,
+      "sha256": "1263f01ec636fded4af602dcb1685760bb262b23f1442b7e96babdc4092bb962",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0025.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0025.png",
+      "bytes": 57341,
+      "sha256": "fc83be8533a811e05c93069e629d629ed4d1b19c4b54d00b5d8497b37224dbd6",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0026.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0026.png",
+      "bytes": 58426,
+      "sha256": "bccbd189a2505326da0b11722d4ebf1f8909a2dae9092f75f430dfef3f0db2fe",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0027.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0027.png",
+      "bytes": 61800,
+      "sha256": "c3533a822c1c0632f4a9cbd842b41485ba3b26ffd12bb8ac2444845dcb712470",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/P02-d01-o0028.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0028.png",
+      "bytes": 57117,
+      "sha256": "baab08638e18cc9d0b85d405c96b15d84ffd436cecde8bd41ef920f0db80ba63",
+      "included": false
+    },
+    {
+      "path": "P02/day-01/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-01/trace.zip",
+      "bytes": 7652329,
+      "sha256": "1b1e4f8d1c970c5fbf27291e2590489aadf1e1b6661628751a4135afc47889fb",
+      "included": false
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0029.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0029.png",
+      "bytes": 70140,
+      "sha256": "2424af98f69608d24156fea858d966b84776ea81d4cc32b5551da4eec923700c",
+      "included": false
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0030.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0030.png",
+      "bytes": 75037,
+      "sha256": "0e03e294fee2c61ccb477de0f14a31bde192a20b1581b49b715aed6340693c48",
+      "included": false
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0031.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0031.png",
+      "bytes": 83366,
+      "sha256": "affee8ea5d01897238328ef044a8962e59707053982b65c5e4004d404054ac1e",
+      "included": false
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0032.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0032.png",
+      "bytes": 71217,
+      "sha256": "cfceb2aeaca32f8b224fbca2c30f77d1cfa125212604514768803730446937fc",
+      "included": false
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0033.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0033.png",
+      "bytes": 71941,
+      "sha256": "979c676befc351d3580673bcada0a588503b21f925ca5d2a9845786fd156b8b6",
+      "included": false
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0034.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0034.png",
+      "bytes": 81108,
+      "sha256": "0d248998959ccfe42299dbc17de236943570d0f7f4d99f1230d4ebfcbfeec9e8",
+      "included": false
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0035.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0035.png",
+      "bytes": 76577,
+      "sha256": "1f58c17157b4bb30c2c95c6f5ca4ae180b3933c1c124ebe38d1f32a2928888c8",
+      "included": false
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0036.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0036.png",
+      "bytes": 97433,
+      "sha256": "1ee96f640fd6e6741e0e5ffe7c404433a6459d7a4fb096b211b327fb3e91d5d1",
+      "included": false
+    },
+    {
+      "path": "P02/day-02/P02-d02-o0037.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/P02-d02-o0037.png",
+      "bytes": 107397,
+      "sha256": "e21d3c2c04f3d917a53043d2daf0343b4bbf0adffda33f8601de023b79c02824",
+      "included": false
+    },
+    {
+      "path": "P02/day-02/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-02/trace.zip",
+      "bytes": 3363985,
+      "sha256": "d98121a4f6286189275b149ba2e6beee19824430a03e364f31662c3375ea7a46",
+      "included": false
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0038.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0038.png",
+      "bytes": 71212,
+      "sha256": "4a3ab9b17d7563f3fbb8079e2ad8335269d15f93e4da4a67a9389ef94e7b62c3",
+      "included": false
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0039.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0039.png",
+      "bytes": 80480,
+      "sha256": "931c473152478ccc60ba26f170bd291d67af40b204ba1a57ea984c2f7a0cfbb5",
+      "included": false
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0040.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0040.png",
+      "bytes": 63125,
+      "sha256": "670c32f12dd0c121dc7b68232e474429b95d32e96dd0a0024126679f696e7667",
+      "included": false
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0041.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0041.png",
+      "bytes": 63417,
+      "sha256": "6d717f30271eb7bac148311600e1116fdba06e038d214065400e2975bdc274eb",
+      "included": false
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0042.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0042.png",
+      "bytes": 63843,
+      "sha256": "02ca13a183a78b875bfee91b7da4e3c675b7d6c6f9b5d985290ca2c9e4b11a5b",
+      "included": false
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0043.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0043.png",
+      "bytes": 87015,
+      "sha256": "d6d8fb7d96429580ea7e942bfd53bb54dcd45c3f2ff83d31dc95d7442ad591ae",
+      "included": false
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0044.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0044.png",
+      "bytes": 71176,
+      "sha256": "8d3ec88326eb18e1dc394173f5b140deb320bea0f2a6d508ef4503e0101dc8f6",
+      "included": false
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0045.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0045.png",
+      "bytes": 88073,
+      "sha256": "ca2e0f21abd25c6c1b3a1b84fb8dc49d53bf1d6b676d7871db23ca5392c24c35",
+      "included": false
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0046.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0046.png",
+      "bytes": 75851,
+      "sha256": "821961f7c42fcd334b50abc4c7e2312ff44225314ff58dfcff836b715ca291e7",
+      "included": false
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0047.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0047.png",
+      "bytes": 96550,
+      "sha256": "d05c3f7d61e108f2f2b34806d725f390aeaff7ac26d454d94dadb9e91976fa8a",
+      "included": false
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0048.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0048.png",
+      "bytes": 90004,
+      "sha256": "51619d53525331ef8730164ad8ee15f19a8cc9350ea648362b33da9bd7a121fa",
+      "included": false
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0049.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0049.png",
+      "bytes": 81846,
+      "sha256": "a9033037c5a027bf6f9ce8d96d35789dcfeda6b4a36dba7ccd6b524632bd0a34",
+      "included": false
+    },
+    {
+      "path": "P02/day-04/P02-d04-o0050.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/P02-d04-o0050.png",
+      "bytes": 90018,
+      "sha256": "ad6d75867c75a6f2c6fc39f2caedb2f1babe8f6741c9571e502a35e6918ee753",
+      "included": false
+    },
+    {
+      "path": "P02/day-04/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-04/trace.zip",
+      "bytes": 2570652,
+      "sha256": "cd2206ef28051279f3a56b0ce09119aa0b8bcd646e37f66de18763180f919052",
+      "included": false
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0051.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0051.png",
+      "bytes": 71006,
+      "sha256": "00668c4e7104b9f737ca746997eac742e2ebc59bba4377ba0994c1daf2aa4b0a",
+      "included": false
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0052.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0052.png",
+      "bytes": 80068,
+      "sha256": "a6b8c13aa2499c953d2d5f4e37260930b30b1dba5a7210ac84fdf41b4e2c8a51",
+      "included": false
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0053.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0053.png",
+      "bytes": 79325,
+      "sha256": "784bef2dff815ff7d22c6345fc061e7d5533b1cdfd21f32df39021c8eaad18f1",
+      "included": false
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0054.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0054.png",
+      "bytes": 68303,
+      "sha256": "e9117560556dc8a4478fb08a5515104136352d572bf6da7eb02c10a23ad4832d",
+      "included": false
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0055.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0055.png",
+      "bytes": 88841,
+      "sha256": "0c7c293a4f48f68f4896b81498613c756a2c0937f19cb46549d4e271151e78c4",
+      "included": false
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0057.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0057.png",
+      "bytes": 89172,
+      "sha256": "3c0d241d0d88d8107372450206f1bbc62dfd1bcb5166056f084061e3626eca8c",
+      "included": false
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0058.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0058.png",
+      "bytes": 66142,
+      "sha256": "4efab1e0f2b68b3886d54b211854993873ee05d80d4d783ab4b5fc4e924721ab",
+      "included": false
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0059.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0059.png",
+      "bytes": 68260,
+      "sha256": "11cd76c276d091301653146107079b1a3a973969472631dc832f5386c3702a18",
+      "included": false
+    },
+    {
+      "path": "P02/day-05/P02-d05-o0060.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/P02-d05-o0060.png",
+      "bytes": 67244,
+      "sha256": "c83c7f0454fe670ef5b6e4c0a9aa547b68a18efa7c13ac3be425286cf5c458bb",
+      "included": false
+    },
+    {
+      "path": "P02/day-05/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-05/trace.zip",
+      "bytes": 4865071,
+      "sha256": "2bc32fc4f59a03b17a8373c6aaef126b9747cfc33cd87b722b83be5fa14e40e3",
+      "included": false
+    },
+    {
+      "path": "P02/day-06/P02-d06-o0061.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-06/P02-d06-o0061.png",
+      "bytes": 68415,
+      "sha256": "82149b78e941fc1018a5914ca91141a69c5b88303573c2b3b3a32eabd33bc6e9",
+      "included": false
+    },
+    {
+      "path": "P02/day-06/P02-d06-o0062.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-06/P02-d06-o0062.png",
+      "bytes": 67114,
+      "sha256": "fd51036f3fc644efa3b4e27ece786c687833c3d355c9b72b33ad229a27d25c1f",
+      "included": false
+    },
+    {
+      "path": "P02/day-06/P02-d06-o0063.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-06/P02-d06-o0063.png",
+      "bytes": 80681,
+      "sha256": "f3fc9be1b59bbcd4abda251473384b54bb99c9e6d960cc489ca3e35803365391",
+      "included": false
+    },
+    {
+      "path": "P02/day-06/P02-d06-o0064.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-06/P02-d06-o0064.png",
+      "bytes": 76392,
+      "sha256": "3889e270c9fa121048eb35f92a2dbef62d0b2477a4486261cb0c76af36768aea",
+      "included": false
+    },
+    {
+      "path": "P02/day-06/P02-d06-o0065.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-06/P02-d06-o0065.png",
+      "bytes": 64611,
+      "sha256": "a273479e07005f0321666538a203152d308bbbb373d5daa879eb13fd269e238c",
+      "included": false
+    },
+    {
+      "path": "P02/day-06/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-06/trace.zip",
+      "bytes": 2549522,
+      "sha256": "278fe6a3acbb313131975502a5a74e1efbc36e457c991ec0ec2466419e2b4c2a",
+      "included": false
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0066.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0066.png",
+      "bytes": 68766,
+      "sha256": "362207d5d248548d45e16a2a2b367e5f83c3abfa1e4fe198f2c26a63a58b60f7",
+      "included": false
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0067.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0067.png",
+      "bytes": 73721,
+      "sha256": "b8270a5bae25dbf765acf27381c5f49b40a1ebc5a92d6f1e0feb4089a12ab47c",
+      "included": false
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0068.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0068.png",
+      "bytes": 58124,
+      "sha256": "b0fe74860393ccf96705edda9e636136e0a41e1bf39541c21679136e36c90085",
+      "included": false
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0069.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0069.png",
+      "bytes": 72124,
+      "sha256": "4a604675f2867d32e6532ae37900b6141e58ab30a51ded25e36346421c8edf2e",
+      "included": false
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0070.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0070.png",
+      "bytes": 76360,
+      "sha256": "9fd4dfcaaf6805c6e49f436e776dc0d075b453eb8619a27e8b030310217e673e",
+      "included": false
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0071.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0071.png",
+      "bytes": 85485,
+      "sha256": "4d783850d62220244ad7dfebdf5c730cf802bbfbb78f35a4bccec68ef0109452",
+      "included": false
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0072.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0072.png",
+      "bytes": 86688,
+      "sha256": "17d230f71efdaa2f42153b099469e599e85410cad4883e352f988e7f31f19c9e",
+      "included": false
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0073.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0073.png",
+      "bytes": 65425,
+      "sha256": "676b70dd6452095d13bfe9e19a72d000a05c4e31e136de2bb821230a37ade3cd",
+      "included": false
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0074.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0074.png",
+      "bytes": 68766,
+      "sha256": "362207d5d248548d45e16a2a2b367e5f83c3abfa1e4fe198f2c26a63a58b60f7",
+      "included": false
+    },
+    {
+      "path": "P02/day-07/P02-d07-o0075.png",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/P02-d07-o0075.png",
+      "bytes": 73603,
+      "sha256": "4acdc1d12bb1696cbde3064a106c4dd7ab241ee61ccf3130fba528f8c7a415fd",
+      "included": false
+    },
+    {
+      "path": "P02/day-07/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/P02/day-07/trace.zip",
+      "bytes": 2282103,
+      "sha256": "b6f35304c5ec492da463b61c9ddb9861ca5faae0a0d32e437073db1009e7e865",
+      "included": false
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0001.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0001.png",
+      "bytes": 40613,
+      "sha256": "a293af98c7ecebc6e5edd018fc6cc61f33e5998561137866752204a26b902d6c",
+      "included": false
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0002.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0002.png",
+      "bytes": 66939,
+      "sha256": "20b330add4cd00afd9b365af3cbc17f72a9a775862c5843b0faca1cf50d74a52",
+      "included": false
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0003.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0003.png",
+      "bytes": 67348,
+      "sha256": "eb60279a2a4524bb64d16a26f9d9b1094ca070246ce2b89a335461d830765525",
+      "included": false
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0004.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0004.png",
+      "bytes": 61356,
+      "sha256": "d3e78b1160a9b876c0c5b6dbdc0020a9b86afc949b2c97956f2a5d4ffdb181d3",
+      "included": false
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0005.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0005.png",
+      "bytes": 63547,
+      "sha256": "e2afbb37e8d4bbcf485cb2d0dd5ad394c61fd900e4026bbf8acf99e379bd4922",
+      "included": false
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0006.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0006.png",
+      "bytes": 64501,
+      "sha256": "1274668a80b93541fa476ebaeab16c8fe587f41e03c4534c375c4657686c8fc5",
+      "included": false
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0007.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0007.png",
+      "bytes": 65623,
+      "sha256": "86bc2be52f7825602e063c75ddc5f967d7562a25cc93230330ea6b660d541ea5",
+      "included": false
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0008.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0008.png",
+      "bytes": 65863,
+      "sha256": "cc2d58794bfad0298be835f4e64a1e88b54d8587bfdc6d59032138fb363777d0",
+      "included": false
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0009.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0009.png",
+      "bytes": 67964,
+      "sha256": "64c1829e839ee71d18d1b6fc63e478e9e73bdfb42ec0dcf5ddeb65bcfd9b6aaa",
+      "included": false
+    },
+    {
+      "path": "P03/day-01/P03-d01-o0010.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/P03-d01-o0010.png",
+      "bytes": 72172,
+      "sha256": "306cee4c09f327fb891463d3d18e90f2f3a65ab98665171f78642be81ad515c5",
+      "included": false
+    },
+    {
+      "path": "P03/day-01/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-01/trace.zip",
+      "bytes": 3194638,
+      "sha256": "0a7f54a7921193daa48c035067aac03e1527e67d9096d9546741af39f85a653d",
+      "included": false
+    },
+    {
+      "path": "P03/day-03/P03-d03-o0011.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-03/P03-d03-o0011.png",
+      "bytes": 61663,
+      "sha256": "a0c2fe3a2c408d30bf228b1711174e7c588c49498fb804f79e486c792bdac08e",
+      "included": false
+    },
+    {
+      "path": "P03/day-03/P03-d03-o0012.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-03/P03-d03-o0012.png",
+      "bytes": 66121,
+      "sha256": "6570ef20e7e9a08d3726b8094cfc5c67a42dcea6be5826eb216f5d3484b40a5f",
+      "included": false
+    },
+    {
+      "path": "P03/day-03/P03-d03-o0014.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-03/P03-d03-o0014.png",
+      "bytes": 67196,
+      "sha256": "55c4e15d17237433a885dbde14c7157736051d73eeefdc2edec339bf119f2c7f",
+      "included": false
+    },
+    {
+      "path": "P03/day-03/P03-d03-o0015.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-03/P03-d03-o0015.png",
+      "bytes": 57977,
+      "sha256": "91d07ff433242432e68561ea68b62062df28b09b6d5c65833e044da72e5e92b4",
+      "included": false
+    },
+    {
+      "path": "P03/day-03/P03-d03-o0016.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-03/P03-d03-o0016.png",
+      "bytes": 62194,
+      "sha256": "56683f99a3cf5468cc3eeeffe91e5970c49f9f8f11a9391b053e40b460aa43c1",
+      "included": false
+    },
+    {
+      "path": "P03/day-03/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-03/trace.zip",
+      "bytes": 3393255,
+      "sha256": "30662101d99b3249ef7d69a633de487d240707bbe31be014f9a5ab4da1520fb5",
+      "included": false
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0017.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0017.png",
+      "bytes": 62075,
+      "sha256": "68b46f439da900b5efe843b8264d8fc171ff9a5f03fdd5247b7d2e29e32fdca0",
+      "included": false
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0018.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0018.png",
+      "bytes": 54306,
+      "sha256": "b631e180a0a2ba7b98a8ed97438bd7eb519112603026fb6635ca220b0339c8ab",
+      "included": false
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0020.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0020.png",
+      "bytes": 57403,
+      "sha256": "46faab43cf60b8aca3705dd595a62717304fffabc12ac5a2126e9eda898ff56b",
+      "included": false
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0021.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0021.png",
+      "bytes": 64603,
+      "sha256": "1e06749fbc35c298842c1abb70c469ddbe1c326efaf601ee010bd33eeef64a4c",
+      "included": false
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0022.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0022.png",
+      "bytes": 65739,
+      "sha256": "3ae2f2fefc2ae74f946ccb098b70aa04ef243b0921c5059a27b6988eedfe05b3",
+      "included": false
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0023.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0023.png",
+      "bytes": 66006,
+      "sha256": "53c8379c12aac505be68f628d1c4f892807ac5157c1a3652e08163e7d0029ee6",
+      "included": false
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0024.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0024.png",
+      "bytes": 68699,
+      "sha256": "b945fdad0a45ae2d80c9d75fcaf741e6522d570526806466ad1e1cfd878db6fe",
+      "included": false
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0025.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0025.png",
+      "bytes": 71630,
+      "sha256": "53164dc0b73d2f9f7a0129ffee7ef3f37b389368456f1baf524ba5db54bbfd64",
+      "included": false
+    },
+    {
+      "path": "P03/day-04/P03-d04-o0026.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0026.png",
+      "bytes": 78518,
+      "sha256": "9445eb9ec550713bd0d43cc76ff648fe0ac2399d64f419375fa00a91bb8b9b14",
+      "included": false
+    },
+    {
+      "path": "P03/day-04/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-04/trace.zip",
+      "bytes": 5690877,
+      "sha256": "3ecb59c17b30850348a21ad3b2a87bd1f74d77f718152743da789ccf7a9b6b23",
+      "included": false
+    },
+    {
+      "path": "P03/day-06/P03-d06-o0027.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-06/P03-d06-o0027.png",
+      "bytes": 62715,
+      "sha256": "1c5256d6a94dc026c6a09fbf6ddba00f7010c000d5737e73149730ddb83da815",
+      "included": false
+    },
+    {
+      "path": "P03/day-06/P03-d06-o0028.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-06/P03-d06-o0028.png",
+      "bytes": 51413,
+      "sha256": "7d199b9f7e686cd80cb28ee51e13b75245f91085da72a1d3fd0296df4d7b2d92",
+      "included": false
+    },
+    {
+      "path": "P03/day-06/P03-d06-o0029.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-06/P03-d06-o0029.png",
+      "bytes": 59507,
+      "sha256": "6fe620fa0eafd03ee48c1b34ba5474a37dd868fea848c7a5746375803c6e06a7",
+      "included": false
+    },
+    {
+      "path": "P03/day-06/P03-d06-o0030.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-06/P03-d06-o0030.png",
+      "bytes": 61909,
+      "sha256": "bc0200eb3d5815134ccfdd7bedd0528b7991a11f30dadb6c8d67a05c0bb22bee",
+      "included": false
+    },
+    {
+      "path": "P03/day-06/P03-d06-o0031.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-06/P03-d06-o0031.png",
+      "bytes": 62710,
+      "sha256": "1513d4bd23a732540a5d9df56eaad8bea3478bf4ea40342bee3c0c71f86b0c90",
+      "included": false
+    },
+    {
+      "path": "P03/day-06/P03-d06-o0032.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-06/P03-d06-o0032.png",
+      "bytes": 62539,
+      "sha256": "b156fe20808a3de6a1ec1936c6cac1b57cb3f17b153131dd54dc57f9a6be62fa",
+      "included": false
+    },
+    {
+      "path": "P03/day-06/P03-d06-o0033.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-06/P03-d06-o0033.png",
+      "bytes": 66236,
+      "sha256": "7266a53aa22a0145ceb4745976208175da2e8135317d0f974a2dcc93e18b2a8c",
+      "included": false
+    },
+    {
+      "path": "P03/day-06/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-06/trace.zip",
+      "bytes": 2582307,
+      "sha256": "6abd6cc6828dee32776d14ce1a3be2c207e6a18dc5589a066be87e5153dce85f",
+      "included": false
+    },
+    {
+      "path": "P03/day-07/P03-d07-o0034.png",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-07/P03-d07-o0034.png",
+      "bytes": 63041,
+      "sha256": "4bf763255966a7aeb5fc97d3c4857576d608275e19a9785ba02bf76f61fc8846",
+      "included": false
+    },
+    {
+      "path": "P03/day-07/trace.zip",
+      "original": "personal-lab/verification/month-pilot-001/P03/day-07/trace.zip",
+      "bytes": 730222,
+      "sha256": "adc533c57af28d9a436896dbf5f16cf3e4eb3edb883507cf8548dc96dc530a53",
+      "included": false
+    },
+    {
+      "path": "technical-checks/observation/fixture.png",
+      "original": "personal-lab/verification/observation-check-20261111T193336Z/fixture.png",
+      "bytes": 12111,
+      "sha256": "ddcbb54e69eb739c33eef5fdf3a3a05502b5f1d4a556210d9dcd0caa8fa9201b",
+      "included": true
+    },
+    {
+      "path": "technical-checks/observation/observation.json",
+      "original": "personal-lab/verification/observation-check-20261111T193336Z/observation.json",
+      "bytes": 672,
+      "sha256": "ea65eac5e3aa8f161ca8e4be67704f6c18469823a06f3770f01be09204333698",
+      "included": true
+    },
+    {
+      "path": "technical-checks/observation/report.json",
+      "original": "personal-lab/verification/observation-check-20261111T193336Z/report.json",
+      "bytes": 438,
+      "sha256": "abdd2dbd6f38b8b9a9058a79336973abbe4349c1cbfc0b599d02e2a15b0b31e9",
+      "included": true
+    },
+    {
+      "path": "technical-checks/live-smoke/home.png",
+      "original": "personal-lab/verification/driver-after-f6-live-verified/home.png",
+      "bytes": 76651,
+      "sha256": "f2e1308d364068b6a803397ade48d851753b899ae4103559de67cab530a5d1c3",
+      "included": true
+    },
+    {
+      "path": "technical-checks/live-smoke/report.json",
+      "original": "personal-lab/verification/driver-after-f6-live-verified/report.json",
+      "bytes": 12459,
+      "sha256": "d103a9325dc55751bdd2911a6131380dabcb1e6f6354f973e91dbe65b4e01d74",
+      "included": true
+    },
+    {
+      "path": "technical-checks/live-smoke/trace.zip",
+      "original": "personal-lab/verification/driver-after-f6-live-verified/trace.zip",
+      "bytes": 1176311,
+      "sha256": "6f64584a503896e6f65d806c4d9ab20ca6f1116b5809091c61f8ecb96afe7518",
+      "included": true
+    },
+    {
+      "path": "technical-checks/live-smoke/welcome.png",
+      "original": "personal-lab/verification/driver-after-f6-live-verified/welcome.png",
+      "bytes": 40731,
+      "sha256": "584c8e34254039d330e9c8f74dfc76fb6d697162209d9cc803cfc86bbb609171",
+      "included": true
+    }
+  ]
+}

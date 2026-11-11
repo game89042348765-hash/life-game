@@ -1,0 +1,71 @@
+{
+  "title": "LifeGame Lab — лаборатория",
+  "url": "http://127.0.0.1:8041/personal-lab/",
+  "virtual_time_observed": "2026-11-16T18:00:14.449Z",
+  "modal": true,
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "visible_text": "Своя жизнь в LifeGame\n✕\nЗдесь пока пусто: восемь исходных блоков и ничего лишнего. Можно начать с одного направления или просто записать дело.\nВключить семидневное сопровождение\nМаленький шаг в день. Ничего не блокирует, можно пропускать.\nНачать с LifeGame Lite\nТолько основные разделы, остальное — в настройках.\nНачать",
+  "elements": [
+    {
+      "element": "e1",
+      "label": "Закрыть",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 341,
+        "y": 554,
+        "width": 32,
+        "height": 32
+      },
+      "value": ""
+    },
+    {
+      "element": "e2",
+      "label": "Включить семидневное сопровождение\nМаленький шаг в день. Ничего не блокирует, можно пропускать.",
+      "type": "checkbox",
+      "disabled": false,
+      "rect": {
+        "x": 21,
+        "y": 676,
+        "width": 18,
+        "height": 18
+      },
+      "value": "on",
+      "checked": false
+    },
+    {
+      "element": "e3",
+      "label": "Начать с LifeGame Lite\nТолько основные разделы, остальное — в настройках.",
+      "type": "checkbox",
+      "disabled": false,
+      "rect": {
+        "x": 21,
+        "y": 741,
+        "width": 18,
+        "height": 18
+      },
+      "value": "on",
+      "checked": true
+    },
+    {
+      "element": "e4",
+      "label": "Начать",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 17,
+        "y": 789,
+        "width": 78,
+        "height": 36
+      },
+      "value": ""
+    }
+  ],
+  "observation_id": "P01-d01-o0003",
+  "screenshot": "/workspace/life-game/personal-lab/verification/month-pilot-001/P01/day-01/P01-d01-o0003.png",
+  "actions_used": 2,
+  "action_budget": 28
+}

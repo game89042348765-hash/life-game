@@ -1,0 +1,56 @@
+{
+  "title": "LifeGame Lab — лаборатория",
+  "url": "http://127.0.0.1:8041/personal-lab/",
+  "virtual_time_observed": "2026-11-16T06:00:00.867Z",
+  "modal": false,
+  "viewport": {
+    "width": 1100,
+    "height": 900
+  },
+  "visible_text": "LifeGame Lab\nСвязать представление о желаемой жизни с тем, что делаешь сегодня. Стратегия, день, факты и пересмотр — в одном цикле, с игровыми наградами.\nНачать свою жизнь в LifeGame\nВосемь исходных блоков. Можно начать с одного дела.\nПосмотреть пример\nВымышленная жизнь с гитарой, здоровьем и историей. Всё можно нажимать.\nОбучающие видео, LifeGame Lite и семидневное сопровождение включаются после выбора.",
+  "elements": [
+    {
+      "element": "e1",
+      "label": "Начать свою жизнь в LifeGame\nВосемь исходных блоков. Можно начать с одного дела.",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 284,
+        "y": 179,
+        "width": 532,
+        "height": 69
+      },
+      "value": ""
+    },
+    {
+      "element": "e2",
+      "label": "Посмотреть пример\nВымышленная жизнь с гитарой, здоровьем и историей. Всё можно нажимать.",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 284,
+        "y": 257,
+        "width": 532,
+        "height": 69
+      },
+      "value": ""
+    },
+    {
+      "element": "e3",
+      "label": "Быстрое добавление",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 756,
+        "y": 768,
+        "width": 56,
+        "height": 56
+      },
+      "value": ""
+    }
+  ],
+  "observation_id": "P02-d01-o0001",
+  "screenshot": "/workspace/life-game/personal-lab/verification/month-pilot-001/P02/day-01/P02-d01-o0001.png",
+  "actions_used": 0,
+  "action_budget": 34
+}

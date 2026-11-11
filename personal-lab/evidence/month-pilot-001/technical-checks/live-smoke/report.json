@@ -1,0 +1,414 @@
+{
+  "status": "passed",
+  "mode": "technical-live-smoke-not-synthetic-user",
+  "initial_controls": 3,
+  "modal_controls": 4,
+  "home_controls": 21,
+  "observations": [
+    {
+      "title": "LifeGame Lab — лаборатория",
+      "url": "http://127.0.0.1:8041/personal-lab/",
+      "virtual_time_observed": "2026-11-16T18:00:00.715Z",
+      "modal": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "visible_text": "LifeGame Lab\nСвязать представление о желаемой жизни с тем, что делаешь сегодня. Стратегия, день, факты и пересмотр — в одном цикле, с игровыми наградами.\nНачать свою жизнь в LifeGame\nВосемь исходных блоков. Можно начать с одного дела.\nПосмотреть пример\nВымышленная жизнь с гитарой, здоровьем и историей. Всё можно нажимать.\nОбучающие видео, LifeGame Lite и семидневное сопровождение включаются после выбора.",
+      "elements": [
+        {
+          "element": "e1",
+          "label": "Начать свою жизнь в LifeGame\nВосемь исходных блоков. Можно начать с одного дела.",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 22,
+            "y": 201,
+            "width": 346,
+            "height": 87
+          },
+          "value": ""
+        },
+        {
+          "element": "e2",
+          "label": "Посмотреть пример\nВымышленная жизнь с гитарой, здоровьем и историей. Всё можно нажимать.",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 22,
+            "y": 296,
+            "width": 346,
+            "height": 87
+          },
+          "value": ""
+        },
+        {
+          "element": "e3",
+          "label": "Быстрое добавление",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 318,
+            "y": 712,
+            "width": 56,
+            "height": 56
+          },
+          "value": ""
+        }
+      ]
+    },
+    {
+      "title": "LifeGame Lab — лаборатория",
+      "url": "http://127.0.0.1:8041/personal-lab/",
+      "virtual_time_observed": "2026-11-16T18:00:01.228Z",
+      "modal": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "visible_text": "Своя жизнь в LifeGame\n✕\nЗдесь пока пусто: восемь исходных блоков и ничего лишнего. Можно начать с одного направления или просто записать дело.\nВключить семидневное сопровождение\nМаленький шаг в день. Ничего не блокирует, можно пропускать.\nНачать с LifeGame Lite\nТолько основные разделы, остальное — в настройках.\nНачать",
+      "elements": [
+        {
+          "element": "e1",
+          "label": "Закрыть",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 341,
+            "y": 554,
+            "width": 32,
+            "height": 32
+          },
+          "value": ""
+        },
+        {
+          "element": "e2",
+          "label": "Включить семидневное сопровождение\nМаленький шаг в день. Ничего не блокирует, можно пропускать.",
+          "type": "checkbox",
+          "disabled": false,
+          "rect": {
+            "x": 21,
+            "y": 676,
+            "width": 18,
+            "height": 18
+          },
+          "value": "on",
+          "checked": false
+        },
+        {
+          "element": "e3",
+          "label": "Начать с LifeGame Lite\nТолько основные разделы, остальное — в настройках.",
+          "type": "checkbox",
+          "disabled": false,
+          "rect": {
+            "x": 21,
+            "y": 741,
+            "width": 18,
+            "height": 18
+          },
+          "value": "on",
+          "checked": false
+        },
+        {
+          "element": "e4",
+          "label": "Начать",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 17,
+            "y": 789,
+            "width": 78,
+            "height": 36
+          },
+          "value": ""
+        }
+      ]
+    },
+    {
+      "title": "LifeGame Lab — лаборатория",
+      "url": "http://127.0.0.1:8041/personal-lab/",
+      "virtual_time_observed": "2026-11-16T18:00:01.368Z",
+      "modal": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "visible_text": "LifeGame Lab\n16 ноября, понедельник\n● 0\nУр. 1\n1\nГерой · уровень 1\n0\nXP\nМонеты\n0\nдо ур. 2: 1 000 XP\n+0 сегодня\nВезде\n▾\nвсе дела видны\nПриглашение (можно отключить в настройках)\nВечерние вопросы дня\nОткрыть\nКонструктор дня\nСделано 0 из 0 · +0 монет\nСтратегическое планирование\nКарта жизни: 8 блоков\nРежим фокуса\nВыключен\nТворческий режим\nПоставить систему на паузу\nБлижайшие календарные дела\nНа ближайшие три дня ничего нет.\nРазделы\nЗадания\nПривычки\nКвесты\nКалендарь\nГлавная\nДень\nКарта\nВходящие\nРазделы",
+      "elements": [
+        {
+          "element": "e1",
+          "label": "● 0\nУр. 1",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 194,
+            "y": 24,
+            "width": 92,
+            "height": 33
+          },
+          "value": ""
+        },
+        {
+          "element": "e2",
+          "label": "Быстрое выполнение",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 292,
+            "y": 23,
+            "width": 35,
+            "height": 34
+          },
+          "value": ""
+        },
+        {
+          "element": "e3",
+          "label": "Поиск",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 333,
+            "y": 23,
+            "width": 35,
+            "height": 34
+          },
+          "value": ""
+        },
+        {
+          "element": "e4",
+          "label": "Сменить локацию",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 22,
+            "y": 236,
+            "width": 79,
+            "height": 34
+          },
+          "value": ""
+        },
+        {
+          "element": "e5",
+          "label": "Открыть",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 276,
+            "y": 316,
+            "width": 77,
+            "height": 28
+          },
+          "value": ""
+        },
+        {
+          "element": "e6",
+          "label": "Конструктор дня\nСделано 0 из 0 · +0 монет",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 22,
+            "y": 368,
+            "width": 168,
+            "height": 90
+          },
+          "value": ""
+        },
+        {
+          "element": "e7",
+          "label": "Стратегическое планирование\nКарта жизни: 8 блоков",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 200,
+            "y": 368,
+            "width": 168,
+            "height": 90
+          },
+          "value": ""
+        },
+        {
+          "element": "e8",
+          "label": "Режим фокуса\nВыключен",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 22,
+            "y": 467,
+            "width": 168,
+            "height": 87
+          },
+          "value": ""
+        },
+        {
+          "element": "e9",
+          "label": "Творческий режим\nПоставить систему на паузу",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 200,
+            "y": 467,
+            "width": 168,
+            "height": 87
+          },
+          "value": ""
+        },
+        {
+          "element": "e10",
+          "label": "Задания",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 22,
+            "y": 679,
+            "width": 109,
+            "height": 49
+          },
+          "value": ""
+        },
+        {
+          "element": "e11",
+          "label": "Привычки",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 140,
+            "y": 679,
+            "width": 109,
+            "height": 49
+          },
+          "value": ""
+        },
+        {
+          "element": "e12",
+          "label": "Квесты",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 259,
+            "y": 679,
+            "width": 109,
+            "height": 49
+          },
+          "value": ""
+        },
+        {
+          "element": "e13",
+          "label": "Календарь",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 22,
+            "y": 737,
+            "width": 109,
+            "height": 70
+          },
+          "value": ""
+        },
+        {
+          "element": "e14",
+          "label": "Невыполненные",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 140,
+            "y": 737,
+            "width": 109,
+            "height": 70
+          },
+          "value": ""
+        },
+        {
+          "element": "e15",
+          "label": "Магазин бонусов",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 259,
+            "y": 737,
+            "width": 109,
+            "height": 70
+          },
+          "value": ""
+        },
+        {
+          "element": "e16",
+          "label": "Главная",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 0,
+            "y": 784,
+            "width": 78,
+            "height": 60
+          },
+          "value": ""
+        },
+        {
+          "element": "e17",
+          "label": "День",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 78,
+            "y": 784,
+            "width": 78,
+            "height": 60
+          },
+          "value": ""
+        },
+        {
+          "element": "e18",
+          "label": "Карта",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 156,
+            "y": 784,
+            "width": 78,
+            "height": 60
+          },
+          "value": ""
+        },
+        {
+          "element": "e19",
+          "label": "Входящие",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 234,
+            "y": 784,
+            "width": 78,
+            "height": 60
+          },
+          "value": ""
+        },
+        {
+          "element": "e20",
+          "label": "Разделы",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 312,
+            "y": 784,
+            "width": 78,
+            "height": 60
+          },
+          "value": ""
+        },
+        {
+          "element": "e21",
+          "label": "Быстрое добавление",
+          "type": "button",
+          "disabled": false,
+          "rect": {
+            "x": 318,
+            "y": 712,
+            "width": 56,
+            "height": 56
+          },
+          "value": ""
+        }
+      ]
+    }
+  ]
+}

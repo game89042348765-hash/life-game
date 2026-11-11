@@ -1,0 +1,13 @@
+{
+  "started_utc": "20261111T192552711764Z",
+  "url": "http://127.0.0.1:8041/personal-lab/",
+  "command": "python3 personal-lab/research/LAB-002-digital-month/reproduce.py",
+  "browser": "/usr/bin/chromium",
+  "contexts": "fresh nonpersistent, one per case",
+  "source_sha256": {
+    "personal-lab/app.js": "bf2f0c84240d6a42c30bfd611022ccec3cdf3998948619512e2ba712de513c1e",
+    "personal-lab/planning.js": "55a0170e210ddcf8b5d767102254208e9df5cbe7a6fd7dd5c0d45bf3a35f1422",
+    "personal-lab/persistence.js": "8c7738ac2c7bf741dd835329104c254948721e2f7a8dec74167a4e937b55fbad",
+    "personal-lab/style.css": "96c0ff65319989fe697a3f06c1fbcff02d7d9fe410c4a87d5f526adfb733ba4f"
+  }
+}

@@ -1,0 +1,272 @@
+{
+  "title": "LifeGame Lab — лаборатория",
+  "url": "http://127.0.0.1:8041/personal-lab/",
+  "virtual_time_observed": "2026-11-19T18:00:28.403Z",
+  "modal": true,
+  "viewport": {
+    "width": 375,
+    "height": 844
+  },
+  "visible_text": "Быстрое добавление\n✕\nЧто это\nЗадание\nЦель\nСобытие\nМысль\nЕщё\nПривычка\nБлок (можно позже)\nЭтап\nДата\nСегодня\nВ Конструктор дня\nГде\n🏠 Дом\n💼 Работа\n🚗 В дороге\nНичего не выбрано — видно в любой локации.\nЗадание с разовым расписанием. Остальное можно настроить позже.\nСохранить\nЗаполнить подробно…",
+  "elements": [
+    {
+      "element": "e1",
+      "label": "Закрыть",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 326,
+        "y": 286,
+        "width": 32,
+        "height": 32
+      },
+      "value": ""
+    },
+    {
+      "element": "e2",
+      "label": "Что записать?",
+      "type": "text",
+      "disabled": false,
+      "rect": {
+        "x": 17,
+        "y": 330,
+        "width": 341,
+        "height": 43
+      },
+      "value": "Немного порисовать",
+      "checked": false
+    },
+    {
+      "element": "e3",
+      "label": "Задание",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 17,
+        "y": 408,
+        "width": 80,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e4",
+      "label": "Цель",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 103,
+        "y": 408,
+        "width": 56,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e5",
+      "label": "Событие",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 165,
+        "y": 408,
+        "width": 80,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e6",
+      "label": "Мысль",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 251,
+        "y": 408,
+        "width": 67,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e7",
+      "label": "Блок (можно позже)",
+      "type": "select",
+      "disabled": false,
+      "rect": {
+        "x": 17,
+        "y": 499,
+        "width": 166,
+        "height": 42
+      },
+      "value": "Без блока",
+      "options": [
+        {
+          "label": "Без блока",
+          "disabled": false
+        },
+        {
+          "label": "🌿 Душевное состояние",
+          "disabled": false
+        },
+        {
+          "label": "💪 Физическое состояние",
+          "disabled": false
+        },
+        {
+          "label": "📚 Знания, навыки, опыт",
+          "disabled": false
+        },
+        {
+          "label": "💰 Ресурсы и материальное",
+          "disabled": false
+        },
+        {
+          "label": "🤝 Окружение и отношения",
+          "disabled": false
+        },
+        {
+          "label": "🗂 Наполнение и организация",
+          "disabled": false
+        },
+        {
+          "label": "🌦 Обстоятельства",
+          "disabled": false
+        },
+        {
+          "label": "🚫 Исключить",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "element": "e8",
+      "label": "Этап",
+      "type": "select",
+      "disabled": false,
+      "rect": {
+        "x": 193,
+        "y": 499,
+        "width": 166,
+        "height": 42
+      },
+      "value": "Без этапа",
+      "options": [
+        {
+          "label": "Без этапа",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "element": "e9",
+      "label": "INPUT",
+      "type": "date",
+      "disabled": false,
+      "rect": {
+        "x": 17,
+        "y": 575,
+        "width": 257,
+        "height": 45
+      },
+      "value": "",
+      "checked": false
+    },
+    {
+      "element": "e10",
+      "label": "Сегодня",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 282,
+        "y": 583,
+        "width": 76,
+        "height": 28
+      },
+      "value": ""
+    },
+    {
+      "element": "e11",
+      "label": "В Конструктор дня",
+      "type": "checkbox",
+      "disabled": false,
+      "rect": {
+        "x": 21,
+        "y": 632,
+        "width": 18,
+        "height": 18
+      },
+      "value": "on",
+      "checked": true
+    },
+    {
+      "element": "e12",
+      "label": "🏠 Дом",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 17,
+        "y": 687,
+        "width": 70,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e13",
+      "label": "💼 Работа",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 93,
+        "y": 687,
+        "width": 88,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e14",
+      "label": "🚗 В дороге",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 187,
+        "y": 687,
+        "width": 100,
+        "height": 31
+      },
+      "value": ""
+    },
+    {
+      "element": "e15",
+      "label": "Сохранить",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 17,
+        "y": 789,
+        "width": 103,
+        "height": 36
+      },
+      "value": ""
+    },
+    {
+      "element": "e16",
+      "label": "Заполнить подробно…",
+      "type": "button",
+      "disabled": false,
+      "rect": {
+        "x": 128,
+        "y": 789,
+        "width": 187,
+        "height": 36
+      },
+      "value": ""
+    }
+  ],
+  "observation_id": "P03-d04-o0022",
+  "screenshot": "/workspace/life-game/personal-lab/verification/month-pilot-001/P03/day-04/P03-d04-o0022.png",
+  "actions_used": 5,
+  "action_budget": 12
+}

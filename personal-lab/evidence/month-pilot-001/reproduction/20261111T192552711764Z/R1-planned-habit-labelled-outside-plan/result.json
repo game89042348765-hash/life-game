@@ -1,0 +1,118 @@
+{
+  "case": "R1-planned-habit-labelled-outside-plan",
+  "result": {
+    "planned_before": true,
+    "outside_plan_label_after_scheduled_ui_mark": true,
+    "facts_before": 0,
+    "active_facts_after": [
+      {
+        "kind": "habitStep",
+        "date": "2026-11-17",
+        "coins": 0,
+        "xp": 0,
+        "title": "Читать 10 минут вечером — подход"
+      },
+      {
+        "kind": "habit",
+        "date": "2026-11-17",
+        "coins": 5,
+        "xp": 5,
+        "title": "Читать 10 минут вечером"
+      }
+    ],
+    "ledger_entries_after": 1,
+    "earned_coins_after": 5,
+    "interpretation": "Scheduled habitStep is rendered outside plan. Two fact rows do not imply two rewards."
+  },
+  "steps": [
+    {
+      "step": 1,
+      "action": "open local app"
+    },
+    {
+      "step": 2,
+      "action": "click: Начать свою жизнь в LifeGame"
+    },
+    {
+      "step": 3,
+      "action": "check: Начать с LifeGame Lite"
+    },
+    {
+      "step": 4,
+      "action": "click: Начать"
+    },
+    {
+      "step": 5,
+      "action": "click: Привычки"
+    },
+    {
+      "step": 6,
+      "action": "click: + Новое"
+    },
+    {
+      "step": 7,
+      "action": "fill Название: Читать 10 минут вечером"
+    },
+    {
+      "step": 8,
+      "action": "scroll form to visible Создать"
+    },
+    {
+      "step": 9,
+      "action": "click: Создать"
+    },
+    {
+      "step": 10,
+      "action": "set browser clock to 2026-11-17T21:00:00+03:00"
+    },
+    {
+      "step": 11,
+      "action": "reload on next virtual date"
+    },
+    {
+      "step": 12,
+      "action": "click: День"
+    },
+    {
+      "step": 13,
+      "action": "click: Отметить выполненным"
+    },
+    {
+      "step": 14,
+      "action": "scroll day down 430px to read the full outside-plan row"
+    },
+    {
+      "step": 15,
+      "action": "click: Главная"
+    },
+    {
+      "step": 16,
+      "action": "click: История"
+    },
+    {
+      "step": 17,
+      "action": "click: Выполнения"
+    }
+  ],
+  "blocked_external_requests": [],
+  "page_errors": [],
+  "native_dialogs": [],
+  "evidence": [
+    "01-new-habit-top.json",
+    "01-new-habit-top.png",
+    "02-new-habit-bottom.json",
+    "02-new-habit-bottom.png",
+    "03-before-observer-state.json",
+    "03-planned-before-mark.json",
+    "03-planned-before-mark.png",
+    "04-immediate-day-result.json",
+    "04-immediate-day-result.png",
+    "05-after-observer-state.json",
+    "05-outside-plan-row.json",
+    "05-outside-plan-row.png",
+    "06-history.json",
+    "06-history.png",
+    "07-history-completions.json",
+    "07-history-completions.png"
+  ]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "visible heading retained",
+    "pass": true
+  },
+  {
+    "name": "text hidden by navigation excluded",
+    "pass": true
+  },
+  {
+    "name": "partially visible block retains exposed text",
+    "pass": true
+  },
+  {
+    "name": "below-fold tail excluded",
+    "pass": true
+  },
+  {
+    "name": "visible control remains actionable",
+    "pass": true
+  },
+  {
+    "name": "clipped control excluded",
+    "pass": true
+  }
+]

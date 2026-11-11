@@ -1,0 +1,267 @@
+{
+  "title": "LifeGame Lab — лаборатория",
+  "time": "2026-11-17T18:00:02.976Z",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "text": "←\nИСТОРИЯ\n17 ноя\n● 5\nУр. 1\nИстория\n\nФакты прожитого. По умолчанию 10 последних записей.\n\nВсё\nВыполнения\nБонусы\nРешения\nПропуски\nСессии\nЧитать 10 минут вечером — подход\n17 ноя · Подход привычки\nЧитать 10 минут вечером\n17 ноя · Привычка\n+5\nЧитать 10 минут вечером\n16 ноя · Пропуск · Привычка\nГлавная\nДень\nКарта\nВходящие\nРазделы\n+5 монет и XP",
+  "controls": [
+    {
+      "tag": "BUTTON",
+      "type": "submit",
+      "label": "←",
+      "value": "",
+      "rect": {
+        "x": 22,
+        "y": 24.515625,
+        "width": 21,
+        "height": 28.640625,
+        "top": 24.515625,
+        "right": 43,
+        "bottom": 53.15625,
+        "left": 22
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "type": "submit",
+      "label": "● 5\nУр. 1",
+      "value": "",
+      "rect": {
+        "x": 193.546875,
+        "y": 22.421875,
+        "width": 92.453125,
+        "height": 32.84375,
+        "top": 22.421875,
+        "right": 286,
+        "bottom": 55.265625,
+        "left": 193.546875
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "type": "submit",
+      "label": "Быстрое выполнение",
+      "value": "",
+      "rect": {
+        "x": 292,
+        "y": 21.84375,
+        "width": 35,
+        "height": 34,
+        "top": 21.84375,
+        "right": 327,
+        "bottom": 55.84375,
+        "left": 292
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "type": "submit",
+      "label": "Поиск",
+      "value": "",
+      "rect": {
+        "x": 333,
+        "y": 21.84375,
+        "width": 35,
+        "height": 34,
+        "top": 21.84375,
+        "right": 368,
+        "bottom": 55.84375,
+        "left": 333
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "type": "submit",
+      "label": "Всё",
+      "value": "",
+      "rect": {
+        "x": 22,
+        "y": 161.078125,
+        "width": 48.3125,
+        "height": 30.84375,
+        "top": 161.078125,
+        "right": 70.3125,
+        "bottom": 191.921875,
+        "left": 22
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "type": "submit",
+      "label": "Выполнения",
+      "value": "",
+      "rect": {
+        "x": 76.3125,
+        "y": 161.078125,
+        "width": 104.34375,
+        "height": 30.84375,
+        "top": 161.078125,
+        "right": 180.65625,
+        "bottom": 191.921875,
+        "left": 76.3125
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "type": "submit",
+      "label": "Бонусы",
+      "value": "",
+      "rect": {
+        "x": 186.65625,
+        "y": 161.078125,
+        "width": 72.5625,
+        "height": 30.84375,
+        "top": 161.078125,
+        "right": 259.21875,
+        "bottom": 191.921875,
+        "left": 186.65625
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "type": "submit",
+      "label": "Решения",
+      "value": "",
+      "rect": {
+        "x": 265.21875,
+        "y": 161.078125,
+        "width": 81.53125,
+        "height": 30.84375,
+        "top": 161.078125,
+        "right": 346.75,
+        "bottom": 191.921875,
+        "left": 265.21875
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "type": "submit",
+      "label": "Пропуски",
+      "value": "",
+      "rect": {
+        "x": 22,
+        "y": 197.921875,
+        "width": 87.3125,
+        "height": 30.84375,
+        "top": 197.921875,
+        "right": 109.3125,
+        "bottom": 228.765625,
+        "left": 22
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "type": "submit",
+      "label": "Сессии",
+      "value": "",
+      "rect": {
+        "x": 115.3125,
+        "y": 197.921875,
+        "width": 70.8125,
+        "height": 30.84375,
+        "top": 197.921875,
+        "right": 186.125,
+        "bottom": 228.765625,
+        "left": 115.3125
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "type": "submit",
+      "label": "Главная",
+      "value": "",
+      "rect": {
+        "x": 0,
+        "y": 784.0625,
+        "width": 78,
+        "height": 59.9375,
+        "top": 784.0625,
+        "right": 78,
+        "bottom": 844,
+        "left": 0
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "type": "submit",
+      "label": "День",
+      "value": "",
+      "rect": {
+        "x": 78,
+        "y": 784.0625,
+        "width": 78,
+        "height": 59.9375,
+        "top": 784.0625,
+        "right": 156,
+        "bottom": 844,
+        "left": 78
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "type": "submit",
+      "label": "Карта",
+      "value": "",
+      "rect": {
+        "x": 156,
+        "y": 784.0625,
+        "width": 78,
+        "height": 59.9375,
+        "top": 784.0625,
+        "right": 234,
+        "bottom": 844,
+        "left": 156
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "type": "submit",
+      "label": "Входящие",
+      "value": "",
+      "rect": {
+        "x": 234,
+        "y": 784.0625,
+        "width": 78,
+        "height": 59.9375,
+        "top": 784.0625,
+        "right": 312,
+        "bottom": 844,
+        "left": 234
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "type": "submit",
+      "label": "Разделы",
+      "value": "",
+      "rect": {
+        "x": 312,
+        "y": 784.0625,
+        "width": 78,
+        "height": 59.9375,
+        "top": 784.0625,
+        "right": 390,
+        "bottom": 844,
+        "left": 312
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "type": "submit",
+      "label": "Быстрое добавление",
+      "value": "",
+      "rect": {
+        "x": 318,
+        "y": 712,
+        "width": 56,
+        "height": 56,
+        "top": 712,
+        "right": 374,
+        "bottom": 768,
+        "left": 318
+      }
+    }
+  ]
+}
