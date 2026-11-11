@@ -10,6 +10,6 @@
 
 Основа задачи 98de9d9, прежний runtime3a362e0. Единственная проверенная HTML-копия — backups/index-2026-11-11-15-36-47.html (копия personal/index до подключения planning.js). Прежние документы дословно в docs/history/2026-11-11-before-personal-1.2.0/. Новые ZIP не создавались; переданные пакетыPersonal1.1.0 остаются прежним срезом. Посторонние demo/task-add-light.html и visual-review/ не трогали и не публиковали.
 
-Рабочий адрес: https://game89042348765-hash.github.io/life-game/personal/ . Публикация этого обновления: ожидается отправка проверенной версии и подтверждение Pages; точный статус — personal/PUBLICATION.md. Прямое чтение github.io ограничено сетевой политикой среды; сверять Actions и pinned raw, не объявлять этим физическую приёмку.
+Рабочий адрес: https://game89042348765-hash.github.io/life-game/personal/ . Публикация подтверждена: runtime 09f41169a4b6dd77652e301d60dcc7601dd07b59, Pages 43028015360 SUCCESS за 1 мин 16 с; 11 pinned raw файлов совпали. Точный статус — personal/PUBLICATION.md. Прямое чтение github.io ограничено сетевой политикой среды; сверять Actions и pinned raw, не объявлять этим физическую приёмку.
 
 Следующее действие после публикации — обратная связь по четырём дням использования, а не новый редизайн. [Памятка](personal/FOUR-DAY-TEST.md), [решения](personal/DECISIONS.md), [сверка](personal/AUDIT.md), [сравнение](personal/COMPARE-LG110.md), [проверки](personal/TESTING.md), [происхождение](personal/SOURCE.json).

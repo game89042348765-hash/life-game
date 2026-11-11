@@ -214,5 +214,14 @@
       "bytes": 50904,
       "sha256": "22f9b928aa3928a896340422b54d690fbb5875c30eae4c106f029c61f2289fd6"
     }
+  },
+  "publication": {
+    "runtimeCommit": "09f41169a4b6dd77652e301d60dcc7601dd07b59",
+    "pagesRun": "43028015360",
+    "conclusion": "SUCCESS",
+    "duration": "1m 16s",
+    "pinnedRawMatchedFiles": 11,
+    "githubIoDirectRead": "blocked by environment policy; no direct site HTTP verification",
+    "physicalPhoneAcceptance": "pending"
   }
 }
