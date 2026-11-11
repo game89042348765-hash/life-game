@@ -1,10 +1,11 @@
-import {createState,evolve,validate,exportState,importState} from './domain.js';
+import {createState,evolve,validate,exportState,importState,dayKey} from './domain.js';
 export const STORAGE_KEY='lifegame-next-v1';
 export const BACKUP_KEY='lifegame-next-last-good-v1';
 
 export class Store {
-  constructor(storage=globalThis.localStorage,clock=()=>new Date()) {
-    this.storage=storage;this.clock=clock;this.state=createState(clock());this.snapshot=null;this.error=null;this.listeners=new Set();this.queue=Promise.resolve();
+  constructor(storage,clock=()=>new Date()) {
+    try{this.storage=storage??globalThis.localStorage;}catch(e){this.storage={getItem(){throw e;},setItem(){throw e;}};}
+    this.clock=clock;this.state=createState(clock());this.snapshot=null;this.error=null;this.listeners=new Set();this.queue=Promise.resolve();
   }
   async lock(fn){return typeof window!=='undefined'&&globalThis.navigator?.locks?globalThis.navigator.locks.request(STORAGE_KEY,fn):fn();}
   async init(){
@@ -15,7 +16,7 @@ export class Store {
         else {const raw=JSON.stringify(this.state);this.storage.setItem(STORAGE_KEY,raw);this.snapshot=raw;}
       } catch(e){this.error='Не удалось прочитать или сохранить данные. '+e.message;}
     });
-    if(!this.error)try{await this.dispatch('tick');}catch(e){this.error=e.message;}
+    if(!this.error&&(this.state.lastDay!==dayKey(this.clock())||!this.state.days[dayKey(this.clock())]))try{await this.dispatch('tick');}catch(e){this.error=e.message;}
     return this;
   }
   subscribe(fn){this.listeners.add(fn);return ()=>this.listeners.delete(fn);}
@@ -39,7 +40,7 @@ export class Store {
     return this.lock(()=>{
       const raw=this.storage.getItem(STORAGE_KEY);if(raw!==this.snapshot||expected!==this.state.revision)throw Error('Сохранение изменилось. Повторите импорт после обновления страницы.');
       const next=evolve(importState(value),'tick',{},this.clock());next.revision=this.state.revision+1;validate(next);const data=JSON.stringify(next);
-      if(raw){try{validate(JSON.parse(raw));this.storage.setItem(BACKUP_KEY,raw);}catch{}}
+      if(raw){let valid=false;try{validate(JSON.parse(raw));valid=true;}catch{}if(valid)this.storage.setItem(BACKUP_KEY,raw);}
       this.storage.setItem(STORAGE_KEY,data);this.state=next;this.snapshot=data;this.error=null;this.notify();return next;
     });
   }

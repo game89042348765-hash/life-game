@@ -26,7 +26,7 @@ export const eventsFor = (s,id,kind) => s.events.filter(e=>e.active&&e.entityId=
 export const itemStage = (s,i) => s.stages.find(x=>x.id===i.stageId)||null;
 export const itemBlock = (s,i) => s.blocks.find(x=>x.id===itemStage(s,i)?.blockId)||null;
 export const usable = (s,i) => live(i)&&(!i.stageId||live(itemStage(s,i))&&!itemStage(s,i).completedAt&&live(itemBlock(s,i)));
-export const completed = (s,i) => i.kind==='task'&&i.schedule.mode==='once'?eventsFor(s,i.id,'task').some(e=>e.taskCycle===i.taskCycle):i.kind==='quest'?eventsFor(s,i.id,'quest-final').length>0:!!i.closedAt;
+export const completed = (s,i) => ['task','calendar'].includes(i.kind)&&i.schedule.mode==='once'?eventsFor(s,i.id,i.kind).some(e=>e.taskCycle===i.taskCycle):i.kind==='quest'?eventsFor(s,i.id,'quest-final').length>0:!!i.closedAt;
 export const progress = (s,i,date=null) => eventsFor(s,i.id,i.kind==='habit'?'habit':i.kind==='quest'?'quest-step':i.kind==='calendar'?'calendar':'task').filter(e=>!date||e.date===date).reduce((v,e)=>v+(e.units||1),0);
 export function sections(preset='full') {return Object.fromEntries(Object.keys(SECTION_NAMES).map(k=>[k,preset==='full'||!['unknown','lvmg'].includes(k)]));}
 function stage(s,blockId,title,role,now) {let order=s.stages.filter(x=>x.blockId===blockId).length;if(role==='step'){const anchor=s.stages.filter(x=>x.blockId===blockId&&x.role!=='step').sort((a,b)=>a.order-b.order)[0];if(anchor){order=anchor.order;for(const a of s.stages.filter(x=>x.blockId===blockId&&x.order>=order))a.order++;}}const x={id:uid(),blockId,name:title,role,meaning:'',cause:'',description:'',reward:0,bonusIds:[],order,createdAt:now,completedAt:null,archivedAt:null};s.stages.push(x);return x;}
@@ -38,7 +38,7 @@ function block(s,values,now) {
 }
 export function createState(time=new Date()) {
   const now=new Date(time).toISOString(),date=dayKey(time);
-  const s={app:APP,version:VERSION,revision:0,createdAt:now,updatedAt:now,lastDay:date,blocks:[],stages:[],goals:[],items:[],events:[],ledger:[],bonuses:[],instances:[],rewardLinks:[],decisions:[],treats:[],notes:[],missed:[],moments:[],days:{},pauses:[],reviews:[],timer:null,timeSessions:[],settings:{sound:false,accent:'gold',focusBlocks:null,focusCalendar:true,focusUnboundCalendar:true,tools:['timer','firstStep','rhythm'],reviewDaily:true,reviewWeekly:true,reviewMonthly:true,rewardTargetId:null,graph:{weekday:Array(24).fill(null),weekend:Array(24).fill(null)}}};
+  const s={app:APP,version:VERSION,revision:0,createdAt:now,updatedAt:now,lastDay:date,blocks:[],stages:[],goals:[],items:[],events:[],ledger:[],bonuses:[],instances:[],rewardLinks:[],decisions:[],treats:[],notes:[],missed:[],moments:[],days:{},pauses:[],reviews:[],timer:null,timeSessions:[],settings:{sound:false,accent:'gold',focusBlocks:null,focusCalendar:true,focusUnboundCalendar:true,tools:['timer','firstStep','rhythm'],myTools:['timer','firstStep','rhythm'],reviewDismissals:{},reviewDaily:true,reviewWeekly:true,reviewMonthly:true,rewardTargetId:null,graph:{weekday:Array(24).fill(null),weekend:Array(24).fill(null)}}};
   BASE_BLOCKS.forEach(([n,icon])=>block(s,{name:n,icon,preset:'full'},now));
   syncDay(s,date);return s;
 }
@@ -61,15 +61,16 @@ function relieved(s,i,date) {
 }
 function syncDay(s,date) {
   const d=day(s,date),candidates=scheduledCandidates(s,date);
-  for(const id of d.includes){const i=s.items.find(x=>x.id===id);if(i&&usable(s,i)&&!i.closedAt&&!completed(s,i)&&!candidates.includes(i))candidates.push(i);}
+  for(const id of d.includes){const i=s.items.find(x=>x.id===id);if(i&&usable(s,i)&&!i.closedAt&&(!completed(s,i)||progress(s,i,date)>0)&&!candidates.includes(i))candidates.push(i);}
   d.expected=candidates.filter(i=>!relieved(s,i,date)).map(i=>({id:i.id,kind:i.kind,name:i.name,units:i.kind==='habit'?i.dailyTarget||1:i.kind==='quest'?1:1}));
+  d.materialized=true;
 }
 export function advance(s,time=new Date()) {
   const today=dayKey(time);if(!validDay(s.lastDay)||s.lastDay>today)return;
   let date=s.lastDay,n=0;
   while(date<today) {
     if(++n>20000)fail('Слишком большой диапазон дат. Проверьте дату устройства.');
-    if(!s.days[date])syncDay(s,date);
+    if(!s.days[date]?.materialized)syncDay(s,date);
     for(const e of day(s,date).expected) {
       const i=s.items.find(i=>i.id===e.id);if(!i)continue;
       const done=progress(s,i,date);
@@ -82,7 +83,7 @@ export function advance(s,time=new Date()) {
 export function todayItems(s,date=dayKey()) {
   const d=s.days[date]||{includes:[],excludes:[],overrides:[],tempo:'normal'},list=[];
   for(const i of s.items) {
-    const done=progress(s,i,date)>0;
+    const done=progress(s,i,date)>=(i.kind==='habit'?i.dailyTarget:1);
     if(!usable(s,i)&&!done)continue;
     const scheduled=scheduleMatches(i,date)&&i.inDay;
     if(!scheduled&&!d.includes.includes(i.id)&&!done)continue;
@@ -122,11 +123,11 @@ function reward(s,e,coins,bonusIds=[],slot='main') {
     s.instances.push({id:uid(),bonusId:b.id,name:snapshot.name,limit:snapshot.limit,uses:[],paid:0,eventId:e.id,linkId:link?.id||null,acquiredAt:e.at,refundedAt:null,revokedAt:null,archivedAt:null});
   }
 }
-function event(s,entity,kind,now,extra={}) {const e={id:uid(),entityId:entity.id,name:entity.name,kind,date:dayKey(now),at:now,units:1,active:true,...extra};s.events.push(e);return e;}
+function event(s,entity,kind,now,extra={}) {const st=entity.stageId?s.stages.find(x=>x.id===entity.stageId):s.stages.find(x=>x.id===entity.id),b=st?s.blocks.find(x=>x.id===st.blockId):null;const e={id:uid(),entityId:entity.id,name:entity.name,kind,date:dayKey(now),at:now,units:1,active:true,stageId:st?.id||null,stageName:st?.name||'',blockId:b?.id||null,blockName:b?.name||'',...extra};s.events.push(e);return e;}
 function reverseEvent(s,e,now) {
   if(!e?.active)fail('Эта операция уже отменена.');
   const ins=s.instances.filter(x=>x.eventId===e.id&&!x.revokedAt);
-  if(ins.some(x=>x.uses.length))fail('Награда уже использована. Сначала отмените использование бонуса.');
+  if(ins.some(x=>x.uses.length))fail('Награда уже использована. Это выполнение отменить нельзя.');
   const rows=s.ledger.filter(x=>x.eventId===e.id&&x.type!=='undo');
   const coins=-rows.reduce((v,x)=>v+x.coins,0),xp=-rows.reduce((v,x)=>v+x.xp,0);
   const before=money(s);
@@ -140,7 +141,7 @@ function bindBonuses(s,sourceId,slot,ids=[]) {
   for(const id of selected) {
     if(existing.some(x=>x.bonusId===id))continue;
     const b=s.bonuses.find(x=>x.id===id&&live(x));if(!b)fail('Выбранный бонус недоступен.');
-    if(b.limit===1&&s.rewardLinks.some(x=>x.bonusId===id&&x.sourceId!==sourceId&&!s.instances.some(a=>a.linkId===x.id&&!a.revokedAt)))fail('Одноразовый бонус зарезервирован другой наградой. Сначала снимите резерв.');
+    if(b.limit===1&&s.rewardLinks.some(x=>x.bonusId===id&&(x.sourceId!==sourceId||x.slot!==slot)&&!s.instances.some(a=>a.linkId===x.id&&!a.revokedAt)))fail('Одноразовый бонус зарезервирован другой наградой. Сначала снимите резерв.');
     s.rewardLinks.push({id:uid(),sourceId,slot,bonusId:id,name:b.name,limit:b.limit});
   }
   s.rewardLinks=s.rewardLinks.filter(x=>x.sourceId!==sourceId||x.slot!==slot||selected.includes(x.bonusId));
@@ -149,13 +150,13 @@ function saveItem(s,v,now) {
   let i=s.items.find(x=>x.id===v.id);if(v.id&&!i)fail('Запись не найдена.');
   if(i&&!live(i))fail('Сначала восстановите запись из архива.');
   const kind=i?.kind||v.kind;if(!['task','habit','quest','calendar'].includes(kind))fail('Неизвестный тип действия.');
-  const stageId=checkedStage(s,v.stageId);
+  const stageId=i&&v.stageId===i.stageId?i.stageId:checkedStage(s,v.stageId);
   const goalId=v.goalId||null;
-  if(goalId&&!s.goals.some(g=>live(g)&&(g.status==='active'||i?.goalId===goalId)&&g.id===goalId&&g.stageId===stageId))fail('Цель должна принадлежать выбранному этапу.');
+  if(goalId&&!s.goals.some(g=>(live(g)&&g.status==='active'||i?.goalId===goalId)&&g.id===goalId&&g.stageId===stageId))fail('Цель должна принадлежать выбранному этапу.');
   const old=i?clone(i):null;
   if(!i){i={id:uid(),kind,createdAt:now,createdDate:dayKey(now),archivedAt:null,closedAt:null,order:s.items.length};s.items.push(i);}
   Object.assign(i,{name:name(v.name),description:text(v.description),stageId,goalId,leadsToGoal:!!goalId,inDay:!!v.inDay,key:kind==='task'&&!!v.key,load:Object.hasOwn(LOADS,v.load)?v.load:'normal',estimate:number(v.estimate,0,1440),favorite:!!v.favorite,tags:text(v.tags,300),category:text(v.category,80),schedule:schedule(v,now),reward:number(v.reward),bonusIds:[...new Set(v.bonusIds||[])],ifTrigger:text(v.ifTrigger,400),ifAction:text(v.ifAction,400),updatedAt:now});
-  if(kind==='task'&&(!old||(old.schedule.mode==='once')!==(i.schedule.mode==='once')))i.taskCycle=uid();
+  if(['task','calendar'].includes(kind)&&(!old||(old.schedule.mode==='once')!==(i.schedule.mode==='once')))i.taskCycle=uid();
   if(i.key&&!old?.key&&v.inDay!==false)i.inDay=true;
   if(kind==='calendar'){i.time=text(v.time,5);i.inDay=v.inDay!==false;i.remind=!!v.remind;i.notifiedDates ||= [];}
   if(kind==='habit') {
@@ -196,13 +197,13 @@ function completeItem(s,id,now,values={}) {
     if(progress(s,i)>=i.target){const f=event(s,i,'quest-final',now,{parentId:e.id});reward(s,f,i.finalReward,i.finalBonusIds,'final');}
   } else {
     if(i.kind==='task'&&(completed(s,i)||progress(s,i,date)))fail('Задание уже выполнено.');
-    if(i.kind==='calendar'&&progress(s,i,date))fail('Дело уже выполнено сегодня.');
+    if(i.kind==='calendar'&&(completed(s,i)||progress(s,i,date)))fail('Дело уже выполнено.');
     if(i.kind==='habit'&&i.maxDaily&&progress(s,i,date)>=i.maxDaily)fail('Дневной лимит отметок достигнут.');
-    const e=event(s,i,i.kind,now,i.kind==='task'?{taskCycle:i.taskCycle,scheduleMode:i.schedule.mode}:{});reward(s,e,i.reward,i.bonusIds);
+    const e=event(s,i,i.kind,now,['task','calendar'].includes(i.kind)?{taskCycle:i.taskCycle,scheduleMode:i.schedule.mode}:{});reward(s,e,i.reward,i.bonusIds);
     if(i.kind==='habit'&&i.target) {
       const period=periodStart(date,i.period),count=eventsFor(s,i.id,'habit').filter(e=>i.period==='all'||periodStart(e.date,i.period)===period).length;
       const key=`${i.levelId}:${period}`;
-      if(count>=i.target&&!eventsFor(s,i.id,'habit-milestone').some(e=>e.milestoneKey===key)){const m=event(s,i,'habit-milestone',now,{parentId:e.id,milestoneKey:key});reward(s,m,i.milestoneReward,i.milestoneBonusIds,'milestone');}
+      if(count>=i.target&&!eventsFor(s,i.id,'habit-milestone').some(e=>e.milestoneKey===key)){const m=event(s,i,'habit-milestone',now,{parentId:e.id,milestoneKey:key,milestoneTarget:i.target,milestonePeriod:i.period,periodStart:period});reward(s,m,i.milestoneReward,i.milestoneBonusIds,'milestone');}
     }
   }
 }
@@ -245,14 +246,17 @@ export function evolve(state,type,v={},time=new Date()) {
     case 'stage.reopen': {const a=byId(v.id);const e=eventsFor(s,a.id,'stage').at(-1);if(e)reverseEvent(s,e,now);a.completedAt=null;for(const i of s.items.filter(i=>i.stageId===a.id&&i.closedByStageId===a.id)){i.closedAt=null;delete i.closedByStageId;}break;}
     case 'stage.past': {const a=stage(s,v.blockId,name(v.name),'step',now);a.description=text(v.description);a.completedAt=validDay(v.date)?v.date+'T12:00:00.000Z':now;a.historical=true;break;}
     case 'goal.save': {
-      const stageId=checkedStage(s,v.stageId);let g=s.goals.find(x=>x.id===v.id);if(v.id&&!g)fail('Цель не найдена.');
+      let g=s.goals.find(x=>x.id===v.id);if(v.id&&!g)fail('Цель не найдена.');const stageId=g&&g.stageId===v.stageId?g.stageId:checkedStage(s,v.stageId);if(!stageId)fail('Выберите этап для цели.');
       if(!g){g={id:uid(),createdAt:now,status:'active',archivedAt:null};s.goals.push(g);}
+      if(g.stageId&&g.stageId!==stageId)for(const i of s.items.filter(i=>i.goalId===g.id)){if(v.moveLinked!==false)i.stageId=stageId;else{i.goalId=null;i.leadsToGoal=false;}}
       Object.assign(g,{name:name(v.name),stageId,description:text(v.description),criterion:text(v.criterion,500),ifTrigger:text(v.ifTrigger,400),ifAction:text(v.ifAction,400)});break;
     }
-    case 'goal.status': {const g=byId(v.id);if(!['active','achieved','abandoned'].includes(v.status))fail('Неизвестный исход цели.');if(g.status===v.status)fail('Этот исход уже записан.');g.status=v.status;g.closedAt=v.status==='active'?null:now;g.reason=text(v.reason,500);if(v.status==='achieved')event(s,g,'goal',now);else for(const e of eventsFor(s,g.id,'goal'))e.active=false;break;}
-    case 'item.save': {if(v.newGoalName?.trim()&&!v.goalId){const stageId=checkedStage(s,v.stageId);const g={id:uid(),name:name(v.newGoalName),stageId,status:'active',createdAt:now,archivedAt:null,description:'',criterion:'',ifTrigger:'',ifAction:''};s.goals.push(g);v={...v,goalId:g.id};}saveItem(s,v,now);break;}
+    case 'goal.status': {const g=byId(v.id);if(!['active','achieved','abandoned'].includes(v.status))fail('Неизвестный исход цели.');if(g.status===v.status)fail('Этот исход уже записан.');g.status=v.status;g.closedAt=v.status==='active'?null:now;g.reason=text(v.reason,500);if(v.status==='achieved')event(s,g,'goal',now,{outcome:v.status});else {for(const e of eventsFor(s,g.id,'goal'))e.active=false;event(s,g,'goal-status',now,{outcome:v.status,reason:g.reason});}break;}
+    case 'item.save': {if(v.newGoalName?.trim()&&!v.goalId){const stageId=checkedStage(s,v.stageId);const g={id:uid(),name:name(v.newGoalName),stageId,status:'active',createdAt:now,archivedAt:null,description:'',criterion:'',ifTrigger:'',ifAction:''};s.goals.push(g);v={...v,goalId:g.id};}const item=saveItem(s,v,now);if(v.includeToday&&item.inDay){const d=day(s,date);if(!d.includes.includes(item.id))d.includes.push(item.id);if(!d.overrides.includes(item.id))d.overrides.push(item.id);}break;}
     case 'item.plan': {const i=byId(v.id);i.inDay=!!v.value;break;}
     case 'item.key': {const i=byId(v.id);if(i.kind!=='task')fail('Ключевым может быть задание.');i.key=!i.key;if(i.key)i.inDay=true;break;}
+    case 'item.close': {const i=byId(v.id);i.closedAt=now;break;}
+    case 'item.reopen': {const i=byId(v.id);i.closedAt=null;delete i.closedByStageId;break;}
     case 'item.complete': completeItem(s,v.id,now,v);break;
     case 'item.undo': undoItem(s,v.id,now);break;
     case 'item.move': {const i=byId(v.id);i.stageId=checkedStage(s,v.stageId);i.goalId=v.goalId||null;i.leadsToGoal=!!i.goalId;break;}
@@ -288,7 +292,8 @@ export function evolve(state,type,v={},time=new Date()) {
     case 'decision.status': {const d=byId(v.id);if(d.status!=='active')fail('У решения уже есть исход.');if(!['fulfilled','failed','cancelled'].includes(v.status))fail('Неизвестный исход.');d.status=v.status;d.closedAt=now;const e=event(s,d,'decision',now,{outcome:v.status});if(v.status==='failed')s.ledger.push({id:uid(),eventId:e.id,coins:-d.priceCoins,xp:-d.priceXP,type:'priceWord',date,at:now,name:d.name});break;}
     case 'decision.undo': {const d=byId(v.id),e=eventsFor(s,d.id,'decision').at(-1);if(d.status==='active'||!e)fail('Исход уже отменён.');reverseEvent(s,e,now);d.status='active';d.closedAt=null;break;}
     case 'treat.save': {let t=s.treats.find(x=>x.id===v.id);if(!t){t={id:uid(),createdAt:now,archivedAt:null};s.treats.push(t);}Object.assign(t,{name:name(v.name),description:text(v.description),category:text(v.category,80),tags:text(v.tags,300)});break;}
-    case 'review.save': {if(!['daily','weekly','monthly'].includes(v.period))fail('Неизвестный обзор.');const key=v.period==='daily'?date:periodStart(date,v.period==='weekly'?'week':'month');let r=s.reviews.find(r=>r.period===v.period&&r.key===key);if(!r){r={id:uid(),period:v.period,key};s.reviews.push(r);}Object.assign(r,{answers:(v.answers||[]).slice(0,3).map(a=>text(a,2000)),at:now});break;}
+    case 'review.save': {if(!['daily','weekly','monthly'].includes(v.period))fail('Неизвестный обзор.');const base=v.key||date;if(!validDay(base)||base>date)fail('Неверный период обзора.');const key=v.period==='daily'?base:periodStart(base,v.period==='weekly'?'week':'month');let r=s.reviews.find(r=>r.period===v.period&&r.key===key);if(!r){r={id:uid(),period:v.period,key};s.reviews.push(r);}Object.assign(r,{answers:(v.answers||[]).slice(0,3).map(a=>text(a,2000)),at:now});break;}
+    case 'review.dismiss': {if(!['daily','weekly','monthly'].includes(v.period))fail('Неизвестный обзор.');const key=v.period==='daily'?date:periodStart(date,v.period==='weekly'?'week':'month');(s.settings.reviewDismissals||={})[v.period]=key;break;}
     case 'moment.save': {let m=s.moments.find(x=>x.id===v.id);if(!m){m={id:uid(),date,at:now,archivedAt:null};s.moments.push(m);}m.name=name(v.name);m.description=text(v.description);break;}
     case 'timer.start': {if(s.timer&&s.timer.status!=='recorded')fail('Сначала закончите текущий подход.');const i=v.itemId?s.items.find(i=>i.id===v.itemId):null;s.timer={id:uid(),itemId:i?.id||null,name:i?.name||'Время для важного',duration:number(v.minutes||25,1,180)*60,elapsed:0,startedAt:now,endAt:new Date(+new Date(now)+number(v.minutes||25,1,180)*60000).toISOString(),status:'running'};break;}
     case 'timer.pause': {const t=s.timer;if(t?.status!=='running')fail('Таймер не запущен.');t.elapsed=Math.min(t.duration,t.elapsed+(+new Date(now)-+new Date(t.startedAt))/1000);t.status='paused';break;}
@@ -297,7 +302,8 @@ export function evolve(state,type,v={},time=new Date()) {
     case 'timer.record': {const t=s.timer;if(!t||t.status==='recorded'||s.timeSessions.some(x=>x.timerId===t.id))fail('Время уже обработано.');const minutes=v.skip?0:number(v.minutes,0,180);s.timeSessions.push({id:uid(),timerId:t.id,itemId:t.itemId,name:t.name,minutes,date,at:now,skipped:!!v.skip});t.status='recorded';break;}
     case 'settings': {
       for(const k of ['sound','reviewDaily','reviewWeekly','reviewMonthly'])if(v[k]!==undefined)s.settings[k]=!!v[k];
-      if(v.tools)s.settings.tools=[...new Set(v.tools)].filter(x=>Object.hasOwn(TOOL_NAMES,x));
+      if(v.myTools){s.settings.myTools=[...new Set(v.myTools)].filter(x=>Object.hasOwn(TOOL_NAMES,x));s.settings.tools=s.settings.tools.filter(x=>s.settings.myTools.includes(x));}
+      if(v.tools){s.settings.tools=[...new Set(v.tools)].filter(x=>Object.hasOwn(TOOL_NAMES,x));s.settings.myTools=[...new Set([...(s.settings.myTools||[]),...s.settings.tools])];}
       if(v.rewardTargetId!==undefined)s.settings.rewardTargetId=v.rewardTargetId||null;
       if(v.graph)s.settings.graph=clone(v.graph);if(v.accent)s.settings.accent=['gold','mint','blue','rose'].includes(v.accent)?v.accent:'gold';break;
     }
@@ -307,7 +313,7 @@ export function evolve(state,type,v={},time=new Date()) {
       for(const id of v.ids||[v.id]) {
         const a=byId(id);if(!a.archivedAt)fail('Окончательное удаление доступно только из архива.');
         if(s.missed.includes(a)||s.instances.includes(a)){a.deletedAt=now;continue;}
-        if(s.blocks.includes(a)) {for(const i of s.items.filter(i=>itemBlock(s,i)?.id===a.id)){i.stageId=null;i.goalId=null;i.leadsToGoal=false;}const stageIds=s.stages.filter(x=>x.blockId===a.id).map(x=>x.id);s.goals=s.goals.filter(g=>!stageIds.includes(g.stageId));s.stages=s.stages.filter(x=>x.blockId!==a.id);s.decisions.forEach(d=>{if(stageIds.includes(d.stageId))d.stageId=null;});}
+        if(s.blocks.includes(a)) {for(const i of s.items.filter(i=>itemBlock(s,i)?.id===a.id)){i.stageId=null;i.goalId=null;i.leadsToGoal=false;}const stageIds=s.stages.filter(x=>x.blockId===a.id).map(x=>x.id),goalIds=s.goals.filter(g=>stageIds.includes(g.stageId)).map(g=>g.id);s.goals=s.goals.filter(g=>!stageIds.includes(g.stageId));s.stages=s.stages.filter(x=>x.blockId!==a.id);s.decisions.forEach(d=>{if(stageIds.includes(d.stageId))d.stageId=null;});s.rewardLinks=s.rewardLinks.filter(l=>!stageIds.includes(l.sourceId)&&!goalIds.includes(l.sourceId));for(const k of ['weekday','weekend'])s.settings.graph[k]=s.settings.graph[k].map(id=>id===a.id?null:id);}
         if(s.stages.includes(a)){if(s.items.some(i=>i.stageId===id)||s.goals.some(g=>g.stageId===id))fail('Перенесите связанные действия и цели перед удалением этапа.');const b=byId(a.blockId);if(b.currentStageId===id)b.currentStageId=null;s.decisions.forEach(d=>{if(d.stageId===id)d.stageId=null;});}
         if(s.goals.includes(a))s.items.forEach(i=>{if(i.goalId===id){i.goalId=null;i.leadsToGoal=false;}});
         if(s.bonuses.includes(a)&&s.rewardLinks.some(x=>x.bonusId===id))fail('Сначала снимите назначения этого бонуса. Полученные экземпляры сохранятся.');
@@ -325,6 +331,7 @@ export function validate(s) {
   for(const key of ['blocks','stages','goals','items','events','ledger','bonuses','instances','rewardLinks','decisions','treats','notes','missed','moments','pauses','reviews','timeSessions'])if(!Array.isArray(s[key]))fail('Повреждён раздел сохранения: '+key);
   if(!s.days||typeof s.days!=='object'||Array.isArray(s.days)||!s.settings)fail('Повреждены настройки дня.');
   if(!Array.isArray(s.settings.tools)||s.settings.tools.some(k=>!Object.hasOwn(TOOL_NAMES,k))||s.settings.focusBlocks!==null&&!Array.isArray(s.settings.focusBlocks)||!s.settings.graph||!['weekday','weekend'].every(k=>Array.isArray(s.settings.graph[k])&&s.settings.graph[k].length===24))fail('Повреждены настройки инструментов.');
+  if(s.settings.myTools!==undefined&&(!Array.isArray(s.settings.myTools)||s.settings.myTools.some(k=>!Object.hasOwn(TOOL_NAMES,k))||s.settings.tools.some(k=>!s.settings.myTools.includes(k))))fail('Повреждена коллекция инструментов.');
   const ids=new Set();for(const key of ['blocks','stages','goals','items','bonuses','instances','decisions','treats','notes','missed','moments'])for(const x of s[key]){if(!x||typeof x.id!=='string'||ids.has(x.id)||typeof x.name!=='string')fail('Повреждены записи или идентификаторы.');ids.add(x.id);}
   for(const st of s.stages){if(!s.blocks.some(b=>b.id===st.blockId))fail('У этапа отсутствует блок.');if(!['step','optimal','unknown','lvmg'].includes(st.role))fail('Повреждён тип этапа.');number(st.reward);}
   for(const b of s.blocks)if(!b.sections||Object.keys(SECTION_NAMES).some(k=>typeof b.sections[k]!=='boolean')||!['light','balanced','aggressive'].includes(b.intensity))fail('Повреждена структура блока.');
