@@ -1,0 +1,19 @@
+{
+  "source_commit": "032c757db925e6957853045d1b6951bb1230ec59",
+  "packages": [
+    {
+      "filename": "LifeGame-LAB-004A-resume-032c757.zip",
+      "bytes": 11727321,
+      "sha256": "0cde3620686df2db1c7a97b01c421c232c270e654f7e365219ddd4e3968397e5",
+      "files": 276,
+      "root_folder": "LifeGame-LAB-004A-resume"
+    },
+    {
+      "filename": "LifeGame-LAB-004B-arena-032c757.zip",
+      "bytes": 51764,
+      "sha256": "297497728cd189b823141a1f14e4007f47000408ac443492aa351548da56c78c",
+      "files": 12,
+      "root_folder": "LifeGame-LAB-004B-arena"
+    }
+  ]
+}
