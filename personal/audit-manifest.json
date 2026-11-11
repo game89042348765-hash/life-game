@@ -1,0 +1,92 @@
+{
+  "build": "personal-v1-2026-11-11",
+  "basis": {
+    "source": "Uploaded Claude LifeGame HTML",
+    "sha256": "3a8a6064ccb61186a3934b28f6bcbeb939c3c2a1f2387c577946d4125ae9ef7b",
+    "baselineBackup": "backups/index-2026-11-11-11-35-50.html",
+    "preservedApplications": [
+      "index.html",
+      "next/"
+    ],
+    "purpose": "Personal daily use; Claude interface and product choices with hardened persistence"
+  },
+  "checks": {
+    "browser": {
+      "passed": 48,
+      "total": 48
+    },
+    "offline": {
+      "passed": 5,
+      "total": 5
+    },
+    "week": {
+      "dates": "2026-11-11…17",
+      "balance": 177,
+      "misses": [
+        [
+          "cal",
+          "2026-11-12"
+        ],
+        [
+          "task",
+          "2026-11-16"
+        ]
+      ],
+      "facts": 16
+    }
+  },
+  "files": {
+    "index.html": {
+      "bytes": 1091,
+      "sha256": "3df4272c8083c4ab61342eee48f513e847ae9fd4d047a61e71cb31d443ccca1d"
+    },
+    "app.js": {
+      "bytes": 259309,
+      "sha256": "f5e5113ca573627473f819811f5d34439eb2c8e8eb1cb4106553977fd5a24b09"
+    },
+    "style.css": {
+      "bytes": 15210,
+      "sha256": "21604f8bba5e9ee39db09eac8786589e81f3c394054eca6a803fb7c886fc48b6"
+    },
+    "persistence.js": {
+      "bytes": 15795,
+      "sha256": "a1709c997d8ef7adf2ed03ea61ef6ee6086f9fbd9ca684f00e006849d30f3f4a"
+    },
+    "pwa.js": {
+      "bytes": 1295,
+      "sha256": "c83a520c878580afc998ca82db1a3d737d5e606f312c64471bc4d766a54e91ee"
+    },
+    "sw.js": {
+      "bytes": 1625,
+      "sha256": "5031f04281d254af0be4ffb75927f3cc1d0d0054622d10e3c3d9313a269cb72a"
+    },
+    "manifest.webmanifest": {
+      "bytes": 347,
+      "sha256": "c2538f6ced37706948f7b6533180a3c0246be5b56d3aa722ab5ef13675a29feb"
+    },
+    "icon.svg": {
+      "bytes": 340,
+      "sha256": "e2df42d0da3fd69710a109ef51cc9c3a6999436f2b22d7bd3b86d4d44d2d57e1"
+    },
+    "icon-192.png": {
+      "bytes": 2044,
+      "sha256": "60184660f855476a6e3146619f4b15d5f6366144d74ba45efc6cd0b3fe842e8e"
+    },
+    "icon-512.png": {
+      "bytes": 5693,
+      "sha256": "1816c6b200cfa39198b9011dc6817d4f57dd68589ea20949043e2c4f7ddbaf0d"
+    },
+    "tests/browser.py": {
+      "bytes": 13479,
+      "sha256": "1f214c5c5c4ee94fc7af4e66fdc9c8aeba84b4c57a1a5acf8c450ab61c99f028"
+    },
+    "tests/model-cases.js": {
+      "bytes": 15379,
+      "sha256": "806ec94800e4f3681e10bd11ec9d1ab7ff1d48186f846ae49c65e0fe06d40926"
+    },
+    "tests/offline.py": {
+      "bytes": 5008,
+      "sha256": "0cc2628499e46eaabc75fb7aacf9a6fda7389a52ab6ba953918b69a953007ebf"
+    }
+  }
+}
