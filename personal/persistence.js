@@ -19,6 +19,7 @@
     if(s.locations===undefined&&s.loc===undefined){s.locations=defaultLocations();s.loc=defaultLocState()}
     for(const items of [s.tasks,s.habits,s.quests,s.cal])for(const x of items)x.locs??=[];
     for(const b of s.blocks)b.loc??=null;
+    for(const h of s.habits){h.dailyTarget??=1;h.norms??=[]}for(const c of s.cal){c.repeat??={type:'none',days:[]};c.exceptions??={};c.retained??=[];c.until??=null;c.reminderLead??=15;c.reminderReceipts??={}}
     return s;
   }
   function validate(s){
@@ -40,7 +41,7 @@
     for(const k of ['tasks','habits','quests','cal'])for(const x of s[k]){title(x,'title');link(x);status(x,k==='quests'?['active','completed','closed','archived']:['active','closed','archived']);if(typeof x.inDay!=='boolean'||!day(x.created))bad('Повреждены настройки действия.');if(k==='cal'){if(!day(x.date)||!int(x.reward)||x.time&&!/^([01]\d|2[0-3]):[0-5]\d$/.test(x.time))bad('Повреждено календарное дело.')}else{schedule(x,k==='tasks'?['once','daily','weekly','days']:k==='habits'?['daily','weekly','days','whenever']:['whenever','daily','days']);if(!Array.isArray(x.fit)||x.fit.some(a=>!['rest','normal','hard'].includes(a))||!Array.isArray(x.tags)||typeof x.cat!=='string')bad('Повреждены фильтры действия.');if(k!=='quests'&&!int(x.reward))bad('Неверная награда.');if(k==='habits'&&(!obj(x.goal)||!['total','period'].includes(x.goal.mode)||!['week','month'].includes(x.goal.period)||!int(x.goal.target,1)||!int(x.goal.reward)||!int(x.level,1)||!Array.isArray(x.levelLog)))bad('Повреждена цель привычки.');if(k==='quests'&&(!['counter','checklist'].includes(x.type)||!int(x.target,1)||!int(x.stepReward)||!int(x.finalReward)||!Array.isArray(x.steps)||x.type==='checklist'&&(!x.steps.length||new Set(x.steps.map(z=>z.id)).size!==x.steps.length)||x.steps.some(z=>!id(z.id)||typeof z.title!=='string')))bad('Повреждены шаги квеста.')}}
     for(const x of s.offers){title(x,'title');status(x,['active','archived']);if(!int(x.price)||!['once','unlimited','limited'].includes(x.use)||!int(x.limit,1)||!Array.isArray(x.tags))bad('Повреждён бонус.')}
     for(const x of s.insts){title(x,'title');status(x,['reserved','owned','spent','refunded']);if(!['once','unlimited','limited'].includes(x.use)||!int(x.limit,1)||!int(x.used)||!int(x.paid)||!Array.isArray(x.uses)||x.uses.some(d=>!day(d))||x.used!==x.uses.length)bad('Повреждены использования бонуса.');if(x.cond&&(!obj(x.cond)||!['task','habit','quest','stage'].includes(x.cond.k)||!id(x.cond.id)))bad('Повреждён резерв.')}
-    const factKinds=['task','habit','cal','questStep','questFinal','habitGoal','stage'];
+    const factKinds=['task','habit','cal','questStep','questFinal','habitGoal','habitStep','stage'];
     for(const f of s.facts)if(!factKinds.includes(f.kind)||!id(f.ref)||!day(f.date)||!int(f.coins)||!int(f.xp)||typeof f.cancelled!=='boolean'||!Number.isFinite(f.ts)||typeof f.title!=='string'||f.insts&&!Array.isArray(f.insts))bad('Повреждена история выполнений.');
     for(const l of s.ledger)if(!['earn','spend','reversal','penalty','compensation','refund'].includes(l.type)||!int(l.coins,-1e9)||!int(l.xp,-1e9)||!day(l.date)||!Number.isFinite(l.ts))bad('Повреждён финансовый журнал.');
     for(const key of ['coins','xp'])if(!Number.isSafeInteger(s.ledger.reduce((n,l)=>n+l[key],0)))bad('Слишком большой баланс.');
@@ -53,7 +54,7 @@
     if(!['ready','running','paused','done'].includes(s.timer.state)||!int(s.timer.minutes,1,180)||!Number.isFinite(s.timer.remaining)||s.timer.remaining<0)bad('Повреждён таймер.');
     const bools=(x,keys)=>{if(keys.some(k=>typeof x[k]!=="boolean"))bad("Повреждён переключатель настроек.")};
     const text=(v)=>{if(typeof v!=="string"||v.length>10000)bad("Повреждён текст.")};
-    const ref=v=>typeof v==="string"&&/^(task|habit|quest|cal):[A-Za-z0-9_-]{1,120}$/.test(v);
+    const ref=v=>typeof v==="string"&&/^(task|habit|quest|cal):[A-Za-z0-9_-]{1,120}(@\d{4}-\d{2}-\d{2})?$/.test(v)&&(!v.includes('@')||v.startsWith('cal:')&&day(v.split('@')[1]));
     bools(s.settings,["lite","reminders"]);text(s.settings.motivation);
     if(!["blue","green","purple","orange"].includes(s.settings.accent))bad("Неизвестный акцент.");
     bools(s.settings.sessions,["all","daily","weekly","monthly"]);
@@ -88,6 +89,13 @@
     for(const x of s.facts){if(x.kind==="habitGoal"&&typeof x.pkey!=="string"||x.insts?.some(i=>!id(i))||x.consumed?.some(i=>!id(i)))bad("Повреждены зависимости выполнения.")}
     for(const d of Object.values(s.days))if([...(d.added||[]),...(d.removed||[]),...(d.forced||[])].some(x=>!ref(x)))bad("Повреждены ссылки дневного плана.");
     for(const l of s.ledger){if(["earn","refund","compensation"].includes(l.type)&&(l.coins<0||l.xp<0)||["spend","reversal","penalty"].includes(l.type)&&(l.coins>0||l.xp>0))bad("Неверное направление финансовой операции.")}
+    for(const c of s.cal)LifeGamePlanning.validate(c);
+    for(const h of s.habits){if(h.dailyTarget!==undefined&&!int(h.dailyTarget,1,50)||h.norms!==undefined&&(!Array.isArray(h.norms)||h.norms.some(x=>!obj(x)||!day(x.from)||!int(x.target,1,50))||new Set(h.norms.map(x=>x.from)).size!==h.norms.length))bad('Неверная дневная норма привычки.')}
+    for(const f of s.facts){if(f.coins!==f.xp)bad('Награда выполнения должна давать одинаковые монеты и XP.');if(f.kind==='habitStep'&&(!int(f.target,1,50)||!int(f.dayReward)||f.coins!==0||f.xp!==0))bad('Неверный прогресс привычки.');if(f.occurrence!==undefined&&!day(f.occurrence)||f.scheduledDate!==undefined&&!day(f.scheduledDate))bad('Неверная дата появления.');if(f.parentStep!==undefined&&!id(f.parentStep)||f.habitFact!==undefined&&!id(f.habitFact))bad('Неверная связь прогресса.')}
+    for(const m of s.misses)if(m.occurrence!==undefined&&!day(m.occurrence))bad('Неверное появление пропуска.');
+    for(const l of s.ledger){if(l.type==='earn'&&l.coins!==l.xp||l.type==='reversal'&&l.coins!==l.xp||['spend','refund'].includes(l.type)&&l.xp!==0)bad('Неверное соотношение монет и опыта: заработок 1:1, покупки не тратят XP.')}
+    for(const c of s.cal)if(c.reminderReceipts!==undefined&&(!obj(c.reminderReceipts)||Object.entries(c.reminderReceipts).some(([key,value])=>!day(key)||typeof value!=='string')))bad('Повреждена история напоминаний.');
+    if(s.settings.lastExport!==undefined&&!day(s.settings.lastExport)||s.settings.backupSnooze!==undefined&&!day(s.settings.backupSnooze))bad('Неверная дата резервирования.');
     if(s.settings.style!==undefined&&!['quest','dawn','pop'].includes(s.settings.style))bad('Неизвестный стиль оформления.');
     if(s.locations!==undefined||s.loc!==undefined){
       if(!Array.isArray(s.locations)||!obj(s.loc))bad('Повреждены локации.');
@@ -115,7 +123,16 @@
     storage(){try{return localStorage}catch{bad('Браузер запретил сохранения. Разрешите хранение данных и обновите страницу.')}}
     read(key){const raw=this.storage().getItem(key);this.snapshots.set(key,raw);return raw}
     assertCurrent(key){if(this.storage().getItem(key)!==this.snapshots.get(key))bad('Данные изменены в другой вкладке. Черновик оставлен: загрузите свежие данные и откройте запись заново.')}
-    write(key,s,{replace=false}={}){this.assertCurrent(key);validate(s);const raw=this.snapshots.get(key),next=JSON.stringify(s);if(raw){let valid=false;try{validate(JSON.parse(raw));valid=true}catch{}if(valid)this.storage().setItem(key+'-last-good',raw)}this.storage().setItem(key,next);this.snapshots.set(key,next);this.commitSerial++;return next}
+    write(key,s,{replace=false}={}){
+      this.assertCurrent(key);validate(s);const raw=this.snapshots.get(key),next=JSON.stringify(s),now=new Date(),date=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+      let prior=null;if(raw){try{validate(JSON.parse(raw));prior=JSON.parse(raw)}catch{}}
+      const dailyRaw=this.storage().getItem(key+'-daily');let dailyDay=null;try{const d=JSON.parse(dailyRaw);if(d?.data){validate(d.data);dailyDay=d.day}}catch{}
+      if(dailyDay!==date&&(prior||!raw)){const data=prior||s;this.storage().setItem(key+'-daily',JSON.stringify({day:date,savedAt:now.toISOString(),data}))}
+      if(prior)this.storage().setItem(key+'-last-good',raw);
+      this.storage().setItem(key,next);this.snapshots.set(key,next);this.commitSerial++;return next;
+    }
+    daily(key){const raw=this.storage().getItem(key+'-daily');if(!raw)bad('Копии на начало дня пока нет.');const value=JSON.parse(raw);if(!day(value.day))bad('Дата дневной копии повреждена.');return {...value,data:upgrade(value.data)}}
+
     exclusive(fn){const run=()=>navigator.locks?navigator.locks.request('lifegame-personal-write',fn):fn();const p=this.queue.then(run,run);this.queue=p.catch(()=>{});return p}
     backup(key){const raw=this.storage().getItem(key+'-last-good');if(!raw)bad('Предыдущей исправной копии пока нет.');return upgrade(JSON.parse(raw))}
   }

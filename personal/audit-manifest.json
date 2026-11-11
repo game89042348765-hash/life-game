@@ -1,5 +1,5 @@
 {
-  "build": "personal-lg110-selective-2026-11-11",
+  "build": "personal-1.2.0-2026-11-11",
   "basis": {
     "source": "Uploaded Claude LifeGame HTML",
     "sha256": "3a8a6064ccb61186a3934b28f6bcbeb939c3c2a1f2387c577946d4125ae9ef7b",
@@ -25,13 +25,32 @@
         "locations and context profiles",
         "floating seven-step hints and target highlighting"
       ],
-      "notImported": "Other mechanics are compared only; no whole-app replacement or lg-4 save import"
+      "notImported": "No whole-app replacement and no automatic lg-4 import. Extra mechanics were separately discussed and authorized, implemented with Personal invariants."
+    },
+    "version": "personal-1.2.0",
+    "agreedUpgrade": {
+      "date": "2026-11-11",
+      "baseCommit": "98de9d937e52e04d8343703c3b0a9a182bf770a4",
+      "baseRuntime": "3a362e0f06e867b008e1d5907c33158b1ec823bc",
+      "htmlBackup": "backups/index-2026-11-11-15-36-47.html",
+      "backupSHA256": "3df4272c8083c4ab61342eee48f513e847ae9fd4d047a61e71cb31d443ccca1d",
+      "implementation": "calendar recurrence/exceptions/splits; daily habit targets; atomic goal drafts; quick goals;119 distinct evening texts; reminder lead; post-commit wallet feedback; daily+last-good backups; strict import",
+      "format": "personal-1 / v2 with compatible optional fields",
+      "oldPackageSnapshot": "downloads/*personal-1.1.0.zip remain unchanged; this update is not in those ZIPs"
     }
   },
   "checks": {
     "browser": {
-      "passed": 68,
-      "total": 68
+      "passed": 90,
+      "total": 90
+    },
+    "updateLive": {
+      "passed": 10,
+      "total": 10
+    },
+    "locationsLive": {
+      "passed": 2,
+      "total": 2
     },
     "offline": {
       "passed": 6,
@@ -50,37 +69,46 @@
           "2026-11-16"
         ]
       ],
-      "facts": 16
+      "facts": 22
     },
-    "locationsLive": {
-      "passed": 2,
-      "total": 2
+    "updatedWeek": {
+      "dates": "2026-11-11…17",
+      "coins": 82,
+      "xp": 82,
+      "successfulHabitDays": 4,
+      "habitApproaches": 11,
+      "calendarCompletions": 7,
+      "historicalMisses": 4
     }
   },
   "files": {
     "index.html": {
-      "bytes": 1091,
-      "sha256": "3df4272c8083c4ab61342eee48f513e847ae9fd4d047a61e71cb31d443ccca1d"
+      "bytes": 1135,
+      "sha256": "3d2a346d261eeb6048bdbcaaa9b657f2cf42499bcbb2376e889e67335cae9474"
     },
     "app.js": {
-      "bytes": 290004,
-      "sha256": "5770858f9430ce3362293dbe3ff4033d498cf66a907d26b9f2ad623d0a9eaa65"
+      "bytes": 333112,
+      "sha256": "3fdf3125c859b3dc8ee80905e3c31dcde0f9245bc65bda68ff51f4b110ce641e"
     },
-    "style.css": {
-      "bytes": 34779,
-      "sha256": "76f37e1edd0e5fe2508e00783cbeb314545c24fc41d2557bc830df2a2a831c9a"
+    "planning.js": {
+      "bytes": 5228,
+      "sha256": "55a0170e210ddcf8b5d767102254208e9df5cbe7a6fd7dd5c0d45bf3a35f1422"
     },
     "persistence.js": {
-      "bytes": 19857,
-      "sha256": "8c4a097812cea9609371333e6a6ed19362ac0d72707f2e567cc26f63d299b2e9"
+      "bytes": 22783,
+      "sha256": "93420f1f3537fcdf8ac6f64d8724f71c574841df88a99db15a93ee93cfab0716"
+    },
+    "style.css": {
+      "bytes": 35234,
+      "sha256": "96c0ff65319989fe697a3f06c1fbcff02d7d9fe410c4a87d5f526adfb733ba4f"
     },
     "pwa.js": {
       "bytes": 1295,
       "sha256": "c83a520c878580afc998ca82db1a3d737d5e606f312c64471bc4d766a54e91ee"
     },
     "sw.js": {
-      "bytes": 2264,
-      "sha256": "d274ce6cf06131d2e61b4fc50662ffdbfc8b16c87bf2c5e8c141acefe7a1c136"
+      "bytes": 2342,
+      "sha256": "a3bfc9877181bad8af06ec1776956aed5c4084778741765cb4de213d31d0fa28"
     },
     "manifest.webmanifest": {
       "bytes": 347,
@@ -97,26 +125,6 @@
     "icon-512.png": {
       "bytes": 5693,
       "sha256": "1816c6b200cfa39198b9011dc6817d4f57dd68589ea20949043e2c4f7ddbaf0d"
-    },
-    "tests/browser.py": {
-      "bytes": 18969,
-      "sha256": "d6ca24f53645631055a315b1e525dac60bf800faf96187edddf9d95c098eeb33"
-    },
-    "tests/model-cases.js": {
-      "bytes": 15926,
-      "sha256": "8bc0fdd12079416e897e619e1d8b75d040d9c50e3a072af6abfe43d7985c9af8"
-    },
-    "tests/offline.py": {
-      "bytes": 5648,
-      "sha256": "b251c5fa4bea1ced5a3a1b84e254b4db8979457cb73e8522cc4c32b2aeb9d5e5"
-    },
-    "tests/location-cases.js": {
-      "bytes": 6900,
-      "sha256": "ce7422896c177b21e557d67c5c3e3a6ecff31f9c257fbfcb48b00678c74eb0b5"
-    },
-    "tests/locations-live.py": {
-      "bytes": 3883,
-      "sha256": "5231f11030088a90279dd0e4b51a69cae2c7ccff81c9f7fc1d8a0751324d09c9"
     },
     "fonts/SOURCES.json": {
       "bytes": 3799,

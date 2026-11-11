@@ -43,7 +43,7 @@ with sync_playwright() as pw:
   submit();p.locator('#app-update button').click();p.wait_for_function('!document.querySelector("#app-update")');p.wait_for_load_state('networkidle');assert len(s()['tasks'])==2 and sum(l['coins'] for l in s()['ledger'])==10;assert p.evaluate('caches.keys()')==['lifegame-personal-shell-v2']
  check('PWA update defers reload for open draft and preserves committed data',update)
  def reminder():
-  a('tab','[data-v=more]');a('go','[data-s=calendar]');a('new','[data-k=cal]');p.locator('[name=title]').fill('Напоминание об уроке');p.locator('[name=time]').fill('12:01');submit();p.clock.run_for(61000);p.locator('#calendar-reminder').wait_for(state='visible');assert s()['cal'][0]['notifiedDates']==['2026-11-11'];p.locator('#calendar-reminder .ib').click();p.clock.run_for(60000);assert not p.locator('#calendar-reminder').count();p.reload(wait_until='networkidle');p.clock.run_for(1000);assert not p.locator('#calendar-reminder').count()
+  a('tab','[data-v=more]');a('go','[data-s=calendar]');a('new','[data-k=cal]');p.locator('[name=title]').fill('Напоминание об уроке');p.locator('[name=time]').fill('12:01');submit();p.clock.run_for(61000);p.locator('#calendar-reminder').wait_for(state='visible');assert '2026-11-11' in s()['cal'][0]['reminderReceipts'];p.locator('#calendar-reminder .ib').click();p.clock.run_for(60000);assert not p.locator('#calendar-reminder').count();p.reload(wait_until='networkidle');p.clock.run_for(1000);assert not p.locator('#calendar-reminder').count()
  check('Foreground calendar reminder fires once and remains acknowledged on reload',reminder)
  check('No uncaught browser errors',lambda:(_ for _ in ()).throw(AssertionError(errors)) if errors else None)
  b.close()

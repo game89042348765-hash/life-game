@@ -26,8 +26,8 @@ with sync_playwright() as pw:
  check('Actual schedule boundaries update the screen; manual choice expires at real next change',clock)
  def reminder():
   p.evaluate('''async()=>{const L=__LG;await L.run(()=>{L.locById('work').muteOther=true;for(const place of ['home','work'])L.state().cal.push(L.newItem('cal',{title:'Напоминание '+place,time:'12:03',locs:[place]}))});await L.act('loc-set',{id:'work'})}''')
-  p.clock.run_for(61000);p.wait_for_timeout(100);assert s()['cal'][0].get('notifiedDates') is None;assert s()['cal'][1]['notifiedDates']==['2026-11-11'];assert 'work' in p.locator('#calendar-reminder').inner_text()
-  p.evaluate('__LG.act("loc-set",{id:"home"})');p.clock.run_for(1100);p.wait_for_timeout(100);assert s()['cal'][0]['notifiedDates']==['2026-11-11'];assert 'home' in p.locator('#calendar-reminder').inner_text();assert not s()['facts'] and not s()['ledger']
+  p.clock.run_for(61000);p.wait_for_timeout(100);assert s()['cal'][0].get('notifiedDates') is None;assert '2026-11-11' in s()['cal'][1]['reminderReceipts'];assert 'work' in p.locator('#calendar-reminder').inner_text()
+  p.evaluate('__LG.act("loc-set",{id:"home"})');p.clock.run_for(1100);p.wait_for_timeout(100);assert '2026-11-11' in s()['cal'][0]['reminderReceipts'];assert 'home' in p.locator('#calendar-reminder').inner_text();assert not s()['facts'] and not s()['ledger']
  check('Other-place reminders wait without acknowledgement and appear after switching back',reminder)
  if errors:results.append({'name':'No page errors','pass':False,'error':str(errors)})
  b.close()

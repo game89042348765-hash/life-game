@@ -6,6 +6,9 @@ const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const uid=()=>crypto.randomUUID?.()||(Date.now().toString(36)+"-"+Math.random().toString(36).slice(2));
 const pad=n=>String(n).padStart(2,"0");
+const Cal=LifeGamePlanning;
+const calParts=id=>String(id||"").split("@");
+const CAL_SELECTION=new Map();
 const iso=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
 const parseD=s=>{const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
 const addDays=(s,n)=>{const d=parseD(s);d.setDate(d.getDate()+n);return iso(d)};
@@ -45,7 +48,7 @@ function save(){
 const today=()=>META.space==='demo'?addDays(realToday(),META.offset||0):realToday();
 function dataSignature(s){if(!s)return '';const c={...s};delete c.ui;delete c.recent;delete c.revision;return JSON.stringify(c)}
 function tokenOf(el){const root=el?.closest?.('[data-revision]');return {space:root?.dataset.space||META.space,revision:root?Number(root.dataset.revision):(S?.revision||0)}}
-function storagePanel(){if(!storageIssue)return '';return '<div class="storage-alert" role="alert"><b>Нужна проверка сохранения</b><p>'+esc(storageIssue)+'</p><div class="row"><button class="btn s" data-act="recovery-export">Скачать исходные данные</button><button class="btn s" data-act="recovery-backup">Предыдущая исправная копия</button><button class="btn s" data-act="load-fresh">Обновить данные</button><button class="btn s" data-act="import">Восстановить из файла</button></div></div>'}
+function storagePanel(){if(!storageIssue)return '';return '<div class="storage-alert" role="alert"><b>Нужна проверка сохранения</b><p>'+esc(storageIssue)+'</p><div class="row"><button class="btn s" data-act="recovery-export">Скачать исходные данные</button><button class="btn s" data-act="recovery-backup">Скачать предыдущую копию</button><button class="btn s" data-act="restore-backup" data-v="last">Посмотреть копию</button><button class="btn s" data-act="restore-backup" data-v="daily">Копия на начало дня</button><button class="btn s" data-act="load-fresh">Обновить данные</button><button class="btn s" data-act="import">Восстановить из файла</button></div></div>'}
 function showStoragePanel(){$$('.storage-alert').forEach(n=>n.remove());if(storageIssue){const target=topSheet()?.querySelector('.sh-body')||$('#app');target.insertAdjacentHTML('afterbegin',storagePanel())}}
 async function runGuarded(fn,el,background=false){
   const token=tokenOf(el);
@@ -180,7 +183,7 @@ function makeBlank(){const s=baseState("my");return s}
 
 /* ---------- lookups ---------- */
 const COLL={task:"tasks",habit:"habits",quest:"quests",cal:"cal",offer:"offers",treat:"treats",decision:"decisions",block:"blocks",stage:"stages",goal:"goals",inst:"insts"};
-const get=(k,id)=>id?(S[COLL[k]]||[]).find(x=>x.id===id):null;
+const get=(k,id)=>id?(S[COLL[k]]||[]).find(x=>x.id===(k==="cal"?calParts(id)[0]:id)):null;
 const rk=(k,id)=>k+":"+id;
 const pr=r=>{const i=r.indexOf(":");return [r.slice(0,i),r.slice(i+1)]};
 const blockOf=it=>it&&it.blockId?get("block",it.blockId):null;
@@ -219,12 +222,23 @@ const itemTitle=(k,id)=>{const it=get(k,id);return it?(it.title||it.text||it.nam
 
 /* ---------- facts ---------- */
 const liveFacts=()=>S.facts.filter(f=>!f.cancelled);
-const factsOf=(kind,ref)=>S.facts.filter(f=>!f.cancelled&&f.kind===kind&&f.ref===ref);
+const factsOf=(kind,ref)=>S.facts.filter(f=>!f.cancelled&&f.kind===kind&&f.ref===(kind==='cal'?calParts(ref)[0]:ref)&&(!(kind==='cal'&&calParts(ref)[1])||f.occurrence===calParts(ref)[1]));
+const calRef=(c,o)=>rk('cal',c.id+(Cal.repeats(c)?'@'+o.key:''));
+const calDone=(c,key)=>factsOf('cal',c.id).some(f=>(f.occurrence||c.date)===key);
+function calDefault(c){const due=Cal.due(c,today());return due.find(o=>!calDone(c,o.key))?.key||due[0]?.key||Cal.next(c,today())?.key||S.misses.find(m=>m.kind==='cal'&&m.ref===c.id&&m.status==='active'&&!calDone(c,m.occurrence||m.date))?.occurrence||c.date}
+const calChosen=c=>CAL_SELECTION.get(c.id)||calDefault(c);
+const calView=c=>Cal.occurrence(c,calChosen(c));
+function calNext(c){let from=today();for(let n=0;n<10000;n++){const o=Cal.next(c,from);if(!o)return null;const same=Cal.due(c,o.date).find(x=>!calDone(c,x.key));if(same)return same;from=addDays(o.date,1)}return null}
+function habitTarget(h,d){const changes=(h.norms||[]).filter(x=>x.from<=d).sort((a,b)=>a.from.localeCompare(b.from));return changes.at(-1)?.target||h.dailyTarget||1}
+const habitSteps=(id,d)=>S.facts.filter(f=>!f.cancelled&&f.kind==='habitStep'&&f.ref===id&&f.date===d);
+function habitDayTarget(h,d){return S.facts.find(f=>f.kind==='habitStep'&&f.ref===h.id&&f.date===d)?.target||habitTarget(h,d)}
+function habitDayProgress(h,d){return doneOn('habit',h.id,d)?habitDayTarget(h,d):habitSteps(h.id,d).length}
+
 function doneOn(k,id,d){
   if(k==="quest")return S.facts.some(f=>!f.cancelled&&f.kind==="questStep"&&f.ref===id&&f.date===d);
-  return S.facts.some(f=>!f.cancelled&&f.kind===k&&f.ref===id&&f.date===d);
+  return S.facts.some(f=>!f.cancelled&&f.kind===k&&f.ref===(k==="cal"?calParts(id)[0]:id)&&f.date===d&&(!(k==="cal"&&calParts(id)[1])||(f.occurrence||get("cal",id)?.date)===calParts(id)[1]));
 }
-const doneEver=(k,id)=>S.facts.some(f=>!f.cancelled&&f.kind===k&&f.ref===id&&(k!=="task"||(f.cycle||0)===(get("task",id)?.cycle||0)));
+const doneEver=(k,id)=>k==='cal'?(get('cal',id)?calDone(get('cal',id),calParts(id)[1]||calChosen(get('cal',id))):false):S.facts.some(f=>!f.cancelled&&f.kind===k&&f.ref===id&&(k!=="task"||(f.cycle||0)===(get("task",id)?.cycle||0)));
 function questProgress(q){
   const st=factsOf("questStep",q.id);
   if(q.type==="checklist"){const done=new Set(st.map(f=>f.step));return {done:q.steps.filter(s=>done.has(s.id)).length,total:q.steps.length,doneSet:done}}
@@ -316,16 +330,18 @@ function complete(k,id,d,opts){
     const a=award("task",id,d);f.insts=a.insts;f.consumed=a.consumed;
     return f;
   }
-  if(k==="habit"){
-    if(doneOn("habit",id,d))fail("Привычка сегодня уже отмечена");
-    const f=addFact("habit",id,d,it.reward,{title:it.title});
-    checkHabitGoal(it,d,f);
-    return f;
+  if(k==='habit'){
+    if(doneOn('habit',id,d))fail('Дневная норма уже выполнена');
+    const snapshot=S.facts.find(f=>f.kind==='habitStep'&&f.ref===id&&f.date===d),target=snapshot?.target||habitTarget(it,d),reward=snapshot?.dayReward??it.reward;
+    if(habitSteps(id,d).length>=target)fail('Дневная норма уже набрана');
+    const step=addFact('habitStep',id,d,0,{title:it.title+' — подход',target,dayReward:reward});
+    if(habitSteps(id,d).length<target)return step;
+    const f=addFact('habit',id,d,reward,{title:it.title,parentStep:step.id,target});step.habitFact=f.id;checkHabitGoal(it,d,f);return f;
   }
-  if(k==="cal"){
-    if(doneEver("cal",id))fail("Уже выполнено");
-    const f=addFact("cal",id,d,it.reward,{title:it.title});
-    return f;
+  if(k==='cal'){
+    const key=calParts(id)[1]||opts.occurrence||calChosen(it),o=Cal.occurrence(it,key);
+    if(!o)fail('Появление календарного дела не найдено');if(calDone(it,key))fail('Это появление уже выполнено');
+    return addFact('cal',it.id,d,it.reward,{title:it.title,occurrence:key,scheduledDate:o.date,scheduledTime:o.time});
   }
   if(k==="quest"){
     const p=questProgress(it);
@@ -359,14 +375,18 @@ function checkHabitGoal(h,d,f){
 }
 function undoFact(fid){
   const f=S.facts.find(x=>x.id===fid);if(!f||f.cancelled)fail("Отметка не найдена");
+  if(f.kind==='habit'&&f.parentStep){const step=habitSteps(f.ref,f.date).at(-1);if(step)return undoFact(step.id)}
   const chain=[f];
+  if(f.kind==='habitStep'){const award=factsOf('habit',f.ref).find(x=>x.date===f.date);if(award)chain.push(award)}
+
   // A final reward depends on the whole completed set, not just its last tick.
   if(f.kind==="questStep"){
     const final=S.facts.find(x=>!x.cancelled&&x.kind==="questFinal"&&x.ref===f.ref);
     if(final)chain.push(final);
   }
-  if(f.kind==="habit"){
-    const h=get("habit",f.ref);
+  const removedHabit=chain.find(x=>x.kind==="habit");
+  if(removedHabit){
+    const f=removedHabit;const h=get("habit",f.ref);
     for(const goal of S.facts.filter(x=>!x.cancelled&&x.kind==="habitGoal"&&x.ref===f.ref)){
       const mode=goal.goalMode||(goal.pkey.startsWith("all")?"total":"period"),period=goal.goalPeriod||(goal.pkey.startsWith("w")?"week":"month");
       const belongs=x=>mode==="total"||period==="week"?mode==="total"||weekStart(x.date)===weekStart(goal.date):monthKey(x.date)===monthKey(goal.date);
@@ -375,7 +395,7 @@ function undoFact(fid){
     }
   }
   if(f.final){const x=S.facts.find(y=>y.id===f.final&&!y.cancelled);if(x&&!chain.includes(x))chain.push(x)}
-  if(f.goalFact){const x=S.facts.find(y=>y.id===f.goalFact&&!y.cancelled);if(x&&!chain.includes(x))chain.push(x)}
+  if(f.goalFact&&!removedHabit){const x=S.facts.find(y=>y.id===f.goalFact&&!y.cancelled);if(x&&!chain.includes(x))chain.push(x)}
   const c=chain.reduce((a,x)=>a+(x.ledger?x.coins:0),0),xx=chain.reduce((a,x)=>a+(x.ledger?x.xp:0),0);
   if(c>0&&coins()-c<0)fail("Нельзя отменить: монеты уже потрачены (нужно вернуть "+c+", на балансе "+coins()+")");
   if(xx>0&&xpTotal()-xx<0)fail("Нельзя отменить: не хватает опыта для возврата");
@@ -392,7 +412,7 @@ function undoFact(fid){
 }
 function undoToday(k,id,d){
   d=d||today();
-  const kind=k==="quest"?"questStep":k;
+  const kind=k==="quest"?"questStep":k==="habit"&&habitSteps(id,d).length?"habitStep":k;
   const fs=S.facts.filter(f=>!f.cancelled&&f.kind===kind&&f.ref===id&&f.date===d);
   const f=fs[fs.length-1];if(!f)fail("Нет отметки за этот день");
   return undoFact(f.id);
@@ -442,25 +462,26 @@ function candidates(d){
     if(available(q)&&schedOn(q.sched,d))out.push(rk("quest",q.id));
     else if(q.status==="completed"&&doneOn("quest",q.id,d))out.push(rk("quest",q.id));
   });
-  S.cal.forEach(c=>{if(available(c)&&c.inDay&&c.date===d)out.push(rk("cal",c.id))});
+  S.cal.forEach(c=>{if(available(c)&&c.inDay)Cal.due(c,d).forEach(o=>out.push(calRef(c,o)))});
   return out;
 }
 function isDoneRef(r,d){
   const [k,id]=pr(r);const it=get(k,id);
   if(k==="task"&&it&&it.sched.type==="once")return doneEver("task",id);
-  if(k==="cal")return doneEver("cal",id);
+  if(k==="cal"){const c=get("cal",id);return !!c&&calDone(c,calParts(id)[1]||Cal.due(c,d)[0]?.key||calChosen(c))}
   return doneOn(k,id,d);
 }
 function dayPlan(d,opts){
   const day=S.days[d]||{added:[],removed:[],forced:[]};
   const tempo=dayTempo(d),creative=creativeOn(d),focus=focusFor(d);
   const loc=(d===today()&&!opts?.ignoreLoc)?curLocObj():null;
+  const normalize=r=>{const [k,id]=pr(r),c=k==='cal'?get(k,id):null;if(c&&Cal.repeats(c)&&!calParts(id)[1])return calRef(c,Cal.due(c,d)[0]||{key:calDefault(c)});return r};
   let refs=candidates(d);
-  (day.added||[]).forEach(r=>{const [k,id]=pr(r);const it=get(k,id);if(it&&(available(it)||isDoneRef(r,d))&&!refs.includes(r))refs.push(r)});
+  (day.added||[]).map(normalize).forEach(r=>{const [k,id]=pr(r);const it=get(k,id);if(it&&(available(it)||isDoneRef(r,d))&&!refs.includes(r))refs.push(r)});
   // items done today always show
-  liveFacts().filter(f=>f.date===d&&["task","habit","cal","questStep"].includes(f.kind)).forEach(f=>{
-    const r=rk(f.kind==="questStep"?"quest":f.kind,f.ref);if(!refs.includes(r)&&get(...pr(r)))refs.push(r)});
-  const removed=new Set(day.removed||[]),forced=new Set(day.forced||[]);
+  liveFacts().filter(f=>f.date===d&&["task","habit","habitStep","cal","questStep"].includes(f.kind)).forEach(f=>{
+    const item=get("cal",f.ref);const r=f.kind==="cal"&&item?calRef(item,{key:f.occurrence||item.date}):rk(f.kind==="questStep"?"quest":f.kind==="habitStep"?"habit":f.kind,f.ref);if(!refs.includes(r)&&get(...pr(r)))refs.push(r)});
+  const removed=new Set((day.removed||[]).map(normalize)),forced=new Set((day.forced||[]).map(normalize));
   const visible=[],hidden=[];
   refs.forEach(r=>{
     if(removed.has(r)&&!isDoneRef(r,d))return;
@@ -483,9 +504,9 @@ function dayPlan(d,opts){
 const WHY_L={tempo:"не подходит темпу дня",focus:"скрыто режимом фокуса",creative:"творческий режим",loc:"в другой локации"};
 
 /* ---------- misses (rollover) ---------- */
-function addMiss(kind,ref,d,title){
-  if(S.misses.some(m=>m.kind===kind&&m.ref===ref&&m.date===d))return;
-  S.misses.push({id:uid(),kind,ref,date:d,title,status:"active",note:"",created:Date.now()});
+function addMiss(kind,ref,d,title,occurrence){
+  if(S.misses.some(m=>m.kind===kind&&m.ref===ref&&(kind==="cal"?(m.occurrence||m.date)===(occurrence||d):m.date===d)))return;
+  S.misses.push({id:uid(),kind,ref,date:d,title,status:"active",note:"",created:Date.now(),...(occurrence?{occurrence}:{})});
 }
 function finalizeDay(d){
   const p=dayPlan(d,{ignoreLoc:true});
@@ -506,7 +527,7 @@ function finalizeDay(d){
     if(k==="quest"&&it.status==="active"&&expectedSched(it.sched))addMiss("quest",id,d,it.title);
   });
   // calendar: commitments regardless of plan or pause
-  S.cal.forEach(c=>{if(available(c)&&c.date===d&&!doneEver("cal",c.id))addMiss("cal",c.id,d,c.title)});
+  S.cal.forEach(c=>{if(available(c))for(const o of Cal.due(c,d))if(!calDone(c,o.key))addMiss("cal",c.id,d,c.title,o.key)});
 }
 function processDays(){
   const t=today();
@@ -523,21 +544,21 @@ function renderRetainingDrafts(){
   for(const draft of forms){const f=$$('form').find(f=>f.dataset.form===draft.kind&&(f.dataset.id||'')===draft.id);if(!f)continue;for(const v of draft.values){const x=f.elements.namedItem(v.name);if(x&&'value' in x){x.value=v.value;if(x.type==='checkbox')x.checked=v.checked}}for(const v of draft.multi){if(!v.group)continue;const x=[...f.querySelectorAll('[data-multi] [data-v]')].find(x=>x.closest('[data-multi]').dataset.multi===v.group&&x.dataset.v===v.v);if(x)x.setAttribute('aria-pressed',v.pressed)}}
 }
 function tx(fn,msg){
-  const backup=JSON.stringify(S);let r;
+  const backup=JSON.stringify(S),oldCoins=coins();let r;
   try{
     if(!activeOperation)throw Error('Операция должна выполняться под защитой записи.');
     r=fn();if(r===false){S=JSON.parse(backup);return false}locTick();save();
   }catch(e){S=JSON.parse(backup);renderRetainingDrafts();toast(e.message);return false}
-  render();if(msg)toast(typeof msg==='function'?msg(r):msg);return r===undefined?true:r;
+  render();if(coins()>oldCoins)animateWallet(oldCoins,coins());else if(coins()<oldCoins)stopWallet();if(msg)toast(typeof msg==='function'?msg(r):msg);return r===undefined?true:r;
 }
 
 
 /* ---------- misc model helpers ---------- */
 function pushRecent(k,id){S.recent.unshift({k,id,at:Date.now()});S.recent=S.recent.filter(r=>Date.now()-r.at<15*60e3).slice(0,30)}
 function newTask(p){return Object.assign({id:uid(),title:"",locs:[],desc:"",reward:DEF_REWARD.task,sched:{type:"once",days:[],date:null},blockId:null,stageId:null,goalId:null,inDay:true,key:false,fit:["normal","hard"],cat:"",tags:[],ifThen:"",bonus:[],status:"active",created:today()},p||{})}
-function newHabit(p){return Object.assign({id:uid(),title:"",locs:[],desc:"",reward:DEF_REWARD.habit,sched:{type:"daily",days:[]},goal:{mode:"total",period:"month",target:30,reward:DEF_REWARD.habitGoal,bonus:[]},level:1,levelLog:[],blockId:null,stageId:null,goalId:null,inDay:true,fit:["rest","normal","hard"],cat:"",tags:[],ifThen:"",status:"active",created:today()},p||{})}
+function newHabit(p){return Object.assign({id:uid(),title:"",locs:[],desc:"",reward:DEF_REWARD.habit,dailyTarget:1,norms:[],sched:{type:"daily",days:[]},goal:{mode:"total",period:"month",target:30,reward:DEF_REWARD.habitGoal,bonus:[]},level:1,levelLog:[],blockId:null,stageId:null,goalId:null,inDay:true,fit:["rest","normal","hard"],cat:"",tags:[],ifThen:"",status:"active",created:today()},p||{})}
 function newQuest(p){return Object.assign({id:uid(),title:"",locs:[],desc:"",type:"counter",target:10,steps:[],stepReward:DEF_REWARD.questStep,finalReward:DEF_REWARD.questFinal,bonus:[],sched:{type:"whenever",days:[]},blockId:null,stageId:null,goalId:null,inDay:false,fit:["normal","hard"],cat:"",tags:[],ifThen:"",status:"active",created:today()},p||{})}
-function newCal(p){return Object.assign({id:uid(),title:"",locs:[],date:today(),time:"",note:"",reward:DEF_REWARD.cal,blockId:null,stageId:null,inDay:true,reminder:true,status:"active",created:today()},p||{})}
+function newCal(p){return Object.assign({id:uid(),title:"",locs:[],date:today(),time:"",note:"",repeat:{type:"none",days:[]},exceptions:{},retained:[],until:null,reminderLead:15,reminderReceipts:{},reward:DEF_REWARD.cal,blockId:null,stageId:null,inDay:true,reminder:true,status:"active",created:today()},p||{})}
 function newOffer(p){return Object.assign({id:uid(),title:"",desc:"",price:100,use:"once",limit:3,cat:"",tags:[],status:"active",created:today()},p||{})}
 function newDecision(p){return Object.assign({id:uid(),text:"",stageId:null,deadline:null,priceC:0,priceX:0,status:"active",created:today(),linkedAt:null,closedAt:null},p||{})}
 function itemsOfStage(sid){
@@ -641,7 +662,7 @@ function ask(o){
 /* ---------- render ---------- */
 function balChip(){
   const c=coins(),x=xpTotal();
-  return '<button class="bal" data-act="go" data-s="economy" title="Монеты и опыт"><span class="'+(c<0?'neg':'c')+'">● '+num(c)+'</span><span class="'+(x<0?'neg':'x')+'">Ур. '+level()+'</span></button>';
+  return '<button class="bal" data-act="go" data-s="economy" title="Монеты и опыт"><span data-wallet class="'+(c<0?'neg':'c')+'">● '+num(c)+'</span><span class="'+(x<0?'neg':'x')+'">Ур. '+level()+'</span></button>';
 }
 function banners(){
   let h="";
@@ -717,7 +738,7 @@ function stageSelect(name,blockId,cur){
 }
 function goalSelect(name,stageId,cur){
   const gs=stageId?S.goals.filter(g=>g.stageId===stageId&&(g.status==="active"||g.id===cur)):[];
-  return '<select name="'+name+'">'+opt("","Не ведёт к цели",cur||"")+gs.map(g=>opt(g.id,"Ведёт к цели: "+g.title,cur)).join("")+'</select>';
+  return '<select name="'+name+'">'+opt("","Не ведёт к цели",cur||"")+gs.map(g=>opt(g.id,"Ведёт к цели: "+g.title,cur)).join("")+(stageId&&get("stage",stageId)?.status==='open'?opt("__new","+ Новая цель этапа…",""):"")+'</select>';
 }
 /* link block→stage→goal selects inside a form */
 document.addEventListener("change",e=>{
@@ -729,6 +750,8 @@ document.addEventListener("change",e=>{
     if(cur&&cur.currentStageId){const s=f.querySelector('[name="stageId"]');if([...s.options].some(o=>o.value===cur.currentStageId))s.value=cur.currentStageId}
     const g=f.querySelector('[name="goalId"]');if(g)g.outerHTML=goalSelect("goalId",f.querySelector('[name="stageId"]').value,"");
   }
+  if(e.target.name==="goalId"&&e.target.value==="__new"){openGoalDraft(f);return}
+  if(["blockId","stageId"].includes(e.target.name))delete f._goalDraft;
   if(e.target.name==="stageId"&&f.querySelector('[name="goalId"]')){
     f.querySelector('[name="goalId"]').outerHTML=goalSelect("goalId",e.target.value,"");
   }
@@ -966,7 +989,7 @@ SCR.home=()=>{
   h+=locBar();
   const L=curLocObj();const hideH=k=>!!(L&&L.homeHide.includes(k));
   if(S.settings.motivation&&!hideH("motivation"))h+='<div class="card flat" style="margin-top:8px"><div class="between"><span>'+esc(S.settings.motivation)+'</span><button class="btn ghost s" data-act="motivation">Изменить</button></div></div>';
-  h+=onboardingCard();
+  h+=onboardingCard()+backupPrompt();
   if(!hideH("invites"))h+=sessionInvites();
   h+='<div class="grid2" style="margin-top:10px"><button class="tile" data-act="tab" data-v="day"><b>Конструктор дня</b><span class="meta">Сделано '+doneN+' из '+plan.visible.length+' · +'+earnedToday+' монет</span></button>'+
     '<button class="tile" data-act="tab" data-v="map"><b>Стратегическое планирование</b><span class="meta">Карта жизни: '+activeBlocks().filter(blockVisible).length+' блоков</span></button></div>';
@@ -974,8 +997,8 @@ SCR.home=()=>{
     h+='<div class="grid2" style="margin-top:8px"><button class="tile" data-act="focus-open"><b>Режим фокуса</b><span class="meta">'+(S.focus.on?'Включён: '+S.focus.blocks.length+' '+plural(S.focus.blocks.length,"блок","блока","блоков"):'Выключен')+'</span></button>'+
       '<button class="tile" data-act="'+(S.creative.on?'creative-off':'creative-open')+'"><b>Творческий режим</b><span class="meta">'+(S.creative.on?'Пауза с '+short(S.creative.since):'Поставить систему на паузу')+'</span></button></div>';
   }
-  const up=S.cal.filter(e=>e.status==="active"&&!locHides(e,L)&&e.date>=t&&e.date<=addDays(t,3)&&!doneEver("cal",e.id)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
-  if(!hideH("upcoming"))h+='<h2>Ближайшие календарные дела</h2>'+(up.length?'<div class="list">'+up.map(e=>'<button class="item link" data-act="open" data-k="cal" data-id="'+e.id+'"><div class="body"><div class="t">'+esc(e.title)+'</div><div class="meta">'+short(e.date)+(e.time?' '+e.time:'')+' · '+esc(originText(e))+'</div></div></button>').join("")+'</div>':'<div class="empty">На ближайшие три дня ничего нет.</div>');
+  const up=S.cal.filter(e=>available(e)&&!locHides(e,L)).flatMap(e=>Cal.range(e,t,addDays(t,3)).filter(o=>!calDone(e,o.key)).map(o=>({...e,date:o.date,time:o.time,_occ:o.key}))).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  if(!hideH("upcoming"))h+='<h2>Ближайшие календарные дела</h2>'+(up.length?'<div class="list">'+up.map(e=>'<button class="item link" data-act="open" data-k="cal" data-id="'+e.id+'" data-occ="'+(e._occ||e.date)+'"><div class="body"><div class="t">'+esc(e.title)+'</div><div class="meta">'+short(e.date)+(e.time?' '+e.time:'')+' · '+esc(originText(e))+'</div></div></button>').join("")+'</div>':'<div class="empty">На ближайшие три дня ничего нет.</div>');
   if(!lite()&&!hideH("decisions")){
     const ds=S.decisions.filter(d=>d.status==="active"&&d.deadline&&!(L?.blocks.length&&d.stageId&&!L.blocks.includes(get("stage",d.stageId)?.blockId))).sort((a,b)=>a.deadline.localeCompare(b.deadline)).slice(0,2);
     if(ds.length)h+='<h2>Принятые решения со сроком</h2><div class="list">'+ds.map(decisionMini).join("")+'</div>';
@@ -1003,13 +1026,14 @@ function dayCard(r,d,opts){
     prog='<span class="pill acc">'+p.done+'/'+p.total+'</span>';
     check='<button class="check sq'+(done?' on':'')+'" data-act="toggle" data-r="'+r+'" aria-label="'+(done?'Отменить последний шаг сегодня':'Сделать шаг квеста')+'">'+(done?IC.check:'+1')+'</button>';
   }
-  if(k==="habit"&&it.goal&&it.goal.target)prog='<span class="pill">'+habitCount(it,d)+'/'+it.goal.target+(it.goal.mode==="period"?(it.goal.period==="week"?" нед.":" мес."):"")+'</span>';
+  if(k==="habit"&&habitDayTarget(it,d)>1){prog+='<span class="pill acc">'+habitDayProgress(it,d)+'/'+habitDayTarget(it,d)+' сегодня</span> ';if(!done)check='<button class="check sq" data-act="toggle" data-r="'+r+'" aria-label="Добавить подход">+1</button>'}
+  if(k==="habit"&&it.goal&&it.goal.target)prog+='<span class="pill">'+habitCount(it,d)+'/'+it.goal.target+(it.goal.mode==="period"?(it.goal.period==="week"?" нед.":" мес."):"")+'</span>';
   const rw=k==="quest"?it.stepReward:it.reward;
   const sub=[originText(it)];if(it.locs?.length)sub.push(locNames(it.locs));
-  if(k==="cal")sub.unshift((it.time||"без времени"));
+  if(k==="cal")sub.unshift((Cal.occurrence(it,calParts(id)[1]||calChosen(it))?.time||"без времени"));
   else sub.push(schedText(it.sched));
   return '<div class="item'+(done?' done':'')+(k==="task"&&it.key?' key':'')+'">'+check+
-    '<button class="body link" data-act="open" data-k="'+k+'" data-id="'+id+'"><div class="t">'+esc(it.title)+' '+prog+'</div><div class="meta">'+esc(KIND_L[k])+' · '+esc(sub.filter(Boolean).join(" · "))+'</div>'+
+    '<button class="body link" data-act="open" data-k="'+k+'" data-id="'+id+'"'+(k==='cal'?' data-occ="'+(calParts(id)[1]||calChosen(it))+'"':'')+'><div class="t">'+esc(it.title)+' '+prog+'</div><div class="meta">'+esc(KIND_L[k])+' · '+esc(sub.filter(Boolean).join(" · "))+'</div>'+
     (it.ifThen&&!done?'<div class="ifthen">Если — то: '+esc(it.ifThen)+'</div>':'')+'</button>'+
     (rw?'<span class="rw">+'+rw+'</span>':'')+
     (k==="task"?'<button class="ib'+(it.key?' on':'')+'" data-act="key" data-id="'+id+'" title="Ключевое действие" aria-label="Ключевое действие">'+(it.key?IC.starOn:IC.star)+'</button>':'')+
@@ -1058,7 +1082,7 @@ ACT["toggle"]=el=>{
   const it=get(k,id);
   if(k==="quest"&&it.type==="checklist"&&!doneOn("quest",id,d)){openItem("quest",id);return}
   if(isDoneRef(el.dataset.r,d)&&(k!=="quest")){
-    tx(()=>{if(k==="task"&&it.sched.type==="once"){const f=factsOf("task",id).pop();undoFact(f.id)}else if(k==="cal"){undoFact(factsOf("cal",id).pop().id)}else undoToday(k,id,d)},"Отметка снята, награда возвращена");
+    tx(()=>{if(k==="task"&&it.sched.type==="once"){const f=factsOf("task",id).pop();undoFact(f.id)}else if(k==="cal"){const f=factsOf("cal",it.id).find(f=>(f.occurrence||it.date)===(calParts(id)[1]||calChosen(it)));undoFact(f.id)}else undoToday(k,id,d)},"Отметка снята, награда возвращена");
     return;
   }
   if(k==="quest"&&doneOn("quest",id,d)&&it.status!=="active"){tx(()=>undoToday("quest",id,d),"Последний шаг отменён");return}
@@ -1066,6 +1090,7 @@ ACT["toggle"]=el=>{
 };
 function rewardMsg(f){
   if(!f||!f.kind)return "Отмечено";
+  if(f.kind==="habitStep"){const h=get("habit",f.ref);return "Прогресс: "+habitSteps(f.ref,f.date).length+" из "+habitDayTarget(h,f.date)+". Награда — за дневную норму";}
   let m=f.coins?"+"+f.coins+" монет и XP":"Отмечено";
   const extra=S.facts.find(x=>x.id===(f.final||f.goalFact));
   if(extra)m+=". "+(extra.kind==="questFinal"?"Квест завершён":"Цель привычки достигнута")+(extra.coins?": +"+extra.coins:"");
@@ -1094,7 +1119,7 @@ ACT["undo-fact"]=el=>{closeAllSheets();tx(()=>undoFact(el.dataset.id),"Отме�
 ACT["go-block"]=el=>{closeAllSheets();NAV.tab="map";NAV.stack=[{s:"map",p:{}},{s:"block",p:{id:el.dataset.id}}];render();window.scrollTo(0,0)};
 function factRow(f){
   const k=f.kind==="questStep"||f.kind==="questFinal"?"quest":f.kind==="habitGoal"?"habit":f.kind;
-  return '<div class="item"><div class="body"><div class="t">'+esc(f.title||itemTitle(k,f.ref))+'</div><div class="meta">'+({task:"Задание",habit:"Привычка",habitGoal:"Цель привычки",questStep:"Шаг квеста",questFinal:"Финал квеста",cal:"Календарь",stage:"Этап"}[f.kind]||"")+' · '+short(f.date)+'</div></div>'+(f.coins?'<span class="rw">+'+f.coins+'</span>':'')+
+  return '<div class="item"><div class="body"><div class="t">'+esc(f.title||itemTitle(k,f.ref))+'</div><div class="meta">'+({task:"Задание",habit:"Привычка",habitStep:"Подход привычки",habitGoal:"Цель привычки",questStep:"Шаг квеста",questFinal:"Финал квеста",cal:"Календарь",stage:"Этап"}[f.kind]||"")+' · '+short(f.date)+'</div></div>'+(f.coins?'<span class="rw">+'+f.coins+'</span>':'')+
     (["task","habit","questStep","cal"].includes(f.kind)?'<button class="btn ghost s" data-act="undo-fact" data-id="'+f.id+'">Отменить</button>':'')+'</div>';
 }
 
@@ -1106,7 +1131,7 @@ function pickerBody(q){
   S.tasks.forEach(t=>{if(t.status==="active"&&!(t.sched.type==="once"&&doneEver("task",t.id)))pool.push(["task",t])});
   S.habits.forEach(t=>{if(t.status==="active")pool.push(["habit",t])});
   if(!lite())S.quests.forEach(t=>{if(t.status==="active")pool.push(["quest",t])});
-  S.cal.forEach(t=>{if(t.status==="active"&&!doneEver("cal",t.id)&&t.date===d)pool.push(["cal",t])});
+  S.cal.forEach(t=>{if(t.status==="active"&&Cal.due(t,d).some(o=>!calDone(t,o.key)))for(const o of Cal.due(t,d).filter(o=>!calDone(t,o.key)))pool.push(["cal",{...t,id:t.id+(Cal.repeats(t)?"@"+o.key:"")}])});
   const ql=q.toLowerCase();
   const list=pool.filter(([k,t])=>!inPlan.has(rk(k,t.id))&&(!q||(t.title+" "+(t.tags||[]).join(" ")).toLowerCase().includes(ql)));
   const groups={};
@@ -1123,7 +1148,7 @@ ACT["pick"]=el=>{tx(()=>{const r=dayRec(today());const x=el.dataset.r;if(!r.adde
 
 /* ---------- summary & ritual ---------- */
 function dayStats(d){
-  const fs=liveFacts().filter(f=>f.date===d);
+  const fs=liveFacts().filter(f=>f.date===d&&f.kind!=="habitStep");
   const earned=fs.reduce((a,f)=>a+(f.ledger?f.coins:0),0);
   const spent=-S.ledger.filter(l=>l.date===d&&l.type==="spend").reduce((a,l)=>a+l.coins,0)-S.ledger.filter(l=>l.date===d&&l.type==="refund").reduce((a,l)=>a+l.coins,0);
   const penalty=-S.ledger.filter(l=>l.date===d&&l.type==="penalty").reduce((a,l)=>a+l.coins,0);
@@ -1132,7 +1157,7 @@ function dayStats(d){
   const plan=dayPlan(d);
   const keyDone=plan.visible.filter(r=>r.startsWith("task:")&&get("task",pr(r)[1]).key&&isDoneRef(r,d)).length;
   const places={};for(const f of fs){const name=f.locationTitle||(f.loc?locName(locById(f.loc)):"Без локации");places[name]=(places[name]||0)+1}const where=Object.entries(places).map(([name,n])=>name+": "+n).join(" · ");
-  return {where,fs,earned,spent,penalty,minutes,tasks:by("task"),habits:by("habit"),steps:by("questStep"),finals:by("questFinal"),cal:by("cal"),goals:by("habitGoal"),keyDone,planned:plan.visible.length,doneInPlan:plan.visible.filter(r=>isDoneRef(r,d)).length,misses:S.misses.filter(m=>m.date===d).length};
+  return {where,fs,earned,spent,penalty,minutes,approaches:liveFacts().filter(f=>f.kind==='habitStep'&&f.date===d).length,tasks:by("task"),habits:by("habit"),steps:by("questStep"),finals:by("questFinal"),cal:by("cal"),goals:by("habitGoal"),stages:by("stage"),goalsAchieved:S.goals.filter(g=>g.status==="achieved"&&g.closedAt===d).length,keyDone,planned:plan.visible.length,doneInPlan:plan.visible.filter(r=>isDoneRef(r,d)).length,misses:S.misses.filter(m=>m.date===d).length};
 }
 SCR.summary=p=>{
   const d=p.d||today();
@@ -1140,30 +1165,22 @@ SCR.summary=p=>{
   curScr().title="Итоги дня";
   let h='<h1>Итоги дня</h1><div class="row"><button class="btn s" data-act="go" data-s="summary" data-d="'+addDays(d,-1)+'">← '+short(addDays(d,-1))+'</button><b class="grow" style="text-align:center">'+esc(human(d))+'</b>'+(d<today()?'<button class="btn s" data-act="go" data-s="summary" data-d="'+addDays(d,1)+'">'+short(addDays(d,1))+' →</button>':'')+'</div>';
   h+='<div class="grid3" style="margin-top:12px">'+[["Выполнено в плане",st.doneInPlan+" / "+st.planned],["Заработано","+"+st.earned+" ● / XP"],["Потрачено",st.spent+" ●"]].map(([a,b])=>'<div class="card"><div class="meta">'+a+'</div><b>'+b+'</b></div>').join("")+'</div>';
-  h+='<div class="card" style="margin-top:8px"><dl class="kv"><dt>Задания</dt><dd>'+st.tasks+'</dd><dt>Привычки</dt><dd>'+st.habits+(st.goals?' · достигнута цель: '+st.goals:'')+'</dd><dt>Шаги квестов</dt><dd>'+st.steps+(st.finals?' · завершено квестов: '+st.finals:'')+'</dd><dt>Календарь</dt><dd>'+st.cal+'</dd><dt>Ключевые</dt><dd>'+st.keyDone+'</dd><dt>Записанное время</dt><dd>'+st.minutes+' мин</dd>'+(st.where?'<dt>Где сделано</dt><dd>'+esc(st.where)+'</dd>':'')+'<dt>Пропуски дня</dt><dd>'+st.misses+'</dd>'+(st.penalty?'<dt>Цена слова</dt><dd>−'+st.penalty+' ●</dd>':'')+'</dl></div>';
+  h+='<div class="card" style="margin-top:8px"><dl class="kv"><dt>Задания</dt><dd>'+st.tasks+'</dd><dt>Привычки</dt><dd>'+st.habits+(st.approaches?' · подходов: '+st.approaches:'')+(st.goals?' · достигнута цель: '+st.goals:'')+'</dd><dt>Шаги квестов</dt><dd>'+st.steps+(st.finals?' · завершено квестов: '+st.finals:'')+'</dd><dt>Календарь</dt><dd>'+st.cal+'</dd><dt>Ключевые</dt><dd>'+st.keyDone+'</dd><dt>Записанное время</dt><dd>'+st.minutes+' мин</dd>'+(st.where?'<dt>Где сделано</dt><dd>'+esc(st.where)+'</dd>':'')+'<dt>Пропуски дня</dt><dd>'+st.misses+'</dd>'+(st.penalty?'<dt>Цена слова</dt><dd>−'+st.penalty+' ●</dd>':'')+'</dl></div>';
   h+='<h2>Факты дня</h2>'+(st.fs.length?'<div class="list">'+st.fs.map(factRow).join("")+'</div>':'<div class="empty">Отметок нет.</div>');
   if(d===today())h+='<div class="row" style="margin-top:14px"><button class="btn primary" data-act="ritual">Завершить день</button>'+(S.settings.sessions.all&&S.settings.sessions.daily?'<button class="btn" data-act="go" data-s="session" data-level="daily">Ежедневная сессия</button>':'')+'</div>';
   return h;
 };
-const RITUAL={
-  none:["День без отметок — тоже день. Завтра можно начать с одного маленького шага.","Иногда день просто проживается. Ты всё равно здесь, и это уже движение.","Отдых и тишина тоже нужны. Возвращайся, когда будешь готов."],
-  one:["Один шаг сделан, и он настоящий. Засчитано.","Маленький шаг лучше большого плана на бумаге. Молодец.","Ты сделал то, что мог сегодня. Этого достаточно."],
-  habit:["Привычка повторена. Повторение — это и есть путь.","Ещё одна отметка в копилку практики. Так навык и растёт."],
-  key:["Главное дня сделано. Остальное — бонус.","Ключевое действие выполнено — день прожит с фокусом."],
-  mid:["Хороший ровный день: {n} отметок и +{c} монет.","Уверенный день. {n} дел позади, +{c} в копилке.","Стабильный темп — лучший друг больших целей. {n} отметок сегодня."],
-  rich:["Насыщенный день: {n} отметок! Не забудь отдохнуть.","Вот это темп: {n} дел и +{c} монет. Ты молодец.","Мощный день. Сохрани силы и на завтра."],
-  quest:["Квест завершён! Это большой кусок пути.","Финал квеста — отличный повод себя похвалить."],
-  rest:["День отдыха прожит как день отдыха. Это тоже выполненный план."]
-};
+const RITUAL={"none":["День без отметок — тоже день. Завтра можно начать с одного маленького шага.","Иногда день просто проживается. Ты всё равно здесь, и это уже движение.","Отдых и тишина тоже нужны. Возвращайся, когда будешь готов.","Сегодня можно было просто восстановить силы. Путь продолжается.","Отдых тоже помогает жить в выбранном темпе.","Не каждый день требует отметок. Завтра будет новый выбор.","Ты можешь оставить этот день спокойным.","Планы могут подождать, когда тебе нужен отдых.","Сегодняшняя пауза не отменяет уже пройденного.","Достаточно заметить, как ты себя чувствуешь.","У жизни есть место и за пределами списков.","Можно вернуться с небольшого шага, когда будешь готов.","Твой маршрут остаётся с тобой и в спокойные дни.","День без отметок тоже был частью твоей жизни.","Пусть сегодня хватит того, что уже произошло.","Ты выбираешь свой ритм. Система подождёт.","Пауза оставляет пространство для нового.","Сейчас можно никуда не торопиться.","Отложить необязательное бывает разумным решением.","Силы можно беречь для того, что действительно важно.","Сегодня достаточно спокойно закончить день.","Будущий шаг может быть совсем маленьким.","Твой прогресс больше одной даты в календаре."],"rest":["День отдыха прожит как день отдыха. Это тоже выполненный план.","Сегодня можно было просто восстановить силы. Путь продолжается.","Отдых тоже помогает жить в выбранном темпе.","Не каждый день требует отметок. Завтра будет новый выбор.","Ты можешь оставить этот день спокойным.","Планы могут подождать, когда тебе нужен отдых.","Сегодняшняя пауза не отменяет уже пройденного.","Достаточно заметить, как ты себя чувствуешь.","У жизни есть место и за пределами списков.","Можно вернуться с небольшого шага, когда будешь готов.","Твой маршрут остаётся с тобой и в спокойные дни.","День без отметок тоже был частью твоей жизни.","Пусть сегодня хватит того, что уже произошло.","Ты выбираешь свой ритм. Система подождёт.","Пауза оставляет пространство для нового.","Сейчас можно никуда не торопиться.","Отложить необязательное бывает разумным решением.","Силы можно беречь для того, что действительно важно.","Сегодня достаточно спокойно закончить день.","Будущий шаг может быть совсем маленьким.","Твой прогресс больше одной даты в календаре."],"one":["Один шаг сделан, и он настоящий. Засчитано.","Маленький шаг лучше большого плана на бумаге. Молодец.","Ты сделал то, что мог сегодня. Этого достаточно.","Сегодня у намерения появилось реальное действие.","Один сделанный шаг уже изменил этот день.","Можно заметить результат и остановиться на сегодня.","Небольшое действие помогает сохранять направление.","Ты нашёл место для своего дела.","Сегодня есть факт, на который можно опереться.","Движение складывается из таких обычных дней.","Сделанное осталось в твоей истории.","Не обязательно добавлять ещё, чтобы признать результат.","Начало уже стало частью пути.","У этой даты есть свой небольшой результат.","Ты попробовал — теперь знаешь чуть больше.","Следующий шаг можно выбрать завтра.","Сегодня получилось приблизить задуманное.","Усилие могло быть незаметным, но оно состоялось.","Можно поблагодарить себя за этот шаг.","Сегодняшнее действие не нужно сравнивать с чужими.","У тебя появился ещё один опыт движения.","Маленький результат тоже заслуживает внимания.","Путь получил продолжение сегодня."],"habit":["Привычка повторена. Повторение — это и есть путь.","Ещё одна отметка в копилку практики. Так навык и растёт.","Ты снова вернулся к выбранной практике.","Ещё одно повторение стало частью твоего опыта.","Регулярность складывается из возвращений.","Сегодня ты поддержал то, что хочешь развивать.","Практика продолжается в твоём темпе.","Повторение сегодня — вклад в знакомое действие.","Ты дал практике место в реальном дне.","Устойчивость может расти без спешки.","Сегодняшнее возвращение уже состоялось.","Можно заметить, что стало немного привычнее.","Каждая практика добавляет собственный опыт.","Твой счётчик хранит реальные повторения.","Сегодня удалось продолжить выбранное.","Знакомое действие снова получило внимание.","Пропущенные дни не отняли это повторение.","Ты поддержал важную для себя привычку.","У этой практики появился ещё один день.","Можно продолжать без требования идеальной серии.","Сегодня ты укреплял свой способ действовать.","Хорошо, что для практики нашлось место."],"key":["Главное дня сделано. Остальное — бонус.","Ключевое действие выполнено — день прожит с фокусом.","Сегодня у намерения появилось реальное действие.","Один сделанный шаг уже изменил этот день.","Можно заметить результат и остановиться на сегодня.","Небольшое действие помогает сохранять направление.","Ты нашёл место для своего дела.","Сегодня есть факт, на который можно опереться.","Движение складывается из таких обычных дней.","Сделанное осталось в твоей истории.","Не обязательно добавлять ещё, чтобы признать результат.","Начало уже стало частью пути.","У этой даты есть свой небольшой результат.","Ты попробовал — теперь знаешь чуть больше.","Следующий шаг можно выбрать завтра.","Сегодня получилось приблизить задуманное.","Усилие могло быть незаметным, но оно состоялось.","Можно поблагодарить себя за этот шаг.","Сегодняшнее действие не нужно сравнивать с чужими.","У тебя появился ещё один опыт движения.","Маленький результат тоже заслуживает внимания.","Путь получил продолжение сегодня."],"mid":["Хороший ровный день: {n} отметок и +{c} монет.","Уверенный день. {n} дел позади, +{c} в копилке.","Стабильный темп — лучший друг больших целей. {n} отметок сегодня.","Сегодня у намерения появилось реальное действие.","Один сделанный шаг уже изменил этот день.","Можно заметить результат и остановиться на сегодня.","Небольшое действие помогает сохранять направление.","Ты нашёл место для своего дела.","Сегодня есть факт, на который можно опереться.","Движение складывается из таких обычных дней.","Сделанное осталось в твоей истории.","Не обязательно добавлять ещё, чтобы признать результат.","Начало уже стало частью пути.","У этой даты есть свой небольшой результат.","Ты попробовал — теперь знаешь чуть больше.","Следующий шаг можно выбрать завтра.","Сегодня получилось приблизить задуманное.","Усилие могло быть незаметным, но оно состоялось.","Можно поблагодарить себя за этот шаг.","Сегодняшнее действие не нужно сравнивать с чужими.","У тебя появился ещё один опыт движения.","Маленький результат тоже заслуживает внимания.","Путь получил продолжение сегодня."],"rich":["Насыщенный день: {n} отметок! Не забудь отдохнуть.","Вот это темп: {n} дел и +{c} монет. Ты молодец.","Мощный день. Сохрани силы и на завтра.","Сегодня получилось многое. Можно закончить день.","Посмотри, сколько реальных действий осталось в истории.","Ты уделил внимание нескольким важным делам.","После насыщенного дня можно восстановить силы.","Сделанное уже сохранено; завтра можно выбрать новый объём.","Сегодня было движение в нескольких направлениях.","Можно признать усилия этого дня без нового списка.","У твоего дня получился насыщенный след.","Важно заметить и результат, и собственное состояние.","Завтрашний темп не обязан повторять сегодняшний.","Ты собрал немало небольших результатов.","Сегодня задуманное несколько раз стало действием.","Пусть у завершения дня будет спокойное место.","Можно отложить оставшееся и посмотреть на сделанное.","Твои действия сегодня были вполне реальными.","Насыщенный день тоже заслуживает мягкого окончания.","Ты поработал с тем, что выбрал для себя.","Теперь можно дать результатам немного времени.","Сделанного достаточно, чтобы заметить этот день.","Сегодня ты многое попробовал и продвинул."],"quest":["Квест завершён! Это большой кусок пути.","Финал квеста — отличный повод себя похвалить.","Сегодня ты прошёл заметный участок своего пути.","Завершённый результат теперь можно рассмотреть целиком.","У твоей стратегии появилось подтверждение действием.","Одна ступень стала частью истории.","Ты можешь выбрать, что взять с собой дальше.","Сегодняшний итог помогает увидеть следующий участок.","Накопленные шаги привели к этому результату.","Можно дать себе время порадоваться завершённому.","Появилась новая точка опоры для дальнейшего выбора.","Твой маршрут стал немного яснее через опыт.","Завершение оставляет место для продолжения.","Ты довёл выбранное до понятного результата.","Эта ступень больше не только в плане.","Можно сохранить, что помогло пройти этот участок.","Сегодняшний результат принадлежит твоим усилиям.","Ты собрал отдельные действия в общий итог.","Дальше можно двигаться с новым опытом.","Пройденное заслуживает спокойного внимания.","Твоя история стала на одну ступень богаче.","Сегодня есть завершение, на которое можно оглянуться."],"progress":["Сегодня ты прошёл заметный участок своего пути.","Завершённый результат теперь можно рассмотреть целиком.","У твоей стратегии появилось подтверждение действием.","Одна ступень стала частью истории.","Ты можешь выбрать, что взять с собой дальше.","Сегодняшний итог помогает увидеть следующий участок.","Накопленные шаги привели к этому результату.","Можно дать себе время порадоваться завершённому.","Появилась новая точка опоры для дальнейшего выбора.","Твой маршрут стал немного яснее через опыт.","Завершение оставляет место для продолжения.","Ты довёл выбранное до понятного результата.","Эта ступень больше не только в плане.","Можно сохранить, что помогло пройти этот участок.","Сегодняшний результат принадлежит твоим усилиям.","Ты собрал отдельные действия в общий итог.","Дальше можно двигаться с новым опытом.","Пройденное заслуживает спокойного внимания.","Твоя история стала на одну ступень богаче.","Сегодня есть завершение, на которое можно оглянуться."]};
 function ritualMessage(st,d){
   const n=st.fs.length;let cat="none";
-  if(st.finals)cat="quest";else if(n>=6)cat="rich";else if(n>=2)cat=st.keyDone?"key":"mid";else if(n===1)cat=st.habits?"habit":st.keyDone?"key":"one";else if(dayTempo(d)==="rest")cat="rest";
-  const arr=RITUAL[cat];const m=arr[(new Date(d).getDate()+n)%arr.length];
+  if(st.finals)cat="quest";else if(st.stages||st.goalsAchieved)cat="progress";else if(n>=6)cat="rich";else if(n>=2)cat=st.keyDone?"key":"mid";else if(n===1)cat=st.habits?"habit":st.keyDone?"key":"one";else if(st.approaches)cat="habit";else if(dayTempo(d)==="rest")cat="rest";
+  if(S.days[d]?.ritualText)return S.days[d].ritualText;
+  const recent=new Set(Object.entries(S.days).filter(([day])=>day<d&&day>=addDays(d,-7)).map(([,v])=>v.ritualText));const choices=RITUAL[cat].filter(m=>!recent.has(m.replace("{n}",n).replace("{c}",st.earned)));const arr=choices.length?choices:RITUAL[cat],m=arr[(new Date(d).getDate()+n)%arr.length];
   return m.replace("{n}",n).replace("{c}",st.earned);
 }
 ACT["ritual"]=()=>{
   const d=today();const st=dayStats(d);
-  tx(()=>{dayRec(d).ritual=true});
+  const ok=tx(()=>{const record=dayRec(d);record.ritualText=ritualMessage(st,d);record.ritual=true});if(!ok)return;
   openSheet("Завершение дня",'<div class="ritual">✦</div><p style="text-align:center;font-size:17px">'+esc(ritualMessage(st,d))+'</p>'+
     '<div class="grid3" style="margin-top:14px"><div class="card"><div class="meta">Отметок</div><b>'+st.fs.length+'</b></div><div class="card"><div class="meta">Монет</div><b>+'+st.earned+'</b></div><div class="card"><div class="meta">Время</div><b>'+st.minutes+' мин</b></div></div>'+
     '<p class="meta" style="margin-top:10px;text-align:center">За ритуал ничего не начисляется. День остаётся открытым: можно отметить ещё что-то.</p>'+
@@ -1243,8 +1260,8 @@ SCR.block=p=>{
   }
   const ms=S.misses.filter(m=>m.status==="active"&&(get(m.kind,m.ref)||{}).blockId===b.id);
   h+=sec("missed","Невыполненные",ms.length?'<div class="card">'+ms.slice(0,10).map(m=>'<div class="mini"><div class="t">'+esc(m.title)+'<div class="meta">'+esc(KIND_L[m.kind]||m.kind)+' · '+short(m.date)+'</div></div></div>').join("")+'<button class="btn ghost s" data-act="go" data-s="missed">Все невыполненные</button></div>':'<div class="empty">Пропусков нет.</div>');
-  const cal=S.cal.filter(c=>c.blockId===b.id&&c.status==="active"&&!doneEver("cal",c.id)&&c.date>=today()).sort((a,c)=>a.date.localeCompare(c.date));
-  h+=sec("sched","Запланированное в календаре",cal.length?'<div class="card">'+cal.map(c=>'<div class="mini"><button class="t link" data-act="open" data-k="cal" data-id="'+c.id+'">'+esc(c.title)+'<div class="meta">'+short(c.date)+(c.time?' '+c.time:'')+'</div></button></div>').join("")+'</div>':'<div class="empty">Календарных дел блока нет.</div>');
+  const cal=S.cal.filter(c=>c.blockId===b.id&&c.status==="active"&&!!calNext(c)).sort((a,c)=>a.date.localeCompare(c.date));
+  h+=sec("sched","Запланированное в календаре",cal.length?'<div class="card">'+cal.map(c=>'<div class="mini"><button class="t link" data-act="open" data-k="cal" data-id="'+c.id+'">'+esc(c.title)+'<div class="meta">'+short(calNext(c)?.date||c.date)+((calNext(c)?.time||c.time)?' '+(calNext(c)?.time||c.time):'')+'</div></button></div>').join("")+'</div>':'<div class="empty">Календарных дел блока нет.</div>');
   return h;
 };
 ACT["bview"]=el=>{S.ui["bview_"+el.dataset.id]=el.dataset.v;save();const c=curScr();c.p=Object.assign({},c.p,{view:el.dataset.v});render()};
@@ -1263,7 +1280,7 @@ function stageCard(s,expanded){
 ACT["stage-open-toggle"]=el=>{S.ui["so_"+el.dataset.id]=!S.ui["so_"+el.dataset.id];save();render()};
 
 function miniItem(k,it){
-  const d=today();
+  const d=today(),o=k==='cal'?(Cal.due(it,d).find(x=>!calDone(it,x.key))||Cal.due(it,d)[0]||calNext(it)||calView(it)):null,r=o?calRef(it,o):rk(k,it.id);
   const fin=isFinished(k,it);
   let right="";
   if(!fin&&k!=="cal")right+='<button class="tg'+(it.inDay?' on':'')+'" data-act="inday" data-k="'+k+'" data-id="'+it.id+'" title="В Конструктор дня">'+(it.inDay?'в Конструкторе':'не в Конструкторе')+'</button>';
@@ -1272,11 +1289,11 @@ function miniItem(k,it){
   if(k==="quest"){const p=questProgress(it);extra=' <span class="pill acc">'+p.done+'/'+p.total+'</span>'}
   if(k==="habit"&&it.goal.target)extra=' <span class="pill">'+habitCount(it,d)+'/'+it.goal.target+'</span>';
   const goal=it.goalId?get("goal",it.goalId):null;
-  const doneT=k==="cal"?doneEver("cal",it.id):k==="task"&&it.sched.type==="once"?doneEver("task",it.id):k==="quest"?false:doneOn(k,it.id,d);
+  const doneT=k==="cal"?calDone(it,o?.key||it.date):k==="task"&&it.sched.type==="once"?doneEver("task",it.id):k==="quest"?false:doneOn(k,it.id,d);
   const chk=fin&&k!=="task"?'<span class="pill">'+(it.status==="completed"?"завершён":"закрыт")+'</span>':
-    '<button class="check'+(k==="quest"?' sq':'')+(doneT?' on':'')+'" style="width:24px;height:24px" data-act="toggle" data-r="'+rk(k,it.id)+'" aria-label="Отметить">'+(doneT?IC.check:(k==="quest"?'+1':''))+'</button>';
-  return '<div class="mini'+(fin?' done':'')+'">'+chk+'<button class="t link" data-act="open" data-k="'+k+'" data-id="'+it.id+'">'+esc(it.title)+extra+
-    '<div class="meta">'+(k==="cal"?short(it.date)+(it.time?' '+it.time:''):schedText(it.sched))+(goal?' · ведёт к цели «'+esc(goal.title)+'»':'')+(it.ifThen?' · если—то':'')+'</div></button>'+right+'</div>';
+    '<button class="check'+(k==="quest"?' sq':'')+(doneT?' on':'')+'" style="width:24px;height:24px" data-act="toggle" data-r="'+r+'" aria-label="Отметить">'+(doneT?IC.check:(k==="quest"?'+1':''))+'</button>';
+  return '<div class="mini'+(fin?' done':'')+'">'+chk+'<button class="t link" data-act="open" data-k="'+k+'" data-id="'+it.id+'"'+(o?' data-occ="'+o.key+'"':'')+'>'+esc(it.title)+extra+
+    '<div class="meta">'+(k==="cal"?short(o?.date||it.date)+(o?.time?' '+o.time:''):schedText(it.sched))+(goal?' · ведёт к цели «'+esc(goal.title)+'»':'')+(it.ifThen?' · если—то':'')+'</div></button>'+right+'</div>';
 }
 function stageBody(s,cnt){
   const it=itemsOfStage(s.id);
@@ -1358,7 +1375,7 @@ ACT["stage-close"]=el=>{
   const b=get("block",s.blockId);
   if(mode==="archive"&&b.currentStageId===s.id){toast("Сначала назначьте текущим другой этап");return}
   const it=itemsOfStage(s.id);
-  const acts=[...it.tasks.filter(x=>!isFinished("task",x)).map(x=>["task",x]),...it.habits.filter(x=>x.status==="active").map(x=>["habit",x]),...it.quests.filter(x=>x.status==="active").map(x=>["quest",x]),...it.cal.filter(x=>x.status==="active"&&!doneEver("cal",x.id)).map(x=>["cal",x])];
+  const acts=[...it.tasks.filter(x=>!isFinished("task",x)).map(x=>["task",x]),...it.habits.filter(x=>x.status==="active").map(x=>["habit",x]),...it.quests.filter(x=>x.status==="active").map(x=>["quest",x]),...it.cal.filter(x=>x.status==="active"&&(Cal.repeats(x)||!doneEver("cal",x.id))).map(x=>["cal",x])];
   const others=blockStages(s.blockId).filter(x=>x.status==="open"&&x.id!==s.id);
   const next=others.find(x=>x.order>s.order)||others[0];
   const sel=(k,x)=>'<select name="fate_'+k+'_'+x.id+'">'+others.map(o=>opt("move:"+o.id,"Перенести в «"+o.name+"»",next&&o.id===next.id?"move:"+o.id:"")).join("")+opt("free","Оставить самостоятельной",next?"":"free")+opt("close","Завершить, сохранив историю","")+'</select>';
@@ -1410,10 +1427,11 @@ function goalEditor(g,sid){
     '<div class="row" style="margin-top:14px"><button class="btn primary">Сохранить</button><button type="button" class="btn" data-act="sheet-close">Отмена</button></div></form>');
 }
 FORMS.goal=f=>{
+  const isNew=!f.dataset.id;
   const ok=tx(()=>{const t=fv(f,"title");if(!t)fail("Введите цель");
-    const g=get("goal",f.dataset.id);
-    if(g){g.title=t;g.ifThen=fv(f,"ifThen")}else S.goals.push({id:uid(),stageId:f.dataset.stage,title:t,ifThen:fv(f,"ifThen"),status:"active",created:today()})},"Цель сохранена");
-  if(ok)closeSheet();
+    let g=get("goal",f.dataset.id);
+    if(g){g.title=t;g.ifThen=fv(f,"ifThen")}else{if(get("stage",f.dataset.stage)?.status!=="open")fail("Выберите открытый этап");g={id:uid(),stageId:f.dataset.stage,title:t,ifThen:fv(f,"ifThen"),status:"active",created:today()};S.goals.push(g)}return g},"Цель сохранена");
+  if(ok){closeSheet();if(isNew)firstGoalStep(ok)}
 };
 ACT["goal-menu"]=el=>{
   const g=get("goal",el.dataset.id);
@@ -1516,8 +1534,8 @@ ACT["focus-open"]=()=>{
   const sel=f.on?f.blocks:[];
   openSheet("Режим фокуса",'<form data-form="focus"><p class="meta">Выберите направления, на которых сосредоточиться. Остальные блоки и их действия временно скроются из рабочих экранов. Ничего не архивируется и не удаляется.</p>'+
     S.blocks.filter(b=>b.status==="active").map(b=>'<label class="tog"><input type="checkbox" name="fb_'+b.id+'" '+(sel.includes(b.id)?'checked':'')+'><span>'+esc(b.icon+" "+b.name)+'</span></label>').join("")+
-    '<h2>Календарь</h2><label class="tog"><input type="checkbox" name="calOther" '+(f.calOther?'checked':'')+'><span>Показывать календарные дела других блоков<small>Сейчас таких дел впереди: '+S.cal.filter(c=>c.status==="active"&&c.blockId&&c.date>=today()).length+'</small></span></label>'+
-    '<label class="tog"><input type="checkbox" name="calUnlinked" '+(f.calUnlinked?'checked':'')+'><span>Показывать календарные дела без привязки к стратегии<small>Сейчас таких дел впереди: '+S.cal.filter(c=>c.status==="active"&&!c.blockId&&c.date>=today()).length+'</small></span></label>'+
+    '<h2>Календарь</h2><label class="tog"><input type="checkbox" name="calOther" '+(f.calOther?'checked':'')+'><span>Показывать календарные дела других блоков<small>Сейчас таких дел впереди: '+S.cal.filter(c=>c.status==="active"&&c.blockId&&!!calNext(c)).length+'</small></span></label>'+
+    '<label class="tog"><input type="checkbox" name="calUnlinked" '+(f.calUnlinked?'checked':'')+'><span>Показывать календарные дела без привязки к стратегии<small>Сейчас таких дел впереди: '+S.cal.filter(c=>c.status==="active"&&!c.blockId&&!!calNext(c)).length+'</small></span></label>'+
     '<p class="meta">Сам календарь остаётся полным, напоминания не отключаются. Задания, привычки и квесты без блока остаются видимыми.</p>'+
     '<div class="row" style="margin-top:12px"><button class="btn primary">'+(f.on?'Сохранить':'Включить фокус')+'</button>'+(f.on?'<button type="button" class="btn" data-act="focus-off">Выключить режим</button>':'')+'</div></form>');
 };
@@ -1530,9 +1548,9 @@ ACT["focus-off"]=()=>{closeAllSheets();tx(()=>{S.focus.on=false;snapshotToday()}
 
 /* ---------- creative mode ---------- */
 ACT["creative-open"]=()=>{
-  const up=S.cal.filter(c=>c.status==="active"&&!doneEver("cal",c.id)&&c.date>=today()&&c.date<=addDays(today(),14)).sort((a,b)=>a.date.localeCompare(b.date));
+  const up=S.cal.filter(c=>available(c)).flatMap(c=>Cal.range(c,today(),addDays(today(),14)).filter(o=>!calDone(c,o.key)).map(o=>({...c,date:o.date,time:o.time}))).sort((a,b)=>a.date.localeCompare(b.date));
   openSheet("Творческий режим",'<form data-form="creative"><p>Система встаёт на паузу: задания, привычки и квесты не требуют выполнения и не становятся пропусками. Стратегия, достижения и история остаются на месте.</p>'+
-    '<h2>Календарные дела на ближайшие 2 недели <span class="count">'+up.length+'</span></h2>'+(up.length?'<div class="card">'+up.map(c=>'<div class="mini"><div class="t">'+esc(c.title)+'<div class="meta">'+short(c.date)+(c.time?' '+c.time:'')+'</div></div></div>').join("")+'</div>':'<div class="empty">Календарных дел нет.</div>')+
+    '<h2>Календарные дела на ближайшие 2 недели <span class="count">'+up.length+'</span></h2>'+(up.length?'<div class="card">'+up.map(c=>'<div class="mini"><div class="t">'+esc(c.title)+'<div class="meta">'+short(calNext(c)?.date||c.date)+((calNext(c)?.time||c.time)?' '+(calNext(c)?.time||c.time):'')+'</div></div></div>').join("")+'</div>':'<div class="empty">Календарных дел нет.</div>')+
     '<p class="meta">Календарные обязательства пауза не отменяет.</p>'+
     '<label class="tog"><input type="checkbox" name="mute"><span>Отключить календарные напоминания на время творческого режима</span></label>'+
     '<div class="row" style="margin-top:12px"><button class="btn primary">Уйти в творческий режим</button><button type="button" class="btn" data-act="sheet-close">Отмена</button></div></form>');
@@ -1550,8 +1568,8 @@ const SEC_TITLE={task:"Задания",habit:"Привычки",quest:"Квес�
 function listFilter(k,p,items){
   const q=(S.ui["q_"+k]||"").toLowerCase(),cat=S.ui["cat_"+k]||"",st=S.ui["st_"+k]||"active";
   return items.filter(it=>{
-    if(st==="active"&&(it.status!=="active"||(k==="task"&&it.sched.type==="once"&&doneEver("task",it.id))||(k==="cal"&&doneEver("cal",it.id))))return false;
-    if(st==="done"&&!((it.status==="completed"||it.status==="closed")||(k==="task"&&it.sched.type==="once"&&doneEver("task",it.id))||(k==="cal"&&doneEver("cal",it.id))))return false;
+    if(st==="active"&&(it.status!=="active"||(k==="task"&&it.sched.type==="once"&&doneEver("task",it.id))||(k==="cal"&&(Cal.repeats(it)?!calNext(it):doneEver("cal",it.id)))))return false;
+    if(st==="done"&&!((it.status==="completed"||it.status==="closed")||(k==="task"&&it.sched.type==="once"&&doneEver("task",it.id))||(k==="cal"&&(Cal.repeats(it)?!calNext(it):doneEver("cal",it.id)))))return false;
     if(it.status==="archived")return false;
     if(!inFocus(it))return false;
     if(cat&&it.cat!==cat)return false;
@@ -1577,7 +1595,7 @@ function sectionScreen(k){
   return p=>{
     curScr().title=SEC_TITLE[k];
     let items=listFilter(k,p,S[COLL[k]]);
-    if(k==="cal")items.sort((a,b)=>(a.date+(a.time||"")).localeCompare(b.date+(b.time||"")));
+    if(k==="cal")items.sort((a,b)=>{const x=calNext(a)||calView(a),y=calNext(b)||calView(b);return (x?.date||"9").localeCompare(y?.date||"9")});
     const intro={task:"Все задания в одном месте: из этапов и самостоятельные. Здесь и в этапе — одна и та же запись.",habit:"Повторяющиеся практики со счётчиком, целью и уровнем.",quest:"Конечное продвижение к результату: счётчик или чек-лист. Завершается автоматически.",cal:"Дела, привязанные к реальной дате."}[k];
     let h='<h1>'+SEC_TITLE[k]+'</h1><p class="lead">'+intro+'</p>'+listHeader(k);
     h+='<div class="list" style="margin-top:10px">'+(items.length?items.map(it=>sectionRow(k,it)).join(""):'<div class="empty">Ничего не найдено.</div>')+'</div>';
@@ -1588,7 +1606,7 @@ function sectionScreen(k){
 function sectionRow(k,it){
   const d=today();
   let right="",sub=[originText(it)];if(it.locs?.length)sub.push(locNames(it.locs));
-  if(k==="cal")sub.unshift(short(it.date)+(it.time?" "+it.time:""));else sub.push(schedText(it.sched));
+  if(k==="cal"){const o=calNext(it)||calView(it);sub.unshift((o?short(o.date)+(o.time?" "+o.time:""):"Серия завершена")+" · "+calRepeatText(it));}else sub.push(schedText(it.sched));
   if(k==="quest"){const p=questProgress(it);right='<span class="pill acc">'+p.done+'/'+p.total+'</span>'}
   if(k==="habit"&&it.goal.target)right='<span class="pill">'+habitCount(it,d)+'/'+it.goal.target+' · ур. '+it.level+'</span>';
   const rw=k==="quest"?it.stepReward:it.reward;
@@ -1610,7 +1628,7 @@ function historyBlock(k){
 ACT["hall"]=el=>{S.ui["hall_"+el.dataset.k]=!S.ui["hall_"+el.dataset.k];render()};
 
 /* ---------- item card (detail) ---------- */
-ACT["open"]=el=>{closeAllSheets();openItem(el.dataset.k,el.dataset.id)};
+ACT["open"]=el=>{closeAllSheets();if(el.dataset.k==="cal"){const c=get("cal",el.dataset.id);CAL_SELECTION.delete(c.id);if(el.dataset.occ)CAL_SELECTION.set(c.id,el.dataset.occ)}openItem(el.dataset.k,el.dataset.id)};
 function openItem(k,id){
   if(k==="decision"){openDecision(id);return}
   if(k==="offer"){openOffer(id);return}
@@ -1623,8 +1641,9 @@ function itemDetail(k,it){
   const goal=it.goalId?get("goal",it.goalId):null;
   let h='<h3 style="font-size:18px">'+esc(it.title)+'</h3>';
   if(it.desc||it.note)h+='<p>'+esc(it.desc||it.note)+'</p>';
+  if(k==='cal'&&Cal.repeats(it))h+=calendarAppearances(it);
   h+='<dl class="kv" style="margin-top:6px"><dt>Место</dt><dd>'+esc(originText(it))+'</dd>';
-  if(k==="cal")h+='<dt>Дата</dt><dd>'+esc(human(it.date))+(it.time?' · '+it.time:'')+'</dd><dt>Напоминание</dt><dd>'+(it.reminder?'да':'нет')+'</dd>';
+  if(k==="cal"){const o=calView(it);h+='<dt>Дата</dt><dd>'+(o?esc(human(o.date))+(o.time?' · '+o.time:''):'Нет предстоящих появлений')+'</dd><dt>Повторение</dt><dd>'+esc(calRepeatText(it))+'</dd><dt>Напоминание</dt><dd>'+(it.reminder?'за '+(it.reminderLead??15)+' мин':'нет')+'</dd>';}
   else h+='<dt>Расписание</dt><dd>'+esc(schedText(it.sched))+'</dd>';
   if(goal)h+='<dt>Ведёт к цели</dt><dd>'+esc(goal.title)+'</dd>';
   h+='<dt>Конструктор</dt><dd>'+(it.inDay?'включено':'не включено')+'</dd>';
@@ -1640,6 +1659,7 @@ function itemDetail(k,it){
   h+='<dt>Статус</dt><dd>'+({active:"активно",closed:"закрыто с этапом",completed:"завершён",archived:"в архиве"}[it.status]||it.status)+'</dd></dl>';
   if(k==="habit"){
     const cnt=habitCount(it,d);
+    h+='<div class="card flat" style="margin-top:8px"><b>Сегодня: '+habitDayProgress(it,d)+' из '+habitDayTarget(it,d)+'</b><p class="meta">Награда один раз за дневную норму. Цель считает успешные дни.</p></div>';
     h+='<div class="card flat" style="margin-top:10px"><div class="between"><b>Уровень '+it.level+'</b><span>'+cnt+' / '+it.goal.target+' '+(it.goal.mode==="period"?(it.goal.period==="week"?"за неделю":"за месяц"):"всего")+'</span></div><div class="bar good" style="margin-top:6px"><i style="width:'+Math.min(100,cnt/it.goal.target*100)+'%"></i></div>'+
       '<div class="meta" style="margin-top:6px">Всего выполнений: '+factsOf("habit",it.id).length+'</div>'+
       (cnt>=it.goal.target?'<button class="btn s primary" style="margin-top:8px" data-act="habit-level" data-id="'+it.id+'">Следующий уровень привычки</button>':'')+'</div>';
@@ -1658,11 +1678,13 @@ function itemDetail(k,it){
   h+='<div class="row" style="margin-top:14px">';
   if(act&&k!=="quest"){
     const doneT=k==="cal"?doneEver("cal",it.id):k==="task"&&it.sched.type==="once"?doneEver("task",it.id):doneOn(k,it.id,d);
-    h+='<button class="btn '+(doneT?'':'primary')+'" data-act="detail-toggle" data-r="'+rk(k,it.id)+'">'+(doneT?'Снять отметку':'Выполнено сегодня')+'</button>';
+    h+='<button class="btn '+(doneT?'':'primary')+'" data-act="detail-toggle" data-r="'+rk(k,it.id)+'">'+(doneT?'Снять отметку':k==='habit'&&habitDayTarget(it,d)>1?'+1 подход':'Выполнено сегодня')+'</button>';
   }
+  if(act&&k==='habit'&&habitSteps(it.id,d).length&&!doneOn('habit',it.id,d))h+='<button class="btn" data-act="habit-unmark" data-id="'+it.id+'">−1 подход</button>';
+  if(act&&k==='cal'&&calView(it)&&!calDone(it,calChosen(it)))h+='<button class="btn" data-act="cal-move" data-id="'+it.id+'" data-occ="'+calChosen(it)+'">Перенести</button>';
   if(act){
-    const inPlan=dayPlan(d).visible.includes(rk(k,it.id));
-    if(!inPlan&&!(k==="task"&&it.sched.type==="once"&&doneEver("task",it.id)))h+='<button class="btn" data-act="pick-close" data-r="'+rk(k,it.id)+'">Добавить на сегодня</button>';
+    const selectedRef=k==="cal"?calRef(it,calView(it)||{key:calChosen(it)}):rk(k,it.id);const inPlan=dayPlan(d).visible.includes(selectedRef);
+    if(!inPlan&&!(k==="task"&&it.sched.type==="once"&&doneEver("task",it.id)))h+='<button class="btn" data-act="pick-close" data-r="'+selectedRef+'">Добавить на сегодня</button>';
   }
   h+='<button class="btn" data-act="edit" data-k="'+k+'" data-id="'+it.id+'">Изменить / перенести</button>';
   h+='<button class="btn" data-act="copy" data-k="'+k+'" data-id="'+it.id+'">Копировать</button>';
@@ -1678,10 +1700,11 @@ function itemDetail(k,it){
 ACT["detail-toggle"]=el=>{
   const [k,id]=pr(el.dataset.r);const it=get(k,id);const d=today();
   const done=k==="cal"?doneEver("cal",id):k==="task"&&it.sched.type==="once"?doneEver("task",id):doneOn(k,id,d);
-  if(done)tx(()=>{if(k==="cal"||(k==="task"&&it.sched.type==="once"))undoFact(factsOf(k,id).pop().id);else undoToday(k,id,d)},"Отметка снята, награда возвращена");
+  if(done)tx(()=>{if(k==="cal"){const f=factsOf("cal",it.id).find(f=>(f.occurrence||it.date)===calChosen(it));undoFact(f.id)}else if(k==="task"&&it.sched.type==="once")undoFact(factsOf(k,id).pop().id);else undoToday(k,id,d)},"Отметка снята, награда возвращена");
   else tx(()=>complete(k,id,d),f=>rewardMsg(f));
   refreshSheet("detail",()=>itemDetail(k,get(k,id)));
 };
+ACT["habit-unmark"]=el=>{tx(()=>undoToday("habit",el.dataset.id),"Подход отменён");refreshSheet("detail",()=>itemDetail("habit",get("habit",el.dataset.id)))};
 ACT["toggle-q"]=el=>{tx(()=>complete("quest",el.dataset.id,today()),f=>rewardMsg(f));refreshSheet("detail",()=>itemDetail("quest",get("quest",el.dataset.id)))};
 ACT["qstep"]=el=>{
   const id=el.dataset.id;
@@ -1702,7 +1725,7 @@ ACT["copy"]=async el=>{
   const y=await ask({title:"Создать копию?",text:"Копия — самостоятельная запись с теми же настройками, но без истории и прогресса. Назначенные бонусы не копируются. Оригинал остаётся на месте.",ok:"Копировать"});
   if(!y)return;
   closeAllSheets();
-  tx(()=>{const c=JSON.parse(JSON.stringify(it));c.id=uid();c.created=today();c.status="active";c.bonus=[];if(c.goal)c.goal.bonus=[];if(k==="habit"){c.level=1;c.levelLog=[]}if(k==="quest"){c.steps=c.steps.map(s=>({...s,id:uid()}))}S[COLL[k]].push(c);pushRecent(k,c.id)},"Копия создана");
+  tx(()=>{const c=JSON.parse(JSON.stringify(it));c.id=uid();c.created=today();c.status="active";c.bonus=[];if(c.goal)c.goal.bonus=[];if(k==="habit"){c.level=1;c.levelLog=[];c.dailyTarget=habitTarget(it,today());c.norms=[{from:today(),target:c.dailyTarget}]}if(k==="cal"){c.date=calNext(it)?.date||today();c.exceptions={};c.retained=[];c.until=null;c.reminderReceipts={};c.notifiedDates=[]}if(k==="quest"){c.steps=c.steps.map(s=>({...s,id:uid()}))}S[COLL[k]].push(c);pushRecent(k,c.id)},"Копия создана");
 };
 ACT["item-archive"]=async el=>{
   const k=el.dataset.k,it=get(k,el.dataset.id);
@@ -1720,7 +1743,8 @@ ACT["new"]=el=>{
   const k=el.dataset.k;const p={};
   if(el.dataset.stage){const s=get("stage",el.dataset.stage);p.stageId=s.id;p.blockId=s.blockId}
   if(el.dataset.block)p.blockId=el.dataset.block;
-  if(el.dataset.title)p.title=el.dataset.title;
+  if(el.dataset.title)p.title=el.dataset.title;if(el.dataset.goal)p.goalId=el.dataset.goal;
+  if(el.closest('.sheet'))closeSheet();
   editItem(k,null,p);
 };
 ACT["edit"]=el=>{closeAllSheets();editItem(el.dataset.k,get(el.dataset.k,el.dataset.id))};
@@ -1733,6 +1757,7 @@ function editItem(k,it,preset,fromNote){
   h+='<label class="f">Название</label><input type="text" name="title" value="'+esc(it.title)+'" required>';
   if(k==="cal"){
     h+='<div class="grid2"><div><label class="f">Дата</label><input type="date" name="date" value="'+it.date+'" required></div><div><label class="f">Время</label><input type="time" name="time" value="'+esc(it.time)+'"></div></div>';
+    h+=calendarFields(it);
     h+='<label class="f">Заметка</label><textarea name="note">'+esc(it.note)+'</textarea>'+link;
     h+='<label class="tog"><input type="checkbox" name="inDay" '+(it.inDay?'checked':'')+'><span>Добавить в Конструктор дня</span></label><label class="tog"><input type="checkbox" name="reminder" '+(it.reminder?'checked':'')+'><span>Напоминание</span></label>';
     h+='<label class="f">Награда, монет</label><input type="number" min="0" name="reward" value="'+it.reward+'" style="max-width:140px">';
@@ -1752,6 +1777,7 @@ function editItem(k,it,preset,fromNote){
     if(k==="task")h+='<label class="tog"><input type="checkbox" name="key" '+(it.key?'checked':'')+'><span>Ключевое действие<small>Включает Конструктор автоматически, затем Конструктор можно снять отдельно.</small></span></label>';
     h+=fitFields(it.fit||[]);
     if(k==="habit"){
+      h+='<label class="f">Дневная норма (подходов)</label><input type="number" name="dailyTarget" min="1" max="50" value="'+habitTarget(it,isNew?today():addDays(today(),1))+'"><p class="meta">'+(isNew?'Один подход по умолчанию.':'Изменение нормы действует с завтрашнего дня.')+' Награда одна за полную норму.</p>';
       h+='<div class="grid2"><div><label class="f">Награда за выполнение</label><input type="number" min="0" name="reward" value="'+it.reward+'"></div><div><label class="f">Награда за цель</label><input type="number" min="0" name="greward" value="'+(it.goal.reward||0)+'"></div></div>';
       h+='<label class="f">Цель привычки</label>'+segBtns("gmode",[["total","За всё время"],["period","За период"]],it.goal.mode)+
         '<div class="grid2"><div><label class="f">Сколько раз</label><input type="number" min="1" name="gtarget" value="'+it.goal.target+'"></div><div data-gperiod '+(it.goal.mode==="period"?'':'hidden')+'><label class="f">Период</label><select name="gperiod">'+opt("week","Неделя",it.goal.period)+opt("month","Месяц",it.goal.period)+'</select></div></div>';
@@ -1782,17 +1808,16 @@ FORMS.item=async f=>{
   }
   const res=tx(()=>{
     const title=fv(f,"title");if(!title)fail("Введите название");
-    const it=old||({task:newTask,habit:newHabit,quest:newQuest,cal:newCal}[k])({});
+    let it=old||({task:newTask,habit:newHabit,quest:newQuest,cal:newCal}[k])({});
     const previousSchedule=it.sched?.type,previousQuestType=it.type,previousTarget=it.target,previousSteps=JSON.stringify(it.steps||[]);
-    it.title=title;it.blockId=fv(f,"blockId")||null;it.stageId=newStage;
-    if(it.stageId&&!it.blockId)it.blockId=get("stage",it.stageId).blockId;
-    it.inDay=fv(f,"inDay");if(f.querySelector('[data-multi="locs"]'))it.locs=readLocs(f);
-    if(k==="cal"){
-      const wantedDate=fv(f,"date")||today();if(old&&doneEver("cal",it.id)&&old.date!==wantedDate)fail("Дату выполненного дела нельзя менять без отмены отметки");it.date=wantedDate;it.time=fv(f,"time");it.note=fv(f,"note");it.reminder=fv(f,"reminder");it.reward=Math.max(0,fnum(f,"reward"));
-      if(old&&doneEver("cal",it.id)&&old.date!==it.date)fail("Дату выполненного дела нельзя менять без отмены отметки");
+    if(k==='cal'){
+      const data={title,date:fv(f,'date')||today(),time:fv(f,'time'),note:fv(f,'note'),reminder:fv(f,'reminder'),reminderLead:fnum(f,'reminderLead',15),repeat:readCalendarRepeat(f),reward:Math.max(0,fnum(f,'reward')),blockId:fv(f,'blockId')||null,stageId:newStage,inDay:fv(f,'inDay'),locs:readLocs(f)};
+      if(old)it=applyCalendarEdit(old,data);else Object.assign(it,data);
     }else{
+      it.title=title;it.blockId=fv(f,'blockId')||null;it.stageId=newStage;if(it.stageId&&!it.blockId)it.blockId=get('stage',it.stageId).blockId;it.inDay=fv(f,'inDay');if(f.querySelector('[data-multi="locs"]'))it.locs=readLocs(f);
       it.desc=fv(f,"desc");it.sched=readSched(f);
-      const g=fv(f,"goalId");it.goalId=g&&(get("goal",g)||{}).stageId===it.stageId?g:null;
+      const g=fv(f,"goalId");
+      if(g==='__draft'){const draft=f._goalDraft;if(!draft||draft.stageId!==it.stageId)fail('Выберите этап для новой цели');const goal={id:uid(),stageId:it.stageId,title:draft.title,ifThen:draft.ifThen,status:'active',created:today()};S.goals.push(goal);it.goalId=goal.id}else it.goalId=g&&(get("goal",g)||{}).stageId===it.stageId?g:null;
       it.fit=multiVal(f,"fit");if(!it.fit.length)fail("Выберите хотя бы один темп дня");
       it.ifThen=fv(f,"ifThen");it.cat=fv(f,"cat");it.tags=readTags(f);
       if(k==="task"){
@@ -1803,6 +1828,7 @@ FORMS.item=async f=>{
         if(old&&doneEver("task",it.id)&&old.sched.type==="once"&&it.sched.type!=="once"){/* history stays as is */}
       }
       if(k==="habit"){
+        const target=Math.max(1,Math.min(50,fnum(f,"dailyTarget",1))),effective=old?addDays(today(),1):today();if(!old){it.dailyTarget=target;it.norms=[{from:effective,target}]}else if(habitTarget(it,effective)!==target){it.norms=(it.norms||[]).filter(x=>x.from!==effective);it.norms.push({from:effective,target})}
         it.reward=Math.max(0,fnum(f,"reward"));it.goal.reward=Math.max(0,fnum(f,"greward"));
         it.goal.mode=fv(f,"gmode");it.goal.period=fv(f,"gperiod")||"month";it.goal.target=Math.max(1,fnum(f,"gtarget",1));
       }
@@ -1826,6 +1852,89 @@ FORMS.item=async f=>{
     return it;
   },it=>(old?"Сохранено":"Создано")+(k!=="cal"&&!it.inDay?". Запись не в Конструкторе: её можно взять в день вручную":""));
   if(res)closeSheet();
+};
+
+/* Calendar editors share the same recurrence/occurrence identity as the day plan. */
+function calRepeatText(c){return {none:'Разово',daily:'Ежедневно',weekly:'Еженедельно',days:'По дням: '+(c.repeat?.days||[]).map(n=>WD[n-1]).join(', '),monthly:'Ежемесячно',yearly:'Ежегодно'}[c.repeat?.type||'none']}
+function calendarAppearances(c){
+  const keys=new Set([calChosen(c)]);let from=today(),count=0;
+  while(count<6){const o=Cal.next(c,from);if(!o)break;for(const v of Cal.due(c,o.date)){keys.add(v.key);count++}from=addDays(o.date,1)}
+  S.misses.filter(m=>m.kind==='cal'&&m.ref===c.id&&m.status==='active').slice(-5).forEach(m=>keys.add(m.occurrence||m.date));
+  return '<label class="f">Появление события</label><div class="chips">'+[...keys].map(key=>{const o=Cal.occurrence(c,key);return o?'<button class="chip" data-act="cal-occurrence" data-id="'+c.id+'" data-occ="'+key+'" aria-pressed="'+(key===calChosen(c))+'">'+esc(short(o.date)+(o.time?' '+o.time:''))+(calDone(c,key)?' ✓':'')+'</button>':''}).join('')+'</div>';
+}
+ACT['cal-occurrence']=el=>{const c=get('cal',el.dataset.id);if(Cal.occurrence(c,el.dataset.occ)){CAL_SELECTION.set(c.id,el.dataset.occ);refreshSheet('detail',()=>itemDetail('cal',c))}};
+function calendarFields(c){
+  const type=c.repeat?.type||'none';
+  return '<label class="f">Повторение</label><select name="calRepeat">'+[['none','Разово'],['daily','Ежедневно'],['weekly','Еженедельно'],['days','Выбранные дни'],['monthly','Ежемесячно'],['yearly','Ежегодно']].map(([v,l])=>opt(v,l,type)).join('')+'</select><div data-cal-days '+(type==='days'?'':'hidden')+'>'+chipsMulti('calDays',WD.map((v,i)=>[String(i+1),v]),(c.repeat?.days||[]).map(String))+'</div><p class="meta">Месячный и годовой повтор используют последний день месяца, если нужной даты нет.</p><label class="f">Напомнить</label><select name="reminderLead">'+[[0,'В момент события'],[15,'За 15 минут'],[60,'За час'],[1440,'За сутки']].map(([v,l])=>opt(v,l,c.reminderLead??15)).join('')+'</select>';
+}
+document.addEventListener('change',e=>{if(e.target.name==='calRepeat'){const box=e.target.form.querySelector('[data-cal-days]');if(box)box.hidden=e.target.value!=='days'}});
+function readCalendarRepeat(f){const type=fv(f,'calRepeat')||'none',days=type==='days'?multiVal(f,'calDays').map(Number):[];if(type==='days'&&!days.length)fail('Выберите дни повторения');return {type,days}}
+function splitCalendar(c,key,patch,preserveSelected=false){
+  const protectedKeys=factsOf('cal',c.id).map(f=>f.occurrence||c.date);if(preserveSelected&&c.exceptions?.[key])protectedKeys.push(key);const fresh=Cal.split(c,key,patch,uid(),protectedKeys);
+  fresh.created=today();S.cal.push(fresh);CAL_SELECTION.delete(c.id);return fresh;
+}
+function applyCalendarEdit(c,data){
+  const changed=data.date!==c.date||data.time!==c.time||JSON.stringify(data.repeat)!==JSON.stringify(c.repeat);
+  if(!Cal.repeats(c)&&calDone(c,c.date)&&changed)fail('Выполненное событие сохраняет свою дату. Создайте копию для нового события.');
+  if(Cal.repeats(c)&&(c.date<today()||factsOf('cal',c.id).length)){
+    const chosen=calView(c),next=chosen&&chosen.key>=today()&&!calDone(c,chosen.key)?chosen:calNext(c);
+    if(!next)fail('У серии нет будущих появлений для изменения. Создайте копию.');
+    const patch={...data,date:data.date===c.date?next.key:data.date};
+    if(data.date===c.date&&data.repeat.type===c.repeat.type&&['monthly','yearly'].includes(data.repeat.type)){patch.repeat={...data.repeat,anchorDay:c.repeat.anchorDay||Number(c.date.slice(8)),anchorMonth:c.repeat.anchorMonth||Number(c.date.slice(5,7))}}
+    if(patch.date<today())fail('Изменение серии применяется с сегодняшнего или будущего дня. Для прошлого появления используйте «Перенести».');
+    return splitCalendar(c,next.key,patch,true);
+  }
+  Object.assign(c,data);Cal.validate(c);return c;
+}
+function calendarMove(c,key,missId){
+  const o=Cal.occurrence(c,key);if(!o||calDone(c,key)){toast('Это появление уже выполнено или отменено');return}
+  openSheet('Перенести событие','<form data-form="cal-move" data-id="'+c.id+'" data-occ="'+key+'" data-miss="'+(missId||'')+'"><p>'+esc(c.title)+' · '+esc(short(o.date))+'</p><div class="grid2"><div><label class="f">Дата</label><input type="date" name="date" value="'+(o.date<today()?today():o.date)+'" required></div><div><label class="f">Время</label><input type="time" name="time" value="'+o.time+'"></div></div><label class="f">Что переносим</label><select name="scope">'+opt('one','Только это появление','one')+(Cal.repeats(c)&&key>=today()?opt('following','Это и следующие',''):'')+'</select><p class="meta">Выполненные события и прошлое расписание сохраняются.</p><div class="row"><button class="btn primary">Перенести</button><button type="button" class="btn" data-act="sheet-close">Отмена</button></div></form>');
+}
+ACT['cal-move']=el=>{const c=get('cal',el.dataset.id);calendarMove(c,el.dataset.occ||calChosen(c))};
+FORMS['cal-move']=f=>{
+  const ok=tx(()=>{const c=get('cal',f.dataset.id),key=f.dataset.occ,o=Cal.occurrence(c,key),date=fv(f,'date'),time=fv(f,'time');
+    if(!o||calDone(c,key))fail('Появление уже выполнено или отменено');if(!Cal.valid(date))fail('Укажите действительную дату');
+    if(fv(f,'scope')==='following'){
+      if(key<today())fail('Прошлое расписание не меняется');
+      const repeat=cloneState(c.repeat),shift=(Cal.weekday(date)-Cal.weekday(key)+7)%7;
+      if(repeat.type==='days')repeat.days=repeat.days.map(n=>(n-1+shift)%7+1).sort((a,b)=>a-b);
+      splitCalendar(c,key,{date,time,repeat});
+    }else{(c.exceptions||={})[key]={date,time};CAL_SELECTION.set(c.id,key)}
+    const m=S.misses.find(x=>x.id===f.dataset.miss);if(m)m.note='перенесено на '+short(date);
+  },'Перенесено. История и выполненные появления сохранены');
+  if(ok){closeSheet();refreshSheet('detail',()=>itemDetail('cal',get('cal',f.dataset.id)))}
+};
+
+/* A child goal remains a local draft until the parent item commits successfully. */
+let GOAL_PARENT=null;
+function openGoalDraft(parent){
+  const sid=fv(parent,'stageId');if(!sid||get('stage',sid)?.status!=='open'){toast('Сначала выберите открытый этап');return}
+  GOAL_PARENT=parent;const draft=parent._goalDraft||{};
+  openSheet('Новая цель этапа','<form data-form="goal-draft" data-stage="'+sid+'"><label class="f">Желаемый результат</label><input name="title" value="'+esc(draft.title||'')+'" required><label class="f">Если — то (необязательно)</label><input name="ifThen" value="'+esc(draft.ifThen||'')+'"><p class="meta">Цель сохранится вместе с действием. Отмена действия отменит и эту новую цель.</p><div class="row"><button class="btn primary">Добавить к действию</button><button type="button" class="btn" data-act="sheet-close">Отмена</button></div></form>',{onClose:()=>{const select=GOAL_PARENT?.querySelector('[name="goalId"]');if(select?.value==='__new')select.value=GOAL_PARENT._goalDraft?'__draft':''}});
+}
+FORMS['goal-draft']=f=>{
+  const parent=GOAL_PARENT,title=fv(f,'title');if(!parent?.isConnected||!title||fv(parent,'stageId')!==f.dataset.stage){toast('Откройте действие заново');return}
+  parent._goalDraft={title,ifThen:fv(f,'ifThen'),stageId:f.dataset.stage};
+  const select=parent.querySelector('[name="goalId"]');select.querySelector('[value="__draft"]')?.remove();select.insertAdjacentHTML('beforeend',opt('__draft','Новая цель: '+title,'__draft'));select.value='__draft';closeSheet();
+};
+function firstGoalStep(g){
+  const stage=get('stage',g.stageId);
+  openSheet('Цель сохранена','<p>'+esc(g.title)+'</p><div class="row"><button class="btn primary" data-act="new" data-k="task" data-stage="'+stage.id+'" data-goal="'+g.id+'">Добавить первый шаг</button><button class="btn" data-act="sheet-close">Позже</button></div>');
+}
+function creationContext(){const c=curScr();let sid=c.p?.stage||c.p?.stageId||null,bid=c.s==='block'?c.p.id:c.p?.block||null;if(sid){const s=get('stage',sid);if(s?.status==='open')bid=s.blockId;else sid=null}if(bid&&!sid){const s=get('stage',get('block',bid)?.currentStageId);if(s?.status==='open')sid=s.id}return {blockId:bid||null,stageId:sid}}
+function captureGoal(title,fromNote,preset={}){
+  const p={...creationContext(),...preset};
+  openSheet('Новая цель','<form data-form="capture-goal" data-note="'+(fromNote||'')+'"><label class="f">Желаемый результат</label><input name="title" value="'+esc(title||'')+'" required><div class="grid2"><div><label class="f">Блок</label>'+blockSelect('blockId',p.blockId)+'</div><div><label class="f">Этап</label>'+stageSelect('stageId',p.blockId,p.stageId)+'</div></div><label class="f">Если — то (необязательно)</label><input name="ifThen"><p class="meta">Без этапа цель останется наброском во «Входящих». Награды за создание цели нет.</p><div class="row"><button class="btn primary">Сохранить цель</button><button type="button" class="btn" data-act="sheet-close">Отмена</button></div></form>');
+}
+function saveCapturedGoal(title,sid,bid,locs,ifThen,noteId){
+  if(noteId)S.inbox=S.inbox.filter(n=>n.id!==noteId);
+  if(!sid){S.inbox.unshift({id:uid(),text:title,date:today(),locs,goalDraft:true,blockId:bid,ifThen});return null}
+  const s=get('stage',sid);if(!s||s.status!=='open'||s.blockId!==bid)fail('Выберите открытый этап цели');
+  const g={id:uid(),stageId:sid,title,ifThen:ifThen||'',status:'active',created:today()};S.goals.push(g);return g;
+}
+FORMS['capture-goal']=f=>{
+  const result=tx(()=>{const title=fv(f,'title');if(!title)fail('Введите цель');return {goal:saveCapturedGoal(title,fv(f,'stageId')||null,fv(f,'blockId')||null,[],fv(f,'ifThen'),f.dataset.note)}},r=>r.goal?'Цель создана':'Набросок цели во «Входящих»');
+  if(result){closeSheet();if(result.goal)firstGoalStep(result.goal)}
 };
 
 /* ---------- bonus assignment field + catalog picker ---------- */
@@ -1868,8 +1977,8 @@ SCR.inbox=()=>{
   const decs=S.decisions.filter(d=>d.status==="active"&&!d.stageId);
   let h='<h1>Входящие</h1><p class="lead">Неразобранные мысли без срока и быстрый доступ к только что созданному.</p>';
   h+='<form data-form="note" class="row nw" style="margin-top:8px"><input type="text" name="text" placeholder="Записать мысль…" autocomplete="off"><button class="btn primary">Записать</button></form>';
-  h+='<h2>Неразобранное <span class="count">'+S.inbox.length+'</span></h2>'+(S.inbox.length?'<div class="list">'+S.inbox.map(n=>'<div class="item"><div class="body"><div class="t">'+esc(n.text)+'</div><div class="meta">'+short(n.date||today())+'</div>'+
-    '<div class="row" style="margin-top:6px">'+[["task","Задание"],["habit","Привычка"],!lite()&&["quest","Квест"],["cal","Календарь"],!lite()&&["offer","Бонус"],!lite()&&["treat","Ништяк"],!lite()&&["decision","Решение"]].filter(Boolean).map(([k,l])=>'<button class="btn s" data-act="note-convert" data-id="'+n.id+'" data-k="'+k+'">'+l+'</button>').join("")+'<button class="btn s ghost danger" data-act="note-del" data-id="'+n.id+'">Удалить</button></div></div></div>').join("")+'</div>':'<div class="empty">Всё разобрано.</div>');
+  h+='<h2>Неразобранное <span class="count">'+S.inbox.length+'</span></h2>'+(S.inbox.length?'<div class="list">'+S.inbox.map(n=>'<div class="item"><div class="body"><div class="t">'+esc(n.text)+'</div><div class="meta">'+(n.goalDraft?'Набросок цели · ':'')+short(n.date||today())+'</div>'+
+    '<div class="row" style="margin-top:6px">'+[["goal",n.goalDraft?"Выбрать этап цели":"Цель"],["task","Задание"],["habit","Привычка"],!lite()&&["quest","Квест"],["cal","Календарь"],!lite()&&["offer","Бонус"],!lite()&&["treat","Ништяк"],!lite()&&["decision","Решение"]].filter(Boolean).map(([k,l])=>'<button class="btn s" data-act="note-convert" data-id="'+n.id+'" data-k="'+k+'">'+l+'</button>').join("")+'<button class="btn s ghost danger" data-act="note-del" data-id="'+n.id+'">Удалить</button></div></div></div>').join("")+'</div>':'<div class="empty">Всё разобрано.</div>');
   if(!lite())h+='<h2>Решения без этапа <span class="count">'+decs.length+'</span></h2>'+(decs.length?'<div class="list">'+decs.map(decisionMini).join("")+'</div><p class="meta" style="margin-top:6px">Остаются здесь, пока вы не привяжете их к этапу. Также видны в разделе «Принятые решения».</p>':'<div class="empty">Нет.</div>');
   h+='<h2>Недавно созданное <span class="count">'+S.recent.length+'</span></h2>'+(S.recent.length?'<div class="list">'+S.recent.map(r=>{const it=get(r.k,r.id);const left=Math.max(0,15-Math.floor((now-r.at)/60e3));return '<div class="item"><button class="body link" data-act="'+(r.k==="block"?"go":"open")+'" data-s="block" data-k="'+r.k+'" data-id="'+r.id+'"><div class="t">'+esc(it.title||it.name||it.text)+'</div><div class="meta">'+(KIND_L[r.k]||"Блок")+' · уже в своём разделе · ещё '+left+' мин здесь</div></button><button class="btn s" data-act="'+(r.k==="block"?"go":"recent-edit")+'" data-s="block" data-k="'+r.k+'" data-id="'+r.id+'">Изменить</button></div>'}).join("")+'</div>':'<div class="empty">Созданное через быстрое добавление 15 минут остаётся здесь для быстрой правки.</div>');
   return h;
@@ -1878,7 +1987,8 @@ FORMS.note=f=>{const t=fv(f,"text");if(!t)return;tx(()=>{S.inbox.unshift({id:uid
 ACT["note-del"]=el=>tx(()=>{S.inbox=S.inbox.filter(n=>n.id!==el.dataset.id)},"Удалено");
 ACT["note-convert"]=el=>{
   const n=S.inbox.find(x=>x.id===el.dataset.id);const k=el.dataset.k;
-  if(["task","habit","quest","cal"].includes(k))editItem(k,null,{title:n.text,locs:n.locs||[]},n.id);
+  if(k==='goal')captureGoal(n.text,n.id,{blockId:n.blockId||null});
+  else if(["task","habit","quest","cal"].includes(k))editItem(k,null,{title:n.text,locs:n.locs||[]},n.id);
   else if(k==="offer")offerEditor(null,{title:n.text},n.id);
   else if(k==="treat")treatEditor(null,{title:n.text},n.id);
   else if(k==="decision")decisionEditor(null,{text:n.text},n.id);
@@ -1888,56 +1998,58 @@ ACT["recent-edit"]=el=>{const k=el.dataset.k;if(["task","habit","quest","cal"].i
 /* ---------- universal quick add ---------- */
 $("#fab").addEventListener("click",()=>quickAdd(""));
 function quickAdd(text){
-  const types=[["note","Мысль"],["task","Задание"],["habit","Привычка"],!lite()&&["quest","Квест"],["cal","Календарь"],!lite()&&["offer","Бонус"],!lite()&&["treat","Ништяк"],!lite()&&["decision","Решение"]].filter(Boolean);
-  openSheet("Быстрое добавление",'<form data-form="quick"><input type="text" name="title" value="'+esc(text)+'" placeholder="Что записать?" autocomplete="off" required>'+
-    '<label class="f">Что это</label>'+segBtnsWrap("qkind",types,"note")+
-    '<div data-qopts hidden><div class="grid2"><div><label class="f">Блок (можно позже)</label>'+blockSelect("blockId","")+'</div><div><label class="f">Дата</label><div class="row nw"><input type="date" name="date"><button type="button" class="btn s" data-act="qa-today">Сегодня</button></div></div></div>'+
-    '<label class="tog"><input type="checkbox" name="inDay" checked><span>В Конструктор дня</span></label></div>'+
-    locField(S.loc.tagNew&&currentLoc().id?[currentLoc().id]:[])+
-    '<p class="meta" data-qhint>Мысль без типа попадёт во «Входящие» и подождёт разбора.</p>'+
-    '<div class="row" style="margin-top:12px"><button class="btn primary">Сохранить</button><button type="button" class="btn" data-act="qa-full">Заполнить подробно…</button></div></form>');
+  const context=creationContext();
+  const main=[['task','Задание'],['goal','Цель'],['cal','Событие'],['note','Мысль']],more=[['habit','Привычка'],!lite()&&['quest','Квест'],!lite()&&['decision','Решение'],!lite()&&['offer','Бонус'],!lite()&&['treat','Ништяк']].filter(Boolean);
+  openSheet('Быстрое добавление','<form data-form="quick"><input type="text" name="title" value="'+esc(text)+'" placeholder="Что записать?" autocomplete="off" required><label class="f">Что это</label><div data-seg="qkind"><div class="chips">'+main.map(([v,l])=>'<button type="button" class="chip" data-act="quick-kind" data-v="'+v+'" aria-pressed="'+(v==='note')+'">'+l+'</button>').join('')+'</div><details style="margin-top:8px"><summary class="small">Ещё</summary><div class="chips">'+more.map(([v,l])=>'<button type="button" class="chip" data-act="quick-kind" data-v="'+v+'" aria-pressed="false">'+l+'</button>').join('')+'</div></details></div><input type="hidden" name="qkind" value="note">'+
+    '<div data-qopts hidden><div class="grid2"><div><label class="f">Блок (можно позже)</label>'+blockSelect('blockId',context.blockId)+'</div><div><label class="f">Этап</label>'+stageSelect('stageId',context.blockId,context.stageId)+'</div></div><div data-quick-date><label class="f">Дата</label><div class="row nw"><input type="date" name="date"><button type="button" class="btn s" data-act="qa-today">Сегодня</button></div></div><label class="tog" data-quick-day><input type="checkbox" name="inDay" checked><span>В Конструктор дня</span></label></div>'+locField(S.loc.tagNew&&currentLoc().id?[currentLoc().id]:[])+'<p class="meta" data-qhint>Мысль без типа попадёт во «Входящие».</p><div class="row" style="margin-top:12px"><button class="btn primary">Сохранить</button><button type="button" class="btn" data-act="qa-full">Заполнить подробно…</button></div></form>');
 }
-function segBtnsWrap(name,pairs,cur){return '<div class="chips" data-seg="'+name+'">'+pairs.map(([v,l])=>'<button type="button" class="chip" data-act="seg" data-v="'+v+'" aria-pressed="'+(cur===v)+'">'+esc(l)+'</button>').join("")+'</div><input type="hidden" name="'+name+'" value="'+cur+'">'}
-document.addEventListener("change",e=>{
-  if(e.target.name==="qkind"){const f=e.target.form;const v=e.target.value;
-    f.querySelector("[data-qopts]").hidden=!["task","cal","habit","quest"].includes(v);
-    f.querySelector("[data-qhint]").textContent={note:"Мысль без типа попадёт во «Входящие» и подождёт разбора.",task:"Создастся настоящее задание. Подробности можно заполнить позже.",habit:"Создастся привычка с расписанием «каждый день».",quest:"Создастся квест-счётчик на 10 шагов.",cal:"Создастся календарное дело на выбранную дату (по умолчанию сегодня).",offer:"Бонус появится в магазине. Это не покупка.",treat:"Ништяк появится в списке приятного.",decision:"Решение без этапа останется во «Входящих» до привязки."}[v];
-  }
+function segBtnsWrap(name,pairs,cur){return '<div class="chips" data-seg="'+name+'">'+pairs.map(([v,l])=>'<button type="button" class="chip" data-act="seg" data-v="'+v+'" aria-pressed="'+(cur===v)+'">'+esc(l)+'</button>').join('')+'</div><input type="hidden" name="'+name+'" value="'+cur+'">'}
+ACT['quick-kind']=el=>{const f=el.closest('form');f.querySelectorAll('[data-act="quick-kind"]').forEach(b=>b.setAttribute('aria-pressed',String(b===el)));f.elements.qkind.value=el.dataset.v;f.elements.qkind.dispatchEvent(new Event('change',{bubbles:true}))};
+document.addEventListener('change',e=>{
+  if(e.target.name!=='qkind')return;const f=e.target.form,v=e.target.value;if(!f.querySelector('[data-qopts]'))return;
+  f.querySelector('[data-qopts]').hidden=!['task','cal','habit','quest','goal'].includes(v);
+  f.querySelector('[data-quick-date]').hidden=!['task','cal'].includes(v);f.querySelector('[data-quick-day]').hidden=v==='goal';
+  f.querySelector('[data-qhint]').textContent={note:'Мысль без типа попадёт во «Входящие».',goal:'Цель сохранится в выбранном этапе. Без этапа — наброском во «Входящих».',task:'Задание с разовым расписанием. Остальное можно настроить позже.',habit:'Привычка на каждый день, дневная норма — один подход.',quest:'Квест-счётчик на 10 шагов. Можно изменить в подробной форме.',cal:'Событие на дату, по умолчанию сегодня. Повторы и напоминания — в подробной форме.',offer:'Бонус появится в магазине. Это не покупка.',treat:'Ништяк появится в списке приятного.',decision:'Решение без этапа останется во «Входящих».'}[v];
 });
-ACT["qa-today"]=el=>{el.closest("form").querySelector('[name="date"]').value=today()};
-ACT["qa-full"]=el=>{const f=el.closest("form");const k=fv(f,"qkind"),t=fv(f,"title"),places=readLocs(f);closeSheet();
-  if(["task","habit","quest","cal"].includes(k))editItem(k,null,{title:t,blockId:fv(f,"blockId")||null,locs:places});else if(k==="offer")offerEditor(null,{title:t});else if(k==="treat")treatEditor(null,{title:t});else if(k==="decision")decisionEditor(null,{text:t});else S.inbox.unshift({id:uid(),text:t,date:today()}),save(),render()};
-FORMS.quick=f=>{
-  const k=fv(f,"qkind"),t=fv(f,"title");if(!t)return;
-  const bid=fv(f,"blockId")||null,date=fv(f,"date")||null,inDay=fv(f,"inDay");
-  const b=bid?get("block",bid):null;const sid=b&&b.currentStageId||null,locs=readLocs(f);
-  const ok=tx(()=>{
-    if(k==="note"){S.inbox.unshift({id:uid(),text:t,date:today(),locs});return "Мысль во «Входящих»"}
-    let it;
-    if(k==="task"){it=newTask({title:t,blockId:bid,stageId:sid,locs,inDay,sched:{type:"once",days:[],date}});S.tasks.push(it)}
-    if(k==="habit"){it=newHabit({title:t,blockId:bid,stageId:sid,locs,inDay});S.habits.push(it)}
-    if(k==="quest"){it=newQuest({title:t,blockId:bid,stageId:sid,locs,inDay});S.quests.push(it)}
-    if(k==="cal"){it=newCal({title:t,blockId:bid,stageId:sid,locs,date:date||today(),inDay});S.cal.push(it)}
-    if(k==="offer"){it=newOffer({title:t});S.offers.push(it)}
-    if(k==="treat"){it={id:uid(),title:t,cat:"",desc:"",status:"active",created:today()};S.treats.push(it)}
-    if(k==="decision"){it=newDecision({text:t});S.decisions.push(it)}
-    pushRecent(k,it.id);
-    return "Создано: "+KIND_L[k].toLowerCase()+". 15 минут доступно во «Входящих» для правки";
-  },m=>m);
-  if(ok)closeSheet();
+ACT['qa-today']=el=>{el.closest('form').elements.date.value=today()};
+ACT['qa-full']=el=>{
+  const f=el.closest('form'),k=fv(f,'qkind'),t=fv(f,'title'),preset={...creationContext(),title:t,blockId:fv(f,'blockId')||null,stageId:fv(f,'stageId')||null,locs:readLocs(f),inDay:fv(f,'inDay')},date=fv(f,'date');
+  if(k==='note'){FORMS.quick(f);return}closeSheet();
+  if(k==='goal'){captureGoal(t,null,preset);return}
+  if(['task','habit','quest','cal'].includes(k)){if(k==='cal')preset.date=date||today();if(k==='task')preset.sched={type:'once',days:[],date:date||null};editItem(k,null,preset)}else if(k==='offer')offerEditor(null,{title:t});else if(k==='treat')treatEditor(null,{title:t});else if(k==='decision')decisionEditor(null,{text:t,stageId:preset.stageId});
 };
+FORMS.quick=f=>{
+  const k=fv(f,'qkind'),t=fv(f,'title');if(!t)return;
+  const bid=fv(f,'blockId')||null,sid=fv(f,'stageId')||null,date=fv(f,'date')||null,inDay=fv(f,'inDay'),locs=readLocs(f);let goal=null;
+  const ok=tx(()=>{
+    if(k==='note'){S.inbox.unshift({id:uid(),text:t,date:today(),locs});return 'Мысль во «Входящих»'}
+    if(k==='goal'){goal=saveCapturedGoal(t,sid,bid,locs,'');return goal?'Цель создана':'Набросок цели во «Входящих»'}
+    let it;
+    const p={title:t,blockId:bid,stageId:sid,locs,inDay};
+    if(k==='task'){it=newTask({...p,sched:{type:'once',days:[],date}});S.tasks.push(it)}
+    if(k==='habit'){it=newHabit(p);S.habits.push(it)}
+    if(k==='quest'){it=newQuest(p);S.quests.push(it)}
+    if(k==='cal'){it=newCal({...p,date:date||today()});S.cal.push(it)}
+    if(k==='offer'){it=newOffer({title:t});S.offers.push(it)}
+    if(k==='treat'){it={id:uid(),title:t,cat:'',desc:'',status:'active',created:today()};S.treats.push(it)}
+    if(k==='decision'){it=newDecision({text:t,stageId:sid});S.decisions.push(it)}
+    if(!it)fail('Выберите тип записи');pushRecent(k,it.id);return 'Создано: '+KIND_L[k].toLowerCase()+'. 15 минут доступно во «Входящих»';
+  },m=>m);
+  if(ok){closeSheet();if(goal)firstGoalStep(goal)}
+};
+
 
 /* ---------- quick done & search ---------- */
 ACT["quick-done"]=()=>openSheet("Быстрое выполнение",quickDoneBody(""),{key:"qd"});
 function quickDoneBody(q){
   const ql=q.toLowerCase();const d=today();
-  const pool=[...S.tasks.map(x=>["task",x]),...S.habits.map(x=>["habit",x]),...(lite()?[]:S.quests.map(x=>["quest",x])),...S.cal.map(x=>["cal",x])]
-    .filter(([k,x])=>x.status==="active"&&!(k==="task"&&x.sched.type==="once"&&doneEver("task",x.id))&&!(k==="cal"&&doneEver("cal",x.id)))
+  const pool=[...S.tasks.map(x=>["task",x]),...S.habits.map(x=>["habit",x]),...(lite()?[]:S.quests.map(x=>["quest",x])),...S.cal.flatMap(c=>{const due=Cal.due(c,d),o=calNext(c)||calView(c);return (due.length?due:o?[o]:[]).map(v=>['cal',{...c,id:c.id+(Cal.repeats(c)?'@'+v.key:''),_date:v.date}])})]
+    .filter(([k,x])=>x.status==="active"&&!(k==="task"&&x.sched.type==="once"&&doneEver("task",x.id))&&!(k==="cal"&&!Cal.repeats(x)&&doneEver("cal",x.id)))
     .filter(([k,x])=>!q||(x.title+" "+(x.tags||[]).join(" ")).toLowerCase().includes(ql)).slice(0,30);
   return '<p class="meta">Сделали что-то вне плана? Найдите существующую запись и отметьте по её правилам. Новая копия не создаётся.</p><input type="search" data-qd-q value="'+esc(q)+'" placeholder="Начните вводить название" autocomplete="off">'+
     '<div class="list" style="margin-top:8px">'+(pool.length?pool.map(([k,x])=>{
-      const done=k==="quest"?false:doneOn(k,x.id,d);
-      return '<div class="item"><div class="body"><div class="t">'+esc(x.title)+'</div><div class="meta">'+KIND_L[k]+' · '+esc(originText(x))+'</div></div>'+(done?'<span class="pill good">сегодня отмечено</span>':'<button class="btn s primary" data-act="qd-do" data-r="'+rk(k,x.id)+'">'+(k==="quest"?(x.type==="checklist"?"Шаг":"+1"):"Выполнено")+'</button>')+'</div>'}).join(""):'<div class="empty">Не найдено.</div>')+'</div>'+
+      const done=k==="quest"?false:k==="cal"?doneEver(k,x.id):doneOn(k,x.id,d);
+      return '<div class="item"><div class="body"><div class="t">'+esc(x.title)+'</div><div class="meta">'+KIND_L[k]+(x._date?' · '+esc(short(x._date)):'')+' · '+esc(originText(x))+'</div></div>'+(done?'<span class="pill good">сегодня отмечено</span>':'<button class="btn s primary" data-act="qd-do" data-r="'+rk(k,x.id)+'">'+(k==="quest"?(x.type==="checklist"?"Шаг":"+1"):"Выполнено")+'</button>')+'</div>'}).join(""):'<div class="empty">Не найдено.</div>')+'</div>'+
     (q?'<div class="row" style="margin-top:10px"><button class="btn" data-act="qd-create">Нет такой записи — создать «'+esc(q)+'»</button></div>':'');
 }
 document.addEventListener("input",e=>{
@@ -2076,7 +2188,7 @@ SCR.missed=p=>{
       if(!arch&&it&&it.status==="active"){
         if(m.kind==="habit")acts=doneOn("habit",m.ref,today())?'<span class="pill good">сегодня выполнено</span>':'<button class="btn s" data-act="miss-do" data-id="'+m.id+'">Выполнить сегодня</button>';
         else if(m.kind==="quest")acts='<button class="btn s" data-act="miss-do" data-id="'+m.id+'">Шаг сегодня</button>';
-        else if(!(m.kind==="task"&&it.sched.type!=="once")&&!doneEver(m.kind,m.ref))acts='<button class="btn s" data-act="miss-move" data-id="'+m.id+'">Перенести</button><button class="btn s" data-act="miss-do" data-id="'+m.id+'">Выполнить сейчас</button>';
+        else if(m.kind==="cal"? !calDone(it,m.occurrence||m.date):!(m.kind==="task"&&it.sched.type!=="once")&&!doneEver(m.kind,m.ref))acts='<button class="btn s" data-act="miss-move" data-id="'+m.id+'">Перенести</button><button class="btn s" data-act="miss-do" data-id="'+m.id+'">Выполнить сейчас</button>';
         else if(m.kind==="task")acts=doneOn("task",m.ref,today())?'<span class="pill good">сегодня выполнено</span>':'<button class="btn s" data-act="miss-do" data-id="'+m.id+'">Выполнить сегодня</button>';
       }
       return '<div class="item"><input type="checkbox" data-act="miss-sel" data-id="'+m.id+'" '+(sel.includes(m.id)?'checked':'')+' aria-label="Выбрать" style="width:18px;height:18px;accent-color:var(--accent)"><div class="body"><div class="t">'+esc(it?it.title:m.title)+'</div><div class="meta">'+esc(KIND_L[m.kind]||m.kind)+' · пропуск '+esc(human(m.date))+(m.note?' · '+esc(m.note):'')+(it?' · '+esc(originText(it)):' · запись удалена')+'</div><div class="row" style="margin-top:4px">'+acts+'</div></div></div>';
@@ -2106,14 +2218,15 @@ ACT["miss-bulk"]=async el=>{
 ACT["miss-do"]=el=>{
   const m=S.misses.find(x=>x.id===el.dataset.id);
   if(m.kind==="quest"&&get("quest",m.ref).type==="checklist"){openItem("quest",m.ref);return}
-  tx(()=>{const f=complete(m.kind,m.ref,today());m.note="выполнено позже, "+short(today());return f},f=>rewardMsg(f)+". Пропуск остаётся фактом");
+  tx(()=>{const f=complete(m.kind,m.ref,today(),m.kind==="cal"?{occurrence:m.occurrence||m.date}:{});m.note="выполнено позже, "+short(today());return f},f=>rewardMsg(f)+". Пропуск остаётся фактом");
 };
 ACT["miss-move"]=async el=>{
   const m=S.misses.find(x=>x.id===el.dataset.id);
+  if(m.kind==="cal"){calendarMove(get("cal",m.ref),m.occurrence||m.date,m.id);return}
   const v=await ask({title:"Перенести на дату",text:"Введите дату в формате ГГГГ-ММ-ДД или оставьте пустым для сегодняшнего дня.",input:today(),ok:"Перенести"});
   if(v===false)return;const d=v||today();
-  if(!/^\d{4}-\d{2}-\d{2}$/.test(d)){toast("Неверная дата");return}
-  tx(()=>{const it=get(m.kind,m.ref);if(m.kind==="cal")it.date=d;else{it.sched.date=d;it.inDay=true}m.note="перенесено на "+short(d)},"Перенесено на "+short(d)+". Запись о пропуске сохранена");
+  if(!Cal.valid(d)){toast("Неверная дата");return}
+  tx(()=>{const it=get(m.kind,m.ref);it.sched.date=d;it.inDay=true;m.note="перенесено на "+short(d)},"Перенесено на "+short(d)+". Запись о пропуске сохранена");
 };
 
 /* ---------- shop & bonuses ---------- */
@@ -2345,7 +2458,7 @@ SCR.history=()=>{
   curScr().title="История";
   const f=S.ui.histF||"all";
   const ev=[];
-  S.facts.forEach(x=>ev.push({ts:x.ts,date:x.date,type:"done",t:x.title||"",sub:({task:"Задание",habit:"Привычка",habitGoal:"Цель привычки",questStep:"Шаг квеста",questFinal:"Финал квеста",cal:"Календарь",stage:"Этап пройден"}[x.kind])+(x.cancelled?" · отменено":""),n:x.coins}));
+  S.facts.forEach(x=>ev.push({ts:x.ts,date:x.date,type:"done",t:x.title||"",sub:({task:"Задание",habit:"Привычка",habitStep:"Подход привычки",habitGoal:"Цель привычки",questStep:"Шаг квеста",questFinal:"Финал квеста",cal:"Календарь",stage:"Этап пройден"}[x.kind])+(x.cancelled?" · отменено":""),n:x.coins}));
   S.insts.forEach(i=>{if(i.source==="purchase")ev.push({ts:i.ts||0,date:i.date,type:"bonus",t:"Покупка: "+i.title,sub:i.status==="refunded"?"возвращено":"",n:-i.paid});i.uses.forEach(u=>ev.push({ts:0,date:u,type:"bonus",t:"Использован бонус: "+i.title,sub:""}))});
   S.decisions.filter(d=>d.status!=="active").forEach(d=>ev.push({ts:d.closedTs||0,date:d.closedAt,type:"decision",t:d.text,sub:"Решение: "+DEC_L[d.status]+(d.status==="failed"&&d.paidC?" · −"+d.paidC+" ● / −"+d.paidX+" XP":"")}));
   S.misses.forEach(m=>ev.push({ts:m.created||0,date:m.date,type:"miss",t:m.title,sub:"Пропуск · "+esc(KIND_L[m.kind]||m.kind)+(m.status==="archived"?" · в архиве":"")}));
@@ -2567,7 +2680,7 @@ document.addEventListener("change",e=>{if(e.target.matches("[data-myreward]"))ru
 SCR.settings=()=>{
   curScr().title="Настройки";
   const s=S.settings;
-  return '<h1>Настройки</h1>'+
+  return '<h1>Настройки</h1><p class="meta">Personal 1.2.0</p>'+
     '<h2>Пространство</h2><div class="card"><p>Сейчас: <b>'+(S.space==="demo"?"Демо (вымышленная жизнь)":"Моя жизнь")+'</b>. Пространства хранятся раздельно.</p><div class="row"><button class="btn s" data-act="'+(S.space==="demo"?"space-my":"space-demo")+'">'+(S.space==="demo"?"Перейти к своей жизни":"Открыть демо")+'</button></div></div>'+
     '<h2>Интерфейс</h2><div class="card"><label class="tog"><input type="checkbox" data-set="lite" '+(s.lite?'checked':'')+'><span>LifeGame Lite<small>Простой вход в ту же систему: только основные разделы. Данные остальных сохраняются.</small></span></label>'+
     '<label class="f">Стиль оформления</label><div class="style-pick">'+STYLES.map(([v,l,sw])=>'<button data-act="style" data-v="'+v+'" aria-pressed="'+((s.style||"quest")===v)+'"><div class="sp-sw" style="background:'+sw[0]+'">'+sw.slice(1).map(c=>'<i style="background:'+c+'"></i>').join("")+'</div><div class="sp-l">'+l+'</div></button>').join("")+'</div>'+
@@ -2579,7 +2692,7 @@ SCR.settings=()=>{
     '<div class="row" style="margin-top:8px"><button class="btn s" data-act="request-notifications">Разрешить системные уведомления</button></div>'+
     '<h2>Сопровождение</h2><div class="card"><label class="tog"><input type="checkbox" data-set="onb" '+(s.onboarding.on?'checked':'')+'><span>Семидневное сопровождение маленькими шагами</span></label></div>'+
     '<h2>Установка и офлайн</h2><div class="card"><p class="small">На iPhone: Safari → Поделиться → На экран «Домой». На Android: меню браузера → Установить приложение. После первого открытия основные функции доступны без сети.</p><p class="meta">Данные остаются на этом устройстве. Для переноса используйте экспорт. Автоматической синхронизации между устройствами нет.</p></div>'+
-    '<h2>Сохранение</h2><div class="card"><p class="small">Всё хранится в этом браузере. Резервная копия сохраняет связи, прогресс, историю, награды, долги и настройки.</p><div class="row"><button class="btn s" data-act="export">Экспорт</button><button class="btn s" data-act="import">Восстановить из копии</button><button class="btn s danger" data-act="reset">Полный сброс</button></div><div data-export></div></div>';
+    '<h2>Сохранение</h2><div class="card"><p class="small">Всё хранится в этом браузере. Резервная копия сохраняет связи, прогресс, историю, награды, долги и настройки.</p><div class="row"><button class="btn s" data-act="export">Экспорт</button><button class="btn s" data-act="import">Восстановить из копии</button><button class="btn s danger" data-act="reset">Полный сброс</button></div><div data-export></div>'+backupSettings()+'</div>';
 };
 document.addEventListener("change",e=>{
   const k=e.target.dataset&&e.target.dataset.set;if(!k)return;runGuarded(()=>{const v=e.target.checked;
@@ -2595,8 +2708,9 @@ ACT["style"]=el=>tx(()=>{if(!STYLES.some(x=>x[0]===el.dataset.v))fail("Неиз�
 document.addEventListener("change",e=>{if(e.target.matches("[data-location-list]")){S.ui["locfilter_"+e.target.dataset.locationList]=e.target.value;render()}});
 ACT["export"]=()=>{
   const data=JSON.stringify(exportFile());downloadFile(data,"LifeGame-"+META.space+"-"+today()+".json");
+  tx(()=>{S.settings.lastExport=today();delete S.settings.backupSnooze});
   const box=$("[data-export]");
-  box.innerHTML='<label class="f">Скопируйте текст и сохраните в файл</label><textarea readonly style="min-height:120px;font-size:12px">'+esc(data)+'</textarea><button class="btn s" data-act="copy-export">Скопировать</button>';
+  if(box)box.innerHTML='<label class="f">Скопируйте текст и сохраните в файл</label><textarea readonly style="min-height:120px;font-size:12px">'+esc(data)+'</textarea><button class="btn s" data-act="copy-export">Скопировать</button>';
 };
 ACT["copy-export"]=()=>{const t=$("[data-export] textarea");try{navigator.clipboard.writeText(t.value).then(()=>toast("Скопировано"),()=>{t.select();toast("Выделено: скопируйте вручную")})}catch(e){t.select();toast("Выделено: скопируйте вручную")}};
 ACT["import"]=()=>{openSheet("Восстановление",'<p class="meta">Вставьте текст резервной копии или выберите файл. Текущее пространство будет полностью заменено.</p><textarea id="imp-text" style="min-height:120px"></textarea><input type="file" id="imp-file" accept=".json,.txt" style="margin-top:8px"><div class="row" style="margin-top:10px"><button class="btn primary" data-act="import-do">Восстановить</button></div>')};
@@ -2716,6 +2830,38 @@ function renderWelcome(){
 }
 ACT["welcome"]=el=>{META.space=el.dataset.v;saveMeta();S=loadSpace(META.space);if(!corruptSpace)save();goTab("home");if(el.dataset.v==="my"&&!corruptSpace){S.ui.seenStart=true;save();startMySheet()}};
 
+/* Feedback reads the committed ledger; it never changes the amount of a reward. */
+let walletMotion=null,walletFrame=0;
+function paintWallet(n){$$('[data-wallet]').forEach(el=>el.textContent='● '+num(Math.round(n)));$$('.hero-coins').forEach(el=>el.textContent=num(Math.round(n)))}
+function stopWallet(){cancelAnimationFrame(walletFrame);walletMotion=null;$$('.coin-flight').forEach(el=>el.remove());if(S)paintWallet(coins())}
+function animateWallet(before,after){
+  if(after<=before||document.hidden||matchMedia('(prefers-reduced-motion: reduce)').matches){stopWallet();return}
+  const start=walletMotion?.value??before;cancelAnimationFrame(walletFrame);$$('.coin-flight').forEach(el=>el.remove());
+  const target=$('[data-wallet]');if(!target)return;
+  const r=target.getBoundingClientRect(),badge=document.createElement('span');badge.className='coin-flight';badge.textContent='+'+num(after-before);badge.setAttribute('aria-hidden','true');badge.style.left=Math.min(innerWidth-75,Math.max(15,r.left-22))+'px';badge.style.top=Math.max(85,r.bottom+90)+'px';document.body.append(badge);
+  walletMotion={start,end:after,value:start,at:performance.now(),space:META.space};paintWallet(start);
+  const frame=now=>{const m=walletMotion;if(!m)return;if(m.space!==META.space||coins()!==m.end){stopWallet();return}const p=Math.min(1,Math.max(0,(now-m.at-420)/1450));m.value=m.start+(m.end-m.start)*(1-Math.pow(1-p,3));paintWallet(m.value);if(p<1)walletFrame=requestAnimationFrame(frame);else{badge.remove();walletMotion=null}};
+  walletFrame=requestAnimationFrame(frame);
+}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopWallet()});
+function backupPrompt(){
+  if(META.space!=='my'||corruptSpace||S.settings.backupSnooze&&today()<S.settings.backupSnooze||daysBetween(S.settings.lastExport||S.created,today())<7)return '';
+  const hasWork=['tasks','habits','quests','cal','goals','inbox','facts','decisions'].some(k=>S[k].length);if(!hasWork)return '';
+  return '<div class="card" style="margin-top:10px"><b>Сохранить копию на эти дни?</b><p class="meta">Данные живут в этом браузере. Внешний JSON поможет перенести или восстановить прогресс.</p><div class="row"><button class="btn s" data-act="export">Скачать копию</button><button class="btn s ghost" data-act="backup-later">Через 3 дня</button></div></div>';
+}
+function backupSettings(){
+  let daily='Появится после сохранения',last='Пока нет';try{daily=human(IO.daily(KEYS[META.space]).day)}catch{}try{const data=IO.backup(KEYS[META.space]);last=short(data.lastProcessed)+' · '+data.facts.length+' записей выполнения'}catch{}
+  return '<div style="margin-top:10px"><p class="meta">Последний запрос экспорта: '+(S.settings.lastExport?short(S.settings.lastExport):'ещё не было')+'. Файл нужно сохранить на устройстве.</p><p class="small">Копия на начало дня: '+esc(daily)+'</p><button class="btn s" data-act="restore-backup" data-v="daily">Посмотреть дневную копию</button><p class="small">Последняя исправная: '+esc(last)+'</p><button class="btn s" data-act="restore-backup" data-v="last">Посмотреть предыдущую копию</button><p class="meta">Обе копии в этом браузере. Восстановление — только после просмотра и подтверждения.</p></div>';
+}
+ACT['backup-later']=()=>tx(()=>{S.settings.backupSnooze=addDays(today(),3)},'Напомню через 3 дня');
+ACT['restore-backup']=async el=>{
+  let data,label;try{if(el.dataset.v==='daily'){const v=IO.daily(KEYS[META.space]);data=v.data;label='На начало '+human(v.day)}else{data=IO.backup(KEYS[META.space]);label='Предыдущая исправная копия, данные до '+human(data.lastProcessed)}}catch(e){toast(e.message);return}
+  openSheet('Проверить резервную копию','<p>'+esc(label)+'</p><p class="small">Заданий: '+data.tasks.length+' · привычек: '+data.habits.length+' · календарных дел: '+data.cal.length+' · выполнений: '+data.facts.filter(f=>!f.cancelled).length+'</p><div class="row"><button class="btn" data-act="backup-download">Скачать эту копию</button><button class="btn danger" data-act="backup-apply">Восстановить её</button><button class="btn" data-act="sheet-close">Закрыть</button></div>');
+  const sheet=topSheet();sheet._backupData=cloneState(data);sheet._backupLabel=label;
+};
+ACT['backup-download']=()=>{const el=topSheet();if(el?._backupData)downloadFile({app:'LifeGame Personal',format:'personal-1',data:el._backupData},'LifeGame-backup-'+el._backupData.lastProcessed+'.json')};
+ACT['backup-apply']=async()=>{const el=topSheet(),value=el?._backupData;if(!value)return;const ok=await ask({title:'Заменить текущее пространство?',text:el._backupLabel+'. Текущий прогресс будет заменён этой копией. Сначала скачайте текущие данные, если они нужны.',ok:'Восстановить',danger:true});if(!ok)return;replaceSpace(value);closeAllSheets();goTab('home');toast('Восстановлено из выбранной копии')};
+
 /* ---------- test date ---------- */
 ACT["test-menu"]=()=>{
   openSheet("Тестовая дата",'<p class="meta">Инструмент демо: сдвигает «сегодня», чтобы проверить расписания, пропуски, сессии и сроки. В настоящем приложении его нет.</p><div class="list" style="margin-top:8px">'+
@@ -2739,16 +2885,25 @@ ACT['request-notifications']=async()=>{if(!('Notification' in window)){toast('В
 let reminderBusy=false,lastReminderMinute='';
 function showReminder(item){
   let box=$('#calendar-reminder');if(!box){box=document.createElement('div');box.id='calendar-reminder';box.className='reminder-note';box.setAttribute('role','status');document.body.append(box)}
-  box.innerHTML='<b>'+esc(item.title)+'</b><span>'+esc(item.time)+' · календарь</span><button class="btn s">Открыть</button><button class="ib" aria-label="Закрыть напоминание">✕</button>';
+  if(box)box.innerHTML='<b>'+esc(item.title)+'</b><span>'+esc(item.time)+' · календарь</span><button class="btn s">Открыть</button><button class="ib" aria-label="Закрыть напоминание">✕</button>';
   box.querySelector('.btn').onclick=()=>{box.remove();runGuarded(()=>go('calendar',{}))};box.querySelector('.ib').onclick=()=>box.remove();
   if('Notification' in window&&Notification.permission==='granted'){try{navigator.serviceWorker?.ready.then(reg=>reg.showNotification(item.title,{body:'Запланировано в LifeGame на '+item.time,tag:'lifegame-'+item.id,icon:'./icon-192.png',data:{url:new URL('./?view=calendar',location.href).href}})).catch(()=>{})}catch{}}
 }
+function reminderCandidates(){
+  const now=Date.now(),out=[];if(!S.settings.reminders||S.creative.on&&S.creative.mute)return out;
+  const loc=curLocObj();
+  for(const c of S.cal){if(!available(c)||!c.reminder||loc?.muteOther&&locHides(c,loc))continue;
+    for(const o of Cal.range(c,addDays(today(),-1),addDays(today(),1))){if(!o.time||calDone(c,o.key))continue;
+      const stamp=new Date(o.date+'T'+o.time+':00').getTime(),lead=c.reminderLead??15,receipt=o.date+'T'+o.time+'|'+lead;
+      if(now>=stamp-lead*60000&&now<=stamp+3600000&&c.reminderReceipts?.[o.key]!==receipt&&!(c.notifiedDates||[]).includes(o.key))out.push({id:c.id,key:o.key,receipt,title:c.title,time:o.time,date:o.date});
+    }
+  }return out;
+}
 function checkReminders(){
-  if(!S||META.space==='demo'||corruptSpace||!S.settings.reminders||S.creative.on&&S.creative.mute||reminderBusy)return;
-  const now=new Date(),time=pad(now.getHours())+':'+pad(now.getMinutes()),minute=today()+' '+time+' '+(currentLoc().id||'*');if(minute===lastReminderMinute)return;lastReminderMinute=minute;
-  const due=S.cal.filter(i=>available(i)&&!(curLocObj()?.muteOther&&locHides(i,curLocObj()))&&i.reminder&&i.time&&i.date===today()&&i.time<=time&&!doneEver('cal',i.id)&&!(i.notifiedDates||[]).includes(today()));
-  if(!due.length)return;reminderBusy=true;
-  runGuarded(()=>{const notifications=[];for(const candidate of due){const i=get('cal',candidate.id);if(i&&available(i)&&!doneEver('cal',i.id)&&!(i.notifiedDates||[]).includes(today())){(i.notifiedDates||=[]).push(today());notifications.push({...i})}}if(notifications.length){save();for(const i of notifications)showReminder(i)}},null,true).finally(()=>reminderBusy=false);
+  if(!S||META.space==='demo'||corruptSpace||reminderBusy)return;
+  const minute=Math.floor(Date.now()/60000)+'|'+(currentLoc().id||'*');if(minute===lastReminderMinute)return;lastReminderMinute=minute;
+  if(!reminderCandidates().length)return;reminderBusy=true;
+  runGuarded(()=>{const notifications=reminderCandidates();if(!notifications.length)return;for(const o of notifications){const c=get('cal',o.id);(c.reminderReceipts||={})[o.key]=o.receipt}save();for(const o of notifications)showReminder(o)},null,true).finally(()=>reminderBusy=false);
 }
 if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',e=>{if(e.data?.type==='OPEN_CALENDAR')runGuarded(()=>go('calendar',{}))});
 

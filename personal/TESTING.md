@@ -1,10 +1,14 @@
-# Проверки Personal после выборочного переноса 1.1.0
+# Проверки Personal 1.2.0
 
-11 ноября 2026. Только вымышленные данные, отдельные Chromium-контексты, локальный сервер; внешние запросы тестового браузера блокировались. Реальные сохранения пользователя не читались/не очищались.
+11 ноября 2026. **108/108 групп прошли:**90 модель/UI,10 новых живых сценариев,2 живых смены места/напоминания,6PWA. Изолированные профили Chromium, вымышленные данные, локальный сервер; внешние запросы тестового браузера блокировались. Тестовый API внедряется только в HTTP-ответ тестового harness и отсутствует в поставляемом коде.
 
-**68/68 групп модели/UI, 2/2 групп живой смены локаций и 6/6 групп PWA прошли.**
+Воспроизведение из корня: локальный сервер 8041, затем `python personal/tests/browser.py`, `python personal/tests/update-live.py`, `python personal/tests/locations-live.py`, `python personal/tests/offline.py`. Последний сам запускает отдельный порт. Нужны Python Playwright и Chromium. Скрипты не подключаются к личному профилю и не читают реальные ключи. Отчёты/вымышленные JSON/снимки сохраняются в игнорируемый personal/verification и не публикуются как личные данные.
 
-## Модель и сквозной интерфейс
+Обычная неделя 11–17 ноября:177 монет/177XP,16 смысловых завершений плюс 6 нулевых habitStep,2 пропуска. Недельный сценарий с нормой 2 и ежедневным календарём:82/82,11 подходов,4 успешных дня,7 календарных выполнений (одно позже),4 исторических пропуска. Даты реально сдвигаются в тестовом браузере и приложение перезагружается, это не только вычисление задним числом.
+
+Мобильные размеры 320/375/390/430 и широкие 768/900/1100 проверены по затронутым сценариям. Три темы,14 локальных WOFF2, помощник, DST/ночные интервалы, две вкладки, основная/резервная ошибка записи, повреждённый JSON, экспорт/импорт, восстановление/отмена подтверждения, обновление без потери черновика и офлайн выполнены. Новый выбор будущего появления, перенос серии, вложенная цель, Quick Add и плавный баланс проверены настоящими кликами.
+
+## browser
 
 - Empty personal state and isolated keys — PASS.
 - Exact reward reversal after editing reward — PASS.
@@ -60,6 +64,28 @@
 - Locations: deleted place cleans live links but keeps historical name and money — PASS.
 - Locations: invalid clock, IDs and profile parts cannot replace data — PASS.
 - Hints: manual steps change only onboarding and keep money unchanged — PASS.
+- Calendar: weekly, selected days, daily and future anchor — PASS.
+- Calendar: end of month and leap-year anchors — PASS.
+- Calendar: nominal identity survives moving one appearance — PASS.
+- Calendar: two appearances moved onto same date stay distinct — PASS.
+- Calendar: series move preserves past and paid future occurrence — PASS.
+- Calendar: individual future exception survives series split — PASS.
+- Calendar: edit ongoing monthly series keeps 31st anchor — PASS.
+- Calendar: each missed repeat can complete later without duplicate reward — PASS.
+- Calendar: overdue once move also retains original missed identity — PASS.
+- Habits: partial approaches unpaid, one daily award and successful-day goal — PASS.
+- Habits: target and reward fixed by first approach, edit norm tomorrow — PASS.
+- Habits: undo above threshold retains legitimately earned goal — PASS.
+- Inline goal: cancelling parent leaves no orphan goal — PASS.
+- Inline goal: atomic with task and retained on quota failure — PASS.
+- Quick goal: inherits stage and offers prelinked first action — PASS.
+- Quick goal: without stage remains Inbox draft, conversion preserves identity of intent — PASS.
+- Ritual: 119 texts and repeated viewing earns nothing — PASS.
+- Backups: start-of-day stays stable while last-good advances — PASS.
+- Backups: dated preview and cancelled restore do not replace progress — PASS.
+- Import: invalid money ratio and malformed repeats/norms rejected unchanged — PASS.
+- Calendar: legacy day reference deduplicates and Quick Done handles two appearances — PASS.
+- Ritual: partial habit effort acknowledged without a completed-day award — PASS.
 - UI: create strategy → stage → goal → key task → day → reload — PASS.
 - UI: bonus catalog creation preserves parent task draft — PASS.
 - Seven actual dates: schedules, rest, pause, remove, rollover and reviews — PASS.
@@ -75,12 +101,25 @@
 - Locations: fall-back DST repeated hour produces the real next change — PASS.
 - No uncaught JavaScript exceptions — PASS.
 
-## Автоматическая смена места и напоминания
+## updateLive
+
+- UI: Quick goal draft → Inbox → stage → first linked task → reload — PASS.
+- UI: nested goal draft and habit norm +1/+1/reward/undo — PASS.
+- UI: weekly event → move only this appearance → complete/undo → reload — PASS.
+- UI: choose future appearance and move this plus following while preserving this week — PASS.
+- Reminders: lead 0/15/60/1440, late >1h ignored, reload does not repeat — PASS.
+- Reward feedback: committed first, smooth count, no effect on failed save/reduced motion — PASS.
+- Backup UI: seven-day reminder, three-day snooze, dated preview and export tracking — PASS.
+- Start-of-day copy freezes prior valid state on actual next date — PASS.
+- Seven actual dates with partial norms, full daily awards, repeats and late completion — PASS.
+- No JavaScript errors in updated UI paths — PASS.
+
+## locationsLive
 
 - Actual schedule boundaries update the screen; manual choice expires at real next change — PASS.
 - Other-place reminders wait without acknowledgement and appear after switching back — PASS.
 
-## Настоящий service worker и офлайн
+## offline
 
 - Install service worker scoped to personal and create task — PASS.
 - Offline reload, completion, persistent reward and second reload — PASS.
@@ -89,33 +128,6 @@
 - Foreground calendar reminder fires once and remains acknowledged on reload — PASS.
 - No uncaught browser errors — PASS.
 
-## Существенные результаты
+## Ограничения приёмки
 
-Прежняя неделя 11–17 ноября2026 (Europe/Moscow) сохранила результат: **177 монет/177 XP, 16 активных фактов, 2 пропуска**. Модель дня/экономики не заменена источником. Локации по умолчанию ничего не скрывают и не имеют графика.
-
-Проверены: обновление старого v2 без изменения facts/ledger; ручной и автоматический выбор; ночные правила/выходные/перекрытия; реальная смена экрана при12:01 и истечение ручного выбора при12:02; повтор часа DST America/New_York (1ноября2026, следующая смена06:00UTC); политика пропусков в истории дня; история названия удалённого места; приглушённое напоминание не подтверждается до показа в подходящем месте.
-
-Три стиля ×320/390/900px, прежние экраны также320/375/390/768/1100px. Панель подсказок320×568 без выхода вверх за экран. Помощник показывает цель/подсветку, отметку/пропуск/возврат; прогресс переживает reload и не меняет монеты. Просмотрены мобильные снимки «Ночного квеста», «Стикеров», подсказок; горизонтального переполнения нет. Все14локальных шрифтов и все3темы доступны офлайн. Ошибок JS нет.
-
-Диагностический API добавляется только в HTTP-ответ тестового контекста; в app.js его нет. PWA проверена без этого API, на отдельном временном origin. Прошлые отчёты сохранены в docs/history/2026-11-11-personal-before-lg110/.
-
-## Повторить
-
-Нужны Python/Playwright/Chromium. Из корня запустить локальный сервер8041, затем:
-
-```sh
-node --check personal/app.js
-node --check personal/persistence.js
-node --check personal/sw.js
-python personal/tests/browser.py http://127.0.0.1:8041
-python personal/tests/locations-live.py http://127.0.0.1:8041
-python personal/tests/offline.py
-```
-
-JSON-отчёты и снимки создаются в ignored verification/. При обновлении ресурсов увеличивать CACHE в sw.js.
-
-## Границы
-
-Физический iPhone/Safari/Android, экранная клавиатура, установка и реальное разрешение системных уведомлений ожидают приёмки пользователем. Фоновой гарантированной доставки нет. Без Web Locks остаётся проверка снимка, но строгая атомарность нескольких вкладок не обещается. Многомесячная эксплуатация не заменяется этими сценариями.
-
-Собственный набор модели присланной версии запущен отдельно —35/35; дополнительные доказанные отличия перечислены в COMPARE-LG110.md. Полная сквозная проверка чужого приложения здесь не повторялась.
+Физические iPhone/Safari/Android, экранная клавиатура, установка на личный телефон, реальное разрешение системных уведомлений и многомесячное использование не заменяются Chromium. Фоновая гарантированная доставка не реализована. Без Web Locks действует проверка снимка, но строгая атомарность вкладок не обещается. Сравнительные тесты прежнего источника 35/35 отражают только тот срез, не являются тестами текущего обновления.

@@ -12,13 +12,14 @@ ROOT=Path(__file__).resolve().parents[1]; OUT=ROOT/'verification';OUT.mkdir(exis
 HOOK=r'''
 const originalAsk=ask;
 window.__LG={state:()=>S,clone:cloneState,coll:COLL,key:()=>KEYS[META.space],today,addDays,coins,xp:xpTotal,plan:()=>dayPlan(today()),currentLoc,scheduledLoc,ruleActive,nextBoundary,locById,newLocation,locTick,validate:LifeGamePersistence.validate,
+cal:Cal,calDone,habitTarget,habitDayTarget,habitDayProgress,ritualMessage,dayStats,ritualTexts:RITUAL,reminderCandidates,io:IO,quickAdd,
 newItem:(k,p)=>({task:newTask,habit:newHabit,quest:newQuest,cal:newCal,offer:newOffer,decision:newDecision}[k])(p),
 stage:(bid,name)=>{const x={id:uid(),blockId:bid,name,content:'',meaning:'',reason:'',bonus:[],status:'open',order:S.stages.length+1,created:today()};S.stages.push(x);return x},
 run:fn=>runGuarded(()=>tx(fn)),complete,undo:undoFact,assign:setBonusAssign,ledger,
 autoAsk:on=>{ask=on?async()=>typeof on==='string'?on:true:originalAsk},
 reset:()=>runGuarded(()=>{ask=originalAsk;closeAllSheets();replaceSpace(makeBlank());goTab('home');return true}),
 replace:s=>runGuarded(()=>replaceSpace(s)),edit:(k,it,p)=>editItem(k,it,p),
-submit:()=>{const f=document.querySelector('#layer form');return runGuarded(()=>FORMS[f.dataset.form](f),f)},
+submit:()=>{const f=document.querySelector('#layer .overlay:last-child form');return runGuarded(()=>FORMS[f.dataset.form](f),f)},
 act:(act,data={})=>{const el=document.createElement('button');Object.assign(el.dataset,data);return runGuarded(()=>ACT[act](el),el)},
 go:(s,p={})=>{closeAllSheets();go(s,p)},exportFile,
 };
@@ -48,6 +49,8 @@ with sync_playwright() as pw:
  for r in model:print('PASS' if r['pass'] else 'FAIL',r['name'],r.get('error','')[:600],flush=True)
  p.add_script_tag(content=(ROOT/'tests/location-cases.js').read_text());location_cases=p.evaluate('runLocationCases()');results.extend(location_cases)
  for r in location_cases:print('PASS' if r['pass'] else 'FAIL',r['name'],r.get('error','')[:600],flush=True)
+ p.add_script_tag(content=(ROOT/'tests/upgrade-cases.js').read_text());upgrades=p.evaluate('runUpgradeCases()');results.extend(upgrades)
+ for r in upgrades:print('PASS' if r['pass'] else 'FAIL',r['name'],r.get('error','')[:900],flush=True)
  def reset():p.evaluate('window.__LG.reset()')
  def submit(form='item'):
   p.locator('form[data-form="'+form+'"] button:not([type=button])').last.click();p.wait_for_timeout(90)
@@ -58,7 +61,7 @@ with sync_playwright() as pw:
   block=state()['blocks'][-1];assert not block['secs']['unk'] and not block['secs']['lvmg']
   action(p,'stage-new');p.locator('[name=name]').fill('Первые аккорды');p.locator('[name=meaning]').fill('Играть для себя');submit('stage');sid=state()['stages'][-1]['id']
   action(p,'bview','[data-v=current]');action(p,'goal-new');p.locator('[name=title]').fill('Переключать Am и Em');p.locator('[name=ifThen]').fill('Если устал — две минуты после ужина');submit('goal')
-  action(p,'new','[data-k=task]');p.locator('[name=title]').fill('Пять переходов Am → Em');p.locator('[name=goalId]').select_option(state()['goals'][0]['id']);p.locator('[name=key]').check();p.locator('[name=reward]').fill('25');submit()
+  action(p,'new','[data-goal]');p.locator('[name=title]').fill('Пять переходов Am → Em');p.locator('[name=goalId]').select_option(state()['goals'][0]['id']);p.locator('[name=key]').check();p.locator('[name=reward]').fill('25');submit()
   task=state()['tasks'][0];assert task['stageId']==sid and task['key'] and task['inDay'] and task['goalId']
   action(p,'tab','[data-v=day]');action(p,'toggle','[data-r="task:'+task['id']+'"]');assert state()['ledger'][-1]['coins']==25
   p.screenshot(path=str(OUT/'guitar-day.png'));p.reload(wait_until='networkidle');assert state()['facts'][0]['ref']==task['id']
@@ -136,7 +139,7 @@ with sync_playwright() as pw:
  def location_ui():
   reset();action(p,'tab','[data-v=more]');action(p,'go','[data-s=locations]');action(p,'loc-new');p.locator('[name=name]').fill('Мастерская');p.locator('[name=style]').select_option('pop');p.locator('[name=tempo]').select_option('hard');submit('location');loc=state()['locations'][-1]['id']
   action(p,'loc-menu');action(p,'loc-set','[data-id="'+loc+'"]');assert state()['loc']['manual']['until'] is None;assert p.locator('html').get_attribute('data-style')=='pop'
-  p.locator('#fab').click();action(p,'seg','[data-v=task]');p.locator('[name=title]').fill('Собрать стойку');submit('quick');assert state()['tasks'][0]['locs']==[loc]
+  p.locator('#fab').click();action(p,'quick-kind','[data-v=task]');p.locator('[name=title]').fill('Собрать стойку');submit('quick');assert state()['tasks'][0]['locs']==[loc]
   action(p,'tab','[data-v=day]');assert p.locator('text=Собрать стойку').first.is_visible();action(p,'loc-menu');action(p,'loc-set','[data-id=home]');assert p.locator('[data-act=toggle][data-r="task:'+state()['tasks'][0]['id']+'"]').count()==0;action(p,'toggle-hidden');assert 'в другой локации' in p.locator('#app').inner_text();action(p,'force');action(p,'toggle');assert state()['facts'][0]['locationTitle']=='🏠 Дом'
   # Only an explicit filter in a section restricts it; location switching itself leaves the section intact.
   action(p,'tab','[data-v=more]');action(p,'go','[data-s=tasks]');action(p,'list-st','[data-v=done]');row=p.locator('[data-act=open][data-k=task][data-id="'+state()['tasks'][0]['id']+'"]');assert row.count()==1,'completed task missing';p.locator('[data-location-list=task]').select_option('home');assert row.count()==0,'explicit location filter failed';p.locator('[data-location-list=task]').select_option('');

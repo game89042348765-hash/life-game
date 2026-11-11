@@ -1,0 +1,28 @@
+{
+  "source": "Uploaded Claude LifeGame HTML",
+  "sha256": "3a8a6064ccb61186a3934b28f6bcbeb939c3c2a1f2387c577946d4125ae9ef7b",
+  "baselineBackup": "backups/index-2026-11-11-11-35-50.html",
+  "preservedApplications": [
+    "index.html",
+    "next/"
+  ],
+  "purpose": "Personal daily use; Claude interface and product choices with hardened persistence",
+  "selectiveMerge": {
+    "date": "2026-11-11",
+    "releaseArchive": {
+      "name": "LifeGame-lg-1.1.0.zip",
+      "sha256": "9ba882e726fbcbb4729c69be21dac6c0a625d8f2e9e86302797743b0a5ef9f50"
+    },
+    "sourceArchive": {
+      "name": "LifeGame-source-1.1.0.zip",
+      "sha256": "0d83c89ee12fed3ea17f075f73f8917abcd92f541cefc5e1ea17afc0247882d4"
+    },
+    "releaseMatchesSourceDist": true,
+    "imported": [
+      "three style templates, default quest chosen by user",
+      "locations and context profiles",
+      "floating seven-step hints and target highlighting"
+    ],
+    "notImported": "Other mechanics are compared only; no whole-app replacement or lg-4 save import"
+  }
+}

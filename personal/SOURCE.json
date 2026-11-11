@@ -23,6 +23,17 @@
       "locations and context profiles",
       "floating seven-step hints and target highlighting"
     ],
-    "notImported": "Other mechanics are compared only; no whole-app replacement or lg-4 save import"
+    "notImported": "No whole-app replacement and no automatic lg-4 import. Extra mechanics were separately discussed and authorized, implemented with Personal invariants."
+  },
+  "version": "personal-1.2.0",
+  "agreedUpgrade": {
+    "date": "2026-11-11",
+    "baseCommit": "98de9d937e52e04d8343703c3b0a9a182bf770a4",
+    "baseRuntime": "3a362e0f06e867b008e1d5907c33158b1ec823bc",
+    "htmlBackup": "backups/index-2026-11-11-15-36-47.html",
+    "backupSHA256": "3df4272c8083c4ab61342eee48f513e847ae9fd4d047a61e71cb31d443ccca1d",
+    "implementation": "calendar recurrence/exceptions/splits; daily habit targets; atomic goal drafts; quick goals;119 distinct evening texts; reminder lead; post-commit wallet feedback; daily+last-good backups; strict import",
+    "format": "personal-1 / v2 with compatible optional fields",
+    "oldPackageSnapshot": "downloads/*personal-1.1.0.zip remain unchanged; this update is not in those ZIPs"
   }
 }
