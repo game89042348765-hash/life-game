@@ -41,8 +41,8 @@
   },
   "checks": {
     "browser": {
-      "passed": 90,
-      "total": 90
+      "passed": 92,
+      "total": 92
     },
     "updateLive": {
       "passed": 10,
@@ -87,8 +87,8 @@
       "sha256": "3d2a346d261eeb6048bdbcaaa9b657f2cf42499bcbb2376e889e67335cae9474"
     },
     "app.js": {
-      "bytes": 333112,
-      "sha256": "3fdf3125c859b3dc8ee80905e3c31dcde0f9245bc65bda68ff51f4b110ce641e"
+      "bytes": 333661,
+      "sha256": "115216b996e39ac80f1a8ee236b8e39e77f4e907976e2cadfbf98c76f9fd6150"
     },
     "planning.js": {
       "bytes": 5228,
@@ -108,7 +108,7 @@
     },
     "sw.js": {
       "bytes": 2342,
-      "sha256": "a3bfc9877181bad8af06ec1776956aed5c4084778741765cb4de213d31d0fa28"
+      "sha256": "bfdc1d5403e3c40d5fe2f9607cdd8c1ba5fbd1dffe7d3ddfeb5e54423974b928"
     },
     "manifest.webmanifest": {
       "bytes": 347,

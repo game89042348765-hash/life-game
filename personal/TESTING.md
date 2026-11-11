@@ -1,6 +1,6 @@
 # Проверки Personal 1.2.0
 
-11 ноября 2026. **108/108 групп прошли:**90 модель/UI,10 новых живых сценариев,2 живых смены места/напоминания,6PWA. Изолированные профили Chromium, вымышленные данные, локальный сервер; внешние запросы тестового браузера блокировались. Тестовый API внедряется только в HTTP-ответ тестового harness и отсутствует в поставляемом коде.
+11 ноября 2026. **110/110 групп прошли:**92 модель/UI,10 новых живых сценариев,2 живых смены места/напоминания,6PWA. Изолированные профили Chromium, вымышленные данные, локальный сервер; внешние запросы тестового браузера блокировались. Тестовый API внедряется только в HTTP-ответ тестового harness и отсутствует в поставляемом коде.
 
 Воспроизведение из корня: локальный сервер 8041, затем `python personal/tests/browser.py`, `python personal/tests/update-live.py`, `python personal/tests/locations-live.py`, `python personal/tests/offline.py`. Последний сам запускает отдельный порт. Нужны Python Playwright и Chromium. Скрипты не подключаются к личному профилю и не читают реальные ключи. Отчёты/вымышленные JSON/снимки сохраняются в игнорируемый personal/verification и не публикуются как личные данные.
 
@@ -86,6 +86,8 @@
 - Import: invalid money ratio and malformed repeats/norms rejected unchanged — PASS.
 - Calendar: legacy day reference deduplicates and Quick Done handles two appearances — PASS.
 - Ritual: partial habit effort acknowledged without a completed-day award — PASS.
+- Calendar: editing a missed once date keeps occurrence identity and reward guard — PASS.
+- Goal draft: if-then and location survive Inbox placement — PASS.
 - UI: create strategy → stage → goal → key task → day → reload — PASS.
 - UI: bonus catalog creation preserves parent task draft — PASS.
 - Seven actual dates: schedules, rest, pause, remove, rollover and reviews — PASS.

@@ -1756,7 +1756,8 @@ function editItem(k,it,preset,fromNote){
   let h='<form data-form="item" data-k="'+k+'" data-id="'+(isNew?"":it.id)+'" data-note="'+(fromNote||"")+'">';
   h+='<label class="f">Название</label><input type="text" name="title" value="'+esc(it.title)+'" required>';
   if(k==="cal"){
-    h+='<div class="grid2"><div><label class="f">Дата</label><input type="date" name="date" value="'+it.date+'" required></div><div><label class="f">Время</label><input type="time" name="time" value="'+esc(it.time)+'"></div></div>';
+    const shown=!isNew&&!Cal.repeats(it)?calView(it):null;
+    h+='<div class="grid2"><div><label class="f">Дата</label><input type="date" name="date" value="'+(shown?.date||it.date)+'" required></div><div><label class="f">Время</label><input type="time" name="time" value="'+esc(shown?.time??it.time)+'"></div></div>';
     h+=calendarFields(it);
     h+='<label class="f">Заметка</label><textarea name="note">'+esc(it.note)+'</textarea>'+link;
     h+='<label class="tog"><input type="checkbox" name="inDay" '+(it.inDay?'checked':'')+'><span>Добавить в Конструктор дня</span></label><label class="tog"><input type="checkbox" name="reminder" '+(it.reminder?'checked':'')+'><span>Напоминание</span></label>';
@@ -1874,8 +1875,13 @@ function splitCalendar(c,key,patch,preserveSelected=false){
   fresh.created=today();S.cal.push(fresh);CAL_SELECTION.delete(c.id);return fresh;
 }
 function applyCalendarEdit(c,data){
-  const changed=data.date!==c.date||data.time!==c.time||JSON.stringify(data.repeat)!==JSON.stringify(c.repeat);
+  const shown=!Cal.repeats(c)?calView(c):null;
+  const changed=data.date!==(shown?.date||c.date)||data.time!==(shown?.time??c.time)||JSON.stringify(data.repeat)!==JSON.stringify(c.repeat);
   if(!Cal.repeats(c)&&calDone(c,c.date)&&changed)fail('Выполненное событие сохраняет свою дату. Создайте копию для нового события.');
+  if(!Cal.repeats(c)&&data.repeat.type==='none'){
+    if(data.date!==c.date||c.exceptions?.[c.date]){(c.exceptions||={})[c.date]={date:data.date,time:data.time};data={...data,date:c.date}}
+    Object.assign(c,data);Cal.validate(c);return c;
+  }
   if(Cal.repeats(c)&&(c.date<today()||factsOf('cal',c.id).length)){
     const chosen=calView(c),next=chosen&&chosen.key>=today()&&!calDone(c,chosen.key)?chosen:calNext(c);
     if(!next)fail('У серии нет будущих появлений для изменения. Создайте копию.');
@@ -1924,7 +1930,8 @@ function firstGoalStep(g){
 function creationContext(){const c=curScr();let sid=c.p?.stage||c.p?.stageId||null,bid=c.s==='block'?c.p.id:c.p?.block||null;if(sid){const s=get('stage',sid);if(s?.status==='open')bid=s.blockId;else sid=null}if(bid&&!sid){const s=get('stage',get('block',bid)?.currentStageId);if(s?.status==='open')sid=s.id}return {blockId:bid||null,stageId:sid}}
 function captureGoal(title,fromNote,preset={}){
   const p={...creationContext(),...preset};
-  openSheet('Новая цель','<form data-form="capture-goal" data-note="'+(fromNote||'')+'"><label class="f">Желаемый результат</label><input name="title" value="'+esc(title||'')+'" required><div class="grid2"><div><label class="f">Блок</label>'+blockSelect('blockId',p.blockId)+'</div><div><label class="f">Этап</label>'+stageSelect('stageId',p.blockId,p.stageId)+'</div></div><label class="f">Если — то (необязательно)</label><input name="ifThen"><p class="meta">Без этапа цель останется наброском во «Входящих». Награды за создание цели нет.</p><div class="row"><button class="btn primary">Сохранить цель</button><button type="button" class="btn" data-act="sheet-close">Отмена</button></div></form>');
+  openSheet('Новая цель','<form data-form="capture-goal" data-note="'+(fromNote||'')+'"><label class="f">Желаемый результат</label><input name="title" value="'+esc(title||'')+'" required><div class="grid2"><div><label class="f">Блок</label>'+blockSelect('blockId',p.blockId)+'</div><div><label class="f">Этап</label>'+stageSelect('stageId',p.blockId,p.stageId)+'</div></div><label class="f">Если — то (необязательно)</label><input name="ifThen" value="'+esc(p.ifThen||'')+'"><p class="meta">Без этапа цель останется наброском во «Входящих». Награды за создание цели нет.</p><div class="row"><button class="btn primary">Сохранить цель</button><button type="button" class="btn" data-act="sheet-close">Отмена</button></div></form>');
+  topSheet().querySelector('form')._sourceLocs=p.locs||[];
 }
 function saveCapturedGoal(title,sid,bid,locs,ifThen,noteId){
   if(noteId)S.inbox=S.inbox.filter(n=>n.id!==noteId);
@@ -1933,7 +1940,7 @@ function saveCapturedGoal(title,sid,bid,locs,ifThen,noteId){
   const g={id:uid(),stageId:sid,title,ifThen:ifThen||'',status:'active',created:today()};S.goals.push(g);return g;
 }
 FORMS['capture-goal']=f=>{
-  const result=tx(()=>{const title=fv(f,'title');if(!title)fail('Введите цель');return {goal:saveCapturedGoal(title,fv(f,'stageId')||null,fv(f,'blockId')||null,[],fv(f,'ifThen'),f.dataset.note)}},r=>r.goal?'Цель создана':'Набросок цели во «Входящих»');
+  const result=tx(()=>{const title=fv(f,'title');if(!title)fail('Введите цель');return {goal:saveCapturedGoal(title,fv(f,'stageId')||null,fv(f,'blockId')||null,f._sourceLocs||[],fv(f,'ifThen'),f.dataset.note)}},r=>r.goal?'Цель создана':'Набросок цели во «Входящих»');
   if(result){closeSheet();if(result.goal)firstGoalStep(result.goal)}
 };
 
@@ -1987,7 +1994,7 @@ FORMS.note=f=>{const t=fv(f,"text");if(!t)return;tx(()=>{S.inbox.unshift({id:uid
 ACT["note-del"]=el=>tx(()=>{S.inbox=S.inbox.filter(n=>n.id!==el.dataset.id)},"Удалено");
 ACT["note-convert"]=el=>{
   const n=S.inbox.find(x=>x.id===el.dataset.id);const k=el.dataset.k;
-  if(k==='goal')captureGoal(n.text,n.id,{blockId:n.blockId||null});
+  if(k==='goal')captureGoal(n.text,n.id,{blockId:n.blockId||null,ifThen:n.ifThen||'',locs:n.locs||[]});
   else if(["task","habit","quest","cal"].includes(k))editItem(k,null,{title:n.text,locs:n.locs||[]},n.id);
   else if(k==="offer")offerEditor(null,{title:n.text},n.id);
   else if(k==="treat")treatEditor(null,{title:n.text},n.id);
