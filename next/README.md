@@ -36,3 +36,5 @@
 Модель: `npm test --prefix next` из корня. Браузер: запустить HTTP-сервер, установить Python Playwright и Chromium, затем `python next/tests/week.browser.py` и `python next/tests/edges.browser.py`. Скрипты используют `/usr/bin/chromium`; адрес можно задать через `LIFEGAME_TEST_URL`. Они открывают отдельные контексты с вымышленными данными и блокируют внешние запросы.
 
 [Результаты недели](TEST-WEEK.md), [самостоятельные решения](DECISIONS.md), [полный аудит концепции](AUDIT.md), [манифест источников и проверок](audit-manifest.json). Сгенерированные снимки и тестовые JSON в `verification/` исключены из Git. Ручная приёмка на физическом iPhone/Safari ещё требуется.
+
+[Подтверждение публикации](PUBLICATION.md).
