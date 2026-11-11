@@ -139,8 +139,8 @@
   "applicationFiles": [
     {
       "name": "next/app.js",
-      "bytes": 123355,
-      "sha256": "402060d296dfc27c49055788b60c315c7e9a5d54b96ea485391aaa5d5a76ae0d"
+      "bytes": 123360,
+      "sha256": "c8d107594d37b49089c6b2fdc0467dd98ac2f3d1155a5b37aa102622e6f0d089"
     },
     {
       "name": "next/store.js",
@@ -149,8 +149,8 @@
     },
     {
       "name": "next/domain.js",
-      "bytes": 45395,
-      "sha256": "98564dc51672b52a93a08e3ed68651725cd02382565674a55241d15ce3c0d310"
+      "bytes": 46200,
+      "sha256": "776c45aaf96ec330fa0dd3294fb10230a8f7c3ab7f143cdac0c827d243c67c30"
     },
     {
       "name": "next/messages.js",
@@ -174,8 +174,8 @@
     },
     {
       "name": "next/tests/domain.test.js",
-      "bytes": 22803,
-      "sha256": "09f6d42c8729f0da6e9997dba2664fa60c21534e41c01b8086fd9edde5477485"
+      "bytes": 23298,
+      "sha256": "ef35193a500c121229149be68e155ebbf856f796c258f20ef6ff7d7fb350bbef"
     },
     {
       "name": "next/tests/edges.browser.py",
@@ -828,7 +828,7 @@
   "verification": {
     "model": {
       "command": "npm test --prefix next",
-      "passed": 52,
+      "passed": 53,
       "failed": 0
     },
     "week": {
