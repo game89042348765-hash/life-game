@@ -37,8 +37,9 @@ function loadSpace(space){
 function save(){
   if(!S||!META.space)return;
   if(corruptSpace)throw Error('Сначала восстановите сохранение из файла. Исходные данные оставлены без изменений.');
+  locTick();
   const oldRevision=S.revision||0;S.revision=oldRevision+1;
-  try{IO.write(KEYS[META.space],S);storageOk=true;storageIssue='';if(activeOperation){['#app','#tabs'].forEach(sel=>{const n=$(sel);if(n){n.dataset.revision=S.revision;n.dataset.space=META.space}});$$('#layer [data-revision]').forEach(n=>{n.dataset.revision=S.revision;n.dataset.space=META.space})}}
+  try{IO.write(KEYS[META.space],S);storageOk=true;storageIssue='';if(activeOperation){['#app','#tabs','#helper','#helper-pop'].forEach(sel=>{const n=$(sel);if(n){n.dataset.revision=S.revision;n.dataset.space=META.space}});$$('#layer [data-revision]').forEach(n=>{n.dataset.revision=S.revision;n.dataset.space=META.space})}}
   catch(e){S.revision=oldRevision;storageOk=false;storageIssue='Изменение НЕ сохранено. Прогресс и награда не изменились. '+e.message;throw e}
 }
 const today=()=>META.space==='demo'?addDays(realToday(),META.offset||0):realToday();
@@ -54,7 +55,7 @@ async function runGuarded(fn,el,background=false){
     try{
       if(key&&!corruptSpace)IO.assertCurrent(key);
       activeOperation=true;
-      if(S&&!corruptSpace&&processDays())save();
+      if(S&&!corruptSpace){const rollover=processDays(),place=locTick();if(rollover||place)save()}
       const before=dataSignature(S),serial=IO.commitSerial,result=await fn();
       if(S&&!corruptSpace&&dataSignature(S)!==before&&IO.commitSerial===serial)save();
       showStoragePanel();return result;
@@ -73,7 +74,7 @@ function exportFile(){LifeGamePersistence.validate(S);return {app:'LifeGame Pers
 function replaceSpace(value){
   const next=LifeGamePersistence.upgrade(value),old=S;next.space=META.space;next.revision=(old?.revision||0)+1;
   const key=KEYS[META.space];IO.assertCurrent(key);S=next;
-  try{processDays();IO.write(key,S,{replace:true});corruptSpace=false;storageIssue='';storageOk=true}catch(e){S=old;throw e}
+  try{processDays();locTick();IO.write(key,S,{replace:true});corruptSpace=false;storageIssue='';storageOk=true}catch(e){S=old;throw e}
 }
 
 /* ---------- reference data ---------- */
@@ -100,16 +101,69 @@ const DEF_REWARD={task:10,habit:5,habitGoal:50,questStep:5,questFinal:100,cal:5}
 const KIND_L={task:"Задание",habit:"Привычка",quest:"Квест",cal:"Календарь",offer:"Бонус",treat:"Ништяк",decision:"Решение",note:"Мысль"};
 const USE_L={once:"Одноразовый",unlimited:"Безлимитный",limited:"Ограниченный"};
 
+const STYLES=[["quest","Ночной квест",["#0B0B0C","#FFD21F","#2E3035","#F3F2EE"]],["dawn","Рассвет",["#F6F3FA","#D2462B","#6A4BE0","#F2A93B"]],["pop","Стикеры",["#EEEAFF","#FF3D9A","#3A50FF","#D7FF3A"]]];
+const LOC_ICONS=["🏠","💼","🚗","🏋️","🛒","🌳","☕","🏫","👨‍👩‍👧","🏥","✈️","📍"];
+function newLocation(p){return Object.assign({id:uid(),name:"",icon:"📍",blocks:[],homeHide:[],dayHide:[],widgets:null,muteOther:false,tempo:null,style:null},p||{})}
+function defaultLocations(){return LifeGamePersistence.defaultLocations()}
+function defaultLocState(){return LifeGamePersistence.defaultLocState()}
+
+/* ---------- current location ----------
+   manual choice wins until the next schedule boundary; then schedule; then the "outside schedule" location; else none (everything visible) */
+const locById=id=>id?(S.locations||[]).find(l=>l.id===id)||null:null;
+const tmin=t=>{const [h,m]=t.split(":").map(Number);return h*60+m};
+const nowMinutes=()=>{const n=new Date();return n.getHours()*60+n.getMinutes()};
+function ruleActive(r,d,mins){
+  const from=tmin(r.from),to=tmin(r.to);
+  if(from===to)return false;
+  if(from<to)return r.days.includes(wd(d))&&mins>=from&&mins<to;
+  return (r.days.includes(wd(d))&&mins>=from)||(r.days.includes(wd(addDays(d,-1)))&&mins<to);
+}
+function scheduledLoc(d,mins){
+  for(const r of S.loc.schedule){if(locById(r.locId)&&ruleActive(r,d,mins))return {id:r.locId,rule:r}}
+  return {id:locById(S.loc.fallback)?S.loc.fallback:null,rule:null};
+}
+let locationBoundaryCache=null;
+function nextBoundary(){
+  if(!S.loc.schedule.length)return null;
+  const start=Math.floor(Date.now()/60000),key=start+'|'+META.space+'|'+META.offset+'|'+JSON.stringify(S.loc.schedule)+'|'+S.loc.fallback;
+  if(locationBoundaryCache?.key===key)return locationBoundaryCache.value;
+  const idAt=ts=>{const point=new Date(ts),date=META.space==='demo'?addDays(iso(point),META.offset||0):iso(point);return scheduledLoc(date,point.getHours()*60+point.getMinutes()).id};
+  const initial=idAt(Date.now());let value=null;
+  // Scan actual minutes, so repeated/skipped clock hours are handled as well as overnight rules.
+  for(let minute=1;minute<=8*1440;minute++){const ts=(start+minute)*60000;if(idAt(ts)!==initial){value=ts;break}}
+  locationBoundaryCache={key,value};return value;
+}
+function currentLoc(){
+  if(!S.loc)return {id:null,source:"none",until:null};
+  const m=S.loc.manual;
+  if(m&&(m.until===null||m.until>Date.now()))return {id:locById(m.id)?m.id:null,source:"manual",until:m.until};
+  const sl=scheduledLoc(today(),nowMinutes());
+  return {id:sl.id,source:sl.rule?"schedule":(sl.id?"fallback":"none"),until:nextBoundary(nowMinutes()),rule:sl.rule};
+}
+const curLocObj=()=>locById(currentLoc().id);
+const itemLocOk=(it,locId)=>!locId||!it||!(it.locs&&it.locs.length)||it.locs.includes(locId);
+function locHides(it,loc){
+  if(!loc||!it)return false;
+  if(!itemLocOk(it,loc.id))return true;
+  return !!(loc.blocks&&loc.blocks.length&&it.blockId&&!loc.blocks.includes(it.blockId));
+}
+function noteLocSeen(){
+  const r=dayRec(today());const k=currentLoc().id||"*";
+  const seen=r.locsSeen||(r.locsSeen=[]);
+  if(!seen.includes(k)){seen.push(k);return true}
+  return false;
+}
+
 function baseState(space){
   const t=today();
   return {
     v:2,space,created:t,lastProcessed:t,
-    settings:{lite:false,accent:"blue",motivation:"",reminders:true,
+    settings:{lite:false,style:"quest",accent:"blue",motivation:"",reminders:true,
       sessions:{all:true,daily:true,weekly:true,monthly:true},
       onboarding:{on:false,start:t,done:{},skipped:{}}},
     blocks:BASE_BLOCKS.map(([name,icon],i)=>({id:"b"+i,name,icon,meaning:"",priority:"mid",intensity:"bal",
       secs:secsFrom(PRESETS.full.secs),preset:"full",base:true,status:"active",order:i,currentStageId:null,fact:"",optimal:"",unknown:"",lvmg:""})),
-    achievements:[],stages:[],goals:[],tasks:[],habits:[],quests:[],cal:[],decisions:[],
+    locations:defaultLocations(),loc:defaultLocState(),achievements:[],stages:[],goals:[],tasks:[],habits:[],quests:[],cal:[],decisions:[],
     inbox:[],recent:[],facts:[],ledger:[],offers:[],insts:[],treats:[],misses:[],days:{},
     focus:{on:false,blocks:[],calOther:true,calUnlinked:true},
     creative:{on:false,since:null,mute:false},
@@ -246,6 +300,7 @@ function revokeInsts(f,k,id){
 function addFact(kind,ref,d,c,extra){
   const f=Object.assign({id:uid(),kind,ref,date:d,ts:Date.now(),coins:c,xp:c,insts:[],consumed:[],cancelled:false},extra||{});
   if(c)f.ledger=ledger("earn",c,c,(extra&&extra.title)||"",kind+":"+ref,d);
+  if(d===today()){const place=curLocObj();f.loc=place?.id||null;f.locationTitle=place?locName(place):"Без локации"}
   S.facts.push(f);return f;
 }
 
@@ -358,6 +413,7 @@ function focusFor(d){
 }
 function snapshotToday(){
   const r=dayRec(today());
+  r.locOtherNoMiss=!!S.loc?.otherNoMiss;
   r.focus=S.focus.on?{blocks:[...S.focus.blocks],calOther:S.focus.calOther,calUnlinked:S.focus.calUnlinked}:null;
   r.creative=!!S.creative.on;
 }
@@ -395,9 +451,10 @@ function isDoneRef(r,d){
   if(k==="cal")return doneEver("cal",id);
   return doneOn(k,id,d);
 }
-function dayPlan(d){
+function dayPlan(d,opts){
   const day=S.days[d]||{added:[],removed:[],forced:[]};
   const tempo=dayTempo(d),creative=creativeOn(d),focus=focusFor(d);
+  const loc=(d===today()&&!opts?.ignoreLoc)?curLocObj():null;
   let refs=candidates(d);
   (day.added||[]).forEach(r=>{const [k,id]=pr(r);const it=get(k,id);if(it&&(available(it)||isDoneRef(r,d))&&!refs.includes(r))refs.push(r)});
   // items done today always show
@@ -418,11 +475,12 @@ function dayPlan(d){
       }else if(it.blockId&&!focus.blocks.includes(it.blockId)){hidden.push({r,why:"focus"});return}
     }
     if(k!=="cal"&&!(k==="task"&&it.key)&&!(it.fit||[]).includes(tempo)){hidden.push({r,why:"tempo"});return}
+    if(loc&&locHides(it,loc)){hidden.push({r,why:"loc"});return}
     visible.push(r);
   });
-  return {visible,hidden,tempo,creative,focus};
+  return {visible,hidden,tempo,creative,focus,loc};
 }
-const WHY_L={tempo:"не подходит темпу дня",focus:"скрыто режимом фокуса",creative:"творческий режим"};
+const WHY_L={tempo:"не подходит темпу дня",focus:"скрыто режимом фокуса",creative:"творческий режим",loc:"в другой локации"};
 
 /* ---------- misses (rollover) ---------- */
 function addMiss(kind,ref,d,title){
@@ -430,13 +488,15 @@ function addMiss(kind,ref,d,title){
   S.misses.push({id:uid(),kind,ref,date:d,title,status:"active",note:"",created:Date.now()});
 }
 function finalizeDay(d){
-  const p=dayPlan(d);
+  const p=dayPlan(d,{ignoreLoc:true});
   const rec=dayRec(d);
+  const seen=rec.locsSeen||[];
+  const excusedByLoc=it=>!!(rec.locOtherNoMiss&&seen.length&&!seen.includes("*")&&it.locs?.length&&!it.locs.some(id=>seen.includes(id)));
   if(rec.creative===undefined)rec.creative=p.creative;
   if(rec.focus===undefined)rec.focus=p.focus;
   p.visible.forEach(r=>{
     const [k,id]=pr(r);const it=get(k,id);if(!it||k==="cal")return;
-    if(isDoneRef(r,d))return;
+    if(isDoneRef(r,d)||excusedByLoc(it))return;
     if(k==="task"){
       if(it.sched.type==="once"){if(it.sched.date===d)addMiss("task",id,d,it.title);return}
       if(expectedSched(it.sched))addMiss("task",id,d,it.title);
@@ -466,7 +526,7 @@ function tx(fn,msg){
   const backup=JSON.stringify(S);let r;
   try{
     if(!activeOperation)throw Error('Операция должна выполняться под защитой записи.');
-    r=fn();if(r===false){S=JSON.parse(backup);return false}save();
+    r=fn();if(r===false){S=JSON.parse(backup);return false}locTick();save();
   }catch(e){S=JSON.parse(backup);renderRetainingDrafts();toast(e.message);return false}
   render();if(msg)toast(typeof msg==='function'?msg(r):msg);return r===undefined?true:r;
 }
@@ -474,10 +534,10 @@ function tx(fn,msg){
 
 /* ---------- misc model helpers ---------- */
 function pushRecent(k,id){S.recent.unshift({k,id,at:Date.now()});S.recent=S.recent.filter(r=>Date.now()-r.at<15*60e3).slice(0,30)}
-function newTask(p){return Object.assign({id:uid(),title:"",desc:"",reward:DEF_REWARD.task,sched:{type:"once",days:[],date:null},blockId:null,stageId:null,goalId:null,inDay:true,key:false,fit:["normal","hard"],cat:"",tags:[],ifThen:"",bonus:[],status:"active",created:today()},p||{})}
-function newHabit(p){return Object.assign({id:uid(),title:"",desc:"",reward:DEF_REWARD.habit,sched:{type:"daily",days:[]},goal:{mode:"total",period:"month",target:30,reward:DEF_REWARD.habitGoal,bonus:[]},level:1,levelLog:[],blockId:null,stageId:null,goalId:null,inDay:true,fit:["rest","normal","hard"],cat:"",tags:[],ifThen:"",status:"active",created:today()},p||{})}
-function newQuest(p){return Object.assign({id:uid(),title:"",desc:"",type:"counter",target:10,steps:[],stepReward:DEF_REWARD.questStep,finalReward:DEF_REWARD.questFinal,bonus:[],sched:{type:"whenever",days:[]},blockId:null,stageId:null,goalId:null,inDay:false,fit:["normal","hard"],cat:"",tags:[],ifThen:"",status:"active",created:today()},p||{})}
-function newCal(p){return Object.assign({id:uid(),title:"",date:today(),time:"",note:"",reward:DEF_REWARD.cal,blockId:null,stageId:null,inDay:true,reminder:true,status:"active",created:today()},p||{})}
+function newTask(p){return Object.assign({id:uid(),title:"",locs:[],desc:"",reward:DEF_REWARD.task,sched:{type:"once",days:[],date:null},blockId:null,stageId:null,goalId:null,inDay:true,key:false,fit:["normal","hard"],cat:"",tags:[],ifThen:"",bonus:[],status:"active",created:today()},p||{})}
+function newHabit(p){return Object.assign({id:uid(),title:"",locs:[],desc:"",reward:DEF_REWARD.habit,sched:{type:"daily",days:[]},goal:{mode:"total",period:"month",target:30,reward:DEF_REWARD.habitGoal,bonus:[]},level:1,levelLog:[],blockId:null,stageId:null,goalId:null,inDay:true,fit:["rest","normal","hard"],cat:"",tags:[],ifThen:"",status:"active",created:today()},p||{})}
+function newQuest(p){return Object.assign({id:uid(),title:"",locs:[],desc:"",type:"counter",target:10,steps:[],stepReward:DEF_REWARD.questStep,finalReward:DEF_REWARD.questFinal,bonus:[],sched:{type:"whenever",days:[]},blockId:null,stageId:null,goalId:null,inDay:false,fit:["normal","hard"],cat:"",tags:[],ifThen:"",status:"active",created:today()},p||{})}
+function newCal(p){return Object.assign({id:uid(),title:"",locs:[],date:today(),time:"",note:"",reward:DEF_REWARD.cal,blockId:null,stageId:null,inDay:true,reminder:true,status:"active",created:today()},p||{})}
 function newOffer(p){return Object.assign({id:uid(),title:"",desc:"",price:100,use:"once",limit:3,cat:"",tags:[],status:"active",created:today()},p||{})}
 function newDecision(p){return Object.assign({id:uid(),text:"",stageId:null,deadline:null,priceC:0,priceX:0,status:"active",created:today(),linkedAt:null,closedAt:null},p||{})}
 function itemsOfStage(sid){
@@ -592,7 +652,9 @@ function banners(){
 }
 const TITLES={home:"Главная",day:"Конструктор дня",map:"Карта жизни",inbox:"Входящие",more:"Разделы"};
 function render(){
-  document.documentElement.dataset.accent=(S&&S.settings.accent)||"blue";
+  document.documentElement.dataset.style=S?effectiveStyle():"quest";
+  delete document.documentElement.dataset.accent;
+  const theme=$('meta[name="theme-color"]');if(theme)theme.content=getComputedStyle(document.documentElement).getPropertyValue("--bg").trim();
   if(!META.space||!S){renderWelcome();showStoragePanel();return}
 
   const c=curScr();
@@ -612,7 +674,7 @@ function render(){
   const tabs=[["home","Главная"],["day","День"],["map","Карта"],["inbox","Входящие"],["more","Разделы"]];
   $("#tabs").innerHTML=tabs.map(([k,l])=>'<button data-act="tab" data-v="'+k+'" '+(NAV.tab===k?'aria-current="page"':'')+'>'+IC[k]+'<span>'+l+'</span>'+(k==="inbox"&&inboxN?'<span class="badge">'+inboxN+'</span>':'')+'</button>').join("");
   $("nav.tabs").hidden=false;$("#fab").hidden=false;
-  $('#app').dataset.revision=S.revision||0;$('#app').dataset.space=META.space;$('#tabs').dataset.revision=S.revision||0;$('#tabs').dataset.space=META.space;renderMiniTimer();showStoragePanel();
+  $('#app').dataset.revision=S.revision||0;$('#app').dataset.space=META.space;$('#tabs').dataset.revision=S.revision||0;$('#tabs').dataset.space=META.space;renderMiniTimer();renderHelper();showStoragePanel();
 }
 
 /* ---------- event delegation ---------- */
@@ -660,6 +722,7 @@ function goalSelect(name,stageId,cur){
 /* link block→stage→goal selects inside a form */
 document.addEventListener("change",e=>{
   const f=e.target.form;if(!f)return;
+  if(e.target.name==="blockId"&&f.querySelector('[data-multi="locs"]')){const b=get("block",e.target.value);if(b?.loc)f.querySelectorAll('[data-multi="locs"] [data-v]').forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.v===b.loc)))}
   if(e.target.name==="blockId"&&f.querySelector('[name="stageId"]')){
     f.querySelector('[name="stageId"]').outerHTML=stageSelect("stageId",e.target.value,"");
     const cur=get("block",e.target.value);
@@ -703,6 +766,186 @@ function readSched(f){
 function fitFields(fit){return '<label class="f">Подходит темпу дня</label>'+chipsMulti("fit",TEMPO,fit)+'<div class="meta" style="margin-top:4px">В дни с другим темпом запись уходит в «Скрыто сегодня» и не становится пропуском.</div>'}
 function catTagFields(it){return '<div class="grid2"><div><label class="f">Категория</label><input type="text" name="cat" value="'+esc(it.cat||"")+'"></div><div><label class="f">Теги через запятую</label><input type="text" name="tags" value="'+esc((it.tags||[]).join(", "))+'"></div></div>'}
 const readTags=f=>fv(f,"tags").split(",").map(s=>s.trim()).filter(Boolean);
+/* ================= LOCATIONS: current place, switching, profiles, schedule ================= */
+const HOME_PARTS=[["motivation","Мотивация"],["invites","Приглашения на сессии"],["modes","Фокус и творческий режим"],["upcoming","Ближайшие календарные дела"],["decisions","Решения со сроком"],["grid","Плитки разделов"]];
+const DAY_PARTS=[["key","Ключевые действия"],["cal","Календарь"],["task","Задания"],["habit","Привычки"],["quest","Квесты"],["widgets","Виджеты"],["evening","Вечер и итоги"]];
+const hhmm=ms=>{const d=new Date(ms);return pad(d.getHours())+":"+pad(d.getMinutes())};
+const locName=l=>l?l.icon+" "+l.name:"Везде";
+function locStatusText(L){
+  if(L.source==="manual")return "выбрано вручную"+(L.until&&L.until-Date.now()<864e5?" до "+hhmm(L.until):"");
+  if(L.source==="schedule")return "по расписанию"+(L.until?" до "+hhmm(L.until):"");
+  if(L.source==="fallback")return "вне расписания";
+  return "все дела видны";
+}
+function locBar(){
+  if(!S.loc||!S.locations.length)return "";
+  const L=currentLoc(),loc=locById(L.id);
+  return '<div class="locbar"><button class="locchip" data-act="loc-menu" aria-label="Сменить локацию">'+esc(locName(loc))+' <span aria-hidden="true">▾</span></button><span class="meta">'+esc(locStatusText(L))+'</span></div>';
+}
+/* Guarded bookkeeping: remembers today, applies profile tempo only on a real change. */
+function locTick(){
+  if(!S||!S.loc)return false;
+  const L=currentLoc();let changed=false;
+  const id=L.id||null;
+  const record=dayRec(today());
+  if(S.loc.lastSeen!==id||record.locProfileSeen!==id){
+    record.locProfileSeen=id;
+    S.loc.lastSeen=id;changed=true;
+    const loc=locById(id),r=dayRec(today());
+    if(loc&&loc.tempo&&!r.tempoManual&&r.tempo!==loc.tempo){r.tempo=loc.tempo}
+  }
+  const rec=dayRec(today());if(rec.locOtherNoMiss!==!!S.loc.otherNoMiss){rec.locOtherNoMiss=!!S.loc.otherNoMiss;changed=true}
+  if(noteLocSeen())changed=true;
+  return changed;
+}
+function effectiveStyle(){const l=S&&S.loc?curLocObj():null;return (l&&l.style)||(S&&S.settings.style)||"quest"}
+
+/* ---------- switching ---------- */
+ACT["loc-menu"]=()=>{
+  const L=currentLoc();const sched=scheduledLoc(today(),nowMinutes());
+  openSheet("Где вы сейчас",'<p class="meta">Меняет Главную и Конструктор дня: видны дела этой локации и дела без локации. Остальное — в «Скрыто сегодня».</p>'+
+    '<div class="grid2" style="margin-top:8px">'+S.locations.map(l=>'<button class="tile" data-act="loc-set" data-id="'+l.id+'" aria-pressed="'+(L.id===l.id)+'" style="'+(L.id===l.id?'border-color:var(--accent);box-shadow:var(--glow)':'')+'"><b style="font-size:16px">'+esc(l.icon+" "+l.name)+'</b><span class="meta">'+esc(locSummary(l))+'</span></button>').join("")+
+    '<button class="tile" data-act="loc-set" data-id="" style="'+(!L.id?'border-color:var(--accent);box-shadow:var(--glow)':'')+'"><b style="font-size:16px">Везде</b><span class="meta">Все дела, обычный интерфейс</span></button></div>'+
+    (L.source==="manual"?'<button class="btn block" style="margin-top:10px" data-act="loc-auto">Вернуть по расписанию'+(S.loc.schedule.length?' ('+esc(locName(locById(sched.id)))+')':'')+'</button>':'')+
+    '<div class="row" style="margin-top:10px"><button class="btn ghost s" data-act="go" data-s="locations">Настроить локации и расписание</button></div>');
+};
+ACT["loc-set"]=el=>{
+  const id=el.dataset.id||null;
+  closeAllSheets();
+  tx(()=>{
+    const sched=scheduledLoc(today(),nowMinutes());
+    if(S.loc.schedule.length&&sched.id===id)S.loc.manual=null;
+    else S.loc.manual={id,until:nextBoundary()};
+  },()=>"Сейчас: "+locName(locById(id)));
+};
+ACT["loc-auto"]=()=>{closeAllSheets();tx(()=>{S.loc.manual=null},()=>"По расписанию: "+locName(curLocObj()))};
+
+/* ---------- locations screen ---------- */
+function locSummary(l){
+  const p=[];
+  p.push(l.blocks.length?"блоков: "+l.blocks.length:"все блоки");
+  const hid=l.homeHide.length+l.dayHide.length;if(hid)p.push("скрыто частей: "+hid);
+  if(l.widgets)p.push("свои виджеты");
+  if(l.muteOther)p.push("тихо для других");
+  if(l.tempo)p.push("темп «"+TEMPO_L[l.tempo]+"»");
+  if(l.style)p.push("стиль «"+STYLES.find(x=>x[0]===l.style)[1]+"»");
+  return p.join(" · ");
+}
+const ruleText=r=>{const ds=r.days.length===7?"Каждый день":r.days.length===5&&r.days.every(d=>d<=5)?"Пн–Пт":r.days.length===2&&r.days.includes(6)&&r.days.includes(7)?"Сб–Вс":r.days.map(n=>WD[n-1]).join(", ");return ds+" "+r.from+"–"+r.to};
+SCR.locations=()=>{
+  curScr().title="Локации";
+  const L=currentLoc();
+  const cnt=id=>[...S.tasks,...S.habits,...S.quests,...S.cal].filter(x=>x.status!=="archived"&&(x.locs||[]).includes(id)).length;
+  let h='<h1>Локации</h1><p class="lead">Где вы сейчас меняет Главную и Конструктор дня: видны дела этой локации и дела без локации, а профиль локации прячет лишнее. Карта, разделы и данные не меняются.</p>';
+  h+='<div class="card" style="margin-top:8px"><div class="between"><div><div class="meta">Сейчас</div><b style="font-size:16px">'+esc(locName(locById(L.id)))+'</b><div class="meta">'+esc(locStatusText(L))+'</div></div><button class="btn s primary" data-act="loc-menu">Сменить</button></div></div>';
+  h+='<h2>Места <span class="count">'+S.locations.length+'</span></h2><div class="list">'+S.locations.map(l=>'<div class="card"><div class="between"><b style="font-size:15px">'+esc(l.icon+" "+l.name)+'</b><span class="meta">записей: '+cnt(l.id)+'</span></div><div class="meta" style="margin-top:2px">'+esc(locSummary(l))+'</div><div class="row" style="margin-top:8px"><button class="btn s" data-act="loc-edit" data-id="'+l.id+'">Профиль</button><button class="btn s ghost danger" data-act="loc-del" data-id="'+l.id+'">Удалить</button></div></div>').join("")+'</div>';
+  h+='<div class="row" style="margin-top:8px"><button class="btn primary" data-act="loc-new">+ Локация</button></div>';
+  h+='<h2>Примерный график</h2><div class="card">'+(S.loc.schedule.length?S.loc.schedule.map(r=>'<div class="mini"><div class="t">'+esc(ruleText(r))+' → <b>'+esc(locName(locById(r.locId)))+'</b></div><button class="btn ghost s" data-act="rule-edit" data-id="'+r.id+'">Изменить</button><button class="ib" data-act="rule-del" data-id="'+r.id+'" aria-label="Удалить правило">✕</button></div>').join(""):'<div class="empty">Правил нет: локация меняется только вручную.</div>')+
+    '<div class="row" style="margin-top:8px"><button class="btn s" data-act="rule-new">+ Правило</button></div>'+
+    '<label class="f">Вне расписания</label><select data-locfallback>'+opt("","Везде — все дела",S.loc.fallback||"")+S.locations.map(l=>opt(l.id,l.icon+" "+l.name,S.loc.fallback||"")).join("")+'</select>'+
+    '<p class="meta" style="margin-top:6px">Ручной выбор всегда главнее графика и действует до следующей смены по графику. Если графика нет — пока вы сами не смените локацию.</p></div>';
+  h+='<h2>Правила</h2><div class="card">'+
+    '<label class="tog" style="margin-top:0"><input type="checkbox" data-locset="otherNoMiss" '+(S.loc.otherNoMiss?'checked':'')+'><span>Дела других локаций не становятся пропусками<small>Если за день вы ни разу не были в локации дела, оно не попадёт в «Невыполненные». По умолчанию выключено: локация меняет только видимость, план дня остаётся прежним.</small></span></label>'+
+    '<label class="tog"><input type="checkbox" data-locset="tagNew" '+(S.loc.tagNew?'checked':'')+'><span>Быстрое добавление ставит текущую локацию<small>Записали мысль на работе — она уже «рабочая». Можно сменить при записи.</small></span></label></div>';
+  return h;
+};
+document.addEventListener("change",e=>{
+  if(e.target.matches("[data-locfallback]")){const v=e.target.value||null;runGuarded(()=>tx(()=>{S.loc.fallback=v},"Сохранено"),e.target)}
+  if(e.target.dataset&&e.target.dataset.locset){const k=e.target.dataset.locset,v=e.target.checked;runGuarded(()=>tx(()=>{S.loc[k]=v},"Сохранено"),e.target)}
+});
+
+/* ---------- location profile editor ---------- */
+ACT["loc-new"]=()=>locEditor(null);
+ACT["loc-edit"]=el=>locEditor(locById(el.dataset.id));
+function locEditor(l){
+  const isNew=!l;l=l||newLocation({});
+  const blocks=S.blocks.filter(b=>b.status==="active");
+  const cb=(name,checked,label,sub)=>'<label class="tog" style="margin-top:4px"><input type="checkbox" name="'+name+'" '+(checked?'checked':'')+'><span>'+esc(label)+(sub?'<small>'+esc(sub)+'</small>':'')+'</span></label>';
+  openSheet(isNew?"Новая локация":"Профиль: "+l.name,'<form data-form="location" data-id="'+(isNew?"":l.id)+'">'+
+    '<label class="f">Название</label><input type="text" name="name" value="'+esc(l.name)+'" required maxlength="60" placeholder="Например: Дача">'+
+    '<label class="f">Значок</label><div class="chips">'+LOC_ICONS.map(i=>'<button type="button" class="chip" data-act="icon-pick" data-v="'+i+'" aria-pressed="'+(l.icon===i)+'">'+i+'</button>').join("")+'</div><input type="hidden" name="icon" value="'+esc(l.icon)+'">'+
+    '<h2>Видимые блоки</h2><p class="meta">Отметьте направления, о которых думать здесь. Ничего не отмечено — видны все. Дела без блока видны всегда.</p><div class="card flat">'+blocks.map(b=>cb("lb_"+b.id,l.blocks.includes(b.id),b.icon+" "+b.name)).join("")+'</div>'+
+    '<h2>Главная: что показывать</h2><div class="card flat">'+HOME_PARTS.map(([k,t])=>cb("lh_"+k,!l.homeHide.includes(k),t)).join("")+'</div>'+
+    '<h2>Конструктор: что показывать</h2><div class="card flat">'+DAY_PARTS.map(([k,t])=>cb("ld_"+k,!l.dayHide.includes(k),t)).join("")+'<p class="meta" style="margin-top:6px">Скрытый раздел не отменяет его дела: они остаются в плане дня.</p></div>'+
+    '<h2>Виджеты в Конструкторе</h2><div class="card flat">'+cb("lw_own",!!l.widgets,"Свой набор виджетов здесь","Иначе — как в общих настройках виджетов")+
+      '<div data-lwlist '+(l.widgets?'':'hidden')+'>'+S.widgets.mine.map(w=>cb("lw_"+w,(l.widgets||[]).includes(w),WIDGETS[w].t)).join("")+(S.widgets.mine.length?'':'<p class="meta">В «Моих виджетах» пусто.</p>')+'</div></div>'+
+    '<h2>Напоминания и темп</h2><div class="card flat">'+cb("muteOther",l.muteOther,"Приглушать напоминания других локаций","Календарные напоминания дел другой локации и скрытых блоков здесь не появятся")+
+      '<label class="f">Темп дня при переходе сюда</label><select name="tempo">'+opt("","Не менять",l.tempo||"")+TEMPO.map(([v,t])=>opt(v,t,l.tempo||"")).join("")+'</select><p class="meta" style="margin-top:4px">Если вы сегодня уже выбрали темп сами, он не меняется.</p></div>'+
+    '<h2>Оформление</h2><div class="card flat"><select name="style">'+opt("","Как в общих настройках",l.style||"")+STYLES.map(([v,t])=>opt(v,t,l.style||"")).join("")+'</select></div>'+
+    '<div class="row" style="margin-top:14px"><button class="btn primary">'+(isNew?'Создать':'Сохранить')+'</button><button type="button" class="btn" data-act="sheet-close">Отмена</button></div></form>');
+}
+document.addEventListener("change",e=>{if(e.target.name==="lw_own"){const f=e.target.form;const box=f.querySelector("[data-lwlist]");if(box)box.hidden=!e.target.checked}});
+FORMS.location=f=>{
+  const ok=tx(()=>{
+    const name=fv(f,"name");if(!name)fail("Введите название");
+    if(S.locations.some(x=>x.name.toLowerCase()===name.toLowerCase()&&x.id!==f.dataset.id))fail("Такая локация уже есть");
+    const l=locById(f.dataset.id)||newLocation({});
+    l.name=name.slice(0,60);l.icon=fv(f,"icon")||"📍";
+    l.blocks=S.blocks.filter(b=>b.status==="active"&&fv(f,"lb_"+b.id)).map(b=>b.id);
+    l.homeHide=HOME_PARTS.filter(([k])=>!fv(f,"lh_"+k)).map(([k])=>k);
+    l.dayHide=DAY_PARTS.filter(([k])=>!fv(f,"ld_"+k)).map(([k])=>k);
+    l.widgets=fv(f,"lw_own")?S.widgets.mine.filter(w=>fv(f,"lw_"+w)):null;
+    l.muteOther=fv(f,"muteOther");l.tempo=fv(f,"tempo")||null;l.style=fv(f,"style")||null;
+    if(!f.dataset.id)S.locations.push(l);
+    return l;
+  },l=>"Сохранено: "+l.icon+" "+l.name);
+  if(ok)closeSheet();
+};
+ACT["loc-del"]=async el=>{
+  const l=locById(el.dataset.id);
+  const y=await ask({title:"Удалить «"+l.name+"»?",text:"Записи, привязанные к этой локации, станут видны везде (если у них нет других локаций). Правила графика с ней удалятся. Выполнения и история не меняются.",ok:"Удалить",danger:true});
+  if(!y)return;
+  tx(()=>{
+    [...S.tasks,...S.habits,...S.quests,...S.cal].forEach(x=>{if(x.locs)x.locs=x.locs.filter(i=>i!==l.id)});
+    S.blocks.forEach(b=>{if(b.loc===l.id)b.loc=null});
+    S.loc.schedule=S.loc.schedule.filter(r=>r.locId!==l.id);
+    if(S.loc.fallback===l.id)S.loc.fallback=null;
+    if(S.loc.manual&&S.loc.manual.id===l.id)S.loc.manual=null;
+    if(S.loc.lastSeen===l.id)S.loc.lastSeen=null;S.inbox.forEach(x=>{if(x.locs)x.locs=x.locs.filter(id=>id!==l.id)});
+    S.locations=S.locations.filter(x=>x.id!==l.id);
+  },"Локация удалена");
+};
+
+/* ---------- schedule rules ---------- */
+ACT["rule-new"]=()=>{if(!S.locations.length){toast("Сначала создайте локацию");return}ruleEditor(null)};
+ACT["rule-edit"]=el=>ruleEditor(S.loc.schedule.find(r=>r.id===el.dataset.id));
+function ruleEditor(r){
+  const isNew=!r;r=r||{id:"",locId:S.locations[0].id,days:[1,2,3,4,5],from:"09:00",to:"18:00"};
+  openSheet(isNew?"Правило графика":"Изменить правило",'<form data-form="locrule" data-id="'+(isNew?"":r.id)+'">'+
+    '<label class="f">Где</label><select name="locId">'+S.locations.map(l=>opt(l.id,l.icon+" "+l.name,r.locId)).join("")+'</select>'+
+    '<label class="f">Дни</label><div class="days" data-ruledays>'+WD.map((l,i)=>'<button type="button" data-act="chipday" data-v="'+(i+1)+'" aria-pressed="'+r.days.includes(i+1)+'">'+l+'</button>').join("")+'</div>'+
+    '<div class="row" style="margin-top:6px"><button type="button" class="btn ghost s" data-act="rule-preset" data-v="12345">Пн–Пт</button><button type="button" class="btn ghost s" data-act="rule-preset" data-v="67">Сб–Вс</button><button type="button" class="btn ghost s" data-act="rule-preset" data-v="1234567">Каждый день</button></div>'+
+    '<div class="grid2"><div><label class="f">С</label><input type="time" name="from" value="'+r.from+'" required></div><div><label class="f">До</label><input type="time" name="to" value="'+r.to+'" required></div></div>'+
+    '<p class="meta" style="margin-top:6px">Интервал через полночь тоже можно: например, 22:00–07:00. Если правила пересекаются, действует верхнее в списке.</p>'+
+    '<div class="row" style="margin-top:12px"><button class="btn primary">Сохранить</button><button type="button" class="btn" data-act="sheet-close">Отмена</button></div></form>');
+}
+ACT["rule-preset"]=el=>{const set=el.dataset.v.split("").map(Number);el.closest("form").querySelectorAll("[data-ruledays] button").forEach(b=>b.setAttribute("aria-pressed",String(set.includes(+b.dataset.v))))};
+FORMS.locrule=f=>{
+  const ok=tx(()=>{
+    const days=[...f.querySelectorAll("[data-ruledays] [aria-pressed=true]")].map(b=>+b.dataset.v).sort();
+    if(!days.length)fail("Выберите хотя бы один день");
+    const from=fv(f,"from"),to=fv(f,"to");
+    if(!/^\d{2}:\d{2}$/.test(from)||!/^\d{2}:\d{2}$/.test(to))fail("Укажите время");
+    if(from===to)fail("Начало и конец совпадают");
+    const data={locId:fv(f,"locId"),days,from,to};
+    const r=S.loc.schedule.find(x=>x.id===f.dataset.id);
+    if(r)Object.assign(r,data);else S.loc.schedule.push(Object.assign({id:uid()},data));
+    S.loc.manual=null;
+  },"Правило сохранено");
+  if(ok)closeSheet();
+};
+ACT["rule-del"]=el=>tx(()=>{S.loc.schedule=S.loc.schedule.filter(r=>r.id!==el.dataset.id);S.loc.manual=null},"Правило удалено");
+
+/* ---------- "Где" field for editors and lists ---------- */
+function locField(cur){
+  if(!S.locations.length)return "";
+  return '<label class="f">Где</label>'+chipsMulti("locs",S.locations.map(l=>[l.id,l.icon+" "+l.name]),cur||[])+'<div class="meta" style="margin-top:4px">Ничего не выбрано — видно в любой локации.</div>';
+}
+const readLocs=f=>multiVal(f,"locs").filter(id=>locById(id));
+function locNames(ids){return ids&&ids.length?ids.map(id=>locName(locById(id))).join(", "):"где угодно"}
+
+ACT["chipday"]=el=>el.setAttribute("aria-pressed",el.getAttribute("aria-pressed")!=="true");
+
 /* ================= HOME, CONSTRUCTOR, SUMMARY ================= */
 function lite(){return S.settings.lite}
 
@@ -714,27 +957,31 @@ SCR.home=()=>{
   const plan=dayPlan(t);
   const doneN=plan.visible.filter(r=>isDoneRef(r,t)).length;
   const earnedToday=liveFacts().filter(f=>f.date===t).reduce((a,f)=>a+(f.ledger?f.coins:0),0);
-  let h='<div class="card" style="margin-top:4px"><div class="between"><div><div class="muted small">Уровень героя</div><div class="big">'+lv+'</div></div>'+
-    '<div style="text-align:right"><div class="muted small">Монеты</div><div class="big" style="color:'+(c<0?'var(--bad)':'var(--coin)')+'">'+num(c)+'</div></div></div>'+
-    '<div class="between small muted" style="margin:6px 0 4px"><span>Опыт: '+num(x)+' XP</span><span>до ур. '+(lv+1)+': '+num(x<=0?1000-x:1000-(x%1000))+' XP</span></div><div class="bar xp"><i style="width:'+prog+'%"></i></div>'+
-    (x<0||c<0?'<p class="small" style="color:var(--bad);margin-top:6px">Отрицательный баланс возник из «Цены слова». Новые заработки погашают долг.</p>':'')+'</div>';
-  if(S.settings.motivation)h+='<div class="card flat" style="margin-top:8px"><div class="between"><span>'+esc(S.settings.motivation)+'</span><button class="btn ghost s" data-act="motivation">Изменить</button></div></div>';
+  let h='<section class="hero" aria-label="Уровень и монеты"><div class="hero-top"><div class="lvl" aria-label="Уровень '+lv+'">'+lv+'</div>'+
+    '<div class="grow"><div class="hero-l">Герой · уровень '+lv+'</div><div class="hero-xp">'+num(x)+' <small>XP</small></div></div>'+
+    '<div class="hero-c"><div class="hero-l">Монеты</div><div class="hero-coins'+(c<0?' neg':'')+'">'+num(c)+'</div></div></div>'+
+    '<div class="xpbar"><i style="width:'+prog+'%"></i></div>'+
+    '<div class="hero-foot"><span>до ур. '+(lv+1)+': '+num(x<=0?1000-x:1000-(x%1000))+' XP</span><span>+'+earnedToday+' сегодня</span></div>'+
+    (x<0||c<0?'<p class="small" style="margin:0">Отрицательный баланс возник из «Цены слова». Новые заработки погашают долг.</p>':'')+'</section>';
+  h+=locBar();
+  const L=curLocObj();const hideH=k=>!!(L&&L.homeHide.includes(k));
+  if(S.settings.motivation&&!hideH("motivation"))h+='<div class="card flat" style="margin-top:8px"><div class="between"><span>'+esc(S.settings.motivation)+'</span><button class="btn ghost s" data-act="motivation">Изменить</button></div></div>';
   h+=onboardingCard();
-  h+=sessionInvites();
+  if(!hideH("invites"))h+=sessionInvites();
   h+='<div class="grid2" style="margin-top:10px"><button class="tile" data-act="tab" data-v="day"><b>Конструктор дня</b><span class="meta">Сделано '+doneN+' из '+plan.visible.length+' · +'+earnedToday+' монет</span></button>'+
     '<button class="tile" data-act="tab" data-v="map"><b>Стратегическое планирование</b><span class="meta">Карта жизни: '+activeBlocks().filter(blockVisible).length+' блоков</span></button></div>';
-  if(!lite()){
+  if(!lite()&&!hideH("modes")){
     h+='<div class="grid2" style="margin-top:8px"><button class="tile" data-act="focus-open"><b>Режим фокуса</b><span class="meta">'+(S.focus.on?'Включён: '+S.focus.blocks.length+' '+plural(S.focus.blocks.length,"блок","блока","блоков"):'Выключен')+'</span></button>'+
       '<button class="tile" data-act="'+(S.creative.on?'creative-off':'creative-open')+'"><b>Творческий режим</b><span class="meta">'+(S.creative.on?'Пауза с '+short(S.creative.since):'Поставить систему на паузу')+'</span></button></div>';
   }
-  const up=S.cal.filter(e=>e.status==="active"&&e.date>=t&&e.date<=addDays(t,3)&&!doneEver("cal",e.id)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
-  h+='<h2>Ближайшие календарные дела</h2>'+(up.length?'<div class="list">'+up.map(e=>'<button class="item link" data-act="open" data-k="cal" data-id="'+e.id+'"><div class="body"><div class="t">'+esc(e.title)+'</div><div class="meta">'+short(e.date)+(e.time?' '+e.time:'')+' · '+esc(originText(e))+'</div></div></button>').join("")+'</div>':'<div class="empty">На ближайшие три дня ничего нет.</div>');
-  if(!lite()){
-    const ds=S.decisions.filter(d=>d.status==="active"&&d.deadline).sort((a,b)=>a.deadline.localeCompare(b.deadline)).slice(0,2);
+  const up=S.cal.filter(e=>e.status==="active"&&!locHides(e,L)&&e.date>=t&&e.date<=addDays(t,3)&&!doneEver("cal",e.id)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  if(!hideH("upcoming"))h+='<h2>Ближайшие календарные дела</h2>'+(up.length?'<div class="list">'+up.map(e=>'<button class="item link" data-act="open" data-k="cal" data-id="'+e.id+'"><div class="body"><div class="t">'+esc(e.title)+'</div><div class="meta">'+short(e.date)+(e.time?' '+e.time:'')+' · '+esc(originText(e))+'</div></div></button>').join("")+'</div>':'<div class="empty">На ближайшие три дня ничего нет.</div>');
+  if(!lite()&&!hideH("decisions")){
+    const ds=S.decisions.filter(d=>d.status==="active"&&d.deadline&&!(L?.blocks.length&&d.stageId&&!L.blocks.includes(get("stage",d.stageId)?.blockId))).sort((a,b)=>a.deadline.localeCompare(b.deadline)).slice(0,2);
     if(ds.length)h+='<h2>Принятые решения со сроком</h2><div class="list">'+ds.map(decisionMini).join("")+'</div>';
   }
   const missN=S.misses.filter(m=>m.status==="active").length;
-  h+='<h2>Разделы</h2><div class="grid3">'+
+  if(!hideH("grid"))h+='<h2>Разделы</h2><div class="grid3">'+
     [["tasks","Задания"],["habits","Привычки"],!lite()&&["quests","Квесты"],["calendar","Календарь"],["missed","Невыполненные"+(missN?" ("+missN+")":"")],!lite()&&["shop","Магазин бонусов"],!lite()&&["treats","Ништяки"],!lite()&&["decisions","Решения"],["history","История"]].filter(Boolean)
       .map(([s,l])=>'<button class="tile" data-act="go" data-s="'+s+'"><b>'+esc(l)+'</b></button>').join("")+'</div>';
   return h;
@@ -758,7 +1005,7 @@ function dayCard(r,d,opts){
   }
   if(k==="habit"&&it.goal&&it.goal.target)prog='<span class="pill">'+habitCount(it,d)+'/'+it.goal.target+(it.goal.mode==="period"?(it.goal.period==="week"?" нед.":" мес."):"")+'</span>';
   const rw=k==="quest"?it.stepReward:it.reward;
-  const sub=[originText(it)];
+  const sub=[originText(it)];if(it.locs?.length)sub.push(locNames(it.locs));
   if(k==="cal")sub.unshift((it.time||"без времени"));
   else sub.push(schedText(it.sched));
   return '<div class="item'+(done?' done':'')+(k==="task"&&it.key?' key':'')+'">'+check+
@@ -777,32 +1024,33 @@ SCR.day=p=>{
   const keys=by("task").filter(r=>get("task",pr(r)[1]).key);
   const tasks=by("task").filter(r=>!get("task",pr(r)[1]).key);
   const sec=(title,list,empty)=>'<h2>'+title+' <span class="count">'+list.filter(r=>isDoneRef(r,d)).length+'/'+list.length+'</span></h2>'+(list.length?'<div class="list">'+list.map(r=>dayCard(r,d)).join("")+'</div>':'<div class="empty">'+empty+'</div>');
-  let h='<h1>Конструктор дня</h1><p class="lead">'+esc(human(d))+'</p>';
+  const L=plan.loc,hideD=k=>!!L?.dayHide.includes(k);
+  let h='<h1>Конструктор дня</h1><p class="lead">'+esc(human(d))+'</p>'+locBar();
   h+='<label class="f">Темп сегодняшнего дня</label><div class="seg" role="group">'+TEMPO.map(([v,l])=>'<button data-act="tempo" data-v="'+v+'" aria-pressed="'+(plan.tempo===v)+'">'+l+'</button>').join("")+'</div>';
   const missN=S.misses.filter(m=>m.status==="active").length;
   if(missN)h+='<div class="row" style="margin-top:8px"><button class="btn s" data-act="go" data-s="missed">Невыполненные: '+missN+'</button></div>';
   if(plan.creative)h+='<div class="card flat" style="margin-top:10px">Творческий режим: задания, привычки и квесты сегодня на паузе и не становятся пропусками. Календарные дела остаются. Выполнить что-то всё равно можно через «Быстрое выполнение» или «Скрыто сегодня».</div>';
-  h+=sec("Ключевые действия",keys,"Отметьте звёздочкой важные задания. Ключевое действие включает «В Конструктор» автоматически.");
-  h+=sec("Календарь",by("cal"),"На сегодня календарных дел нет.");
-  h+=sec("Задания",tasks,"Заданий на сегодня нет.");
-  h+=sec("Привычки",by("habit"),"Привычек на сегодня нет.");
-  if(!lite())h+=sec("Квесты",by("quest"),"Квесты в день не добавлены.");
+  if(!hideD("key"))h+=sec("Ключевые действия",keys,"Отметьте звёздочкой важные задания. Ключевое действие включает «В Конструктор» автоматически.");
+  if(!hideD("cal"))h+=sec("Календарь",by("cal"),"На сегодня календарных дел нет.");
+  if(!hideD("task"))h+=sec("Задания",tasks,"Заданий на сегодня нет.");
+  if(!hideD("habit"))h+=sec("Привычки",by("habit"),"Привычек на сегодня нет.");
+  if(!lite()&&!hideD("quest"))h+=sec("Квесты",by("quest"),"Квесты в день не добавлены.");
   if(plan.hidden.length){
     const open=!!S.ui.showHidden;
-    h+='<h2>Скрыто сегодня <span class="count">'+plan.hidden.length+'</span></h2><div class="card"><div class="between"><span class="small muted">Эти записи подходят на сегодня, но скрыты фильтрами. Пропусками они не станут.</span><button class="btn s" data-act="toggle-hidden">'+(open?'Свернуть':'Показать список')+'</button></div>'+
+    h+='<h2>Скрыто сегодня <span class="count">'+plan.hidden.length+'</span></h2><div class="card"><div class="between"><span class="small muted">Скрытое темпом, фокусом или паузой не станет пропуском. Для локаций правило пропусков выбирается в настройках локаций; календарь сохраняет обязательства.</span><button class="btn s" data-act="toggle-hidden">'+(open?'Свернуть':'Показать список')+'</button></div>'+
       (open?plan.hidden.map(hh=>{const [k,id]=pr(hh.r);const it=get(k,id);return '<div class="mini"><div class="t">'+esc(it.title)+'<div class="meta">'+KIND_L[k]+' · '+esc(originText(it))+' · '+WHY_L[hh.why]+'</div></div><button class="btn s" data-act="force" data-r="'+hh.r+'">Показать сегодня</button></div>'}).join(""):'')+'</div>';
   }
-  if(!lite()){
-    const ws=S.widgets.mine.filter(w=>S.widgets.inDay[w]);
+  if(!lite()&&!hideD("widgets")){
+    const ws=L?.widgets?L.widgets.filter(w=>S.widgets.mine.includes(w)):S.widgets.mine.filter(w=>S.widgets.inDay[w]);
     h+='<h2>Виджеты <span class="count">'+ws.length+'</span><button class="btn ghost s" data-act="go" data-s="widgets">Настроить</button></h2>'+(ws.length?'<div class="grid2">'+ws.map(widgetTile).join("")+'</div>':'<div class="empty">Добавьте виджеты из каталога.</div>');
   }
   const extra=liveFacts().filter(f=>f.date===d&&!vis.includes(rk(f.kind==="questStep"?"quest":f.kind,f.ref)));
   if(extra.length)h+='<h2>Выполнено вне плана</h2><div class="list">'+extra.map(factRow).join("")+'</div>';
   h+='<div class="row" style="margin-top:16px"><button class="btn primary" data-act="day-picker">+ Добавить в день</button><button class="btn" data-act="quick-done">Быстрое выполнение</button></div>';
-  h+='<div class="card" style="margin-top:16px"><div class="between"><div><b>Вечер</b><div class="meta">'+(S.days[d]&&S.days[d].ritual?'День завершён. Можно продолжать работать.':'Итоги дня и необязательный ритуал завершения.')+'</div></div><div class="row"><button class="btn s" data-act="go" data-s="summary">Итоги</button><button class="btn s primary" data-act="ritual">Завершить день</button></div></div></div>';
+  if(!hideD("evening"))h+='<div class="card" style="margin-top:16px"><div class="between"><div><b>Вечер</b><div class="meta">'+(S.days[d]&&S.days[d].ritual?'День завершён. Можно продолжать работать.':'Итоги дня и необязательный ритуал завершения.')+'</div></div><div class="row"><button class="btn s" data-act="go" data-s="summary">Итоги</button><button class="btn s primary" data-act="ritual">Завершить день</button></div></div></div>';
   return h;
 };
-ACT["tempo"]=el=>tx(()=>{dayRec(today()).tempo=el.dataset.v;snapshotToday()},"Темп дня: "+TEMPO_L[el.dataset.v]);
+ACT["tempo"]=el=>tx(()=>{dayRec(today()).tempo=el.dataset.v;dayRec(today()).tempoManual=true;snapshotToday()},"Темп дня: "+TEMPO_L[el.dataset.v]);
 ACT["toggle-hidden"]=()=>{S.ui.showHidden=!S.ui.showHidden;render()};
 ACT["force"]=el=>tx(()=>{const r=dayRec(today());if(!r.forced.includes(el.dataset.r))r.forced.push(el.dataset.r);r.removed=r.removed.filter(x=>x!==el.dataset.r)},"Показано только на сегодня. Настройки записи не изменены.");
 ACT["toggle"]=el=>{
@@ -883,7 +1131,8 @@ function dayStats(d){
   const by=k=>fs.filter(f=>f.kind===k).length;
   const plan=dayPlan(d);
   const keyDone=plan.visible.filter(r=>r.startsWith("task:")&&get("task",pr(r)[1]).key&&isDoneRef(r,d)).length;
-  return {fs,earned,spent,penalty,minutes,tasks:by("task"),habits:by("habit"),steps:by("questStep"),finals:by("questFinal"),cal:by("cal"),goals:by("habitGoal"),keyDone,planned:plan.visible.length,doneInPlan:plan.visible.filter(r=>isDoneRef(r,d)).length,misses:S.misses.filter(m=>m.date===d).length};
+  const places={};for(const f of fs){const name=f.locationTitle||(f.loc?locName(locById(f.loc)):"Без локации");places[name]=(places[name]||0)+1}const where=Object.entries(places).map(([name,n])=>name+": "+n).join(" · ");
+  return {where,fs,earned,spent,penalty,minutes,tasks:by("task"),habits:by("habit"),steps:by("questStep"),finals:by("questFinal"),cal:by("cal"),goals:by("habitGoal"),keyDone,planned:plan.visible.length,doneInPlan:plan.visible.filter(r=>isDoneRef(r,d)).length,misses:S.misses.filter(m=>m.date===d).length};
 }
 SCR.summary=p=>{
   const d=p.d||today();
@@ -891,7 +1140,7 @@ SCR.summary=p=>{
   curScr().title="Итоги дня";
   let h='<h1>Итоги дня</h1><div class="row"><button class="btn s" data-act="go" data-s="summary" data-d="'+addDays(d,-1)+'">← '+short(addDays(d,-1))+'</button><b class="grow" style="text-align:center">'+esc(human(d))+'</b>'+(d<today()?'<button class="btn s" data-act="go" data-s="summary" data-d="'+addDays(d,1)+'">'+short(addDays(d,1))+' →</button>':'')+'</div>';
   h+='<div class="grid3" style="margin-top:12px">'+[["Выполнено в плане",st.doneInPlan+" / "+st.planned],["Заработано","+"+st.earned+" ● / XP"],["Потрачено",st.spent+" ●"]].map(([a,b])=>'<div class="card"><div class="meta">'+a+'</div><b>'+b+'</b></div>').join("")+'</div>';
-  h+='<div class="card" style="margin-top:8px"><dl class="kv"><dt>Задания</dt><dd>'+st.tasks+'</dd><dt>Привычки</dt><dd>'+st.habits+(st.goals?' · достигнута цель: '+st.goals:'')+'</dd><dt>Шаги квестов</dt><dd>'+st.steps+(st.finals?' · завершено квестов: '+st.finals:'')+'</dd><dt>Календарь</dt><dd>'+st.cal+'</dd><dt>Ключевые</dt><dd>'+st.keyDone+'</dd><dt>Записанное время</dt><dd>'+st.minutes+' мин</dd><dt>Пропуски дня</dt><dd>'+st.misses+'</dd>'+(st.penalty?'<dt>Цена слова</dt><dd>−'+st.penalty+' ●</dd>':'')+'</dl></div>';
+  h+='<div class="card" style="margin-top:8px"><dl class="kv"><dt>Задания</dt><dd>'+st.tasks+'</dd><dt>Привычки</dt><dd>'+st.habits+(st.goals?' · достигнута цель: '+st.goals:'')+'</dd><dt>Шаги квестов</dt><dd>'+st.steps+(st.finals?' · завершено квестов: '+st.finals:'')+'</dd><dt>Календарь</dt><dd>'+st.cal+'</dd><dt>Ключевые</dt><dd>'+st.keyDone+'</dd><dt>Записанное время</dt><dd>'+st.minutes+' мин</dd>'+(st.where?'<dt>Где сделано</dt><dd>'+esc(st.where)+'</dd>':'')+'<dt>Пропуски дня</dt><dd>'+st.misses+'</dd>'+(st.penalty?'<dt>Цена слова</dt><dd>−'+st.penalty+' ●</dd>':'')+'</dl></div>';
   h+='<h2>Факты дня</h2>'+(st.fs.length?'<div class="list">'+st.fs.map(factRow).join("")+'</div>':'<div class="empty">Отметок нет.</div>');
   if(d===today())h+='<div class="row" style="margin-top:14px"><button class="btn primary" data-act="ritual">Завершить день</button>'+(S.settings.sessions.all&&S.settings.sessions.daily?'<button class="btn" data-act="go" data-s="session" data-level="daily">Ежедневная сессия</button>':'')+'</div>';
   return h;
@@ -1214,6 +1463,7 @@ function blockFields(b){
     '<label class="f">Значок</label><div class="chips">'+ICONS.map(i=>'<button type="button" class="chip" data-act="icon-pick" data-v="'+i+'" aria-pressed="'+(b.icon===i)+'">'+i+'</button>').join("")+'</div><input type="hidden" name="icon" value="'+esc(b.icon)+'">'+
     '<label class="f">Зачем мне это направление, что хочу изменить</label><textarea name="meaning">'+esc(b.meaning)+'</textarea>'+
     (lite()?'':'<div class="grid2"><div><label class="f">Приоритет блока</label><select name="priority">'+PRIO.map(([v,l])=>opt(v,l,b.priority)).join("")+'</select></div><div><label class="f">Интенсивность стратегии</label><select name="intensity">'+INTENS.map(([v,l])=>opt(v,l,b.intensity)).join("")+'</select></div></div>')+
+    '<label class="f">Локация новых записей блока</label><select name="bloc">'+opt("","Без локации",b.loc||"")+S.locations.map(l=>opt(l.id,l.icon+" "+l.name,b.loc||"")).join("")+'</select>'+
     '<label class="f">Состав стратегии</label>'+segBtns("preset",[["full","Полная"],["simple","Упрощённая"],["custom","Свой набор"]],b.preset||"custom")+
     '<div data-secs class="card flat" style="margin-top:6px">'+SECTIONS.map(([k,l])=>'<label class="tog" style="margin-top:4px"><input type="checkbox" name="sec_'+k+'" '+(b.secs[k]?'checked':'')+'><span>'+l+'</span></label>').join("")+
     '<p class="meta" style="margin-top:6px">Выключенная галочка только скрывает раздел внутри блока. Данные, история и связи сохраняются; задания, привычки и квесты продолжают жить в своих разделах и попадать в день.</p></div>';
@@ -1232,7 +1482,7 @@ ACT["block-new"]=()=>{
 FORMS.block=f=>{
   const ok=tx(()=>{
     const name=fv(f,"name");if(!name)fail("Введите название");
-    const data={name,icon:fv(f,"icon")||"⭐",meaning:fv(f,"meaning"),preset:fv(f,"preset"),secs:Object.fromEntries(SECTIONS.map(([k])=>[k,fv(f,"sec_"+k)]))};
+    const data={name,icon:fv(f,"icon")||"⭐",loc:fv(f,"bloc")||null,meaning:fv(f,"meaning"),preset:fv(f,"preset"),secs:Object.fromEntries(SECTIONS.map(([k])=>[k,fv(f,"sec_"+k)]))};
     if(!lite()){data.priority=fv(f,"priority");data.intensity=fv(f,"intensity")}
     let b=get("block",f.dataset.id);
     if(b)Object.assign(b,data);
@@ -1305,6 +1555,7 @@ function listFilter(k,p,items){
     if(it.status==="archived")return false;
     if(!inFocus(it))return false;
     if(cat&&it.cat!==cat)return false;
+    const place=S.ui["locfilter_"+k];if(place&&!itemLocOk(it,place))return false;
     if(q&&!((it.title+" "+(it.tags||[]).join(" ")+" "+(it.cat||"")).toLowerCase().includes(q)))return false;
     return true;
   });
@@ -1313,7 +1564,7 @@ function listHeader(k){
   const items=S[COLL[k]];
   const cats=[...new Set(items.map(i=>i.cat).filter(Boolean))];
   const st=S.ui["st_"+k]||"active",cat=S.ui["cat_"+k]||"";
-  return '<div class="row nw" style="margin-top:6px"><input type="search" placeholder="Поиск по названию, категории, тегам" value="'+esc(S.ui["q_"+k]||"")+'" data-list-q="'+k+'"><button class="btn primary" data-act="new" data-k="'+k+'">+ Новое</button></div>'+
+  return '<label class="f">Где</label><select data-location-list="'+k+'">'+opt("","Все локации",S.ui["locfilter_"+k]||"")+S.locations.map(l=>opt(l.id,l.icon+" "+l.name,S.ui["locfilter_"+k]||"")).join("")+'</select><div class="row nw" style="margin-top:6px"><input type="search" placeholder="Поиск по названию, категории, тегам" value="'+esc(S.ui["q_"+k]||"")+'" data-list-q="'+k+'"><button class="btn primary" data-act="new" data-k="'+k+'">+ Новое</button></div>'+
     '<div class="chips" style="margin-top:8px">'+[["active","Активные"],["done","Завершённые"]].map(([v,l])=>'<button class="chip" data-act="list-st" data-k="'+k+'" data-v="'+v+'" aria-pressed="'+(st===v)+'">'+l+'</button>').join("")+
     (cats.length?'<span class="muted small" style="align-self:center">·</span>'+[["","Все категории"],...cats.map(c=>[c,c])].map(([v,l])=>'<button class="chip" data-act="list-cat" data-k="'+k+'" data-v="'+esc(v)+'" aria-pressed="'+(cat===v)+'">'+esc(l)+'</button>').join(""):"")+'</div>';
 }
@@ -1336,7 +1587,7 @@ function sectionScreen(k){
 }
 function sectionRow(k,it){
   const d=today();
-  let right="",sub=[originText(it)];
+  let right="",sub=[originText(it)];if(it.locs?.length)sub.push(locNames(it.locs));
   if(k==="cal")sub.unshift(short(it.date)+(it.time?" "+it.time:""));else sub.push(schedText(it.sched));
   if(k==="quest"){const p=questProgress(it);right='<span class="pill acc">'+p.done+'/'+p.total+'</span>'}
   if(k==="habit"&&it.goal.target)right='<span class="pill">'+habitCount(it,d)+'/'+it.goal.target+' · ур. '+it.level+'</span>';
@@ -1476,6 +1727,7 @@ ACT["edit"]=el=>{closeAllSheets();editItem(el.dataset.k,get(el.dataset.k,el.data
 function editItem(k,it,preset,fromNote){
   const isNew=!it;
   it=it||({task:newTask,habit:newHabit,quest:newQuest,cal:newCal}[k])(preset||{});
+  if(isNew&&!it.locs?.length){const b=get("block",it.blockId);if(b?.loc)it.locs=[b.loc]}
   const link='<div class="grid2"><div><label class="f">Блок</label>'+blockSelect("blockId",it.blockId)+'</div><div><label class="f">Этап</label>'+stageSelect("stageId",it.blockId,it.stageId)+'</div></div>';
   let h='<form data-form="item" data-k="'+k+'" data-id="'+(isNew?"":it.id)+'" data-note="'+(fromNote||"")+'">';
   h+='<label class="f">Название</label><input type="text" name="title" value="'+esc(it.title)+'" required>';
@@ -1514,6 +1766,7 @@ function editItem(k,it,preset,fromNote){
     h+='<label class="f">Если — то (необязательно)</label><input type="text" name="ifThen" value="'+esc(it.ifThen)+'" placeholder="Если устану вечером, то сделаю короткий вариант">';
     h+=catTagFields(it);
   }
+  h+=locField(it.locs);
   if(!isNew)h+='<p class="meta" style="margin-top:8px">Новая награда действует на будущие выполнения. Прошлые начисления не меняются.</p>';
   h+='<div class="row" style="margin-top:14px"><button class="btn primary">'+(isNew?'Создать':'Сохранить')+'</button><button type="button" class="btn" data-act="sheet-close">Отмена</button></div></form>';
   openSheet((isNew?"Новое: ":"")+KIND_L[k],h);
@@ -1533,7 +1786,7 @@ FORMS.item=async f=>{
     const previousSchedule=it.sched?.type,previousQuestType=it.type,previousTarget=it.target,previousSteps=JSON.stringify(it.steps||[]);
     it.title=title;it.blockId=fv(f,"blockId")||null;it.stageId=newStage;
     if(it.stageId&&!it.blockId)it.blockId=get("stage",it.stageId).blockId;
-    it.inDay=fv(f,"inDay");
+    it.inDay=fv(f,"inDay");if(f.querySelector('[data-multi="locs"]'))it.locs=readLocs(f);
     if(k==="cal"){
       const wantedDate=fv(f,"date")||today();if(old&&doneEver("cal",it.id)&&old.date!==wantedDate)fail("Дату выполненного дела нельзя менять без отмены отметки");it.date=wantedDate;it.time=fv(f,"time");it.note=fv(f,"note");it.reminder=fv(f,"reminder");it.reward=Math.max(0,fnum(f,"reward"));
       if(old&&doneEver("cal",it.id)&&old.date!==it.date)fail("Дату выполненного дела нельзя менять без отмены отметки");
@@ -1625,7 +1878,7 @@ FORMS.note=f=>{const t=fv(f,"text");if(!t)return;tx(()=>{S.inbox.unshift({id:uid
 ACT["note-del"]=el=>tx(()=>{S.inbox=S.inbox.filter(n=>n.id!==el.dataset.id)},"Удалено");
 ACT["note-convert"]=el=>{
   const n=S.inbox.find(x=>x.id===el.dataset.id);const k=el.dataset.k;
-  if(["task","habit","quest","cal"].includes(k))editItem(k,null,{title:n.text},n.id);
+  if(["task","habit","quest","cal"].includes(k))editItem(k,null,{title:n.text,locs:n.locs||[]},n.id);
   else if(k==="offer")offerEditor(null,{title:n.text},n.id);
   else if(k==="treat")treatEditor(null,{title:n.text},n.id);
   else if(k==="decision")decisionEditor(null,{text:n.text},n.id);
@@ -1640,6 +1893,7 @@ function quickAdd(text){
     '<label class="f">Что это</label>'+segBtnsWrap("qkind",types,"note")+
     '<div data-qopts hidden><div class="grid2"><div><label class="f">Блок (можно позже)</label>'+blockSelect("blockId","")+'</div><div><label class="f">Дата</label><div class="row nw"><input type="date" name="date"><button type="button" class="btn s" data-act="qa-today">Сегодня</button></div></div></div>'+
     '<label class="tog"><input type="checkbox" name="inDay" checked><span>В Конструктор дня</span></label></div>'+
+    locField(S.loc.tagNew&&currentLoc().id?[currentLoc().id]:[])+
     '<p class="meta" data-qhint>Мысль без типа попадёт во «Входящие» и подождёт разбора.</p>'+
     '<div class="row" style="margin-top:12px"><button class="btn primary">Сохранить</button><button type="button" class="btn" data-act="qa-full">Заполнить подробно…</button></div></form>');
 }
@@ -1651,19 +1905,19 @@ document.addEventListener("change",e=>{
   }
 });
 ACT["qa-today"]=el=>{el.closest("form").querySelector('[name="date"]').value=today()};
-ACT["qa-full"]=el=>{const f=el.closest("form");const k=fv(f,"qkind"),t=fv(f,"title");closeSheet();
-  if(["task","habit","quest","cal"].includes(k))editItem(k,null,{title:t,blockId:fv(f,"blockId")||null});else if(k==="offer")offerEditor(null,{title:t});else if(k==="treat")treatEditor(null,{title:t});else if(k==="decision")decisionEditor(null,{text:t});else S.inbox.unshift({id:uid(),text:t,date:today()}),save(),render()};
+ACT["qa-full"]=el=>{const f=el.closest("form");const k=fv(f,"qkind"),t=fv(f,"title"),places=readLocs(f);closeSheet();
+  if(["task","habit","quest","cal"].includes(k))editItem(k,null,{title:t,blockId:fv(f,"blockId")||null,locs:places});else if(k==="offer")offerEditor(null,{title:t});else if(k==="treat")treatEditor(null,{title:t});else if(k==="decision")decisionEditor(null,{text:t});else S.inbox.unshift({id:uid(),text:t,date:today()}),save(),render()};
 FORMS.quick=f=>{
   const k=fv(f,"qkind"),t=fv(f,"title");if(!t)return;
   const bid=fv(f,"blockId")||null,date=fv(f,"date")||null,inDay=fv(f,"inDay");
-  const b=bid?get("block",bid):null;const sid=b&&b.currentStageId||null;
+  const b=bid?get("block",bid):null;const sid=b&&b.currentStageId||null,locs=readLocs(f);
   const ok=tx(()=>{
-    if(k==="note"){S.inbox.unshift({id:uid(),text:t,date:today()});return "Мысль во «Входящих»"}
+    if(k==="note"){S.inbox.unshift({id:uid(),text:t,date:today(),locs});return "Мысль во «Входящих»"}
     let it;
-    if(k==="task"){it=newTask({title:t,blockId:bid,stageId:sid,inDay,sched:{type:"once",days:[],date}});S.tasks.push(it)}
-    if(k==="habit"){it=newHabit({title:t,blockId:bid,stageId:sid,inDay});S.habits.push(it)}
-    if(k==="quest"){it=newQuest({title:t,blockId:bid,stageId:sid,inDay});S.quests.push(it)}
-    if(k==="cal"){it=newCal({title:t,blockId:bid,stageId:sid,date:date||today(),inDay});S.cal.push(it)}
+    if(k==="task"){it=newTask({title:t,blockId:bid,stageId:sid,locs,inDay,sched:{type:"once",days:[],date}});S.tasks.push(it)}
+    if(k==="habit"){it=newHabit({title:t,blockId:bid,stageId:sid,locs,inDay});S.habits.push(it)}
+    if(k==="quest"){it=newQuest({title:t,blockId:bid,stageId:sid,locs,inDay});S.quests.push(it)}
+    if(k==="cal"){it=newCal({title:t,blockId:bid,stageId:sid,locs,date:date||today(),inDay});S.cal.push(it)}
     if(k==="offer"){it=newOffer({title:t});S.offers.push(it)}
     if(k==="treat"){it={id:uid(),title:t,cat:"",desc:"",status:"active",created:today()};S.treats.push(it)}
     if(k==="decision"){it=newDecision({text:t});S.decisions.push(it)}
@@ -2080,7 +2334,7 @@ SCR.more=()=>{
     ["Действия",[["tasks","Задания"],["habits","Привычки"],!lite()&&["quests","Квесты"],["calendar","Календарь"],!lite()&&["decisions","Принятые решения"],["missed","Невыполненные"+(missN?" · "+missN:"")]]],
     ["Награды и радости",[!lite()&&["shop","Магазин бонусов"],!lite()&&["mybonuses","Мои бонусы"],!lite()&&["treats","Ништяки"],["economy","Монеты и опыт"]]],
     ["Наблюдение и пересмотр",[["summary","Итоги дня"],["history","История"],!lite()&&S.settings.sessions.all&&["sessions","Стратегические сессии"]]],
-    ["Инструменты",[!lite()&&["widgets","Виджеты"],["archive","Архив"],["ai","ИИ-партнёр"],["learn","Обучение и пример"],["settings","Настройки и сохранение"]]]
+    ["Инструменты",[["locations","Локации"],!lite()&&["widgets","Виджеты"],["archive","Архив"],["ai","ИИ-партнёр"],["learn","Обучение и пример"],["settings","Настройки и сохранение"]]]
   ];
   return '<h1>Разделы</h1>'+(lite()?'<p class="lead">Включён LifeGame Lite: показаны основные разделы. Полный набор — в настройках.</p>':'')+
     L.map(([t,items])=>'<h2>'+t+'</h2><div class="grid2">'+items.filter(Boolean).map(([s,l])=>'<button class="tile" data-act="go" data-s="'+s+'"><b>'+esc(l)+'</b></button>').join("")+'</div>').join("");
@@ -2125,7 +2379,7 @@ ACT["arch-del"]=async el=>{
   if(!y)return;
   tx(()=>{
     if(k==="block"){
-      const removedStages=new Set(S.stages.filter(a=>a.blockId===x.id).map(a=>a.id));S.insts=S.insts.filter(i=>!(i.status==="reserved"&&i.cond?.k==="stage"&&removedStages.has(i.cond.id)));for(const tpl of ["weekday","weekend"])S.graph[tpl]=S.graph[tpl].map(id=>id===x.id?"":id);S.focus.blocks=S.focus.blocks.filter(id=>id!==x.id);
+      const removedStages=new Set(S.stages.filter(a=>a.blockId===x.id).map(a=>a.id));S.insts=S.insts.filter(i=>!(i.status==="reserved"&&i.cond?.k==="stage"&&removedStages.has(i.cond.id)));for(const tpl of ["weekday","weekend"])S.graph[tpl]=S.graph[tpl].map(id=>id===x.id?"":id);S.focus.blocks=S.focus.blocks.filter(id=>id!==x.id);S.locations.forEach(l=>l.blocks=l.blocks.filter(id=>id!==x.id));
       S.stages.filter(s=>s.blockId===x.id).forEach(s=>{S.goals=S.goals.filter(g=>g.stageId!==s.id);S.decisions.forEach(d=>{if(d.stageId===s.id)d.stageId=null})});
       S.stages=S.stages.filter(s=>s.blockId!==x.id);S.achievements=S.achievements.filter(a=>a.blockId!==x.id);
       [...S.tasks,...S.habits,...S.quests,...S.cal].forEach(i=>{if(i.blockId===x.id){i.blockId=null;i.stageId=null;i.goalId=null}});
@@ -2316,8 +2570,9 @@ SCR.settings=()=>{
   return '<h1>Настройки</h1>'+
     '<h2>Пространство</h2><div class="card"><p>Сейчас: <b>'+(S.space==="demo"?"Демо (вымышленная жизнь)":"Моя жизнь")+'</b>. Пространства хранятся раздельно.</p><div class="row"><button class="btn s" data-act="'+(S.space==="demo"?"space-my":"space-demo")+'">'+(S.space==="demo"?"Перейти к своей жизни":"Открыть демо")+'</button></div></div>'+
     '<h2>Интерфейс</h2><div class="card"><label class="tog"><input type="checkbox" data-set="lite" '+(s.lite?'checked':'')+'><span>LifeGame Lite<small>Простой вход в ту же систему: только основные разделы. Данные остальных сохраняются.</small></span></label>'+
-    '<label class="f">Цвет акцента</label><div class="chips">'+[["blue","Синий"],["green","Зелёный"],["purple","Фиолетовый"],["orange","Оранжевый"]].map(([v,l])=>'<button class="chip" data-act="accent" data-v="'+v+'" aria-pressed="'+(s.accent===v)+'">'+l+'</button>').join("")+'</div>'+
+    '<label class="f">Стиль оформления</label><div class="style-pick">'+STYLES.map(([v,l,sw])=>'<button data-act="style" data-v="'+v+'" aria-pressed="'+((s.style||"quest")===v)+'"><div class="sp-sw" style="background:'+sw[0]+'">'+sw.slice(1).map(c=>'<i style="background:'+c+'"></i>').join("")+'</div><div class="sp-l">'+l+'</div></button>').join("")+'</div>'+
     '<div class="row" style="margin-top:8px"><button class="btn s" data-act="motivation">Мотивация на главной</button></div></div>'+
+    '<h2>Локации</h2><div class="card"><div class="between"><span>Сейчас: '+esc(locName(curLocObj()))+'</span><button class="btn s" data-act="go" data-s="locations">Настроить</button></div></div>'+
     '<h2>Стратегические сессии</h2><div class="card"><label class="tog"><input type="checkbox" data-set="ses.all" '+(s.sessions.all?'checked':'')+'><span>Сессии и приглашения включены</span></label>'+
     ['daily','weekly','monthly'].map(l=>'<label class="tog"><input type="checkbox" data-set="ses.'+l+'" '+(s.sessions[l]?'checked':'')+' '+(s.sessions.all?'':'disabled')+'><span>'+SES[l].t+' приглашения</span></label>').join("")+'<p class="meta" style="margin-top:6px">Карта и планирование доступны всегда, независимо от вопросов.</p></div>'+
     '<h2>Напоминания</h2><div class="card"><label class="tog"><input type="checkbox" data-set="reminders" '+(s.reminders?'checked':'')+'><span>Календарные напоминания<small>Работают при открытом приложении. При закрытом браузере доставка не гарантируется.</small></span></label></div>'+
@@ -2336,6 +2591,8 @@ document.addEventListener("change",e=>{
   },"Сохранено");},e.target);
 });
 ACT["accent"]=el=>tx(()=>{S.settings.accent=el.dataset.v});
+ACT["style"]=el=>tx(()=>{if(!STYLES.some(x=>x[0]===el.dataset.v))fail("Неизвестный стиль");S.settings.style=el.dataset.v});
+document.addEventListener("change",e=>{if(e.target.matches("[data-location-list]")){S.ui["locfilter_"+e.target.dataset.locationList]=e.target.value;render()}});
 ACT["export"]=()=>{
   const data=JSON.stringify(exportFile());downloadFile(data,"LifeGame-"+META.space+"-"+today()+".json");
   const box=$("[data-export]");
@@ -2372,28 +2629,74 @@ SCR.ai=()=>{
 
 /* ---------- learning & onboarding ---------- */
 const ONB=[
-  ["Запишите мысль и соберите первый день","Нажмите «+», запишите что угодно. Откройте Конструктор и выберите темп дня.","day"],
-  ["Отметьте ключевое действие и выполните его","Звёздочка на задании — ключевое действие. Отметьте выполнение и посмотрите на монеты и опыт.","day"],
-  ["Добавьте дело в календарь","Дело на реальную дату: встреча, оплата, урок.","calendar"],
-  ["Создайте привычку","Повторяющаяся практика со счётчиком и целью.","habits"],
-  ["Откройте блок времени","Опишите фактическое состояние и создайте текущий этап.","map"],
-  ["Добавьте цель этапа и свяжите с ней задание","Задание «ведёт к цели». Можно добавить «если — то».","map"],
-  ["Завершите день и откройте недельную сессию","Ритуал завершения и вопросы о неделе. Всё необязательно.","sessions"]
+  ["Запишите мысль и выберите темп дня","Нажмите «+» справа внизу и запишите любую мысль — она попадёт во «Входящие». Затем на вкладке «День» выберите темп: Отдыхаю, Обычный или Фигачу.","day","#fab|[data-act=tempo]"],
+  ["Отметьте ключевое действие и выполните его","В Конструкторе нажмите звёздочку у задания — оно станет ключевым. Потом отметьте кружок слева: придут монеты и опыт.","day","[data-act=key]|.item .check"],
+  ["Добавьте дело в календарь","Дело на реальную дату: встреча, оплата, урок. Нажмите «+ Новое», укажите дату и время.","calendar","[data-act=new][data-k=cal]"],
+  ["Создайте привычку","Повторяющаяся практика со счётчиком и целью. Нажмите «+ Новое», выберите расписание и цель привычки.","habits","[data-act=new][data-k=habit]"],
+  ["Откройте блок времени","На карте выберите направление или создайте своё. Опишите фактический этап и создайте текущий этап.","map","[data-act=go][data-s=block]|[data-act=block-new]"],
+  ["Добавьте цель этапа и свяжите с ней задание","Внутри текущего этапа нажмите «+ Цель». Затем откройте задание и выберите эту цель — оно «ведёт к цели». Там же можно заполнить «если — то».","goal","[data-act=goal-new]|[data-act=stage-new]"],
+  ["Завершите день и загляните в недельную сессию","Внизу Конструктора есть «Завершить день» — необязательный приятный ритуал. Вопросы о неделе — в «Разделы» → «Стратегические сессии».","day","[data-act=ritual]"]
 ];
-function onboardingCard(){
-  const o=S.settings.onboarding;if(!o.on)return "";
-  const dayN=Math.min(7,daysBetween(o.start,today())+1);
-  const next=ONB.findIndex((_,i)=>!o.done[i]&&!o.skipped[i]);
-  if(next<0)return '<div class="card hl" style="margin-top:8px"><b>Сопровождение пройдено</b><p class="meta">Все семь шагов позади. Отключить карточку можно в настройках.</p></div>';
-  const avail=next<dayN;
-  return '<div class="card hl" style="margin-top:8px"><div class="between"><b>Сопровождение · день '+dayN+' из 7</b><button class="btn ghost s" data-act="go" data-s="learn">Все шаги</button></div>'+
-    '<p style="margin-top:4px"><b>Шаг '+(next+1)+'.</b> '+ONB[next][0]+'</p><p class="meta">'+ONB[next][1]+(avail?'':' Этот шаг рассчитан на следующий день, но открыт уже сейчас.')+'</p>'+
-    '<div class="row"><button class="btn s primary" data-act="onb-go" data-i="'+next+'">Показать</button><button class="btn s" data-act="onb-done" data-i="'+next+'">Сделано</button><button class="btn s ghost" data-act="onb-skip" data-i="'+next+'">Пропустить</button></div></div>';
+const HELPER={open:false,idx:null};
+const onbNext=()=>{const o=S.settings.onboarding;return ONB.findIndex((_,i)=>!o.done[i]&&!o.skipped[i])};
+const HELPER_SVG='<svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 8V4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="3.6" r="2" fill="currentColor"/><rect x="6" y="8.5" width="20" height="17" rx="7" stroke="currentColor" stroke-width="2"/><circle cx="12.5" cy="16.5" r="1.9" fill="currentColor"/><circle cx="19.5" cy="16.5" r="1.9" fill="currentColor"/><path d="M12.8 20.6c1.9 1.4 4.5 1.4 6.4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+function renderHelper(){
+  let btn=$("#helper"),pop=$("#helper-pop");
+  const o=S&&S.settings.onboarding;
+  if(!S||!META.space||!o||!o.on){if(btn)btn.remove();if(pop)pop.remove();HELPER.open=false;return}
+  const next=onbNext();
+  if(!btn){btn=document.createElement("button");btn.id="helper";btn.className="helper";btn.dataset.act="helper";document.body.appendChild(btn)}
+  for(const el of [btn,pop].filter(Boolean)){el.dataset.revision=S.revision||0;el.dataset.space=META.space}
+  btn.classList.toggle("open",HELPER.open);
+  btn.setAttribute("aria-expanded",String(HELPER.open));
+  btn.setAttribute("aria-label",next<0?"Помощник: сопровождение пройдено":"Помощник: шаг "+(next+1)+" из 7");
+  btn.innerHTML=HELPER_SVG+'<span class="hb">'+(next<0?"✓":(next+1)+"/7")+'</span>';
+  if(!HELPER.open){if(pop)pop.remove();return}
+  if(!pop){pop=document.createElement("section");pop.id="helper-pop";pop.className="helper-pop";pop.setAttribute("aria-label","Помощник");document.body.appendChild(pop)}
+  pop.dataset.revision=S.revision||0;pop.dataset.space=META.space;
+  let i=HELPER.idx;if(i===null||i<0||i>6)i=next<0?6:next;HELPER.idx=i;
+  const prog='<div class="hp-prog">'+ONB.map((_,k)=>'<i class="'+(o.done[k]?'done':o.skipped[k]?'skip':k===i?'cur':'')+'"></i>').join("")+'</div>';
+  const head='<div class="hp-head"><span class="hp-step">Шаг '+(i+1)+' из 7'+(o.done[i]?' · сделано':o.skipped[i]?' · пропущен':'')+'</span><span class="grow"></span>'+
+    '<button class="ib" data-act="hp-nav" data-d="-1" aria-label="Предыдущий шаг" '+(i===0?'disabled':'')+'>‹</button><button class="ib" data-act="hp-nav" data-d="1" aria-label="Следующий шаг" '+(i===6?'disabled':'')+'>›</button>'+
+    '<button class="ib" data-act="helper" aria-label="Свернуть помощника">✕</button></div>';
+  const allDone=next<0;
+  pop.innerHTML=head+prog+(allDone&&i===6&&(o.done[6]||o.skipped[6])?
+    '<h3>Сопровождение пройдено</h3><p>Все семь шагов позади. Помощник может остаться рядом — листайте шаги стрелками — или исчезнуть.</p><div class="row"><button class="btn primary" data-act="hp-off">Убрать помощника</button><button class="btn" data-act="hp-all">Все шаги</button></div>':
+    '<h3>'+esc(ONB[i][0])+'</h3><p>'+esc(ONB[i][1])+'</p><div class="row"><button class="btn primary" data-act="hp-show">Показать где</button>'+
+    ((o.done[i]||o.skipped[i])?'<button class="btn" data-act="hp-reset">Вернуть в план</button>':'<button class="btn" data-act="hp-done">Сделано</button><button class="btn ghost" data-act="hp-skip">Пропустить</button>')+'</div>');
 }
-ACT["onb-go"]=el=>{const s=ONB[+el.dataset.i][2];if(["day","map"].includes(s))goTab(s);else{closeAllSheets();go(s,{})}};
+function helperGo(i){
+  const st=ONB[i];
+  closeAllSheets();
+  if(st[2]==="goal"){
+    const b=activeBlocks().find(x=>x.currentStageId&&blockVisible(x));
+    if(b){NAV.tab="map";NAV.stack=[{s:"map",p:{}},{s:"block",p:{id:b.id,view:"current"}}];render();window.scrollTo(0,0)}
+    else goTab("map");
+  }else if(["day","map","inbox","home"].includes(st[2]))goTab(st[2]);
+  else{if(curScr().s!==st[2])go(st[2],{})}
+  HELPER.open=false;renderHelper();
+  setTimeout(()=>{
+    st[3].split("|").forEach(sel=>{
+      const el=$(sel);if(!el)return;
+      el.classList.add("pulse");setTimeout(()=>el.classList.remove("pulse"),6000);
+    });
+    const first=st[3].split("|").map(sel=>$(sel)).find(Boolean);
+    if(first&&first.id!=="fab")first.scrollIntoView({block:"center",behavior:"smooth"});
+  },120);
+}
+ACT["helper"]=()=>{HELPER.open=!HELPER.open;if(HELPER.open)HELPER.idx=null;renderHelper()};
+ACT["hp-nav"]=el=>{HELPER.idx=Math.max(0,Math.min(6,(HELPER.idx||0)+(+el.dataset.d)));renderHelper()};
+ACT["hp-show"]=()=>helperGo(HELPER.idx);
+ACT["hp-done"]=()=>{const i=HELPER.idx;tx(()=>{S.settings.onboarding.done[i]=true;delete S.settings.onboarding.skipped[i]},"Шаг "+(i+1)+" отмечен");HELPER.idx=null;renderHelper()};
+ACT["hp-skip"]=()=>{const i=HELPER.idx;tx(()=>{S.settings.onboarding.skipped[i]=true},"Шаг "+(i+1)+" пропущен");HELPER.idx=null;renderHelper()};
+ACT["hp-reset"]=()=>{const i=HELPER.idx;tx(()=>{delete S.settings.onboarding.done[i];delete S.settings.onboarding.skipped[i]});HELPER.idx=i;renderHelper()};
+ACT["hp-all"]=()=>{HELPER.open=false;closeAllSheets();go("learn",{})};
+ACT["hp-off"]=()=>{HELPER.open=false;tx(()=>{S.settings.onboarding.on=false},"Помощник убран. Включить снова — в «Настройках» или «Обучении»")};
+ACT["onb-go"]=el=>{HELPER.open=true;HELPER.idx=+el.dataset.i;helperGo(+el.dataset.i)};
 ACT["onb-done"]=el=>tx(()=>{S.settings.onboarding.done[el.dataset.i]=true},"Шаг отмечен");
 ACT["onb-skip"]=el=>tx(()=>{S.settings.onboarding.skipped[el.dataset.i]=true},"Шаг пропущен. Вернуться можно в «Обучении»");
 ACT["onb-reset"]=el=>tx(()=>{delete S.settings.onboarding.done[el.dataset.i];delete S.settings.onboarding.skipped[el.dataset.i]});
+function onboardingCard(){return ""}
 SCR.learn=()=>{
   curScr().title="Обучение";
   const o=S.settings.onboarding;
@@ -2442,8 +2745,8 @@ function showReminder(item){
 }
 function checkReminders(){
   if(!S||META.space==='demo'||corruptSpace||!S.settings.reminders||S.creative.on&&S.creative.mute||reminderBusy)return;
-  const now=new Date(),time=pad(now.getHours())+':'+pad(now.getMinutes()),minute=today()+' '+time;if(minute===lastReminderMinute)return;lastReminderMinute=minute;
-  const due=S.cal.filter(i=>available(i)&&i.reminder&&i.time&&i.date===today()&&i.time<=time&&!doneEver('cal',i.id)&&!(i.notifiedDates||[]).includes(today()));
+  const now=new Date(),time=pad(now.getHours())+':'+pad(now.getMinutes()),minute=today()+' '+time+' '+(currentLoc().id||'*');if(minute===lastReminderMinute)return;lastReminderMinute=minute;
+  const due=S.cal.filter(i=>available(i)&&!(curLocObj()?.muteOther&&locHides(i,curLocObj()))&&i.reminder&&i.time&&i.date===today()&&i.time<=time&&!doneEver('cal',i.id)&&!(i.notifiedDates||[]).includes(today()));
   if(!due.length)return;reminderBusy=true;
   runGuarded(()=>{const notifications=[];for(const candidate of due){const i=get('cal',candidate.id);if(i&&available(i)&&!doneEver('cal',i.id)&&!(i.notifiedDates||[]).includes(today())){(i.notifiedDates||=[]).push(today());notifications.push({...i})}}if(notifications.length){save();for(const i of notifications)showReminder(i)}},null,true).finally(()=>reminderBusy=false);
 }
@@ -2456,7 +2759,7 @@ setInterval(()=>{
   checkReminders();
   $$('[data-cd]').forEach(el=>{el.textContent=cdText(el.dataset.cd).t});
   if(S.timer.state==='running')$$('[data-timer-left]').forEach(el=>el.textContent=timerLeft());
-  if(!clockBusy&&(S.lastProcessed<today()||S.timer.state==='running'&&Date.now()>=S.timer.endsAt)){
+  if(!clockBusy&&(S.lastProcessed<today()||S.loc.lastSeen!==(currentLoc().id||null)||S.days[today()]?.locProfileSeen===undefined||S.timer.state==='running'&&Date.now()>=S.timer.endsAt)){
     clockBusy=true;runGuarded(()=>{
       if(S.timer.state==='running'&&Date.now()>=S.timer.endsAt){S.timer.state='done';S.timer.remaining=0;save();toast('Подход закончен. Подтвердите минуты');if(SHEETS.some(s=>s.key==='timer'))refreshSheet('timer',timerBody)}render();
     },null,true).finally(()=>clockBusy=false);
@@ -2468,7 +2771,7 @@ window.addEventListener('storage',e=>{
   const currentSpace=META.space;S=loadSpace(currentSpace);render();if(!corruptSpace)toast('Данные из другой вкладки загружены');
 });
 loadMeta();
-if(META.space){await IO.exclusive(()=>{S=loadSpace(META.space);if(!corruptSpace){try{if(processDays()||IO.snapshots.get(KEYS[META.space])===null)save()}catch(e){storageIssue=e.message}}})}
+if(META.space){await IO.exclusive(()=>{S=loadSpace(META.space);if(!corruptSpace){try{const rollover=processDays(),place=locTick();if(rollover||place||IO.snapshots.get(KEYS[META.space])===null)save()}catch(e){storageIssue=e.message}}})}
 render();if(S&&new URLSearchParams(location.search).get('view')==='calendar')go('calendar',{});
 // Offline installation and update notices are implemented in pwa.js.
 

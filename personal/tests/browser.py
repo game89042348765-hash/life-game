@@ -11,7 +11,7 @@ BASE=sys.argv[1] if len(sys.argv)>1 else 'http://127.0.0.1:8041'
 ROOT=Path(__file__).resolve().parents[1]; OUT=ROOT/'verification';OUT.mkdir(exist_ok=True)
 HOOK=r'''
 const originalAsk=ask;
-window.__LG={state:()=>S,clone:cloneState,coll:COLL,key:()=>KEYS[META.space],today,addDays,coins,xp:xpTotal,plan:()=>dayPlan(today()),validate:LifeGamePersistence.validate,
+window.__LG={state:()=>S,clone:cloneState,coll:COLL,key:()=>KEYS[META.space],today,addDays,coins,xp:xpTotal,plan:()=>dayPlan(today()),currentLoc,scheduledLoc,ruleActive,nextBoundary,locById,newLocation,locTick,validate:LifeGamePersistence.validate,
 newItem:(k,p)=>({task:newTask,habit:newHabit,quest:newQuest,cal:newCal,offer:newOffer,decision:newDecision}[k])(p),
 stage:(bid,name)=>{const x={id:uid(),blockId:bid,name,content:'',meaning:'',reason:'',bonus:[],status:'open',order:S.stages.length+1,created:today()};S.stages.push(x);return x},
 run:fn=>runGuarded(()=>tx(fn)),complete,undo:undoFact,assign:setBonusAssign,ledger,
@@ -46,6 +46,8 @@ with sync_playwright() as pw:
  p=c.new_page();p.clock.install(time=datetime(2026,11,11,9,tzinfo=timezone.utc));p.set_default_timeout(6000);boot(p)
  p.add_script_tag(content=(ROOT/'tests/model-cases.js').read_text());model=p.evaluate('runModelCases()');results.extend(model)
  for r in model:print('PASS' if r['pass'] else 'FAIL',r['name'],r.get('error','')[:600],flush=True)
+ p.add_script_tag(content=(ROOT/'tests/location-cases.js').read_text());location_cases=p.evaluate('runLocationCases()');results.extend(location_cases)
+ for r in location_cases:print('PASS' if r['pass'] else 'FAIL',r['name'],r.get('error','')[:600],flush=True)
  def reset():p.evaluate('window.__LG.reset()')
  def submit(form='item'):
   p.locator('form[data-form="'+form+'"] button:not([type=button])').last.click();p.wait_for_timeout(90)
@@ -131,6 +133,40 @@ with sync_playwright() as pw:
   p.set_viewport_size({'width':390,'height':844});p.emulate_media(color_scheme='dark');p.reload(wait_until='networkidle');p.screenshot(path=str(OUT/'home-dark.png'));p.emulate_media(color_scheme='light')
  record('Mobile/desktop screens and editors: 320/375/390/768/1100px',mobile)
 
+ def location_ui():
+  reset();action(p,'tab','[data-v=more]');action(p,'go','[data-s=locations]');action(p,'loc-new');p.locator('[name=name]').fill('Мастерская');p.locator('[name=style]').select_option('pop');p.locator('[name=tempo]').select_option('hard');submit('location');loc=state()['locations'][-1]['id']
+  action(p,'loc-menu');action(p,'loc-set','[data-id="'+loc+'"]');assert state()['loc']['manual']['until'] is None;assert p.locator('html').get_attribute('data-style')=='pop'
+  p.locator('#fab').click();action(p,'seg','[data-v=task]');p.locator('[name=title]').fill('Собрать стойку');submit('quick');assert state()['tasks'][0]['locs']==[loc]
+  action(p,'tab','[data-v=day]');assert p.locator('text=Собрать стойку').first.is_visible();action(p,'loc-menu');action(p,'loc-set','[data-id=home]');assert p.locator('[data-act=toggle][data-r="task:'+state()['tasks'][0]['id']+'"]').count()==0;action(p,'toggle-hidden');assert 'в другой локации' in p.locator('#app').inner_text();action(p,'force');action(p,'toggle');assert state()['facts'][0]['locationTitle']=='🏠 Дом'
+  # Only an explicit filter in a section restricts it; location switching itself leaves the section intact.
+  action(p,'tab','[data-v=more]');action(p,'go','[data-s=tasks]');action(p,'list-st','[data-v=done]');row=p.locator('[data-act=open][data-k=task][data-id="'+state()['tasks'][0]['id']+'"]');assert row.count()==1,'completed task missing';p.locator('[data-location-list=task]').select_option('home');assert row.count()==0,'explicit location filter failed';p.locator('[data-location-list=task]').select_option('');
+  p.reload(wait_until='networkidle');assert state()['loc']['manual']['id']=='home';assert sum(l['coins'] for l in state()['ledger'])==10
+ record('UI locations: create profile → quick add → hidden/forced → complete → filter → reload',location_ui)
+ def default_block_location():
+  reset();p.evaluate("__LG.run(()=>__LG.state().blocks[0].loc='home')");p.evaluate("__LG.edit('task',null,{title:'Дома',blockId:'b0'})");assert p.locator('[data-multi=locs] [data-v=home]').get_attribute('aria-pressed')=='true';submit();assert state()['tasks'][0]['locs']==['home']
+ record('UI editor inherits block location without relinking existing tasks',default_block_location)
+ def hint_ui():
+  reset();p.evaluate('__LG.go("settings")');p.locator('[data-set=onb]').check();p.locator('#helper').wait_for(state='visible');action(p,'helper');assert 'Шаг 1 из 7' in p.locator('#helper-pop').inner_text();action(p,'hp-show');p.clock.run_for(150);assert p.locator('#helper-pop').count()==0;assert p.locator('#fab').evaluate("e=>e.classList.contains('pulse')");action(p,'helper');action(p,'hp-done');assert state()['settings']['onboarding']['done']['0'];p.reload(wait_until='networkidle');assert '2/7' in p.locator('#helper').inner_text();action(p,'helper');action(p,'hp-nav','[data-d="-1"]');action(p,'hp-reset');assert '0' not in state()['settings']['onboarding']['done']
+  for style in ['quest','dawn','pop']:
+   p.evaluate('(v)=>__LG.act("style",{v})',style);p.set_viewport_size({'width':320,'height':568});assert p.locator('#helper-pop').bounding_box()['y']>=0;p.screenshot(path=str(OUT/f'hint-{style}.png'),animations='disabled')
+  p.set_viewport_size({'width':390,'height':844})
+ record('UI hints: show target, pulse, complete/reload, reset, compact panel in three styles',hint_ui)
+ def all_styles():
+  reset()
+  for style in ['quest','dawn','pop']:
+   p.evaluate('(v)=>__LG.act("style",{v})',style);p.reload(wait_until='networkidle');assert p.locator('html').get_attribute('data-style')==style;p.evaluate('document.fonts.ready');assert p.evaluate("document.fonts.check('600 16px '+getComputedStyle(document.body).fontFamily.split(',')[0])")
+   for width in [320,390,900]:
+    p.set_viewport_size({'width':width,'height':844})
+    for screen in ['home','day','locations','settings']:
+     p.evaluate('(s)=>__LG.go(s)',screen);assert not p.evaluate('document.documentElement.scrollWidth>innerWidth+1'),(style,width,screen)
+    p.screenshot(path=str(OUT/f'style-{style}-{width}.png'),animations='disabled')
+    if width==390:p.evaluate('__LG.act("tab",{v:"home"})');p.screenshot(path=str(OUT/f'home-{style}.png'),animations='disabled')
+  p.set_viewport_size({'width':390,'height':844});p.evaluate('__LG.act("style",{v:"quest"})')
+ record('Styles: all templates, local fonts, reload, 320/390/900px and location settings',all_styles)
+ def dst_boundaries():
+  dst=b.new_context(viewport={'width':390,'height':844},locale='ru-RU',timezone_id='America/New_York',service_workers='block');dst.route('**/*',route);q=dst.new_page();q.clock.install(time=datetime(2026,11,1,5,45,tzinfo=timezone.utc));boot(q)
+  result=q.evaluate('''async()=>{const L=__LG;await L.run(()=>{L.state().loc.fallback='home';L.state().loc.schedule=[{id:'dst',locId:'work',days:[7],from:'01:00',to:'01:30'}]});return new Date(L.nextBoundary()).toISOString()}''');assert result=='2026-11-01T06:00:00.000Z',result;dst.close()
+ record('Locations: fall-back DST repeated hour produces the real next change',dst_boundaries)
  record('No uncaught JavaScript exceptions',lambda: (_ for _ in ()).throw(AssertionError(errors)) if errors else None)
  (OUT/'report.json').write_text(json.dumps(results,ensure_ascii=False,indent=2));b.close()
 print(f"{sum(x['pass'] for x in results)}/{len(results)} passed")

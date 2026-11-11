@@ -30,7 +30,13 @@ with sync_playwright() as pw:
  check('Install service worker scoped to personal and create task',setup)
  def offline():
   c.set_offline(True);p.reload(wait_until='networkidle');assert p.locator('text=LifeGame').first.is_visible();a('tab','[data-v=day]');a('toggle');assert sum(l['coins'] for l in s()['ledger'])==10;p.reload(wait_until='networkidle');assert len(s()['facts'])==1
- check('Offline reload, completion, persistent reward and second reload',offline);c.set_offline(False)
+ check('Offline reload, completion, persistent reward and second reload',offline)
+ def styles_offline():
+  a('tab','[data-v=more]');a('go','[data-s=settings]')
+  for style in ['quest','dawn','pop']:
+   a('style','[data-v='+style+']');p.evaluate('document.fonts.ready');assert p.locator('html').get_attribute('data-style')==style;assert p.evaluate("document.fonts.check('600 16px '+getComputedStyle(document.body).fontFamily.split(',')[0])")
+  a('style','[data-v=quest]');assert p.evaluate("(async()=>{const c=await caches.open('lifegame-personal-shell-v1');return (await c.keys()).filter(r=>r.url.endsWith('.woff2')).length})()")==14
+ check('All three styles and 14 local fonts are available offline',styles_offline);c.set_offline(False)
  def update():
   a('tab','[data-v=more]');a('go','[data-s=tasks]');a('new','[data-k=task]');p.locator('[name=title]').fill('Не потерять при обновлении');Handler.version=2
   p.evaluate('(async()=>{const r=await navigator.serviceWorker.getRegistration();await r.update()})()');p.locator('#app-update').wait_for(state='visible');dialog=[];p.on('dialog',lambda d:(dialog.append(d.message),d.accept()));p.locator('#app-update button').click();assert dialog and p.locator('[name=title]').input_value()=='Не потерять при обновлении'

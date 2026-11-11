@@ -12,6 +12,15 @@
     if(v&&typeof v==='object')for(const k of Object.keys(v)){if(['__proto__','prototype','constructor'].includes(k))bad('Недопустимое поле файла.');safeTree(v[k],depth+1)}
     if(typeof v==='number'&&!Number.isFinite(v))bad('Некорректное число.');
   }
+  function defaultLocations(){return [['home','Дом','🏠'],['work','Работа','💼'],['road','В дороге','🚗']].map(([id,name,icon])=>({id,name,icon,blocks:[],homeHide:[],dayHide:[],widgets:null,muteOther:false,tempo:null,style:null}))}
+  function defaultLocState(){return {schedule:[],fallback:null,manual:null,otherNoMiss:false,tagNew:true,lastSeen:null}}
+  function locationUpgrade(s){
+    s.settings.style ||= 'quest';
+    if(s.locations===undefined&&s.loc===undefined){s.locations=defaultLocations();s.loc=defaultLocState()}
+    for(const items of [s.tasks,s.habits,s.quests,s.cal])for(const x of items)x.locs??=[];
+    for(const b of s.blocks)b.loc??=null;
+    return s;
+  }
   function validate(s){
     safeTree(s);
     if(!obj(s)||s.v!==2||!['my','demo'].includes(s.space)||!day(s.created)||!day(s.lastProcessed))bad('Это не поддерживаемое сохранение LifeGame.');
@@ -79,10 +88,28 @@
     for(const x of s.facts){if(x.kind==="habitGoal"&&typeof x.pkey!=="string"||x.insts?.some(i=>!id(i))||x.consumed?.some(i=>!id(i)))bad("Повреждены зависимости выполнения.")}
     for(const d of Object.values(s.days))if([...(d.added||[]),...(d.removed||[]),...(d.forced||[])].some(x=>!ref(x)))bad("Повреждены ссылки дневного плана.");
     for(const l of s.ledger){if(["earn","refund","compensation"].includes(l.type)&&(l.coins<0||l.xp<0)||["spend","reversal","penalty"].includes(l.type)&&(l.coins>0||l.xp>0))bad("Неверное направление финансовой операции.")}
+    if(s.settings.style!==undefined&&!['quest','dawn','pop'].includes(s.settings.style))bad('Неизвестный стиль оформления.');
+    if(s.locations!==undefined||s.loc!==undefined){
+      if(!Array.isArray(s.locations)||!obj(s.loc))bad('Повреждены локации.');
+      const lids=new Set();for(const l of s.locations){
+        if(!obj(l)||!id(l.id)||lids.has(l.id))bad('Повреждён идентификатор локации.');lids.add(l.id);
+        if(typeof l.name!=='string'||!l.name.trim()||l.name.length>60||typeof l.icon!=='string'||l.icon.length>30||!Array.isArray(l.blocks)||l.blocks.some(b=>!blocks.has(b)))bad('Повреждён профиль локации.');
+        if(!Array.isArray(l.homeHide)||l.homeHide.some(x=>!['motivation','invites','modes','upcoming','decisions','grid'].includes(x))||!Array.isArray(l.dayHide)||l.dayHide.some(x=>!['key','cal','task','habit','quest','widgets','evening'].includes(x)))bad('Неизвестная часть интерфейса локации.');
+        if(l.widgets!==null&&(!Array.isArray(l.widgets)||l.widgets.some(w=>!widgetIds.includes(w)))||typeof l.muteOther!=='boolean'||l.tempo!==null&&!['rest','normal','hard'].includes(l.tempo)||l.style!==null&&!['quest','dawn','pop'].includes(l.style))bad('Повреждены настройки профиля локации.');
+      }
+      const live=x=>x===null||lids.has(x),clock=x=>typeof x==='string'&&/^([01]\d|2[0-3]):[0-5]\d$/.test(x);
+      if(!Array.isArray(s.loc.schedule)||!live(s.loc.fallback)||typeof s.loc.otherNoMiss!=='boolean'||typeof s.loc.tagNew!=='boolean'||!live(s.loc.lastSeen))bad('Повреждены правила локаций.');
+      const rids=new Set();for(const r of s.loc.schedule){if(!obj(r)||!id(r.id)||rids.has(r.id)||!lids.has(r.locId)||!Array.isArray(r.days)||!r.days.length||r.days.some(d=>!int(d,1,7))||new Set(r.days).size!==r.days.length||!clock(r.from)||!clock(r.to)||r.from===r.to)bad('Повреждено расписание локаций.');rids.add(r.id)}
+      if(s.loc.manual!==null&&(!obj(s.loc.manual)||!live(s.loc.manual.id)||s.loc.manual.until!==null&&!int(s.loc.manual.until,0,Number.MAX_SAFE_INTEGER)))bad('Повреждён ручной выбор локации.');
+      for(const x of [...s.tasks,...s.habits,...s.quests,...s.cal,...s.inbox])if(x.locs!==undefined&&(!Array.isArray(x.locs)||x.locs.some(l=>!lids.has(l))||new Set(x.locs).size!==x.locs.length))bad('Неверные локации записи.');
+      for(const b of s.blocks)if(b.loc!==undefined&&!live(b.loc))bad('Локация блока отсутствует.');
+      for(const d of Object.values(s.days))if(d.locsSeen!==undefined&&(!Array.isArray(d.locsSeen)||d.locsSeen.some(l=>l!=='*'&&!id(l)))||d.locOtherNoMiss!==undefined&&typeof d.locOtherNoMiss!=='boolean'||d.tempoManual!==undefined&&typeof d.tempoManual!=='boolean'||d.locProfileSeen!==undefined&&d.locProfileSeen!==null&&!id(d.locProfileSeen))bad('Повреждена история локаций дня.');
+      for(const f of s.facts)if(f.loc!==undefined&&f.loc!==null&&!id(f.loc)||f.locationTitle!==undefined&&(typeof f.locationTitle!=='string'||f.locationTitle.length>150))bad('Повреждено место выполнения.');
+    }
     if(s.revision!==undefined&&!int(s.revision,0,Number.MAX_SAFE_INTEGER))bad('Повреждена версия записи.');
     return s;
   }
-  function upgrade(value){const s=clone(validate(value));s.revision ||=0;for(const [kind,items]of [['task',s.tasks],['quest',s.quests],['stage',s.stages],['habit',s.habits]])for(const x of items){const t=kind==='habit'?x.goal:x;t.bonusTerms ||= {};for(const oid of t.bonus||[]){const o=s.offers.find(z=>z.id===oid);if(o&&!t.bonusTerms[oid])t.bonusTerms[oid]={title:o.title,use:o.use,limit:o.use==='once'?1:o.limit}}}return s}
+  function upgrade(value){const s=locationUpgrade(clone(validate(value)));validate(s);s.revision ||=0;for(const [kind,items]of [['task',s.tasks],['quest',s.quests],['stage',s.stages],['habit',s.habits]])for(const x of items){const t=kind==='habit'?x.goal:x;t.bonusTerms ||= {};for(const oid of t.bonus||[]){const o=s.offers.find(z=>z.id===oid);if(o&&!t.bonusTerms[oid])t.bonusTerms[oid]={title:o.title,use:o.use,limit:o.use==='once'?1:o.limit}}}return s}
   class Repository{
     constructor(){this.snapshots=new Map();this.queue=Promise.resolve();this.commitSerial=0}
     storage(){try{return localStorage}catch{bad('Браузер запретил сохранения. Разрешите хранение данных и обновите страницу.')}}
@@ -92,5 +119,5 @@
     exclusive(fn){const run=()=>navigator.locks?navigator.locks.request('lifegame-personal-write',fn):fn();const p=this.queue.then(run,run);this.queue=p.catch(()=>{});return p}
     backup(key){const raw=this.storage().getItem(key+'-last-good');if(!raw)bad('Предыдущей исправной копии пока нет.');return upgrade(JSON.parse(raw))}
   }
-  window.LifeGamePersistence={Repository,validate,upgrade,clone,day};
+  window.LifeGamePersistence={Repository,validate,upgrade,clone,day,defaultLocations,defaultLocState};
 })();
