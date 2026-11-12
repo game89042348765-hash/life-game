@@ -1,0 +1,24 @@
+{
+  "task": "LAB-008",
+  "date": "2026-11-12",
+  "timezone": "Europe/Moscow",
+  "filename": "LifeGame-LAB-008-hybrid-revision.zip",
+  "root_folder": "LifeGame-LAB-008-hybrid-revision",
+  "bytes": 254367,
+  "sha256": "1ec8fa9e5fb69cdfb46650a61ad569948aaadd2bb0e669c701ed29754d6bff2b",
+  "files": 15,
+  "verification": {
+    "zip_crc": "pass",
+    "safe_paths": "pass",
+    "outer_manifest": "pass",
+    "no_git_dependency": true,
+    "reproductions_from_fresh_zip": 12,
+    "meaning": "review observations, not acceptance of candidate"
+  },
+  "review_status": "needs_revision",
+  "native_candidate_tests_reproduced": 16,
+  "active_code_replaced": false,
+  "research_started": false,
+  "external_task_sent": false,
+  "remote_delivery": "pending"
+}

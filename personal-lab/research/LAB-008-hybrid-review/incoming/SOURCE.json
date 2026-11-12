@@ -1,0 +1,31 @@
+{
+  "task": "LAB-008",
+  "received_date": "2026-11-12",
+  "timezone": "Europe/Moscow",
+  "base_commit": "6c7023926f8c4dfef819eb4091666262bded69f9",
+  "attachment": {
+    "filename": "LifeGame-Atlas-Hybrid-v2.0.zip",
+    "sediment_file_id": "file_0000000072a081f5a9328d6c786d2578",
+    "bytes": 212382,
+    "sha256": "131656f9a7a1448101e6c5a13d6a230629bd1d345a406d702c33b74f710f5fb7",
+    "archive_files": 49,
+    "expanded_bytes": 649841
+  },
+  "author_model": null,
+  "candidate_tool_sha256": "3bef0cc44cf58e6a46318b909efc5a345184be7a5b4c6a09813a3b985e287e91",
+  "original_tool_sha256": "0629856c6bb41a4f463ea1977f09e58e9765dbbb0c8a934e47f1fc528132cdc0",
+  "archive_integrity": {
+    "crc": "pass",
+    "safe_member_paths": "pass",
+    "payload_files_unchanged_during_review": true,
+    "supplied_manifest": "fails_missing_tools/__pycache__/atlas.cpython-311.pyc"
+  },
+  "candidate_native_checks_reproduced": 16,
+  "coordinator_observations": 12,
+  "review_status": "needs_revision",
+  "independent_v1_archive_supplied": false,
+  "research_executed": false,
+  "application_changed": false,
+  "active_LAB006_replaced": false,
+  "external_models_invoked": false
+}

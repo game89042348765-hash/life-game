@@ -3,3 +3,4 @@
 bdef6b50684a3a9da8609d56c111a781677fc0be48a51f71f247307e51bee36d  LifeGame-LAB-006-atlas-v1.zip
 db47a26bde935c4a19cbc44acb6facd284acbc66b1619493169d2388f1dfd151  LifeGame-LAB-006-created-system.md
 45144769729a10be0ffbb4cad89ebd2c531871537765a9c517ae67cda3965e1c  LifeGame-LAB-006-independent-brief.md
+1ec8fa9e5fb69cdfb46650a61ad569948aaadd2bb0e669c701ed29754d6bff2b  LifeGame-LAB-008-hybrid-revision.zip

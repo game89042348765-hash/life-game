@@ -1,0 +1,120 @@
+{
+  "status": "technical_checks_only_not_research",
+  "version": "2.0-hybrid",
+  "checks_passed": 16,
+  "checks": [
+    {
+      "check": "01_complete_schema_and_provenance_links",
+      "passed": true,
+      "seconds": 0.0035,
+      "details": {
+        "elements": 12,
+        "ratings": 24
+      }
+    },
+    {
+      "check": "02_real_cli_outputs_hashes_and_incomplete_target",
+      "passed": true,
+      "seconds": 0.0499,
+      "details": {
+        "eligible": 12,
+        "selected": 12,
+        "target_reached": false,
+        "status": "synthetic_demo_not_research"
+      }
+    },
+    {
+      "check": "03_unknown_not_zero_or_imputed",
+      "passed": true,
+      "seconds": 0.0018,
+      "details": "null stays unknown; candidate not promoted"
+    },
+    {
+      "check": "04_critical_invalid_inputs_rejected",
+      "passed": true,
+      "seconds": 0.0045,
+      "details": "missing source, lost disposition, unviewed existence, boolean score rejected"
+    },
+    {
+      "check": "05_review_identity_and_version",
+      "passed": true,
+      "seconds": 0.0028,
+      "details": "duplicate reviewer/context and wrong rubric rejected"
+    },
+    {
+      "check": "06_eligibility_and_quality_floor",
+      "passed": true,
+      "seconds": 0.0012,
+      "details": "composites, reference, unresolved risks and disputed existence blocked; low quality not used as filler"
+    },
+    {
+      "check": "07_disagreement_gate_and_auditable_resolution",
+      "passed": true,
+      "seconds": 0.0023,
+      "details": "resolution required; original range retained"
+    },
+    {
+      "check": "08_deterministic_with_shuffled_input",
+      "passed": true,
+      "seconds": 0.0017,
+      "details": "rank, selection and sensitivity independent of input row order"
+    },
+    {
+      "check": "09_merge_no_silent_overwrite",
+      "passed": true,
+      "seconds": 0.0085,
+      "details": "exact IDs coalesced; conflicting revision stops without output"
+    },
+    {
+      "check": "10_integrity_and_demo_separation",
+      "passed": true,
+      "seconds": 0.0019,
+      "details": "byte change caught; synthetic fixtures and .invalid URLs blocked from research mode"
+    },
+    {
+      "check": "11_partial_blind_disagreement_and_strict_resolution_gate",
+      "passed": true,
+      "seconds": 0.0014,
+      "details": "P0 Fixes #1 & #2 verified: partial blind rating disagreement caught; incomplete resolution rejected"
+    },
+    {
+      "check": "12_protected_rare_gems_lane_and_non_penalizing_gain",
+      "passed": true,
+      "seconds": 0.0013,
+      "details": "P0 Fix #3 & P1 Rare Lane verified: protected rare_lateral_gem tier active and multi-label elements not penalized"
+    },
+    {
+      "check": "13_quarantine_and_composite_contains_enforcement",
+      "passed": true,
+      "seconds": 0.0019,
+      "details": "P0 Fix #4a/4b verified: quarantined non-empty targets and unlinked composite method_systems rejected"
+    },
+    {
+      "check": "14_cross_domain_sharding_and_blind_packet_sterilization",
+      "passed": true,
+      "seconds": 0.0024,
+      "details": "P1 Sharding & Blind Packet preparation verified"
+    },
+    {
+      "check": "15_tolerant_truncated_jsonl_recovery",
+      "passed": true,
+      "seconds": 0.0022,
+      "details": "P1 Tolerant JSONL loader verified: 12 valid rows preserved, 1 truncated line isolated"
+    },
+    {
+      "check": "16_ten_thousand_synthetic_elements_hybrid_v2",
+      "passed": true,
+      "seconds": 7.4172,
+      "details": {
+        "synthetic_elements": 10000,
+        "synthetic_ratings": 20000,
+        "selected": 200,
+        "real_web_sources": 0
+      }
+    }
+  ],
+  "tool_sha256": "3bef0cc44cf58e6a46318b909efc5a345184be7a5b4c6a09813a3b985e287e91",
+  "verifier_sha256": "1419358594ad2dee64a471952e0da6ea1af931072f579122977099614f858909",
+  "python": "3.12.14",
+  "network_requests": 0
+}

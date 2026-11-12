@@ -1,0 +1,108 @@
+{
+  "status": "review_observations_not_acceptance",
+  "original_tool_sha256": "0629856c6bb41a4f463ea1977f09e58e9765dbbb0c8a934e47f1fc528132cdc0",
+  "candidate_tool_sha256": "3bef0cc44cf58e6a46318b909efc5a345184be7a5b4c6a09813a3b985e287e91",
+  "real_research_performed": false,
+  "probes": [
+    {
+      "probe": "O1_partial_objection",
+      "original_admits": true,
+      "hybrid_blocks": true,
+      "hybrid_reasons": [
+        "unresolved_rating_disagreement"
+      ]
+    },
+    {
+      "probe": "O2_resolution_omits_dissenter",
+      "original_errors": [],
+      "hybrid_errors": [
+        "D-RESOLVE: resolution omits disagreeing reviewers: reviewer-C"
+      ]
+    },
+    {
+      "probe": "H2_aggregation_contract",
+      "Q_from_documented_complete_reviews": 71.25,
+      "Q_from_actual_known_scores": 75.0,
+      "disagreement": false,
+      "effect": "partial review changes Q, not just disagreement gate"
+    },
+    {
+      "probe": "H1_bundle_manifest",
+      "exit_code": 1,
+      "stderr": "Integrity mismatch: tools/__pycache__/atlas.cpython-311.pyc"
+    },
+    {
+      "probe": "H3_unbounded_shard",
+      "input_findings": 10000,
+      "output_shards": 1,
+      "largest_shard": 10000,
+      "index_bytes": 1980000
+    },
+    {
+      "probe": "H4_reused_shard_output",
+      "existing_index_overwritten": true,
+      "old_shard_left_unlisted": true,
+      "rerun_refused": false
+    },
+    {
+      "probe": "H5_shard_path_containment",
+      "schema_errors": [
+        "F-DEMO-00000: unknown phase_code: X/../../escaped",
+        "F-DEMO-00000: unknown primary_friction_code: GENERAL"
+      ],
+      "controlled_file_outside_target_overwritten": true,
+      "precondition": "existing output contains SHARD_X subdirectory; all affected files were inside this test TemporaryDirectory"
+    },
+    {
+      "probe": "H6_blind_output_aliases_input",
+      "source_catalog_overwritten": true,
+      "validation_errors_after_overwrite": [
+        "E-DEMO-00000: nonempty string required: family_id",
+        "E-DEMO-00000: nonempty string required: benefit",
+        "E-DEMO-00000: string list required: raw_ids",
+        "E-DEMO-00000: string list required: alternatives",
+        "E-DEMO-00000: string list required: questions",
+        "E-DEMO-00000: invalid existence",
+        "E-DEMO-00000: invalid review_status",
+        "E-DEMO-00000: invalid risk_status"
+      ]
+    },
+    {
+      "probe": "H7_negative_rare_quota",
+      "configured_quota": -1,
+      "configuration_rejected": false,
+      "actual_rare_lane_seats": 6
+    },
+    {
+      "probe": "O3_label_density_policy",
+      "v1_narrow_G": 1.0,
+      "v1_with_one_extra_already_covered_job_G": 0.75,
+      "classification": "declared policy with an incentive tradeoff, not an arithmetic implementation error"
+    },
+    {
+      "probe": "O4_full_atlas_sensitivity_improvement",
+      "original_has_full_atlas_metric": false,
+      "hybrid_full_atlas_jaccard_low_effort": 0.6666666666666666,
+      "candidate_elements": 240,
+      "selected": 200
+    },
+    {
+      "probe": "H8_stale_shared_instructions",
+      "standalone_texts": [
+        {
+          "paste": "02-ANALYZE.txt",
+          "current_SCORING_embedded": false
+        },
+        {
+          "paste": "03-SELECT.txt",
+          "current_SCORING_embedded": false
+        },
+        {
+          "paste": "05-COORDINATE.txt",
+          "current_SCORING_embedded": false
+        }
+      ],
+      "old_quarantine_contract_still_present": true
+    }
+  ]
+}
