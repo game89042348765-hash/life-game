@@ -1,5 +1,8 @@
 # Основному оркестратору: передача лаборатории LifeGame
 
+Доставка LAB-009 подтверждена: коммит `29b6978cdccceb7300fc9c403e769aebce0d3015` отправлен в `lab/synthetic-users`; remote ref и 10 файлов по pinned raw сверены побайтово. Main осталась `90df954`, Pages не обновлялась. [Квитанция](personal-lab/experiments/flexible-complexity/DELIVERY.json). Приёмка пользователя ожидается.
+
+
 **Последняя задача — LAB-009, 12 ноября 2026:** отдельная [гибкая сложность на Personal](personal-lab/experiments/flexible-complexity/README.md), первый рабочий релиз этапов 1–2 итоговой v2.1. Чат — контекст, вне Git. [Реализация и предложенные детали](personal-lab/experiments/flexible-complexity/IMPLEMENTATION.md); [16/16 локальных проверок](personal-lab/experiments/flexible-complexity/VERIFICATION.json), включая 800 планов/90 суток, сохранение/отмену, календарь, PWA, часовые пояса и Demo-защиту. Приёмка пользователем ожидается. Следующие этапы, включая версии/восстановление/слияние и резерв Красного режима, — в ROADMAP.md. Не переносить копию целиком поверх Personal или AI-эксперимента. Код доставляется в lab/synthetic-users; Pages main не публикуется. LAB-008 ожидает исправления внешней модели, возврат к LAB-007 остаётся отложенным. Все нижеследующие статусы сохранены как история.
 
 

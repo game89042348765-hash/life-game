@@ -1,5 +1,8 @@
 # LifeGame Lab
 
+LAB-009 доставлен коммитом `29b6978` в lab/synthetic-users; remote/pinned raw проверены. [Квитанция](experiments/flexible-complexity/DELIVERY.json). Main/Pages прежние; приёмка ожидается.
+
+
 12 ноября 2026, **LAB-009**: [отдельная гибкая сложность на Personal](experiments/flexible-complexity/README.md). Рабочий первый релиз этапов 1–2 концепции v2.1: Базовый ритм, заморозка остальных ожиданий, Полный редактор без снятия паузы, добровольные календарь/напоминания/статистика. [Что сделано и предложенные правила](experiments/flexible-complexity/IMPLEMENTATION.md), [16/16 проверок](experiments/flexible-complexity/VERIFICATION.json), включая 800 планов/90 дней, защиту данных, PWA и часовые пояса. [Остальные этапы и Красный режим](experiments/flexible-complexity/ROADMAP.md) — будущая работа. Частный чат не опубликован; основная Personal, LAB-007 и атлас сохранены. Приёмка ожидается; это отдельная lab-ветка, не Pages main.
 
 
