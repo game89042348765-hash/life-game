@@ -16,5 +16,13 @@
     "independent": 9,
     "without_repository": true
   },
-  "delivery": "pending remote verification"
+  "delivery": {
+    "status": "verified",
+    "payload_commit": "d297ca8f7e70114ff8578300b6e48e6fc209ed64",
+    "branch": "lab/synthetic-users",
+    "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/d297ca8f7e70114ff8578300b6e48e6fc209ed64/downloads/lab-packets/LifeGame-Atlas-Hybrid-v2.1.1-LAB1.zip",
+    "downloaded_bytes_match": true,
+    "downloaded_zip_crc_and_manifest_verified": true,
+    "main_unchanged": "90df9542bbffa5651fd31bdad12460a4c586c3ef"
+  }
 }
