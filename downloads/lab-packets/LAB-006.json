@@ -37,7 +37,37 @@
     "real_research_records": 0,
     "source_hashes_verified": true
   },
-  "remote_delivery": "not_yet_verified",
+  "remote_delivery": {
+    "payload_commit": "0ee80c61b906f90dab4c29a3133feb5c8c793c48",
+    "remote_branch": "refs/heads/lab/synthetic-users",
+    "main_before": "90df9542bbffa5651fd31bdad12460a4c586c3ef",
+    "main_after": "90df9542bbffa5651fd31bdad12460a4c586c3ef",
+    "remote_ref_verified": true,
+    "raw_downloads_verified": [
+      {
+        "filename": "LifeGame-LAB-006-atlas-v1.zip",
+        "bytes": 176033,
+        "sha256": "bdef6b50684a3a9da8609d56c111a781677fc0be48a51f71f247307e51bee36d",
+        "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/0ee80c61b906f90dab4c29a3133feb5c8c793c48/downloads/lab-packets/LifeGame-LAB-006-atlas-v1.zip",
+        "verified": true
+      },
+      {
+        "filename": "LifeGame-LAB-006-created-system.md",
+        "bytes": 18188,
+        "sha256": "db47a26bde935c4a19cbc44acb6facd284acbc66b1619493169d2388f1dfd151",
+        "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/0ee80c61b906f90dab4c29a3133feb5c8c793c48/downloads/lab-packets/LifeGame-LAB-006-created-system.md",
+        "verified": true
+      },
+      {
+        "filename": "LifeGame-LAB-006-independent-brief.md",
+        "bytes": 13516,
+        "sha256": "45144769729a10be0ffbb4cad89ebd2c531871537765a9c517ae67cda3965e1c",
+        "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/0ee80c61b906f90dab4c29a3133feb5c8c793c48/downloads/lab-packets/LifeGame-LAB-006-independent-brief.md",
+        "verified": true
+      }
+    ],
+    "application_deployment_requested": false
+  },
   "research_started": false,
   "external_models_invoked": false,
   "app_modified": false,
