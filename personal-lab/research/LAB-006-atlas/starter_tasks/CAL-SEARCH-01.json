@@ -1,0 +1,66 @@
+{
+  "template": false,
+  "task_id": "CAL-SEARCH-01",
+  "stage": "search",
+  "mode": null,
+  "owner_id": null,
+  "status": "planned",
+  "attempt": 1,
+  "protocol_version": "1.0",
+  "taxonomy_version": "1.0",
+  "rubric_version": "1.0",
+  "input_snapshot": "LAB-006-kit-1.0",
+  "input_hashes": {
+    "PROMPTS/01-SEARCH.md": "81aa9ee613a93da893b5cfcdc4618771ef9c9997d3d0a0007acdfdfb7fef4275",
+    "DATA_CONTRACT.md": "2b8ca7c3ee6199b92c3de97674c8e5c6ec8a64f593cde13f7af4d22eb4e50644",
+    "TAXONOMY.md": "7e9a1f026daec61a8f08ef10f8d6a7ec342fd4f4ed16e7df51ba415108b56427",
+    "taxonomy.json": "d1b72939d7f29ff6dde90a8ee06f50a615da9f0aa3a253fe31859259551b5a62",
+    "SYSTEM.md": "3664fa99ef39e42d0fbe3647e5d1771a29dad0d58b3ed4e5b6ab95b2b28353f2"
+  },
+  "scope": {
+    "category_ids": [
+      "C05",
+      "C08"
+    ],
+    "source_classes": [
+      "official_documentation",
+      "practice_manual",
+      "review"
+    ],
+    "contexts": [
+      "Захват и календарное планирование"
+    ],
+    "languages": [
+      "ru",
+      "en"
+    ],
+    "orientation_count": "10–15; fewer allowed with explanation"
+  },
+  "exclusions": [
+    "Do not use current LifeGame feature inventory to limit discovery",
+    "Do not invent sources or completed checks"
+  ],
+  "id_prefixes": {
+    "source": "S-CAL01-",
+    "finding": "F-CAL01-",
+    "element": null,
+    "rating": null
+  },
+  "deliverables": [
+    "sources.jsonl",
+    "findings.jsonl",
+    "leads.jsonl",
+    "search_log.jsonl",
+    "COVERAGE.md",
+    "REPORT.md",
+    "RESULT_MANIFEST.json",
+    "TASK.json"
+  ],
+  "acceptance": [
+    "Sources really inspected or explicitly unverified",
+    "Existence claims have exact locations",
+    "No fabricated quotas",
+    "Correct IDs, references and counts"
+  ],
+  "due_at": null
+}

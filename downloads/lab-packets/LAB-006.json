@@ -1,0 +1,45 @@
+{
+  "task": "LAB-006",
+  "kit_version": "1.0",
+  "created_date": "2026-11-12",
+  "timezone": "Europe/Moscow",
+  "base_commit": "8b18123c5224f3a522923f9bcee40f424c344a25",
+  "branch": "lab/synthetic-users",
+  "package_root": "LifeGame-LAB-006-atlas-v1",
+  "archive_files": 47,
+  "included_manifest_entries": 46,
+  "files": [
+    {
+      "filename": "LifeGame-LAB-006-atlas-v1.zip",
+      "bytes": 176033,
+      "sha256": "bdef6b50684a3a9da8609d56c111a781677fc0be48a51f71f247307e51bee36d"
+    },
+    {
+      "filename": "LifeGame-LAB-006-created-system.md",
+      "bytes": 18188,
+      "sha256": "db47a26bde935c4a19cbc44acb6facd284acbc66b1619493169d2388f1dfd151"
+    },
+    {
+      "filename": "LifeGame-LAB-006-independent-brief.md",
+      "bytes": 13516,
+      "sha256": "45144769729a10be0ffbb4cad89ebd2c531871537765a9c517ae67cda3965e1c"
+    }
+  ],
+  "local_verification": {
+    "zip_crc": "pass",
+    "safe_paths": "pass",
+    "no_git_dependency": "pass",
+    "all_payload_bytes": "pass",
+    "demo_cli": "pass",
+    "technical_groups_passed": 11,
+    "synthetic_scale_elements": 10000,
+    "synthetic_scale_ratings": 20000,
+    "real_research_records": 0,
+    "source_hashes_verified": true
+  },
+  "remote_delivery": "not_yet_verified",
+  "research_started": false,
+  "external_models_invoked": false,
+  "app_modified": false,
+  "main_modified": false
+}

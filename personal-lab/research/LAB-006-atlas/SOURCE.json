@@ -1,0 +1,14 @@
+{
+  "task": "LAB-006",
+  "created_date": "2026-11-12",
+  "timezone": "Europe/Moscow",
+  "repository": "game89042348765-hash/life-game",
+  "branch_at_start": "lab/synthetic-users",
+  "base_commit": "8b18123c5224f3a522923f9bcee40f424c344a25",
+  "scope": "Research pipeline, documents, prompts and local calculation only",
+  "research_executed": false,
+  "application_inventory_executed": false,
+  "external_models_invoked": false,
+  "paid_api_calls": 0,
+  "app_files_changed": false
+}

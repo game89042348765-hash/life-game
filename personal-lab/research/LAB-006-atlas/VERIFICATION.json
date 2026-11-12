@@ -1,0 +1,89 @@
+{
+  "status": "technical_checks_only_not_research",
+  "checks_passed": 11,
+  "checks": [
+    {
+      "check": "complete_schema_and_provenance_links",
+      "passed": true,
+      "seconds": 0.0004,
+      "details": {
+        "elements": 12,
+        "ratings": 24
+      }
+    },
+    {
+      "check": "real_cli_outputs_hashes_and_incomplete_target",
+      "passed": true,
+      "seconds": 0.0597,
+      "details": {
+        "eligible": 12,
+        "selected": 12,
+        "target_reached": false,
+        "status": "synthetic_demo_not_research"
+      }
+    },
+    {
+      "check": "unknown_not_zero_or_imputed",
+      "passed": true,
+      "seconds": 0.0013,
+      "details": "null stays unknown; candidate not promoted"
+    },
+    {
+      "check": "critical_invalid_inputs_rejected",
+      "passed": true,
+      "seconds": 0.0032,
+      "details": "missing source, lost disposition, unviewed existence, boolean score rejected"
+    },
+    {
+      "check": "review_identity_and_version",
+      "passed": true,
+      "seconds": 0.0023,
+      "details": "duplicate reviewer/context and wrong rubric rejected"
+    },
+    {
+      "check": "eligibility_and_quality_floor",
+      "passed": true,
+      "seconds": 0.001,
+      "details": "composites, reference, unresolved risks and disputed existence blocked; low quality not used as filler"
+    },
+    {
+      "check": "disagreement_gate_and_auditable_resolution",
+      "passed": true,
+      "seconds": 0.0014,
+      "details": "resolution required; original range retained"
+    },
+    {
+      "check": "deterministic_with_shuffled_input",
+      "passed": true,
+      "seconds": 0.0012,
+      "details": "rank, selection and sensitivity independent of input row order"
+    },
+    {
+      "check": "merge_no_silent_overwrite",
+      "passed": true,
+      "seconds": 0.0097,
+      "details": "exact IDs coalesced; conflicting revision stops without output"
+    },
+    {
+      "check": "integrity_and_demo_separation",
+      "passed": true,
+      "seconds": 0.0009,
+      "details": "byte change caught; synthetic fixtures blocked from research mode"
+    },
+    {
+      "check": "ten_thousand_synthetic_elements",
+      "passed": true,
+      "seconds": 1.9236,
+      "details": {
+        "synthetic_elements": 10000,
+        "synthetic_ratings": 20000,
+        "selected": 200,
+        "real_web_sources": 0
+      }
+    }
+  ],
+  "tool_sha256": "0629856c6bb41a4f463ea1977f09e58e9765dbbb0c8a934e47f1fc528132cdc0",
+  "verifier_sha256": "a71ef8e5955302b4cf72935e57dc6ac27a27efe755791d0315f99f953fbb9922",
+  "python": "3.12.14",
+  "network_requests": 0
+}
