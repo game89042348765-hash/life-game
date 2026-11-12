@@ -1,0 +1,16 @@
+{
+  "status": "partial_preflight_only",
+  "read_sources": 2,
+  "preliminary_findings": 12,
+  "products_with_findings": 1,
+  "blocked_requested_sites": 3,
+  "broad_calibration_completed": false,
+  "normalization_completed": false,
+  "independent_ratings_completed": false,
+  "selection_completed": false,
+  "full_atlas_completed": false,
+  "snapshot_sources_sha_verified": 2,
+  "basic_json_links_checked": true,
+  "network_draft_saved": true,
+  "network_draft_applied": false
+}

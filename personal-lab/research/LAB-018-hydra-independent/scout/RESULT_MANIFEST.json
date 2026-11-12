@@ -1,0 +1,21 @@
+{
+  "status": "partial_not_accepted_calibration",
+  "files": {
+    "sources.jsonl": {
+      "sha256": "e49883e19657276f5b7ad49df9bc3a7b38d9a91a73a59b97c7b214a4836cc526",
+      "bytes": 1424
+    },
+    "TASK.json": {
+      "sha256": "f37ba5f945301dbad2dee40970a3a1bc9ab00d44284d86d8f92152eda8cb57a9",
+      "bytes": 1862
+    },
+    "search_log.jsonl": {
+      "sha256": "bf126469628b05760928745203cb7aaeb042d7bb6b81a88f530d7436fcac569d",
+      "bytes": 1239
+    },
+    "findings.jsonl": {
+      "sha256": "85231d3b1bba81eabe31e9a46616c32c3e58688f084363f9557c2e6a2ec70538",
+      "bytes": 10197
+    }
+  }
+}

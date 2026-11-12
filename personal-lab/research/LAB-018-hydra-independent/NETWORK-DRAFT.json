@@ -1,0 +1,11 @@
+{
+  "draft_id": "f089ec4e535185d0ca9bdfec0a2acca978485709c3fbb487289e995e94d37b5d~cecfgdraft_8b6c287758b081968b417dd3550e7cfa",
+  "requested_change": {
+    "network": {
+      "type": "unrestricted"
+    }
+  },
+  "status": "saved_not_applied",
+  "requires_publish": true,
+  "other_configuration_fields_changed": false
+}

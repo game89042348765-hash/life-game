@@ -1,0 +1,6 @@
+task_id,stage,owner_id,status,reason
+CAL-SEARCH-01,search,,planned,waiting for broad source access; not assigned or executed
+CAL-SEARCH-02,search,,planned,waiting for broad source access; not assigned or executed
+CAL-SEARCH-03,search,,planned,waiting for broad source access; not assigned or executed
+CAL-SEARCH-04,search,,planned,waiting for broad source access; not assigned or executed
+ACCESS-SCOUT,search,R01,partial,"2 README sources read, 12 preliminary findings from one product; broad search blocked"

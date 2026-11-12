@@ -1,0 +1,64 @@
+{
+  "template": false,
+  "run_id": "HYDRA-INDEPENDENT-LAB-018",
+  "created_at": "2026-11-12T23:47:23.505195+00:00",
+  "protocol_version": "2.1",
+  "taxonomy_version": "2.1",
+  "rubric_version": "2.1",
+  "status": "preflight_partial_waiting_network_policy",
+  "purpose": "Справочный атлас возможностей; не обязательный план разработки",
+  "application_context_policy": "No LifeGame feature list in search, analysis or general selection; separate mapping after release",
+  "tools_observed": {
+    "web_search": false,
+    "open_pages": "HTTP available for allowed hosts; three requested documentation/research hosts denied by proxy 403",
+    "read_files": true,
+    "execute_python": true
+  },
+  "participants": [
+    {
+      "owner_id": "R01",
+      "role": "coordinator_source_scout",
+      "model": "unknown runtime ID"
+    }
+  ],
+  "languages": [
+    "ru",
+    "en"
+  ],
+  "research_bounds": {
+    "raw_findings_orientation": "1000–2000 planning/organization plus about 1000 game-related; may grow beyond 10000; no padding",
+    "source_classes": [
+      "official_documentation",
+      "source_code",
+      "research",
+      "practice_manual",
+      "first_person_report",
+      "review",
+      "other"
+    ],
+    "stop_rule": "coverage and two comparable targeted waves with less than 10 percent new canonical elements; remaining gaps documented",
+    "budget": null
+  },
+  "selection": {
+    "target": 200,
+    "core": 100,
+    "quality_floor": 60,
+    "mode": "research",
+    "weights": {
+      "value": 0.3,
+      "burden": 0.15,
+      "long_term": 0.2,
+      "adaptability": 0.1,
+      "agency": 0.15,
+      "composability": 0.1
+    },
+    "rare_gems_quota": 0
+  },
+  "approved_snapshot": null,
+  "known_limits": [
+    "Network policy is restricted; GitHub accessible but Todoist/Notion/Wikipedia denied.",
+    "No dedicated search tool in current tool catalog.",
+    "Draft network unrestricted saved, not applied; user review/save/publish required.",
+    "Scout is one product README, not broad calibration, not ranking evidence of efficacy."
+  ]
+}
