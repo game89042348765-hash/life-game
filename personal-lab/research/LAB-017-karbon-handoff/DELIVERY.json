@@ -1,0 +1,25 @@
+{
+  "destination_repository": "game89042348765-hash/life-game-model-karbon",
+  "destination_branch": "main",
+  "destination_commit": "db31b3ce6abd9852e84c7c8951b68e5bc439692b",
+  "method": "Fresh independent shallow clone of remote after push; archive CRC/SHA and 577 workspace manifest entries verified",
+  "archive": "packages/LifeGame-Developer-Pack-2026-11-13.zip",
+  "archive_bytes": 15835996,
+  "archive_sha256": "545dde467fa7a00c07aa6ad6e3337d37c0137ddc6297dbddf625c16afeab9c64",
+  "workspace_files": 578,
+  "manifest_entries_verified": 577,
+  "source_runtime_modified": false,
+  "source_repository_visibility_changed": false,
+  "task": "LAB-017",
+  "client_date": "2026-11-13",
+  "source_repository_base": "a8ccac0cda0d59d5a9cf60d8c70b635ec7bdf664",
+  "new_root_documents": [
+    "README.md",
+    "START_HERE.md",
+    "AGENTS.md",
+    ".gitignore",
+    "IMPORT_SOURCE.json"
+  ],
+  "external_model_connected_or_started": false,
+  "original_source_whitespace": "Preserved byte-identically; original Markdown line breaks/CSV CRLF were not reformatted. New root documents passed git diff --check."
+}
