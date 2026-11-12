@@ -5,6 +5,7 @@ from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import argparse
+import re
 import hashlib
 import json
 import threading
@@ -419,7 +420,7 @@ localStorage.setItem('lifegame-ai-strategy-lab-my-v1','AI_SENTINEL');
             p2.evaluate('''async()=>{await caches.open('lifegame-personal-lab-shell-sentinel');await caches.open('lifegame-ai-strategy-lab-shell-sentinel')}''')
             scopes = p2.evaluate('''async()=>({scope:(await navigator.serviceWorker.getRegistration()).scope,keys:await caches.keys()})''')
             assert scopes['scope'].endswith(PREFIX)
-            assert 'lifegame-flex-lab-shell-v1' in scopes['keys']
+            assert re.search(r"const CACHE='([^']+)'", (ROOT/'sw.js').read_text()).group(1) in scopes['keys']
             p2.evaluate('''()=>{localStorage.setItem('lifegame-personal-lab-my-v1','KEEP_PARENT');localStorage.setItem('lifegame-ai-strategy-lab-my-v1','KEEP_AI')}''')
             c.set_offline(True)
             p2.reload(wait_until='load')

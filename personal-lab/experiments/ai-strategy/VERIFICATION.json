@@ -80,7 +80,7 @@
       "name": "own service-worker scope and offline export preview",
       "passed": true,
       "details": {
-        "service_worker": "http://127.0.0.1:36731/personal-lab/experiments/ai-strategy/sw.js",
+        "service_worker": "http://127.0.0.1:35623/personal-lab/experiments/ai-strategy/sw.js",
         "offline_context_preview": true
       }
     }
@@ -88,20 +88,13 @@
   "passed": 11,
   "page_errors": [],
   "external_requests": [],
-  "artifacts": "personal-lab/verification/LAB-007-20261112T080001Z",
+  "artifacts": "/workspace/life-game/personal-lab/verification/LAB-013-ai-20261112T180815Z",
   "source_product": "Personal 1.2.0",
   "hashes": {
-    "app.js": "fbe4822cc70c4e9bad9dbd2c654060de0d6081da8dd919798fdc26fc989012d8",
+    "app.js": "fbf8742a7a6c8e4708dc0685f75463a242f83c2b50d7a54001393f8514841bf8",
     "ai-context.js": "c8cd247cbdb46a5934ba3533ea0a3b3040fb340f9a5a3e25f9d2fdff5f026d22",
     "ai-ui.js": "d8e8bf23fb795bee1ba998ca7e5b14c0d7f04067d821b4e1838421faa54ca0fb",
     "persistence.js": "bddd28d953dba2aaf2e415d9fd751793725a171901921f751a66b14b6a835f36",
-    "sw.js": "79642857d0cc4fc05f1b561ee05b337ad71641dd455fa8407bf5d311feb11e38"
-  },
-  "tests_sha256": "650daffbdfe46d0478db466e74a34f69bb44979df6c1aab468e5e7f6ca6970ce",
-  "verified_date": "2026-11-12",
-  "timezone": "Europe/Moscow",
-  "manual_acceptance": "pending",
-  "real_ai_model_requests": 0,
-  "real_user_study": false,
-  "previous_runs": "Earlier reports remain separate under personal-lab/verification/LAB-007-*. Final result includes durable revision waits and native clipboard verification."
+    "sw.js": "b75497ececd1da507926475cce620e7d6b79884a523186a1a0c261ad96f39fff"
+  }
 }

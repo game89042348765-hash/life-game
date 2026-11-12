@@ -38,6 +38,8 @@
         control=button(it.type==='checklist'?'flex-quest':'flex-toggle',it.type==='checklist'?'Шаги':done&&it.status==='completed'?'Отменить':'+1 шаг','data-r="'+esc(r)+'"','s');
         if(it.type!=='checklist'&&a.todayFacts('questStep',it.id).length&&it.status==='active')extra=button('flex-undo','Отменить шаг','data-r="'+esc(r)+'"','s ghost');
       }else control='<button class="check'+(done?' on':'')+'" data-act="flex-toggle" data-r="'+esc(r)+'" aria-label="'+esc((done?'Снять отметку: ':'Отметить: ')+it.title)+'">'+(done?'✓':'+')+'</button>';
+      const minutes=a.loggedMinutes(r,day());if(minutes)note+=' · записано '+minutes+' мин.';
+      if(k!=='cal'&&a.available(it))extra+=button('time-log','Записать время','data-r="'+esc(r)+'"','s ghost');
       return '<div class="flex-action" data-flex-ref="'+esc(r)+'">'+control+'<div class="flex-action-text"><b>'+esc(it.title)+'</b><div class="meta">'+esc(note)+'</div>'+extra+'</div></div>';
     }
     function basic(){

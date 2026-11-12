@@ -467,6 +467,10 @@ function candidates(d){
   S.cal.forEach(c=>{if(available(c)&&Flex.inPlan(S,"cal",c,d))Cal.due(c,d).forEach(o=>out.push(calRef(c,o)))});
   return out;
 }
+function factPlanRef(f){
+  const item=f.kind==='cal'?get('cal',f.ref):null;
+  return item?calRef(item,{key:f.occurrence||item.date}):rk(f.kind==='questStep'?'quest':f.kind==='habitStep'?'habit':f.kind,f.ref);
+}
 function isDoneRef(r,d){
   const [k,id]=pr(r);const it=get(k,id);
   if(k==="task"&&it&&it.sched.type==="once")return doneEver("task",id);
@@ -482,7 +486,7 @@ function dayPlan(d,opts){
   (day.added||[]).map(normalize).forEach(r=>{const [k,id]=pr(r);const it=get(k,id);if(it&&(available(it)||isDoneRef(r,d))&&!refs.includes(r))refs.push(r)});
   // items done today always show
   liveFacts().filter(f=>f.date===d&&["task","habit","habitStep","cal","questStep"].includes(f.kind)).forEach(f=>{
-    const item=get("cal",f.ref);const r=f.kind==="cal"&&item?calRef(item,{key:f.occurrence||item.date}):rk(f.kind==="questStep"?"quest":f.kind==="habitStep"?"habit":f.kind,f.ref);if(!refs.includes(r)&&get(...pr(r)))refs.push(r)});
+    const r=factPlanRef(f);if(!refs.includes(r)&&get(...pr(r)))refs.push(r)});
   const removed=new Set((day.removed||[]).map(normalize)),forced=new Set((day.forced||[]).map(normalize));
   const visible=[],hidden=[];
   refs.forEach(r=>{
@@ -715,7 +719,13 @@ document.addEventListener("click",e=>{
 });
 document.addEventListener("submit",e=>{
   const f=e.target;const fn=FORMS[f.dataset.form];
-  if(fn){e.preventDefault();runGuarded(()=>fn(f,e),f)}
+  if(fn){
+    e.preventDefault();const single=f.dataset.form==='manual-time';
+    if(single&&f.dataset.pending==='1')return;
+    if(single){f.dataset.pending='1';f.querySelector('[type="submit"]').disabled=true}
+    const operation=runGuarded(()=>fn(f,e),f);
+    if(single)operation.finally(()=>{delete f.dataset.pending;const b=f.querySelector('[type="submit"]');if(b)b.disabled=false});
+  }
 });
 document.addEventListener("keydown",e=>{
   if(e.key==="Escape"&&SHEETS.length)closeSheet();
@@ -1038,6 +1048,7 @@ function dayCard(r,d,opts){
   if(k==="habit"&&habitDayTarget(it,d)>1){prog+='<span class="pill acc">'+habitDayProgress(it,d)+'/'+habitDayTarget(it,d)+' сегодня</span> ';if(!done)check='<button class="check sq" data-act="toggle" data-r="'+r+'" aria-label="Добавить подход">+1</button>'}
   if(k==="habit"&&it.goal&&it.goal.target)prog+='<span class="pill">'+habitCount(it,d)+'/'+it.goal.target+(it.goal.mode==="period"?(it.goal.period==="week"?" нед.":" мес."):"")+'</span>';
   const rw=k==="quest"?it.stepReward:it.reward;
+  const minutes=loggedMinutes(r,d);if(minutes)prog+='<span class="pill">Записано '+minutes+' мин.</span>';
   const sub=[originText(it)];if(it.locs?.length)sub.push(locNames(it.locs));
   if(k==="cal")sub.unshift((Cal.occurrence(it,calParts(id)[1]||calChosen(it))?.time||"без времени"));
   else sub.push(schedText(it.sched));
@@ -1077,7 +1088,7 @@ SCR.day=p=>{
     const ws=L?.widgets?L.widgets.filter(w=>S.widgets.mine.includes(w)):S.widgets.mine.filter(w=>S.widgets.inDay[w]);
     h+='<h2>Виджеты <span class="count">'+ws.length+'</span><button class="btn ghost s" data-act="go" data-s="widgets">Настроить</button></h2>'+(ws.length?'<div class="grid2">'+ws.map(widgetTile).join("")+'</div>':'<div class="empty">Добавьте виджеты из каталога.</div>');
   }
-  const extra=liveFacts().filter(f=>f.date===d&&!vis.includes(rk(f.kind==="questStep"?"quest":f.kind,f.ref)));
+  const extra=liveFacts().filter(f=>f.date===d&&!vis.includes(factPlanRef(f)));
   if(extra.length)h+='<h2>Выполнено вне плана</h2><div class="list">'+extra.map(factRow).join("")+'</div>';
   h+='<div class="row" style="margin-top:16px"><button class="btn primary" data-act="day-picker">+ Добавить в день</button><button class="btn" data-act="quick-done">Быстрое выполнение</button></div>';
   if(!hideD("evening"))h+='<div class="card" style="margin-top:16px"><div class="between"><div><b>Вечер</b><div class="meta">'+(S.days[d]&&S.days[d].ritual?'День завершён. Можно продолжать работать.':'Итоги дня и необязательный ритуал завершения.')+'</div></div><div class="row"><button class="btn s" data-act="go" data-s="summary">Итоги</button><button class="btn s primary" data-act="ritual">Завершить день</button></div></div></div>';
@@ -1119,7 +1130,7 @@ ACT["day-menu"]=el=>{
     '<button class="btn block" data-act="day-remove" data-r="'+r+'">Убрать из сегодняшнего плана</button>'+
     '<button class="btn block" data-act="open" data-k="'+k+'" data-id="'+id+'">Открыть карточку</button>'+
     '<button class="btn block" data-act="edit" data-k="'+k+'" data-id="'+id+'">Изменить / перенести</button>'+
-    (k!=="cal"?'<button class="btn block" data-act="timer-for" data-r="'+r+'">Запустить таймер для этого дела</button>':'')+
+    (k!=="cal"?'<button class="btn block" data-act="time-log" data-r="'+r+'">Записать уже потраченное время</button><button class="btn block" data-act="timer-for" data-r="'+r+'">Запустить таймер для этого дела</button>':'')+
     (it.blockId?'<button class="btn block" data-act="go-block" data-id="'+it.blockId+'">Перейти в блок</button>':'')+
     (fs.length?'<button class="btn block danger" data-act="undo-fact" data-id="'+fs[fs.length-1].id+'">Отменить сегодняшнюю отметку</button>':'')+'</div>');
 };
@@ -1682,6 +1693,8 @@ function itemDetail(k,it){
     else if(it.status==="active")h+='<button class="btn s primary" style="margin-top:8px" data-act="toggle-q" data-id="'+it.id+'">+1 шаг</button>';
     h+='</div>';
   }
+  const minutes=loggedMinutes(rk(k,it.id),d);
+  if(minutes)h+='<p class="meta" data-time-total>Сегодня записано времени: '+minutes+' мин. Выполнение отмечается отдельно.</p>';
   // actions
   const act=it.status==="active";
   h+='<div class="row" style="margin-top:14px">';
@@ -1689,6 +1702,7 @@ function itemDetail(k,it){
     const doneT=k==="cal"?doneEver("cal",it.id):k==="task"&&it.sched.type==="once"?doneEver("task",it.id):doneOn(k,it.id,d);
     h+='<button class="btn '+(doneT?'':'primary')+'" data-act="detail-toggle" data-r="'+rk(k,it.id)+'">'+(doneT?'Снять отметку':k==='habit'&&habitDayTarget(it,d)>1?'+1 подход':'Выполнено сегодня')+'</button>';
   }
+  if(available(it)&&k!=='cal')h+='<button class="btn" data-act="time-log" data-r="'+rk(k,it.id)+'">Записать время</button>';
   if(act&&k==='habit'&&habitSteps(it.id,d).length&&!doneOn('habit',it.id,d))h+='<button class="btn" data-act="habit-unmark" data-id="'+it.id+'">−1 подход</button>';
   if(act&&k==='cal'&&calView(it)&&!calDone(it,calChosen(it)))h+='<button class="btn" data-act="cal-move" data-id="'+it.id+'" data-occ="'+calChosen(it)+'">Перенести</button>';
   if(act){
@@ -2059,14 +2073,17 @@ FORMS.quick=f=>{
 ACT["quick-done"]=()=>openSheet("Быстрое выполнение",quickDoneBody(""),{key:"qd"});
 function quickDoneBody(q){
   const ql=q.toLowerCase();const d=today();
+  const matches=x=>!q||(x.title+" "+(x.tags||[]).join(" ")).toLowerCase().includes(ql);
+  const completed=q?S.tasks.filter(x=>x.status!=='archived'&&x.sched.type==='once'&&doneEver('task',x.id)&&matches(x)).slice(0,5):[];
   const pool=[...S.tasks.map(x=>["task",x]),...S.habits.map(x=>["habit",x]),...(lite()?[]:S.quests.map(x=>["quest",x])),...S.cal.flatMap(c=>{const due=Cal.due(c,d),o=calNext(c)||calView(c);return (due.length?due:o?[o]:[]).map(v=>['cal',{...c,id:c.id+(Cal.repeats(c)?'@'+v.key:''),_date:v.date}])})]
     .filter(([k,x])=>x.status==="active"&&!(k==="task"&&x.sched.type==="once"&&doneEver("task",x.id))&&!(k==="cal"&&!Cal.repeats(x)&&doneEver("cal",x.id)))
-    .filter(([k,x])=>!q||(x.title+" "+(x.tags||[]).join(" ")).toLowerCase().includes(ql)).slice(0,30);
+    .filter(([k,x])=>matches(x)).slice(0,30);
   return '<p class="meta">Сделали что-то вне плана? Найдите существующую запись и отметьте по её правилам. Новая копия не создаётся.</p><input type="search" data-qd-q value="'+esc(q)+'" placeholder="Начните вводить название" autocomplete="off">'+
     '<div class="list" style="margin-top:8px">'+(pool.length?pool.map(([k,x])=>{
       const done=k==="quest"?false:k==="cal"?doneEver(k,x.id):doneOn(k,x.id,d);
       return '<div class="item"><div class="body"><div class="t">'+esc(x.title)+'</div><div class="meta">'+KIND_L[k]+(x._date?' · '+esc(short(x._date)):'')+' · '+esc(originText(x))+'</div></div>'+(done?'<span class="pill good">сегодня отмечено</span>':'<button class="btn s primary" data-act="qd-do" data-r="'+rk(k,x.id)+'">'+(k==="quest"?(x.type==="checklist"?"Шаг":"+1"):"Выполнено")+'</button>')+'</div>'}).join(""):'<div class="empty">Не найдено.</div>')+'</div>'+
-    (q?'<div class="row" style="margin-top:10px"><button class="btn" data-act="qd-create">Нет такой записи — создать «'+esc(q)+'»</button></div>':'');
+    (completed.length?'<section data-qd-completed><h2>Уже завершено</h2><p class="meta">Разовое дело уже выполнено. Для регулярного действия можно создать привычку.</p><div class="list">'+completed.map(x=>'<button class="tile" data-act="open" data-k="task" data-id="'+x.id+'"><b>'+esc(x.title)+'</b><span class="meta">Открыть сохранённую запись</span></button>').join('')+'</div></section>':'')+
+    (q?'<div class="row" style="margin-top:10px"><button class="btn" data-act="qd-create">Создать отдельную запись «'+esc(q)+'»</button></div>':'');
 }
 document.addEventListener("input",e=>{
   if(e.target.matches("[data-qd-q]")){const v=e.target.value;refreshSheet("qd",()=>quickDoneBody(v));const i=topSheet().querySelector("[data-qd-q]");i.focus();i.setSelectionRange(v.length,v.length)}
@@ -2603,6 +2620,45 @@ function widgetTile(w){
 }
 ACT["widget-open"]=el=>{const w=el.dataset.w;({timer:timerSheet,firststep:firstStepSheet,graph:graphSheet,happiness:happySheet,rhythm:rhythmSheet,myreward:myRewardSheet})[w]()};
 
+/* Manual time uses the existing timeLog; it never completes an action or changes rewards. */
+function loggedMinutes(r,d){return S.timeLog.filter(t=>t.ref===r&&t.date===d).reduce((sum,t)=>sum+t.minutes,0)}
+function manualTimeItem(r){
+  const [k,id]=pr(r||'');const it=get(k,id);
+  if(!['task','habit','quest'].includes(k)||!available(it))fail('Дело недоступно для записи времени.');
+  if(window.LifeGameFlex&&S.flex?.view==='basic'&&!LifeGameFlex.enabled(S,k,id,today()))fail('Дело сейчас вне базового ритма.');
+  return it;
+}
+function manualTimeSheet(r,logId){
+  const it=manualTimeItem(r),day=today();
+  if(S.timer.state!=='ready'&&S.timer.ref===r){timerSheet();toast('Для этого дела уже открыт таймер. Запишите или завершите его подход.');return}
+  const existing=logId?S.timeLog.find(t=>t.id===logId&&t.ref===r&&t.date===day):null;
+  if(logId&&!existing)fail('Запись времени не найдена. Откройте её заново.');
+  if(SHEETS.at(-1)?.key==='manual-time')closeSheet();
+  const records=S.timeLog.filter(t=>t.ref===r&&t.date===day);
+  openSheet(existing?'Исправить время':'Записать время','<p><b>'+esc(it.title)+'</b></p><p class="meta">'+esc(human(day))+'. Это только учёт времени. Выполнение и награда отмечаются отдельно.</p>'+
+    '<form data-form="manual-time" data-id="'+(existing?existing.id:uid())+'" data-r="'+esc(r)+'" data-day="'+day+'" data-edit="'+(existing?'1':'0')+'">'+
+    '<label class="f">Сколько минут'+(existing?' должно остаться в записи':' уже потратили')+'</label><input type="number" name="minutes" min="'+(existing?0:1)+'" max="1440" step="1" value="'+(existing?existing.minutes:'')+'" required inputmode="numeric" style="max-width:160px">'+
+    (existing?'<p class="meta">Если запись была ошибочной, укажите 0. Награды и отметки выполнения сохранятся.</p>':'')+
+    '<div class="row" style="margin-top:14px"><button class="btn primary" type="submit">'+(existing?'Сохранить исправление':'Записать минуты')+'</button><button type="button" class="btn" data-act="sheet-close">Отмена</button></div></form>'+
+    (!existing&&records.length?'<h2>Время за сегодня</h2><p class="meta">Всего: '+loggedMinutes(r,day)+' мин.</p>'+records.map(t=>'<div class="mini"><span class="grow">'+t.minutes+' мин.</span><button class="btn s" data-act="time-edit" data-id="'+t.id+'">Исправить</button></div>').join(''):''),{key:'manual-time'});
+}
+ACT['time-log']=el=>manualTimeSheet(el.dataset.r);
+ACT['time-edit']=el=>{const t=S.timeLog.find(x=>x.id===el.dataset.id);if(!t)fail('Запись времени не найдена.');manualTimeSheet(t.ref,t.id)};
+FORMS['manual-time']=f=>{
+  const r=f.dataset.r,it=manualTimeItem(r),editing=f.dataset.edit==='1',id=f.dataset.id;
+  if(f.dataset.day!==today())fail('Дата изменилась. Откройте запись времени заново; введённые минуты оставлены в форме.');
+  if(S.timer.state!=='ready'&&S.timer.ref===r)fail('Для этого дела открыт таймер. Сначала запишите или завершите его подход.');
+  const raw=f.elements.minutes.value.trim(),minutes=Number(raw);
+  if(!raw||!Number.isInteger(minutes)||minutes<(editing?0:1)||minutes>1440)fail('Укажите целое число минут от '+(editing?0:1)+' до 1440.');
+  const existing=S.timeLog.find(t=>t.id===id);
+  if(!editing&&existing){closeSheet();toast('Эта запись времени уже сохранена.');return}
+  const ok=tx(()=>{
+    if(editing){if(!existing||existing.ref!==r||existing.date!==today())fail('Запись изменилась. Откройте её заново.');existing.minutes=minutes}
+    else S.timeLog.push({id,date:today(),minutes,label:it.title,ref:r,ts:Date.now()});
+  },'Записано '+minutes+' мин. Выполнение отмечается отдельно.');
+  if(ok){closeSheet();refreshSheet('detail',()=>itemDetail(pr(r)[0],it))}
+};
+
 /* timer */
 function timerLeft(){const t=S.timer;let ms=t.state==="running"?t.endsAt-Date.now():t.remaining*1000;ms=Math.max(0,ms);const s=Math.ceil(ms/1000);return pad(Math.floor(s/60))+":"+pad(s%60)}
 function timerSheet(){openSheet("Время для важного",timerBody(),{key:"timer"})}
@@ -2940,7 +2996,7 @@ window.addEventListener('storage',e=>{
   const currentSpace=META.space;S=loadSpace(currentSpace);render();if(!corruptSpace)toast('Данные из другой вкладки загружены');
 });
 const FLEX_UI=LifeGameFlexUI.mount({
-  ACT,FORMS,state:()=>S,today,tx,openSheet,closeAllSheets,ask,toast,get,parts:pr,done:isDoneRef,plan:dayPlan,human,addDays,available,
+  ACT,FORMS,state:()=>S,today,tx,openSheet,closeAllSheets,ask,toast,get,parts:pr,done:isDoneRef,plan:dayPlan,human,addDays,available,loggedMinutes,
   reason:k=>WHY_L[k],schedule:(k,it)=>k==='cal'?(Cal.repeats(it)?'Повторяющееся событие':short(it.date)):schedText(it.sched),
   habitTarget:habitDayTarget,habitProgress:habitDayProgress,questProgress,calOccurrence:(c,key)=>Cal.occurrence(c,key||calChosen(c)),calRange:(c,from,to)=>Cal.range(c,from,to),
   todayFacts:(kind,id)=>factsOf(kind,id).filter(f=>f.date===today()),todayOrEarlierFact:(kind,id,step)=>factsOf(kind,id).find(f=>f.step===step),
