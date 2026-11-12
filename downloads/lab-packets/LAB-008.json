@@ -20,5 +20,15 @@
   "active_code_replaced": false,
   "research_started": false,
   "external_task_sent": false,
-  "remote_delivery": "pending"
+  "remote_delivery": {
+    "payload_commit": "92ed243bd650591d3db8d5c0235b42a71d6353f8",
+    "branch": "lab/synthetic-users",
+    "ref_verified": true,
+    "raw_download_verified": true,
+    "download_url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/92ed243bd650591d3db8d5c0235b42a71d6353f8/downloads/lab-packets/LifeGame-LAB-008-hybrid-revision.zip",
+    "main_before": "90df9542bbffa5651fd31bdad12460a4c586c3ef",
+    "main_after": "90df9542bbffa5651fd31bdad12460a4c586c3ef",
+    "main_app_deployment_requested": false,
+    "documentation_commit_follows": true
+  }
 }
