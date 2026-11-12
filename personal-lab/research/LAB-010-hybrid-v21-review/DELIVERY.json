@@ -1,0 +1,45 @@
+{
+  "task": "LAB-010",
+  "recorded_at": "2026-11-12T14:10:23.591874+00:00",
+  "payload_commit": "7af6173bd1e4ec97869ba059dd5d0df4c9448dcb",
+  "branch": "lab/synthetic-users",
+  "remote_ref_verified": true,
+  "main_unchanged": "90df9542bbffa5651fd31bdad12460a4c586c3ef",
+  "pages_deployed": false,
+  "candidate_accepted": false,
+  "decision": "needs_revision_before_mass_run",
+  "native_checks_reproduced": 23,
+  "independent_observations": 13,
+  "residual_issues": 4,
+  "packet_files": 10,
+  "packet_fresh_run_without_repository": "13 observations reproduced",
+  "pinned_raw_verified": [
+    {
+      "path": "downloads/lab-packets/LifeGame-LAB-010-HYDRA-v2.1-R2.zip",
+      "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/7af6173bd1e4ec97869ba059dd5d0df4c9448dcb/downloads/lab-packets/LifeGame-LAB-010-HYDRA-v2.1-R2.zip",
+      "bytes": 252630,
+      "sha256": "8a517ad37cef4742b88ff36ce37c07f4d5bf2c35828f96f76b0df8b546207260"
+    },
+    {
+      "path": "personal-lab/research/LAB-010-hybrid-v21-review/COORDINATOR-REVIEW.md",
+      "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/7af6173bd1e4ec97869ba059dd5d0df4c9448dcb/personal-lab/research/LAB-010-hybrid-v21-review/COORDINATOR-REVIEW.md",
+      "bytes": 12450,
+      "sha256": "fa6123618f8cb6f4eec5c4d9e314c88c27644bc5c34c6dc63dcd531e0fe8057d"
+    },
+    {
+      "path": "personal-lab/research/LAB-010-hybrid-v21-review/PROBE-RESULTS.json",
+      "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/7af6173bd1e4ec97869ba059dd5d0df4c9448dcb/personal-lab/research/LAB-010-hybrid-v21-review/PROBE-RESULTS.json",
+      "bytes": 4443,
+      "sha256": "28a909f80b02d8536ec40725fce58aadcf44782ff95cd32afa67bce23026d4b8"
+    },
+    {
+      "path": "personal-lab/research/LAB-010-hybrid-v21-review/VERIFICATION.json",
+      "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/7af6173bd1e4ec97869ba059dd5d0df4c9448dcb/personal-lab/research/LAB-010-hybrid-v21-review/VERIFICATION.json",
+      "bytes": 1436,
+      "sha256": "429afd66c7add4c32d59128ba0bd71ba35ace2ee7899fcb88e8c576a280a65f1"
+    }
+  ],
+  "downloaded_zip_crc_and_inner_manifest_verified": true,
+  "model_task_execution": "not_started_by_coordinator",
+  "note": "Receipt and additive status notes follow the payload in a separate commit; archive bytes remain unchanged."
+}

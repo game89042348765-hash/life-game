@@ -9,5 +9,14 @@
   "received_candidate_sha256": "f6262b4db13149cd58d6a7d4421d0fe535ea81bd9ea424a39b977dccaabcb614",
   "purpose": "Four-point revision task, not accepted implementation or completed research",
   "model_run": "not_started_by_coordinator",
-  "delivery": "pending remote verification"
+  "delivery": {
+    "status": "verified",
+    "payload_commit": "7af6173bd1e4ec97869ba059dd5d0df4c9448dcb",
+    "branch": "lab/synthetic-users",
+    "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/7af6173bd1e4ec97869ba059dd5d0df4c9448dcb/downloads/lab-packets/LifeGame-LAB-010-HYDRA-v2.1-R2.zip",
+    "remote_ref_verified": true,
+    "downloaded_bytes_match": true,
+    "downloaded_zip_crc_and_manifest_verified": true,
+    "main_unchanged": "90df9542bbffa5651fd31bdad12460a4c586c3ef"
+  }
 }
