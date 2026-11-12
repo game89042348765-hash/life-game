@@ -1,0 +1,42 @@
+{
+  "task": "LAB-016",
+  "client_date": "2026-11-13",
+  "payload_commit": "4a17c303a7b53c9956d72b0ec8b25f98435203d5",
+  "source_commit": "89112c29dacea254cd8f50c4197a8ee77e764917",
+  "branch": "lab/synthetic-users",
+  "remote_ref_verified": "4a17c303a7b53c9956d72b0ec8b25f98435203d5",
+  "main_ref_verified": "90df9542bbffa5651fd31bdad12460a4c586c3ef",
+  "verified_at_utc": "2026-11-12T23:26:17.800845+00:00",
+  "pinned_raw_verified_files": [
+    {
+      "file": "downloads/lab-packets/LifeGame-Developer-Pack-2026-11-13.zip",
+      "bytes": 15835996,
+      "sha256": "545dde467fa7a00c07aa6ad6e3337d37c0137ddc6297dbddf625c16afeab9c64",
+      "match": true,
+      "zip_crc": "passed",
+      "manifest_entries_verified": 577,
+      "zip_entries": 578
+    },
+    {
+      "file": "personal-lab/research/LAB-016-developer-pack/PACKAGE.json",
+      "bytes": 441,
+      "sha256": "f0a5bc98c5e0d1324c4c45eb10bea70703e01b7903e003f091656db3fa2dfc4b",
+      "match": true
+    },
+    {
+      "file": "personal-lab/research/LAB-016-developer-pack/VERIFICATION.json",
+      "bytes": 3252,
+      "sha256": "3a027f91555da4968b660e440c848ab485cdb15b986339282fc74f2ea0272c02",
+      "match": true
+    },
+    {
+      "file": "personal-lab/research/LAB-016-developer-pack/handout/00_START_HERE.md",
+      "bytes": 10839,
+      "sha256": "e094fad2fbe8f2e34f09b7888d229854f8d0b0e8b7f015e61c9d796fd6f42af5",
+      "match": true
+    }
+  ],
+  "main_or_pages_updated": false,
+  "application_runtime_changed": false,
+  "note": "Following documentation commit records delivery; developer ZIP and original source files stay unchanged."
+}
