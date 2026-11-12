@@ -1,0 +1,20 @@
+{
+  "task": "LAB-011",
+  "artifact": "LifeGame-Atlas-Hybrid-v2.1.1-LAB1.zip",
+  "package_version": "2.1.1+lab.1",
+  "bytes": 254491,
+  "sha256": "eab29ac790864561e5e9e0def5ea5d63172d4c57d2107758a843eb2b6707cd2e",
+  "files": 54,
+  "purpose": "Technically accepted calibration package, not completed research",
+  "original_candidate_preserved": true,
+  "rubric_version": "2.1",
+  "native_checks": 27,
+  "independent_checks": 9,
+  "fresh_final_packet_checks": {
+    "cli_verify": true,
+    "native": 27,
+    "independent": 9,
+    "without_repository": true
+  },
+  "delivery": "pending remote verification"
+}

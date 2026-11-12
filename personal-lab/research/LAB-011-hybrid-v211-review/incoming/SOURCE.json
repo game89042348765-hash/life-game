@@ -1,0 +1,12 @@
+{
+  "task": "LAB-011",
+  "received_at": "2026-11-12T16:18:51.661197+00:00",
+  "base_commit": "6832e08a8c0680a79da090bcd0abb25ef69c08ad",
+  "artifact": "LifeGame-Atlas-Hybrid-v2.1.1.zip",
+  "bytes": 244469,
+  "sha256": "b62283ea6288ec5cddf0605324552e6ff8f2759eb47749037b5a12163f9c6d0b",
+  "tool_sha256": "42acd749576d5d264307a2f6eea7a57194ae3f89f3636e58ccb281a88b1d92e2",
+  "verifier_sha256": "b13e5f5896c9f2a9b4eb6cf305a3d97fa74eb3ea9f1b75a39e4ff81b63d7df97",
+  "previous_review": "LAB-010-hybrid-v21-review",
+  "purpose": "Review returned LAB-010-R2 revision; preserve original unchanged"
+}

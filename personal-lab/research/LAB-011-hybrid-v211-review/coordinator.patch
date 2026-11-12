@@ -1,0 +1,75 @@
+--- a/tools/atlas.py
++++ b/tools/atlas.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""LifeGame Atlas Hybrid v2.1.1 (LAB-006 foundation + v1_indep additions + LAB-008-R1 & LAB-010-R2 revisions):
++"""LifeGame Atlas Hybrid v2.1.1+lab.1 (LAB-006 foundation + v1_indep additions + LAB-008-R1 & LAB-010-R2 revisions):
+ Structural checks, total-packet-budgeted cross-domain functional sharding with bounded navigation index previews,
+ atomic no-overwrite blind-rating packet sterilization, anti-marketing L1-L6 layer support,
+ and deterministic multi-lane editorial selection.
+@@ -21,7 +21,7 @@
+ 
+ sys.dont_write_bytecode = True
+ 
+-VERSION = "2.1.1"
++VERSION = "2.1.1+lab.1"
+ RUBRIC_VERSION = "2.1"
+ COMPATIBLE_VERSIONS = {"1.0", "2.0", "2.1", "2.1.1"}
+ TABLES = ("sources", "findings", "elements", "ratings", "merge_map", "relations", "decisions")
+@@ -1085,6 +1085,12 @@
+             })
+ 
+         for item in index_records:
++            if item["bytes"] > effective_index_max_bytes:
++                fail(
++                    f"A single index entry ({item['finding_id']}) needs {item['bytes']} bytes, "
++                    f"exceeding index_max_bytes={effective_index_max_bytes}; "
++                    "increase the index budget or shorten preview_chars. No shard output was published."
++                )
+             if cur_idx_items and (
+                 len(cur_idx_items) >= index_max_records
+                 or cur_idx_bytes + item["bytes"] > effective_index_max_bytes
+@@ -1152,7 +1158,7 @@
+ def prepare_blind_packet(directory, out_file, taxonomy_path=None):
+     """LAB-010-R2 (R04 Fix):
+     Исключает окно перезаписи при конкурирующей публикации (TOCTOU race between exists() and os.replace()).
+-    Использует атомарный примитив ядра ОС без перезаписи: `os.link(temp_path, out)` (или `O_CREAT | O_EXCL`),
++    Использует атомарный примитив ядра ОС без перезаписи: `os.link(temp_path, out)`,
+     который гарантированно завершается с `FileExistsError`, если целевое имя `out` было создано другим процессом
+     в любой момент до публикации, и всегда удаляет временный staging-файл в блоке `finally`."""
+     in_root = Path(directory).resolve()
+@@ -1211,16 +1217,13 @@
+             os.link(temp_path, out)
+         except FileExistsError:
+             fail("Blind packet output appeared concurrently during execution; refusing to overwrite")
+-        except OSError:
+-            # Fallback for filesystems without hardlink support: atomic O_CREAT | O_EXCL
+-            try:
+-                fd = os.open(str(out), os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+-            except FileExistsError:
+-                fail("Blind packet output appeared concurrently during execution; refusing to overwrite")
+-            with os.fdopen(fd, "w", encoding="utf-8") as dest_f:
+-                dest_f.write(payload)
+-                dest_f.flush()
+-                os.fsync(dest_f.fileno())
++        except OSError as exc:
++            # A direct O_EXCL write would expose an incomplete final file on failure.
++            fail(
++                "Atomic no-overwrite publication requires hardlink support and write permission "
++                "on this filesystem; no output was published. Use a supported local directory. "
++                + str(exc)
++            )
+     finally:
+         if temp_path is not None:
+             temp_path.unlink(missing_ok=True)
+--- a/tools/verify_tools.py
++++ b/tools/verify_tools.py
+@@ -678,7 +678,7 @@
+ 
+     report = {
+         "status": "technical_checks_only_not_research",
+-        "version": "2.1.1-hybrid",
++        "version": atlas.VERSION + "-hybrid",
+         "rubric_version": "2.1",
+         "checks_passed": len(results),
+         "checks": results,
