@@ -1,0 +1,7 @@
+{
+  "filename": "LifeGame-LAB-004A-R2-native-45d6c0a.zip",
+  "bytes": 570497,
+  "sha256": "edd8ec588c07b7f53240cb4ffec308a26d5ce9c56accee9f98cb30ae4c127a79",
+  "files": 51,
+  "purpose": "Native-only revision; reproduced old defects are blockers, not proof of repaired implementation"
+}

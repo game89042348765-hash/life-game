@@ -1,0 +1,21 @@
+{
+  "scope": "Filtered native specimen only; unsupported alias/fallback not executed",
+  "lock_multiprocess": {
+    "reproduced": true,
+    "holder_B_pid": 46213,
+    "holder_C_pid": 46212,
+    "inode_B": 3412805,
+    "inode_C": 3412806,
+    "two_processes_holding_exclusive_lock_for_same_path": true
+  },
+  "skip_resume_end_to_end": {
+    "reproduced": true,
+    "actual_resume_constructor_executed": true,
+    "child_exit": 86,
+    "last_day": 1,
+    "no_use_in_summary": 0,
+    "sessions": [],
+    "memory": "",
+    "durable_no_use_events": 1
+  }
+}

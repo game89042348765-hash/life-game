@@ -1,0 +1,2064 @@
+#!/usr/bin/env python3
+"""Local, observable browser transport for synthetic users; no model or app API calls."""
+import argparse
+import base64
+import fcntl
+import hashlib
+import json
+import os
+import signal
+import sys
+import time
+import traceback
+import urllib.error
+import urllib.request
+import zipfile
+from datetime import date, datetime, timedelta, timezone
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from pathlib import Path
+from urllib.parse import urlsplit, urlunsplit
+from zoneinfo import ZoneInfo
+
+try:
+    from playwright.sync_api import sync_playwright as _pw_sync_playwright
+    HAS_PLAYWRIGHT = True
+except ImportError:
+    _pw_sync_playwright = None
+    HAS_PLAYWRIGHT = False
+
+
+SNAPSHOT = r"""() => {
+  const displayed = el => {
+    const r=el.getBoundingClientRect(),s=getComputedStyle(el);
+    return r.width>0&&r.height>0&&r.bottom>0&&r.right>0&&r.top<innerHeight&&r.left<innerWidth&&s.display!=='none'&&s.visibility!=='hidden'&&Number(s.opacity)!==0;
+  };
+  const overlays=[...document.querySelectorAll('.overlay,dialog[open]')].filter(displayed);
+  const root=overlays.at(-1)||document.body;
+  const exposed = el => {
+    if(!displayed(el))return false;
+    const r=el.getBoundingClientRect(),x=(Math.max(0,r.left)+Math.min(innerWidth,r.right))/2,y=(Math.max(0,r.top)+Math.min(innerHeight,r.bottom))/2;
+    const hit=document.elementFromPoint(x,y);
+    return !!hit&&(hit===el||el.contains(hit));
+  };
+  const controls=[...root.querySelectorAll('button,input:not([type=hidden]),textarea,select,a[href],[role=button],[role=checkbox]')].filter(exposed);
+  const items=controls.map((el,i)=>{
+    const prev=el.previousElementSibling;
+    const associated=[...(el.labels||[])].map(l=>l.innerText.trim()).join(' ');
+    const label=(el.getAttribute('aria-label')||associated||(prev?.tagName==='LABEL'?prev.innerText:'')||el.getAttribute('placeholder')||el.innerText||el.getAttribute('title')||el.tagName).trim().slice(0,240);
+    const r=el.getBoundingClientRect(),isSelect=el.tagName==='SELECT';
+    const d={element:'e'+(i+1),label,type:el.getAttribute('type')||el.tagName.toLowerCase(),disabled:!!el.disabled,rect:{x:Math.round(r.x),y:Math.round(r.y),width:Math.round(r.width),height:Math.round(r.height)}};
+    if('value'in el)d.value=isSelect?(el.selectedOptions[0]?.textContent||''):el.value;
+    if('checked'in el)d.checked=el.checked;
+    if(isSelect)d.options=[...el.options].filter(o=>!o.hidden).map(o=>({label:o.textContent.trim(),disabled:o.disabled}));
+    return d;
+  });
+  const texts=[],walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+  while(walker.nextNode()){
+    const node=walker.currentNode,p=node.parentElement,t=node.textContent.trim();
+    if(!t||!p||['SCRIPT','STYLE','OPTION'].includes(p.tagName)||!displayed(p))continue;
+    // Report fully exposed words, not the entire contents of a partly covered node.
+    // A viewport intersection alone leaks text under fixed navigation or below fold.
+    const range=document.createRange(),words=[];
+    for(const match of node.textContent.matchAll(/\S+/gu)){
+      range.setStart(node,match.index);range.setEnd(node,match.index+match[0].length);
+      const rects=[...range.getClientRects()].filter(r=>r.width&&r.height);
+      const visible=rects.length&&rects.every(r=>{
+        if(r.left<0||r.top<0||r.right>innerWidth||r.bottom>innerHeight)return false;
+        return [.15,.5,.85].every(f=>{
+          const hit=document.elementFromPoint(r.left+r.width*f,r.top+r.height/2);
+          return !!hit&&(hit===p||p.contains(hit));
+        });
+      });
+      if(visible)words.push(match[0]);
+    }
+    if(words.length)texts.push(words.join(' '));
+  }
+  window.__syntheticViewControls=controls;
+  return {title:document.title,url:location.href,virtual_time_observed:new Date().toISOString(),modal:!!overlays.length,viewport:{width:innerWidth,height:innerHeight},visible_text:texts.join('\n').slice(0,7500),elements:items};
+}"""
+
+CORE_APP_FILES = (
+    'index.html',
+    'app.js',
+    'persistence.js',
+    'planning.js',
+    'style.css',
+    'sw.js',
+    'pwa.js',
+    'manifest.webmanifest',
+)
+
+LOCAL_HOST_ALIAS = 'lifegame.local'
+
+
+def utc_now():
+    return datetime.now(timezone.utc).isoformat(timespec='milliseconds')
+
+
+def dump(path, value):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.parent / f'.{path.name}.tmp.{os.getpid()}'
+    tmp.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+    os.replace(tmp, path)
+
+
+def canonical_sha256(value):
+    payload = json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
+    return hashlib.sha256(payload).hexdigest()
+
+
+def file_sha256(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _needs_loopback_alias():
+    policy = Path('/etc/chromium/policies/managed/chrome_policy.json')
+    if not policy.exists():
+        return False
+    try:
+        data = json.loads(policy.read_text())
+        blocked = data.get('URLBlocklist', [])
+        return '127.0.0.1' in blocked or 'localhost' in blocked
+    except Exception:
+        return False
+
+
+def _rewrite_loopback_url(url, to_alias=True):
+    if not _needs_loopback_alias():
+        return url
+    parts = urlsplit(url)
+    host = parts.hostname or ''
+    port = f':{parts.port}' if parts.port else ''
+    if to_alias and host in ('127.0.0.1', 'localhost'):
+        return urlunsplit((parts.scheme, f'{LOCAL_HOST_ALIAS}{port}', parts.path, parts.query, parts.fragment))
+    if not to_alias and host == LOCAL_HOST_ALIAS:
+        return urlunsplit((parts.scheme, f'127.0.0.1{port}', parts.path, parts.query, parts.fragment))
+    return url
+
+
+class _ExclusiveFileLock:
+    """OS-level non-blocking flock guard for run-dir and browser profiles."""
+
+    def __init__(self, lock_path, metadata):
+        self.path = Path(lock_path)
+        self.metadata = metadata
+        self.handle = None
+
+    def acquire(self, resource_label):
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        handle = self.path.open('a+', encoding='utf-8')
+        try:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as exc:
+            handle.seek(0)
+            existing = handle.read().strip()
+            handle.close()
+            raise ValueError(
+                f'{resource_label} is locked by another active daemon ({existing or "flock held"}); '
+                f'refusing concurrent access'
+            ) from exc
+        handle.seek(0)
+        handle.truncate()
+        handle.write(json.dumps(self.metadata, ensure_ascii=False) + '\n')
+        handle.flush()
+        self.handle = handle
+        return self
+
+    def release(self):
+        if self.handle is not None:
+            try:
+                fcntl.flock(self.handle.fileno(), fcntl.LOCK_UN)
+            except Exception:
+                pass
+            try:
+                self.handle.close()
+            except Exception:
+                pass
+            self.handle = None
+            try:
+                if self.path.exists():
+                    self.path.unlink()
+            except Exception:
+                pass
+
+
+def _check_chromium_singleton_lock(profile_dir):
+    """Detect if a live Chromium process holds SingletonLock on profile_dir."""
+    singleton = Path(profile_dir) / 'SingletonLock'
+    if not singleton.is_symlink() and not singleton.exists():
+        return
+    try:
+        target = os.readlink(singleton)
+    except OSError:
+        return
+    if '-' in target:
+        pid_str = target.rsplit('-', 1)[-1]
+        if pid_str.isdigit():
+            pid = int(pid_str)
+            if pid != os.getpid():
+                try:
+                    os.kill(pid, 0)
+                    raise ValueError(
+                        f'profile {profile_dir} has an active Chromium SingletonLock (pid={pid}); '
+                        f'refusing concurrent access'
+                    )
+                except ProcessLookupError:
+                    pass
+
+
+def _probe_lock_free(lock_path, resource_label):
+    """Verify without modifying state that an existing lock file is not held by another process."""
+    path = Path(lock_path)
+    if not path.exists():
+        return
+    handle = path.open('a+', encoding='utf-8')
+    try:
+        try:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as exc:
+            handle.seek(0)
+            holder = handle.read().strip()
+            raise ValueError(
+                f'{resource_label} is locked by another active daemon ({holder or "flock held"}); '
+                f'refusing concurrent access'
+            ) from exc
+        finally:
+            try:
+                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+            except Exception:
+                pass
+    finally:
+        handle.close()
+
+
+# ---------------------------------------------------------------------------
+# Real-Chromium CDP/WebDriver fallback when playwright package is unavailable
+# ---------------------------------------------------------------------------
+
+class _CDPElementHandle:
+    def __init__(self, page, web_element):
+        self._page = page
+        self._el = web_element
+
+    def as_element(self):
+        return self
+
+    def click(self):
+        self._page._record_trace_event('action', {'action': 'click'})
+        self._el.click()
+
+    def fill(self, value):
+        text = str(value)
+        self._page._record_trace_event('action', {'action': 'fill', 'value': text})
+        self._page._driver.execute_script(
+            """
+            const el = arguments[0], val = arguments[1];
+            if (el.disabled || el.readOnly) throw new Error('Element is not editable');
+            el.focus();
+            const proto = el.tagName === 'TEXTAREA'
+              ? window.HTMLTextAreaElement.prototype
+              : window.HTMLInputElement.prototype;
+            const desc = Object.getOwnPropertyDescriptor(proto, 'value');
+            if (desc && desc.set) desc.set.call(el, val);
+            else el.value = val;
+            el.dispatchEvent(new Event('input', {bubbles: true}));
+            el.dispatchEvent(new Event('change', {bubbles: true}));
+            """,
+            self._el,
+            text,
+        )
+
+    def select_option(self, label):
+        from selenium.webdriver.support.ui import Select
+        self._page._record_trace_event('action', {'action': 'select_option', 'label': str(label)})
+        Select(self._el).select_by_visible_text(str(label))
+
+    def set_checked(self, checked):
+        target = bool(checked)
+        self._page._record_trace_event('action', {'action': 'set_checked', 'checked': target})
+        current = bool(self._el.is_selected())
+        if current != target:
+            self._el.click()
+
+
+class _CDPArrayHandle:
+    def __init__(self, page, elements):
+        self._page = page
+        self._elements = elements or []
+
+    def get_property(self, index_str):
+        idx = int(index_str)
+        return _CDPElementHandle(self._page, self._elements[idx])
+
+    def dispose(self):
+        self._elements = []
+
+
+class _CDPClock:
+    def __init__(self, page):
+        self._page = page
+
+    def install(self, time):
+        if isinstance(time, str):
+            moment = datetime.fromisoformat(time)
+        else:
+            moment = time
+        ms = int(moment.timestamp() * 1000)
+        self._page._install_virtual_clock(ms)
+
+    def set_system_time(self, time):
+        self.install(time)
+
+
+class _CDPMouse:
+    def __init__(self, page):
+        self._page = page
+        self._x = 0
+        self._y = 0
+
+    def move(self, x, y):
+        self._x = int(round(x))
+        self._y = int(round(y))
+
+    def wheel(self, dx, dy):
+        from selenium.webdriver.common.action_chains import ActionChains
+        from selenium.webdriver.common.actions.wheel_input import ScrollOrigin
+        self._page._record_trace_event('action', {'action': 'wheel', 'x': self._x, 'y': self._y, 'dx': dx, 'dy': dy})
+        origin = ScrollOrigin.from_viewport(self._x, self._y)
+        ActionChains(self._page._driver).scroll_from_origin(origin, int(dx), int(dy)).perform()
+
+
+class _CDPTracing:
+    def __init__(self, context):
+        self._context = context
+        self._active = False
+        self._chunk_title = ''
+        self._events = []
+        self._resources = {}
+
+    def start(self, screenshots=True, snapshots=True, sources=False):
+        self._active = True
+        self._events = [
+            {
+                'type': 'context-options',
+                'browserName': 'chromium',
+                'title': 'CDP Trace',
+                'viewport': self._context._viewport,
+                'timestamp': time.time() * 1000,
+            }
+        ]
+        self._resources = {}
+
+    def start_chunk(self, title=''):
+        self._chunk_title = title
+        self._events = [
+            {
+                'type': 'context-options',
+                'browserName': 'chromium',
+                'title': title,
+                'viewport': self._context._viewport,
+                'timestamp': time.time() * 1000,
+            }
+        ]
+        self._resources = {}
+
+    def record(self, kind, payload, jpeg_bytes=None, html_snapshot=None):
+        if not self._active:
+            return
+        ts = int(time.time() * 1000)
+        entry = {'type': kind, 'timestamp': ts, **payload}
+        if jpeg_bytes:
+            res_name = f'resources/page@{ts}-{len(self._resources) + 1}.jpeg'
+            self._resources[res_name] = jpeg_bytes
+            entry['screencastFrame'] = res_name
+        if html_snapshot:
+            entry['frameSnapshot'] = html_snapshot[:30000]
+        self._events.append(entry)
+
+    def stop_chunk(self, path=None):
+        if path:
+            out = Path(path)
+            out.parent.mkdir(parents=True, exist_ok=True)
+            with zipfile.ZipFile(out, 'w', compression=zipfile.ZIP_DEFLATED) as zf:
+                trace_lines = '\n'.join(json.dumps(ev, ensure_ascii=False) for ev in self._events) + '\n'
+                zf.writestr('trace.trace', trace_lines)
+                zf.writestr('trace.network', '')
+                for name, data in self._resources.items():
+                    zf.writestr(name, data)
+        self._events = []
+        self._resources = {}
+
+    def stop(self, path=None):
+        if path:
+            self.stop_chunk(path=path)
+        self._active = False
+
+
+class _CDPPage:
+    def __init__(self, context):
+        self._context = context
+        self._driver = context._driver
+        self.viewport_size = dict(context._viewport)
+        self.clock = _CDPClock(self)
+        self.mouse = _CDPMouse(self)
+        self._handlers = {'pageerror': [], 'console': [], 'dialog': [], 'download': []}
+        self._clock_script_id = None
+        self._closed = False
+
+    def set_default_timeout(self, timeout_ms):
+        self._driver.set_page_load_timeout(max(5.0, timeout_ms / 1000.0))
+
+    def route(self, pattern, handler):
+        pass
+
+    def on(self, event, callback):
+        if event in self._handlers:
+            self._handlers[event].append(callback)
+
+    def _install_virtual_clock(self, epoch_ms):
+        if self._clock_script_id is not None:
+            try:
+                self._driver.execute_cdp_cmd(
+                    'Page.removeScriptToEvaluateOnNewDocument',
+                    {'identifier': self._clock_script_id},
+                )
+            except Exception:
+                pass
+        source = f"""
+        (() => {{
+          const baseWall = {int(epoch_ms)};
+          const startPerf = performance.now();
+          const OrigDate = window.Date;
+          const currentMs = () => baseWall + Math.round(performance.now() - startPerf);
+          class VirtualDate extends OrigDate {{
+            constructor(...args) {{
+              if (args.length === 0) super(currentMs());
+              else super(...args);
+            }}
+            static now() {{ return currentMs(); }}
+          }}
+          function DateWrapper(...args) {{
+            if (!new.target) return new VirtualDate().toString();
+            return new VirtualDate(...args);
+          }}
+          Object.setPrototypeOf(DateWrapper, OrigDate);
+          DateWrapper.prototype = OrigDate.prototype;
+          DateWrapper.now = () => currentMs();
+          DateWrapper.parse = OrigDate.parse.bind(OrigDate);
+          DateWrapper.UTC = OrigDate.UTC.bind(OrigDate);
+          window.Date = DateWrapper;
+          window.__virtualClockInstalled = true;
+          window.__dialogsDismissedByTransport = window.__dialogsDismissedByTransport || [];
+          const dismissDialog = (kind, msg) => {{
+            window.__dialogsDismissedByTransport.push({{type: kind, message: String(msg ?? '')}});
+            return false;
+          }};
+          window.alert = msg => {{ dismissDialog('alert', msg); }};
+          window.confirm = msg => dismissDialog('confirm', msg);
+          window.prompt = msg => {{ dismissDialog('prompt', msg); return null; }};
+        }})();
+        """
+        res = self._driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {'source': source})
+        self._clock_script_id = res.get('identifier')
+
+    def goto(self, url, wait_until='networkidle'):
+        target_url = _rewrite_loopback_url(url, to_alias=True)
+        self._driver.get(target_url)
+        self.wait_for_timeout(120)
+        self._drain_events()
+        self._record_trace_event('goto', {'url': url})
+
+    def set_content(self, html):
+        self._driver.get('about:blank')
+        tree = self._driver.execute_cdp_cmd('Page.getFrameTree', {})
+        frame_id = tree['frameTree']['frame']['id']
+        self._driver.execute_cdp_cmd('Page.setDocumentContent', {'frameId': frame_id, 'html': html})
+        self.wait_for_timeout(60)
+
+    def wait_for_timeout(self, ms):
+        time.sleep(max(0.0, float(ms) / 1000.0))
+
+    def _drain_events(self):
+        try:
+            dialogs = self._driver.execute_script(
+                'const d = window.__dialogsDismissedByTransport || []; '
+                'window.__dialogsDismissedByTransport = []; return d;'
+            )
+            for item in dialogs or []:
+                class _Dlg:
+                    def __init__(self, m, t):
+                        self.message = m
+                        self.type = t
+                    def dismiss(self):
+                        pass
+                for cb in self._handlers.get('dialog', []):
+                    cb(_Dlg(item.get('message', ''), item.get('type', 'dialog')))
+        except Exception:
+            pass
+        try:
+            logs = self._driver.get_log('browser')
+            for entry in logs or []:
+                level = entry.get('level', '').lower()
+                msg = entry.get('message', '')
+                if 'lifegame.local' in msg and 'favicon.ico' in msg:
+                    continue
+                if level == 'severe':
+                    class _Msg:
+                        type = 'error'
+                        text = msg
+                    for cb in self._handlers.get('console', []):
+                        cb(_Msg())
+        except Exception:
+            pass
+
+    def _record_trace_event(self, kind, payload, jpeg_bytes=None):
+        try:
+            html_snap = self._driver.execute_script('return document.documentElement ? document.documentElement.outerHTML : "";')
+        except Exception:
+            html_snap = None
+        self._context.tracing.record(kind, payload, jpeg_bytes=jpeg_bytes, html_snapshot=html_snap)
+
+    def evaluate(self, script):
+        self._drain_events()
+        s = script.strip()
+        if s.startswith('(') or s.startswith('function') or '=>' in s[:40]:
+            result = self._driver.execute_script(f'return ({s})();')
+        else:
+            result = self._driver.execute_script(f'return ({s});')
+        if isinstance(result, dict) and 'url' in result:
+            result['url'] = _rewrite_loopback_url(result['url'], to_alias=False)
+        return result
+
+    def evaluate_handle(self, expression):
+        els = self._driver.execute_script(f'return ({expression}) || [];')
+        return _CDPArrayHandle(self, els)
+
+    def screenshot(self, path, animations='disabled', full_page=False):
+        self._driver.save_screenshot(str(path))
+        img_bytes = Path(path).read_bytes() if Path(path).exists() else None
+        self._record_trace_event('screenshot', {'path': str(path)}, jpeg_bytes=img_bytes)
+
+    def close(self):
+        self._closed = True
+
+
+class _CDPBrowserContext:
+    def __init__(self, user_data_dir, executable_path, headless, args, viewport, locale, timezone_id):
+        from selenium import webdriver
+        from selenium.webdriver.chrome.options import Options
+        from selenium.webdriver.chrome.service import Service
+
+        self._user_data_dir = str(user_data_dir) if user_data_dir else None
+        self._viewport = viewport or {'width': 390, 'height': 844}
+        self._timezone_id = timezone_id or 'Europe/Moscow'
+        self._locale = locale or 'ru-RU'
+        self.tracing = _CDPTracing(self)
+        self.pages = []
+
+        opts = Options()
+        opts.binary_location = executable_path or '/usr/bin/chromium'
+        if headless:
+            opts.add_argument('--headless=new')
+        for arg in args or []:
+            opts.add_argument(arg)
+        opts.add_argument('--disable-dev-shm-usage')
+        opts.add_argument(f'--lang={self._locale}')
+        if _needs_loopback_alias():
+            opts.add_argument(
+                f'--host-resolver-rules=MAP {LOCAL_HOST_ALIAS} 127.0.0.1, MAP * ~NOTFOUND, EXCLUDE 127.0.0.1'
+            )
+        if self._user_data_dir:
+            Path(self._user_data_dir).mkdir(parents=True, exist_ok=True)
+            opts.add_argument(f'--user-data-dir={self._user_data_dir}')
+        opts.set_capability('goog:loggingPrefs', {'browser': 'ALL'})
+
+        self._driver = webdriver.Chrome(service=Service('/usr/bin/chromedriver'), options=opts)
+        self._driver.execute_cdp_cmd(
+            'Emulation.setDeviceMetricsOverride',
+            {
+                'width': int(self._viewport['width']),
+                'height': int(self._viewport['height']),
+                'deviceScaleFactor': 1,
+                'mobile': False,
+            },
+        )
+        self._driver.execute_cdp_cmd('Emulation.setTimezoneOverride', {'timezoneId': self._timezone_id})
+        try:
+            self._driver.execute_cdp_cmd('Network.enable', {})
+        except Exception:
+            pass
+
+    def route(self, pattern, handler):
+        pass
+
+    def set_offline(self, offline):
+        try:
+            self._driver.execute_cdp_cmd(
+                'Network.emulateNetworkConditions',
+                {
+                    'offline': bool(offline),
+                    'latency': 0,
+                    'downloadThroughput': -1,
+                    'uploadThroughput': -1,
+                },
+            )
+        except Exception:
+            pass
+
+    def new_page(self, viewport=None):
+        if viewport:
+            self._viewport = dict(viewport)
+            self._driver.execute_cdp_cmd(
+                'Emulation.setDeviceMetricsOverride',
+                {
+                    'width': int(viewport['width']),
+                    'height': int(viewport['height']),
+                    'deviceScaleFactor': 1,
+                    'mobile': False,
+                },
+            )
+        page = _CDPPage(self)
+        self.pages = [page]
+        return page
+
+    def close(self):
+        if self._driver is not None:
+            try:
+                self._driver.quit()
+            except Exception:
+                pass
+            self._driver = None
+        self.pages = []
+
+
+class _CDPChromiumLauncher:
+    def launch_persistent_context(
+        self,
+        user_data_dir,
+        executable_path='/usr/bin/chromium',
+        headless=True,
+        args=None,
+        viewport=None,
+        locale='ru-RU',
+        timezone_id='Europe/Moscow',
+        accept_downloads=True,
+    ):
+        return _CDPBrowserContext(
+            user_data_dir=user_data_dir,
+            executable_path=executable_path,
+            headless=headless,
+            args=args,
+            viewport=viewport,
+            locale=locale,
+            timezone_id=timezone_id,
+        )
+
+    def launch(self, executable_path='/usr/bin/chromium', headless=True, args=None):
+        import tempfile
+        tmp_dir = tempfile.mkdtemp(prefix='lg_nonpersistent_')
+        return _CDPBrowserContext(
+            user_data_dir=tmp_dir,
+            executable_path=executable_path,
+            headless=headless,
+            args=args,
+            viewport={'width': 390, 'height': 844},
+            locale='ru-RU',
+            timezone_id='Europe/Moscow',
+        )
+
+
+class _CDPPlaywrightInstance:
+    def __init__(self):
+        self.chromium = _CDPChromiumLauncher()
+
+    def start(self):
+        return self
+
+    def stop(self):
+        pass
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        self.stop()
+
+
+def sync_playwright():
+    if HAS_PLAYWRIGHT and os.environ.get('LIFEGAME_FORCE_CDP_FALLBACK') != '1':
+        return _pw_sync_playwright()
+    return _CDPPlaywrightInstance()
+
+
+def compute_app_manifest(app_dir):
+    """Compute SHA-256 hashes of the static personal-lab application files."""
+    app_dir = Path(app_dir).resolve()
+    files = {}
+    core_hashes = {}
+    for name in CORE_APP_FILES:
+        target = app_dir / name
+        if target.is_file():
+            digest = file_sha256(target)
+            rel = f'personal-lab/{name}'
+            files[rel] = {'sha256': digest, 'bytes': target.stat().st_size}
+            core_hashes[name] = digest
+    fonts_dir = app_dir / 'fonts'
+    if fonts_dir.is_dir():
+        for font_file in sorted(fonts_dir.iterdir()):
+            if font_file.is_file():
+                rel = f'personal-lab/fonts/{font_file.name}'
+                files[rel] = {'sha256': file_sha256(font_file), 'bytes': font_file.stat().st_size}
+    for extra in ('icon.svg', 'icon-192.png', 'icon-512.png', 'AGENTS.md', '.gitignore'):
+        target = app_dir / extra
+        if target.is_file():
+            rel = f'personal-lab/{extra}'
+            files[rel] = {'sha256': file_sha256(target), 'bytes': target.stat().st_size}
+    return {
+        'app_dir': str(app_dir),
+        'core_files_sha256': core_hashes,
+        'app_version_sha256': canonical_sha256(core_hashes),
+        'files': files,
+    }
+
+
+class Driver:
+    def __init__(
+        self,
+        world_path,
+        run_dir,
+        resume=False,
+        read_only=False,
+        executable_path=None,
+        app_dir=None,
+        profiles_dir=None,
+        release_completed_contexts=True,
+        fail_after_ui_commit_step=None,
+    ):
+        self.world_path = Path(world_path).resolve()
+        self.world = json.loads(self.world_path.read_text())
+        self.world_sha256 = canonical_sha256(self.world)
+        self.directory = Path(run_dir).resolve()
+        self.profiles_dir = Path(profiles_dir).resolve() if profiles_dir else (self.directory / 'profiles')
+        self.executable_path = (
+            executable_path
+            or os.environ.get('CHROMIUM_BINARY')
+            or '/usr/bin/chromium'
+        )
+        default_app_dir = Path(os.environ.get('LIFEGAME_APP_DIR', '')).resolve() if os.environ.get('LIFEGAME_APP_DIR') else Path(__file__).resolve().parents[2]
+        self.app_dir = Path(app_dir).resolve() if app_dir else default_app_dir
+        self.app_manifest = compute_app_manifest(self.app_dir)
+        self.url = self.world.get('app_url', 'http://127.0.0.1:8041/personal-lab/')
+        self.origin = '/'.join(self.url.split('/')[:3])
+        self.zone = ZoneInfo(self.world.get('timezone', 'Europe/Moscow'))
+        self.personas = {p['id']: p for p in self.world['personas']}
+        self.read_only = bool(read_only)
+        self.resume_mode = bool(resume)
+        self.release_completed_contexts = bool(release_completed_contexts)
+        self.fail_after_ui_commit_step = (
+            int(fail_after_ui_commit_step)
+            if fail_after_ui_commit_step is not None
+            else (int(os.environ['LIFEGAME_FAIL_AFTER_UI_STEP']) if os.environ.get('LIFEGAME_FAIL_AFTER_UI_STEP') else None)
+        )
+        self._run_lock = None
+        self._profile_locks = {}
+        self._resume_event_path = None
+        self.resumed_count = 0
+        self.sequence = 0
+        self.finished = False
+        self.pw = None
+
+        run_json_path = self.directory / 'run.json'
+        if not self.resume_mode:
+            if run_json_path.exists() or (self.directory / 'checkpoint.json').exists() or (self.directory / 'events.jsonl').exists():
+                raise ValueError('run.json already exists: choose a fresh run-dir or pass --resume; do not overwrite evidence')
+            if self.read_only:
+                raise ValueError('cannot start a fresh run in --read-only mode')
+            self._check_all_profiles_unlocked()
+            self.directory.mkdir(parents=True, exist_ok=True)
+            self._run_lock = _ExclusiveFileLock(
+                self.directory / '.driver.lock',
+                {'pid': os.getpid(), 'started_at': utc_now(), 'mode': 'fresh', 'run_dir': str(self.directory)},
+            ).acquire(f'run-dir {self.directory}')
+            self._init_fresh_run()
+        else:
+            if not run_json_path.exists():
+                raise ValueError('cannot resume: run.json does not exist in run-dir')
+            self._verify_and_resume_existing_run()
+
+    def _default_actor_state(self):
+        return {
+            'last_day': 0,
+            'last_completed_date': None,
+            'memory': '',
+            'context': None,
+            'page': None,
+            'observation': None,
+            'elements': {},
+            'sequence': 0,
+            'day': None,
+            'steps': 0,
+            'budget': 0,
+            'virtual_time': None,
+            'sessions': [],
+            'active': False,
+            'latest_state': None,
+            'pending_action': None,
+            'reconcile_required': False,
+            'reconciled_actions': [],
+            'trace_interrupted': False,
+            'drafts_restored': True,
+            'needs_fresh_observe': False,
+            'resume_chunk': 0,
+            'trace_continuations': [],
+            'context_released': False,
+        }
+
+    def _check_all_profiles_unlocked(self):
+        for actor in self.personas:
+            prof_dir = self.profiles_dir / actor
+            _probe_lock_free(prof_dir / '.profile.lock', f'profile {prof_dir}')
+            _check_chromium_singleton_lock(prof_dir)
+
+    def _init_fresh_run(self):
+        dump(self.directory / 'world.json', self.world)
+        dump(
+            self.directory / 'source-manifest.json',
+            {
+                'base_repository_commit': '032c757db925e6957853045d1b6951bb1230ec59',
+                'status': 'laboratory runtime manifest captured at run start',
+                'app_version_sha256': self.app_manifest['app_version_sha256'],
+                'files': self.app_manifest['files'],
+            },
+        )
+        self.actors = {k: self._default_actor_state() for k in self.personas}
+        self.pw = sync_playwright().start()
+        backend_name = 'playwright' if (HAS_PLAYWRIGHT and os.environ.get('LIFEGAME_FORCE_CDP_FALLBACK') != '1') else 'chromium-cdp-fallback'
+        dump(
+            self.directory / 'run.json',
+            {
+                'started_at': utc_now(),
+                'app_url': self.url,
+                'mode': 'actual-browser-no-application-hooks',
+                'browser_backend': backend_name,
+                'world_sha256': self.world_sha256,
+                'app_version_sha256': self.app_manifest['app_version_sha256'],
+                'app_files_sha256': self.app_manifest['core_files_sha256'],
+                'resumed_count': 0,
+            },
+        )
+        self.save_checkpoint()
+        self.save_summary()
+
+    def _verify_world_and_app_version(self, run_meta, checkpoint_meta):
+        world_file = self.directory / 'world.json'
+        if not world_file.exists():
+            raise ValueError('world mismatch: world.json is missing from run-dir; refusing to resume')
+        saved_world = json.loads(world_file.read_text())
+        saved_world_sha = canonical_sha256(saved_world)
+        recorded_world_sha = (
+            (checkpoint_meta or {}).get('world_sha256')
+            or run_meta.get('world_sha256')
+            or saved_world_sha
+        )
+        if saved_world != self.world or saved_world_sha != self.world_sha256 or recorded_world_sha != self.world_sha256:
+            raise ValueError(
+                f'world mismatch: supplied world ({self.world_sha256[:12]}) does not match '
+                f'run-dir world.json ({saved_world_sha[:12]}); refusing to resume without overwriting evidence'
+            )
+        if run_meta.get('app_url') and run_meta.get('app_url') != self.url:
+            raise ValueError(
+                f"world/app_url mismatch: supplied {self.url} != recorded {run_meta.get('app_url')}; refusing to resume"
+            )
+
+        recorded_core = (
+            (checkpoint_meta or {}).get('app_files_sha256')
+            or run_meta.get('app_files_sha256')
+        )
+        if not recorded_core and (self.directory / 'source-manifest.json').exists():
+            sm = json.loads((self.directory / 'source-manifest.json').read_text())
+            recorded_core = {}
+            for name in CORE_APP_FILES:
+                entry = sm.get('files', {}).get(f'personal-lab/{name}')
+                if entry and 'sha256' in entry:
+                    recorded_core[name] = entry['sha256']
+
+        if recorded_core:
+            current_core = self.app_manifest['core_files_sha256']
+            mismatches = []
+            for name, expected_sha in recorded_core.items():
+                actual_sha = current_core.get(name)
+                if actual_sha != expected_sha:
+                    mismatches.append(f'{name} (expected {expected_sha[:10]}, got {(actual_sha or "missing")[:10]})')
+            if mismatches:
+                raise ValueError(
+                    f'application version mismatch: {", ".join(mismatches)}; '
+                    f'refusing to resume silently on modified application'
+                )
+
+        if self.world.get('app_version') is not None:
+            recorded_ver = saved_world.get('app_version')
+            if self.world.get('app_version') != recorded_ver:
+                raise ValueError(
+                    f"application version mismatch in world definition: {self.world.get('app_version')} != {recorded_ver}"
+                )
+
+    def _verify_and_resume_existing_run(self):
+        # 1. Verify locks BEFORE reading/mutating anything if not read_only
+        if not self.read_only:
+            _probe_lock_free(self.directory / '.driver.lock', f'run-dir {self.directory}')
+            self._check_all_profiles_unlocked()
+
+        run_meta = json.loads((self.directory / 'run.json').read_text())
+        checkpoint_path = self.directory / 'checkpoint.json'
+        checkpoint_meta = json.loads(checkpoint_path.read_text()) if checkpoint_path.exists() else None
+        summary_path = self.directory / 'summary.json'
+        summary_meta = json.loads(summary_path.read_text()) if summary_path.exists() else None
+
+        # 2. Verify world and app version match before touching any file
+        self._verify_world_and_app_version(run_meta, checkpoint_meta)
+
+        # 3. Parse existing events.jsonl (non-destructively)
+        events = []
+        corrupted_lines = 0
+        events_path = self.directory / 'events.jsonl'
+        if events_path.exists():
+            for idx, raw_line in enumerate(events_path.read_text().splitlines(), start=1):
+                if not raw_line.strip():
+                    continue
+                try:
+                    events.append(json.loads(raw_line))
+                except json.JSONDecodeError:
+                    corrupted_lines += 1
+
+        # 4. Reconstruct actor states from checkpoint / summary / events
+        self.actors = {k: self._default_actor_state() for k in self.personas}
+        self.sequence = max(
+            [
+                (checkpoint_meta or {}).get('sequence', 0),
+                max((ev.get('sequence', 0) for ev in events), default=0),
+            ]
+        )
+        self.finished = bool(
+            (checkpoint_meta or {}).get('finished')
+            or (summary_meta or {}).get('finished')
+            or any(ev.get('kind') == 'run_finished' for ev in events)
+        )
+        self.resumed_count = int((checkpoint_meta or {}).get('resumed_count', run_meta.get('resumed_count', 0)))
+
+        if checkpoint_meta and 'actors' in checkpoint_meta:
+            for actor, saved in checkpoint_meta['actors'].items():
+                if actor in self.actors:
+                    a = self.actors[actor]
+                    for key in (
+                        'last_day', 'last_completed_date', 'memory', 'sequence', 'day',
+                        'steps', 'budget', 'virtual_time', 'sessions', 'active',
+                        'latest_state', 'pending_action', 'reconcile_required',
+                        'reconciled_actions', 'trace_interrupted', 'drafts_restored',
+                        'resume_chunk', 'trace_continuations', 'observation', 'context_released',
+                    ):
+                        if key in saved:
+                            a[key] = saved[key]
+        elif summary_meta and 'actors' in summary_meta:
+            for actor, saved in summary_meta['actors'].items():
+                if actor in self.actors:
+                    a = self.actors[actor]
+                    a['last_day'] = int(saved.get('last_day', 0))
+                    a['active'] = bool(saved.get('active', False))
+                    a['sessions'] = list(saved.get('sessions', []))
+                    a['latest_state'] = saved.get('latest_state')
+                    if a['last_day'] > 0:
+                        d_iso = (
+                            date.fromisoformat(self.world['start_date'])
+                            + timedelta(days=a['last_day'] - 1)
+                        ).isoformat()
+                        a['last_completed_date'] = d_iso
+
+        # Reconcile against events.jsonl so even an uncheckpointed crash mid-action is caught
+        self._reconcile_from_events(events, corrupted_lines)
+
+        # Check if all planned days are already completed and no session is active
+        all_planned_done = all(
+            a['last_day'] >= len(self.world['sessions'].get(actor, {})) and not a['active']
+            for actor, a in self.actors.items()
+        )
+        if (self.finished or all_planned_done) and not self.read_only:
+            raise ValueError(
+                'run has already finished or completed all planned days: '
+                'refusing to resume completed run for mutation (pass --read-only to inspect)'
+            )
+
+        if self.read_only:
+            return
+
+        # 5. Acquire run-dir lock and start Playwright/Chromium transport for resume
+        self._run_lock = _ExclusiveFileLock(
+            self.directory / '.driver.lock',
+            {
+                'pid': os.getpid(),
+                'resumed_at': utc_now(),
+                'mode': 'resume',
+                'resumed_count': self.resumed_count + 1,
+                'run_dir': str(self.directory),
+            },
+        ).acquire(f'run-dir {self.directory}')
+
+        self.resumed_count += 1
+        self._resume_event_path = self.directory / f'events.resume-{self.resumed_count:03d}.jsonl'
+        self.pw = sync_playwright().start()
+
+        active_summary = {}
+        for actor, a in self.actors.items():
+            if a['active']:
+                a['needs_fresh_observe'] = True
+                a['trace_interrupted'] = True
+                a['drafts_restored'] = False
+                a['resume_chunk'] = int(a.get('resume_chunk', 0)) + 1
+                if a.get('pending_action') is not None:
+                    a['pending_action']['status'] = 'ambiguous_unconfirmed_after_interruption'
+                    a['pending_action']['auto_retried'] = False
+                    a['pending_action']['reconcile_notice'] = (
+                        'Прерывание произошло после отправки UI-действия до записи подтверждения в журнал. '
+                        'Действие НЕ повторялось автоматически. Вызовите observe для безопасного восстановления '
+                        'наблюдения и сверки фактического состояния экрана.'
+                    )
+                    a['reconcile_required'] = True
+                active_summary[actor] = {
+                    'day': a['day'],
+                    'steps': a['steps'],
+                    'budget': a['budget'],
+                    'virtual_time': a['virtual_time'],
+                    'reconcile_required': a['reconcile_required'],
+                    'pending_action': a['pending_action'],
+                }
+
+        run_meta['resumed_count'] = self.resumed_count
+        run_meta['last_resumed_at'] = utc_now()
+        dump(self.directory / 'run.json', run_meta)
+
+        self.log(
+            'run_resumed',
+            resumed_count=self.resumed_count,
+            continuation_log=str(self._resume_event_path),
+            active_sessions=active_summary,
+            corrupted_trailing_event_lines=corrupted_lines,
+        )
+        self.save_checkpoint()
+        self.save_summary()
+
+    def _reconcile_from_events(self, events, corrupted_lines=0):
+        for ev in events:
+            actor = ev.get('actor')
+            if actor not in self.actors:
+                continue
+            a = self.actors[actor]
+            kind = ev.get('kind')
+            ev_day = ev.get('day')
+            if ev.get('virtual_time'):
+                a['virtual_time'] = ev['virtual_time']
+            obs_id = ev.get('observation_id')
+            if obs_id and '-o' in obs_id:
+                try:
+                    seq_num = int(obs_id.rsplit('-o', 1)[-1])
+                    a['sequence'] = max(a['sequence'], seq_num)
+                except ValueError:
+                    pass
+            if kind == 'session_opened' and ev_day is not None:
+                if int(ev_day) > a['last_day']:
+                    a['day'] = int(ev_day)
+                    a['active'] = True
+                    a['budget'] = int(ev.get('budget', a['budget'] or 18))
+            elif kind == 'action_started' and ev_day is not None and int(ev_day) > a['last_day']:
+                a['day'] = int(ev_day)
+                a['active'] = True
+                step_num = int(ev.get('step', a['steps'] + 1))
+                a['steps'] = max(a['steps'], step_num)
+                a['pending_action'] = {
+                    'command': ev.get('command'),
+                    'step': step_num,
+                    'observation_id_before': ev.get('observation_id_before'),
+                    'screenshot_before': ev.get('before'),
+                    'virtual_time_before': ev.get('virtual_time'),
+                    'started_at_utc': ev.get('real_time_utc'),
+                    'status': 'ambiguous_unconfirmed_after_interruption',
+                    'auto_retried': False,
+                }
+                a['reconcile_required'] = True
+            elif kind == 'action' and ev_day is not None and int(ev_day) > a['last_day']:
+                a['pending_action'] = None
+                a['reconcile_required'] = False
+            elif kind in ('session_ended', 'no_use') and ev_day is not None:
+                d_int = int(ev_day)
+                if d_int >= a['last_day']:
+                    a['last_day'] = d_int
+                    a['day'] = d_int
+                    a['active'] = False
+                    a['pending_action'] = None
+                    a['reconcile_required'] = False
+                    a['last_completed_date'] = (
+                        date.fromisoformat(self.world['start_date']) + timedelta(days=d_int - 1)
+                    ).isoformat()
+                if ev.get('memory') is not None:
+                    a['memory'] = ev['memory']
+
+        # Also ensure observation sequence counter accounts for any snapshot files on disk
+        for actor, a in self.actors.items():
+            for snap_file in (self.directory / actor).glob('day-*/*.json'):
+                if snap_file.name == 'observer-state.json':
+                    continue
+                stem = snap_file.stem
+                if '-o' in stem:
+                    try:
+                        seq_num = int(stem.rsplit('-o', 1)[-1])
+                        a['sequence'] = max(a['sequence'], seq_num)
+                    except ValueError:
+                        pass
+
+    def _serialize_actor_checkpoint(self, actor, a):
+        obs_meta = None
+        if a.get('observation'):
+            obs = a['observation']
+            obs_meta = {
+                k: obs.get(k)
+                for k in (
+                    'observation_id', 'screenshot', 'virtual_time_observed',
+                    'actions_used', 'action_budget', 'modal', 'viewport', 'title', 'url',
+                )
+                if k in obs
+            }
+        return {
+            'actor': actor,
+            'day': a['day'],
+            'last_day': a['last_day'],
+            'last_completed_date': a['last_completed_date'],
+            'memory': a['memory'],
+            'active': a['active'],
+            'steps': a['steps'],
+            'budget': a['budget'],
+            'budget_remaining': max(0, int(a['budget']) - int(a['steps'])) if a['active'] else 0,
+            'virtual_time': a['virtual_time'],
+            'sequence': a['sequence'],
+            'observation': obs_meta,
+            'pending_action': a['pending_action'],
+            'reconcile_required': a['reconcile_required'],
+            'reconciled_actions': a['reconciled_actions'],
+            'trace_interrupted': a['trace_interrupted'],
+            'drafts_restored': a['drafts_restored'],
+            'needs_fresh_observe': a['needs_fresh_observe'],
+            'resume_chunk': a['resume_chunk'],
+            'trace_continuations': a['trace_continuations'],
+            'context_released': a['context_released'],
+            'sessions': a['sessions'],
+            'latest_state': a['latest_state'],
+        }
+
+    def save_checkpoint(self):
+        if self.read_only:
+            return
+        payload = {
+            'schema': 1,
+            'updated_at': utc_now(),
+            'app_url': self.url,
+            'world_sha256': self.world_sha256,
+            'app_version_sha256': self.app_manifest['app_version_sha256'],
+            'app_files_sha256': self.app_manifest['core_files_sha256'],
+            'sequence': self.sequence,
+            'finished': self.finished,
+            'resumed_count': self.resumed_count,
+            'actors': {
+                actor: self._serialize_actor_checkpoint(actor, a)
+                for actor, a in self.actors.items()
+            },
+        }
+        dump(self.directory / 'checkpoint.json', payload)
+        return payload
+
+    def log(self, kind, actor=None, **data):
+        if self.read_only:
+            return
+        self.sequence += 1
+        a = self.actors.get(actor, {})
+        record = {
+            'sequence': self.sequence,
+            'real_time_utc': utc_now(),
+            'kind': kind,
+            'actor': actor,
+            'day': a.get('day'),
+            'virtual_time': a.get('virtual_time'),
+            **data,
+        }
+        line = json.dumps(record, ensure_ascii=False) + '\n'
+        with (self.directory / 'events.jsonl').open('a', encoding='utf-8') as handle:
+            handle.write(line)
+            handle.flush()
+        if self._resume_event_path is not None:
+            with self._resume_event_path.open('a', encoding='utf-8') as handle:
+                handle.write(line)
+                handle.flush()
+
+    def plan(self, actor, day):
+        if actor not in self.actors:
+            raise ValueError('unknown actor')
+        planned = self.world['sessions'].get(actor, {}).get(str(day))
+        if planned is None:
+            raise ValueError('day absent from predeclared world')
+        a = self.actors[actor]
+        return a, planned
+
+    def brief(self, actor, day):
+        a, p = self.plan(actor, day)
+        when = date.fromisoformat(self.world['start_date']) + timedelta(days=int(day) - 1)
+        result = {
+            'actor': actor,
+            'day': int(day),
+            'date': when.isoformat(),
+            'context': p.get('context', ''),
+            'available': p.get('available', True),
+            'budget': p.get('budget', 18),
+            'memory': a['memory'],
+            'last_day': a['last_day'],
+            'last_completed_date': a['last_completed_date'],
+            'active': a['active'],
+            'active_day': a['day'] if a['active'] else None,
+            'actions_used': a['steps'] if a['active'] else 0,
+            'budget_remaining': max(0, a['budget'] - a['steps']) if a['active'] else int(p.get('budget', 18)),
+            'virtual_time': a['virtual_time'],
+            'reconcile_required': a['reconcile_required'],
+            'ambiguous_pending_action': a['pending_action'],
+            'past_days': [
+                {
+                    'day': s['day'],
+                    'date': s.get('date') or (
+                        date.fromisoformat(self.world['start_date']) + timedelta(days=int(s['day']) - 1)
+                    ).isoformat(),
+                    'status': s['status'],
+                    'outcome': s.get('outcome'),
+                }
+                for s in a['sessions']
+            ],
+        }
+        return result
+
+    def status(self, actor=None):
+        if actor is not None:
+            if actor not in self.actors:
+                raise ValueError('unknown actor')
+            a = self.actors[actor]
+            return self._serialize_actor_checkpoint(actor, a)
+        return {
+            'finished': self.finished,
+            'read_only': self.read_only,
+            'resumed_count': self.resumed_count,
+            'sequence': self.sequence,
+            'actors': {
+                k: self._serialize_actor_checkpoint(k, v)
+                for k, v in self.actors.items()
+            },
+        }
+
+    def _ensure_writable(self):
+        if self.read_only:
+            raise ValueError('run is opened in read-only mode; mutations are disabled')
+        if self.finished:
+            raise ValueError('run has finished')
+
+    def check_day(self, actor, day):
+        a, p = self.plan(actor, day)
+        self._ensure_writable()
+        if a['active']:
+            raise ValueError('end current session before a new day')
+        if int(day) != a['last_day'] + 1:
+            raise ValueError(f"next day must be {a['last_day'] + 1}; repeated or out-of-order day rejected")
+        return a, p
+
+    def skip(self, actor, day, outcome='', memory=None):
+        a, p = self.check_day(actor, day)
+        d_int = int(day)
+        day_date = date.fromisoformat(self.world['start_date']) + timedelta(days=d_int - 1)
+        a['day'] = d_int
+        a['last_day'] = d_int
+        a['last_completed_date'] = day_date.isoformat()
+        a['virtual_time'] = (
+            datetime.combine(day_date, datetime.min.time(), self.zone)
+            + timedelta(hours=float(p.get('hour', 9)))
+        ).isoformat()
+        if memory is not None:
+            a['memory'] = memory
+        record = {
+            'day': d_int,
+            'date': day_date.isoformat(),
+            'status': 'no_use',
+            'reason': 'unavailable' if not p.get('available', True) else 'actor_choice',
+            'outcome': outcome,
+            'actions': 0,
+            'context': p.get('context', ''),
+        }
+        a['sessions'].append(record)
+        self.log('no_use', actor, **{k: v for k, v in record.items() if k != 'day'})
+        self.save_checkpoint()
+        self.save_summary()
+        return {
+            'actor': actor,
+            'day': d_int,
+            'date': day_date.isoformat(),
+            'no_use': True,
+            'memory': a['memory'],
+            'reason': record['reason'],
+        }
+
+    def ensure_context(self, actor):
+        a = self.actors[actor]
+        if a['context'] is None:
+            profile_path = self.profiles_dir / actor
+            _check_chromium_singleton_lock(profile_path)
+            if actor not in self._profile_locks or self._profile_locks[actor].handle is None:
+                self._profile_locks[actor] = _ExclusiveFileLock(
+                    profile_path / '.profile.lock',
+                    {
+                        'pid': os.getpid(),
+                        'actor': actor,
+                        'run_dir': str(self.directory),
+                        'locked_at': utc_now(),
+                    },
+                ).acquire(f'profile {profile_path}')
+            viewport = self.personas[actor].get('viewport', {'width': 390, 'height': 844})
+            extra_args = ['--no-sandbox']
+            if _needs_loopback_alias():
+                extra_args.append(
+                    f'--host-resolver-rules=MAP {LOCAL_HOST_ALIAS} 127.0.0.1, MAP * ~NOTFOUND, EXCLUDE 127.0.0.1'
+                )
+            context = self.pw.chromium.launch_persistent_context(
+                str(profile_path),
+                executable_path=self.executable_path,
+                headless=True,
+                args=extra_args,
+                viewport=viewport,
+                locale='ru-RU',
+                timezone_id=self.world.get('timezone', 'Europe/Moscow'),
+                accept_downloads=True,
+            )
+            allowed_origins = (self.origin + '/', f'http://{LOCAL_HOST_ALIAS}:')
+            context.route(
+                '**/*',
+                lambda route: route.continue_()
+                if route.request.url.startswith(allowed_origins)
+                else route.abort(),
+            )
+            context.tracing.start(screenshots=True, snapshots=True, sources=False)
+            for page in list(context.pages):
+                try:
+                    page.close()
+                except Exception:
+                    pass
+            a['context'] = context
+            a['context_released'] = False
+        return a['context']
+
+    def release_context(self, actor):
+        if actor not in self.actors:
+            raise ValueError('unknown actor')
+        a = self.actors[actor]
+        if a['active']:
+            raise ValueError('cannot release browser context while session is active')
+        if a['context'] is not None:
+            try:
+                a['context'].tracing.stop()
+            except Exception:
+                pass
+            try:
+                a['context'].close()
+            except Exception:
+                pass
+            a['context'] = None
+        if actor in self._profile_locks:
+            self._profile_locks[actor].release()
+            del self._profile_locks[actor]
+        a['context_released'] = True
+        self.save_checkpoint()
+        return {'actor': actor, 'context_released': True}
+
+    def _open_actor_page(self, actor, moment, chunk_title):
+        a = self.actors[actor]
+        _, p = self.plan(actor, a['day'])
+        context = self.ensure_context(actor)
+        context.set_offline(p.get('network', 'online') == 'offline')
+        context.tracing.start_chunk(title=chunk_title)
+        page = context.new_page()
+        a['page'] = page
+        page.set_default_timeout(4000)
+        page.on('pageerror', lambda error: self.log('pageerror', actor, error=str(error)))
+        page.on(
+            'console',
+            lambda message: self.log('console', actor, level=message.type, text=message.text)
+            if message.type in ('error', 'warning')
+            else None,
+        )
+        page.on(
+            'dialog',
+            lambda dialog: (
+                self.log('native_dialog_dismissed_by_transport', actor, message=dialog.message),
+                dialog.dismiss(),
+            ),
+        )
+        page.on('download', lambda download: self.capture_download(actor, download))
+        page.clock.install(time=moment)
+        page.goto(_rewrite_loopback_url(self.url, to_alias=True), wait_until='networkidle')
+        return page
+
+    def _reopen_interrupted_session(self, actor):
+        a = self.actors[actor]
+        _, p = self.plan(actor, a['day'])
+        if a.get('virtual_time'):
+            moment = datetime.fromisoformat(a['virtual_time'])
+        else:
+            day_date = date.fromisoformat(self.world['start_date']) + timedelta(days=int(a['day']) - 1)
+            moment = datetime.combine(day_date, datetime.min.time(), self.zone) + timedelta(hours=float(p.get('hour', 9)))
+            a['virtual_time'] = moment.isoformat()
+        chunk_idx = int(a.get('resume_chunk', 1))
+        self._open_actor_page(actor, moment, f'{actor} day {a["day"]} resume {chunk_idx}')
+        self.log(
+            'active_session_reopened',
+            actor,
+            day=a['day'],
+            actions_used=a['steps'],
+            action_budget=a['budget'],
+            reconcile_required=a['reconcile_required'],
+            pending_action=a['pending_action'],
+            trace_interrupted=a['trace_interrupted'],
+            drafts_restored=False,
+        )
+
+    def session(self, actor, day):
+        self._ensure_writable()
+        a, p = self.plan(actor, day)
+        d_int = int(day)
+        # If an interrupted active session for this exact day is being reattached after daemon resume:
+        if a['active'] and a['day'] == d_int and a['page'] is None:
+            obs = self.observe(actor)
+            return {
+                **self.brief(actor, d_int),
+                'resumed_active_session': True,
+                'trace_interrupted': a['trace_interrupted'],
+                'drafts_restored': False,
+                'observation': obs,
+            }
+        a, p = self.check_day(actor, d_int)
+        if not p.get('available', True):
+            return self.skip(actor, d_int, outcome='Unavailable in predeclared world')
+        a['day'] = d_int
+        a['steps'] = 0
+        a['active'] = True
+        a['pending_action'] = None
+        a['reconcile_required'] = False
+        a['trace_interrupted'] = False
+        a['drafts_restored'] = True
+        a['needs_fresh_observe'] = False
+        a['resume_chunk'] = 0
+        a['trace_continuations'] = []
+        day_date = date.fromisoformat(self.world['start_date']) + timedelta(days=d_int - 1)
+        hour = float(p.get('hour', 9))
+        moment = datetime.combine(day_date, datetime.min.time(), self.zone) + timedelta(hours=hour)
+        a['virtual_time'] = moment.isoformat()
+        a['budget'] = int(p.get('budget', 18))
+        self._open_actor_page(actor, moment, f'{actor} day {d_int}')
+        self.log('session_opened', actor, context=p.get('context', ''), budget=a['budget'])
+        obs = self.observe(actor)
+        self.save_checkpoint()
+        self.save_summary()
+        return {**self.brief(actor, d_int), 'observation': obs}
+
+    def capture_download(self, actor, download):
+        path = (
+            self.directory
+            / actor
+            / f'day-{self.actors[actor]["day"]:02d}'
+            / 'downloads'
+            / Path(download.suggested_filename).name
+        )
+        path.parent.mkdir(parents=True, exist_ok=True)
+        download.save_as(str(path))
+        self.log('download', actor, path=str(path))
+
+    def observe(self, actor):
+        self._ensure_writable()
+        if actor not in self.actors:
+            raise ValueError('unknown actor')
+        a = self.actors[actor]
+        if not a['active']:
+            raise ValueError('no active page; open session first')
+        reopened_now = False
+        if a['page'] is None:
+            self._reopen_interrupted_session(actor)
+            reopened_now = True
+        page = a['page']
+        page.wait_for_timeout(90)
+        data = page.evaluate(SNAPSHOT)
+        data['url'] = self.url
+        a['virtual_time'] = data['virtual_time_observed']
+        # Element handles are held by the transport, never application state/functions.
+        handles = page.evaluate_handle('window.__syntheticViewControls')
+        a['elements'] = {
+            item['element']: handles.get_property(str(i)).as_element()
+            for i, item in enumerate(data['elements'])
+        }
+        handles.dispose()
+        a['sequence'] += 1
+        identifier = f'{actor}-d{a["day"]:02d}-o{a["sequence"]:04d}'
+        folder = self.directory / actor / f'day-{a["day"]:02d}'
+        folder.mkdir(parents=True, exist_ok=True)
+        path = folder / f'{identifier}.png'
+        page.screenshot(path=str(path), animations='disabled')
+        data.update(
+            {
+                'observation_id': identifier,
+                'screenshot': str(path),
+                'actions_used': a['steps'],
+                'action_budget': a['budget'],
+            }
+        )
+        if reopened_now or a.get('trace_interrupted'):
+            data['resumed_from_interruption'] = True
+            data['trace_interrupted'] = True
+            data['drafts_restored'] = False
+        if a.get('pending_action') is not None:
+            pending_copy = dict(a['pending_action'])
+            pending_copy['reconciled_by_observation_id'] = identifier
+            data['ambiguous_pending_action'] = pending_copy
+            data['reconcile_required'] = True
+            data['recovery_notice'] = (
+                'ВНИМАНИЕ: Предыдущее действие было прервано до записи подтверждения в журнал. '
+                'Оно НЕ повторялось автоматически. Сравните текущий экран с ожидаемым состоянием '
+                'перед отправкой следующей команды. Несохранённые черновики формы и прерванный '
+                'фрагмент trace не выдаются за полностью восстановленные.'
+            )
+            a['reconciled_actions'].append(pending_copy)
+            a['pending_action'] = None
+            a['reconcile_required'] = False
+            self.log(
+                'pending_action_reconciliation_observed',
+                actor,
+                observation_id=identifier,
+                reconciled_action=pending_copy,
+            )
+        a['needs_fresh_observe'] = False
+        a['observation'] = data
+        dump(folder / f'{identifier}.json', data)
+        self.log(
+            'observation',
+            actor,
+            observation_id=identifier,
+            screenshot=str(path),
+            snapshot=str(path.with_suffix('.json')),
+        )
+        self.save_checkpoint()
+        return data
+
+    def action(self, command):
+        self._ensure_writable()
+        actor = command['actor']
+        if actor not in self.actors:
+            raise ValueError('unknown actor')
+        a = self.actors[actor]
+        if not a['active']:
+            raise ValueError('no active session')
+        if a.get('reconcile_required') or a.get('pending_action') is not None:
+            raise ValueError(
+                'ambiguous pending_action after interruption: automatic retry is forbidden; '
+                'call observe first to inspect and reconcile actual UI state before acting'
+            )
+        if a.get('needs_fresh_observe') or a['page'] is None or a['observation'] is None:
+            raise ValueError(
+                'session was reopened after interruption (uncommitted drafts are not restored); '
+                'call observe first to obtain current screen before acting'
+            )
+        if a['steps'] >= a['budget']:
+            return {
+                'error': 'action_budget_exhausted',
+                'actions_used': a['steps'],
+                'allowed': ['observe', 'end'],
+            }
+        if command.get('observation_id') != a['observation']['observation_id']:
+            raise ValueError('stale observation_id; observe again before acting')
+        before = a['observation']['screenshot']
+        obs_id_before = a['observation']['observation_id']
+        start = time.monotonic()
+        a['steps'] += 1
+        # Record in-flight pending_action BEFORE dispatching UI operation to browser
+        a['pending_action'] = {
+            'command': command,
+            'step': a['steps'],
+            'observation_id_before': obs_id_before,
+            'screenshot_before': before,
+            'virtual_time_before': a['virtual_time'],
+            'started_at_utc': utc_now(),
+            'status': 'in_flight_unconfirmed',
+            'auto_retried': False,
+        }
+        self.log(
+            'action_started',
+            actor,
+            command=command,
+            step=a['steps'],
+            observation_id_before=obs_id_before,
+            before=before,
+        )
+        self.save_checkpoint()
+
+        error = None
+        try:
+            if command['op'] == 'scroll':
+                page = a['page']
+                page.mouse.move(page.viewport_size['width'] / 2, page.viewport_size['height'] / 2)
+                page.mouse.wheel(0, max(-1000, min(1000, int(command.get('dy', 500)))))
+            else:
+                element = a['elements'].get(command.get('element'))
+                if element is None:
+                    raise ValueError('unknown visible element')
+                action = command.get('action')
+                if action == 'click':
+                    element.click()
+                elif action == 'fill':
+                    element.fill(str(command.get('value', '')))
+                elif action == 'select':
+                    element.select_option(label=str(command['value']))
+                elif action == 'check':
+                    element.set_checked(bool(command.get('value', True)))
+                else:
+                    raise ValueError('unsupported action')
+        except Exception as exc:
+            error = str(exc)
+
+        # Optional real-browser fault injection hook for testing crash after UI commit before journal confirmation
+        if (
+            (self.fail_after_ui_commit_step is not None and a['steps'] == self.fail_after_ui_commit_step)
+            or command.get('_crash_after_ui_commit') is True
+        ):
+            try:
+                a['page'].wait_for_timeout(200)
+                if a['context'] is not None:
+                    a['context'].close()
+            except Exception:
+                pass
+            if actor in self._profile_locks:
+                self._profile_locks[actor].release()
+            if self._run_lock is not None:
+                self._run_lock.release()
+            os._exit(99)
+
+        duration = round((time.monotonic() - start) * 1000, 1)
+        a['pending_action'] = None
+        observation = self.observe(actor)
+        self.log(
+            'action',
+            actor,
+            command=command,
+            success=error is None,
+            error=error,
+            duration_ms=duration,
+            before=before,
+            after=observation['screenshot'],
+            observation_id=observation['observation_id'],
+        )
+        self.save_checkpoint()
+        self.save_summary()
+        return {
+            'success': error is None,
+            'error': error,
+            'duration_ms': duration,
+            'observation': observation,
+        }
+
+    def snapshot_state(self, actor):
+        a = self.actors[actor]
+        raw = a['page'].evaluate(
+            '''() => Object.fromEntries(Object.keys(localStorage).sort().map(key => [key,localStorage.getItem(key)]))'''
+        )
+        parsed = {}
+        for key, value in raw.items():
+            try:
+                parsed[key] = json.loads(value)
+            except (TypeError, ValueError):
+                parsed[key] = value
+        path = self.directory / actor / f'day-{a["day"]:02d}' / 'observer-state.json'
+        dump(path, parsed)
+        primary = parsed.get('lifegame-personal-lab-my-v1')
+        summary = {
+            'keys': list(parsed),
+            'path': str(path),
+            'primary_valid_json': isinstance(primary, dict),
+        }
+        if isinstance(primary, dict):
+            ledger = primary.get('ledger', [])
+            summary.update(
+                {
+                    'lastProcessed': primary.get('lastProcessed'),
+                    'revision': primary.get('revision'),
+                    'counts': {
+                        k: len(primary.get(k, []))
+                        for k in ('tasks', 'habits', 'quests', 'cal', 'goals', 'facts', 'ledger', 'misses')
+                    },
+                    'coins': sum(item.get('coins', 0) for item in ledger),
+                    'xp': sum(item.get('xp', 0) for item in ledger),
+                }
+            )
+        a['latest_state'] = summary
+        return summary
+
+    def end(self, actor, outcome='', memory='', frictions=None):
+        self._ensure_writable()
+        if actor not in self.actors:
+            raise ValueError('unknown actor')
+        a = self.actors[actor]
+        if not a['active']:
+            raise ValueError('no active session')
+        if a.get('reconcile_required') or a.get('pending_action') is not None:
+            raise ValueError(
+                'ambiguous pending_action requires reconciliation: call observe first before ending session'
+            )
+        if a['page'] is None:
+            self._reopen_interrupted_session(actor)
+        state = self.snapshot_state(actor)
+        folder = self.directory / actor / f'day-{a["day"]:02d}'
+        folder.mkdir(parents=True, exist_ok=True)
+        trace_path = folder / 'trace.zip'
+        continuation_path = None
+        if a.get('trace_interrupted') or trace_path.exists():
+            chunk_idx = max(1, int(a.get('resume_chunk', 1)))
+            continuation_path = folder / f'trace-resume-{chunk_idx:02d}.zip'
+            while continuation_path.exists():
+                chunk_idx += 1
+                continuation_path = folder / f'trace-resume-{chunk_idx:02d}.zip'
+            a['context'].tracing.stop_chunk(path=str(continuation_path))
+            a['trace_continuations'].append(str(continuation_path))
+            if not trace_path.exists():
+                import shutil
+                shutil.copy2(continuation_path, trace_path)
+        else:
+            a['context'].tracing.stop_chunk(path=str(trace_path))
+
+        day_date = (
+            date.fromisoformat(self.world['start_date']) + timedelta(days=int(a['day']) - 1)
+        ).isoformat()
+        record = {
+            'day': a['day'],
+            'date': day_date,
+            'status': 'completed',
+            'outcome': outcome,
+            'actions': a['steps'],
+            'frictions': frictions or [],
+            'state': state,
+            'trace': str(trace_path),
+        }
+        if a.get('trace_interrupted'):
+            record['trace_interrupted'] = True
+            record['drafts_restored'] = False
+            record['trace_continuations'] = list(a['trace_continuations'])
+        if a.get('reconciled_actions'):
+            record['reconciled_actions'] = list(a['reconciled_actions'])
+
+        a['sessions'].append(record)
+        a['memory'] = memory
+        a['last_day'] = a['day']
+        a['last_completed_date'] = day_date
+        a['active'] = False
+        a['pending_action'] = None
+        a['reconcile_required'] = False
+        a['needs_fresh_observe'] = False
+        try:
+            a['page'].close()
+        except Exception:
+            pass
+        a['page'], a['elements'], a['observation'] = None, {}, None
+
+        # Release persistent context after closing day to free browser memory while keeping disk profile intact
+        if self.release_completed_contexts:
+            self.release_context(actor)
+            record['context_released'] = True
+
+        self.log('session_ended', actor, **{k: v for k, v in record.items() if k != 'day'}, memory=memory)
+        self.save_checkpoint()
+        self.save_summary()
+        # Internal snapshots intentionally absent from the actor response.
+        return {
+            'actor': actor,
+            'day': a['day'],
+            'date': day_date,
+            'status': 'completed',
+            'actions': a['steps'],
+            'memory': memory,
+            'outcome': outcome,
+            'context_released': a['context_released'],
+        }
+
+    def suspend_on_shutdown(self):
+        """Preserve active sessions and checkpoint state on daemon interruption without marking them completed."""
+        if self.read_only or self.finished:
+            self.release_locks()
+            return
+        for actor, a in self.actors.items():
+            if a['active'] and a['context'] is not None:
+                folder = self.directory / actor / f'day-{a["day"]:02d}'
+                folder.mkdir(parents=True, exist_ok=True)
+                trace_path = folder / 'trace.zip'
+                if not trace_path.exists():
+                    part_path = trace_path
+                else:
+                    idx = max(1, int(a.get('resume_chunk', 1)))
+                    part_path = folder / f'trace-part-{idx:02d}.zip'
+                    while part_path.exists():
+                        idx += 1
+                        part_path = folder / f'trace-part-{idx:02d}.zip'
+                try:
+                    a['context'].tracing.stop_chunk(path=str(part_path))
+                    if part_path != trace_path:
+                        a['trace_continuations'].append(str(part_path))
+                except Exception:
+                    pass
+                a['trace_interrupted'] = True
+                a['drafts_restored'] = False
+                a['needs_fresh_observe'] = True
+                self.log(
+                    'session_interrupted',
+                    actor,
+                    day=a['day'],
+                    steps=a['steps'],
+                    budget=a['budget'],
+                    pending_action=a['pending_action'],
+                    partial_trace=str(part_path),
+                )
+            if a['context'] is not None:
+                try:
+                    a['context'].tracing.stop()
+                except Exception:
+                    pass
+                try:
+                    a['context'].close()
+                except Exception:
+                    pass
+                a['context'] = None
+                a['page'] = None
+                a['elements'] = {}
+        if self.pw is not None:
+            try:
+                self.pw.stop()
+            except Exception:
+                pass
+            self.pw = None
+        self.log('daemon_stopped', finished=self.finished)
+        self.save_checkpoint()
+        self.save_summary()
+        self.release_locks()
+
+    def release_locks(self):
+        for lock in list(self._profile_locks.values()):
+            lock.release()
+        self._profile_locks.clear()
+        if self._run_lock is not None:
+            self._run_lock.release()
+            self._run_lock = None
+
+    def save_summary(self):
+        if self.read_only:
+            summary_path = self.directory / 'summary.json'
+            if summary_path.exists():
+                return json.loads(summary_path.read_text())
+        summary = {
+            'app_url': self.url,
+            'finished': self.finished,
+            'resumed_count': self.resumed_count,
+            'updated_at': utc_now(),
+            'actors': {},
+        }
+        for actor, a in self.actors.items():
+            plans = self.world['sessions'].get(actor, {})
+            sessions = a['sessions']
+            summary['actors'][actor] = {
+                'planned': len(plans),
+                'opened': sum(s['status'] == 'completed' for s in sessions) + int(a['active']),
+                'completed': sum(s['status'] == 'completed' for s in sessions),
+                'no_use': sum(s['status'] == 'no_use' for s in sessions),
+                'actions': sum(s.get('actions', 0) for s in sessions) + (a['steps'] if a['active'] else 0),
+                'last_day': a['last_day'],
+                'last_completed_date': a['last_completed_date'],
+                'active': a['active'],
+                'active_day': a['day'] if a['active'] else None,
+                'actions_used_active': a['steps'] if a['active'] else 0,
+                'action_budget_active': a['budget'] if a['active'] else 0,
+                'virtual_time': a['virtual_time'],
+                'memory': a['memory'],
+                'reconcile_required': a['reconcile_required'],
+                'pending_action': a['pending_action'],
+                'context_released': a['context_released'],
+                'sessions': sessions,
+                'latest_state': a.get('latest_state'),
+                'profile': str(self.profiles_dir / actor),
+            }
+        if not self.read_only:
+            dump(self.directory / 'summary.json', summary)
+        return summary
+
+    def finish(self):
+        self._ensure_writable()
+        if any(a['active'] for a in self.actors.values()):
+            raise ValueError('end each active session before finish')
+        if not self.finished:
+            for actor, a in self.actors.items():
+                if a['context']:
+                    try:
+                        a['context'].tracing.stop()
+                    except Exception:
+                        pass
+                    try:
+                        a['context'].close()
+                    except Exception:
+                        pass
+                    a['context'] = None
+                a['context_released'] = True
+            if self.pw is not None:
+                try:
+                    self.pw.stop()
+                except Exception:
+                    pass
+                self.pw = None
+            self.finished = True
+            self.log('run_finished')
+            self.save_checkpoint()
+        return self.save_summary()
+
+    def dispatch(self, command):
+        op = command.get('op')
+        if op == 'brief':
+            return self.brief(command['actor'], int(command['day']))
+        if op == 'status':
+            return self.status(command.get('actor'))
+        if op == 'session':
+            return self.session(command['actor'], int(command['day']))
+        if op == 'skip':
+            return self.skip(
+                command['actor'],
+                int(command['day']),
+                command.get('outcome', ''),
+                command.get('memory'),
+            )
+        if op == 'observe':
+            return self.observe(command['actor'])
+        if op in ('act', 'scroll'):
+            return self.action(command)
+        if op == 'end':
+            return self.end(
+                command['actor'],
+                command.get('outcome', ''),
+                command.get('memory', ''),
+                command.get('frictions'),
+            )
+        if op == 'release':
+            return self.release_context(command['actor'])
+        if op == 'audit':
+            return self.save_summary()
+        if op == 'finish':
+            return self.finish()
+        raise ValueError('unsupported op')
+
+
+def serve(args):
+    driver = Driver(
+        args.world,
+        args.run_dir,
+        resume=args.resume,
+        read_only=args.read_only,
+        executable_path=args.chromium,
+        app_dir=args.app_dir,
+        profiles_dir=args.profiles_dir,
+        fail_after_ui_commit_step=args.fail_after_ui_commit_step,
+    )
+
+    class Handler(BaseHTTPRequestHandler):
+        def log_message(self, *unused):
+            pass
+
+        def do_POST(self):
+            try:
+                size = int(self.headers.get('Content-Length', '0'))
+                if not 0 < size < 131072:
+                    raise ValueError('invalid request size')
+                command = json.loads(self.rfile.read(size))
+                result = driver.dispatch(command)
+                code = 200
+            except Exception as error:
+                result = {'transport_error': str(error)}
+                driver.log('transport_error', error=str(error), traceback=traceback.format_exc())
+                code = 400
+            payload = json.dumps(result, ensure_ascii=False).encode()
+            self.send_response(code)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.send_header('Content-Length', str(len(payload)))
+            self.end_headers()
+            self.wfile.write(payload)
+
+    server = HTTPServer(('127.0.0.1', args.port), Handler)
+
+    def _handle_signal(signum, frame):
+        raise KeyboardInterrupt(f'signal {signum}')
+
+    signal.signal(signal.SIGTERM, _handle_signal)
+    signal.signal(signal.SIGINT, _handle_signal)
+
+    print(
+        json.dumps(
+            {
+                'status': 'listening',
+                'port': args.port,
+                'run_dir': str(driver.directory),
+                'resume': driver.resume_mode,
+                'read_only': driver.read_only,
+                'resumed_count': driver.resumed_count,
+            }
+        ),
+        flush=True,
+    )
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        server.server_close()
+        driver.suspend_on_shutdown()
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    sub = parser.add_subparsers(dest='mode', required=True)
+    server = sub.add_parser('serve')
+    server.add_argument('--world', type=Path, required=True)
+    server.add_argument('--run-dir', type=Path, required=True)
+    server.add_argument('--port', type=int, default=8052)
+    server.add_argument('--resume', action='store_true', help='Resume an existing interrupted run-dir')
+    server.add_argument('--read-only', action='store_true', help='Open existing run-dir in read-only mode')
+    server.add_argument('--chromium', type=str, default=None, help='Path to Chromium executable')
+    server.add_argument('--app-dir', type=Path, default=None, help='Path to personal-lab directory for version verification')
+    server.add_argument('--profiles-dir', type=Path, default=None, help='Optional custom profiles directory')
+    server.add_argument('--fail-after-ui-commit-step', type=int, default=None, help=argparse.SUPPRESS)
+    client = sub.add_parser('request')
+    client.add_argument('--port', type=int, default=8052)
+    client.add_argument('json')
+    args = parser.parse_args()
+    if args.mode == 'serve':
+        serve(args)
+    else:
+        payload = json.dumps(json.loads(args.json), ensure_ascii=False).encode()
+        request = urllib.request.Request(
+            f'http://127.0.0.1:{args.port}/',
+            data=payload,
+            headers={'Content-Type': 'application/json'},
+        )
+        # Explicitly bypass inherited proxies for the local-only driver.
+        opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+        try:
+            with opener.open(request, timeout=45) as response:
+                print(response.read().decode())
+        except urllib.error.HTTPError as error:
+            print(error.read().decode())
+            raise SystemExit(1)
+
+
+if __name__ == '__main__':
+    main()

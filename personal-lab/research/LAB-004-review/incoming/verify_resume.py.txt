@@ -1,0 +1,1097 @@
+#!/usr/bin/env python3
+"""End-to-end verification suite for LAB-004A checkpoint/resume requirements.
+
+Executes real UI interactions in Chromium via driver.py HTTP daemon across
+multiple daemon stops, resumes, and fault-injected post-UI-commit interruptions.
+Outputs stay exclusively inside personal-lab/verification/.
+"""
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+import shutil
+import signal
+import subprocess
+import sys
+import tempfile
+import time
+import urllib.error
+import urllib.request
+import zipfile
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+REPO_ROOT = HERE.parents[2]
+DRIVER_PY = HERE / 'driver.py'
+ANALYZE_PY = HERE / 'analyze_run.py'
+WORLD_PILOT = HERE / 'world.pilot.json'
+WORLD_MONTH = HERE / 'world.month.json'
+VERIFY_EVIDENCE_PY = REPO_ROOT / 'personal-lab' / 'evidence' / 'verify.py'
+
+
+def req(port: int, payload: dict, timeout: float = 45.0) -> tuple[int, dict]:
+    data = json.dumps(payload, ensure_ascii=False).encode('utf-8')
+    request = urllib.request.Request(
+        f'http://127.0.0.1:{port}/',
+        data=data,
+        headers={'Content-Type': 'application/json'},
+    )
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+    try:
+        with opener.open(request, timeout=timeout) as resp:
+            return resp.status, json.loads(resp.read().decode('utf-8'))
+    except urllib.error.HTTPError as err:
+        body = err.read().decode('utf-8')
+        try:
+            return err.code, json.loads(body)
+        except Exception:
+            return err.code, {'raw_error': body}
+
+
+def find_element(obs: dict, *, label_sub: str | None = None, exact_label: str | None = None, el_type: str | None = None) -> str:
+    for item in obs.get('elements', []):
+        if el_type and item.get('type') not in ((el_type, 'input') if el_type == 'text' else (el_type,)):
+            continue
+        lbl = item.get('label', '')
+        if exact_label is not None and lbl == exact_label:
+            return item['element']
+        if label_sub is not None and label_sub in lbl:
+            return item['element']
+        if exact_label is None and label_sub is None and el_type is not None:
+            return item['element']
+    raise KeyError(f'Element not found (label_sub={label_sub}, exact_label={exact_label}, el_type={el_type}) in {[e.get("label") for e in obs.get("elements", [])]}')
+
+
+def start_daemon(
+    run_dir: Path,
+    port: int,
+    world: Path = WORLD_PILOT,
+    resume: bool = False,
+    read_only: bool = False,
+    app_dir: Path | None = None,
+    profiles_dir: Path | None = None,
+    fail_after_ui_commit_step: int | None = None,
+) -> subprocess.Popen:
+    cmd = [
+        sys.executable,
+        str(DRIVER_PY),
+        'serve',
+        '--world',
+        str(world),
+        '--run-dir',
+        str(run_dir),
+        '--port',
+        str(port),
+    ]
+    if resume:
+        cmd.append('--resume')
+    if read_only:
+        cmd.append('--read-only')
+    if app_dir is not None:
+        cmd.extend(['--app-dir', str(app_dir)])
+    if profiles_dir is not None:
+        cmd.extend(['--profiles-dir', str(profiles_dir)])
+    if fail_after_ui_commit_step is not None:
+        cmd.extend(['--fail-after-ui-commit-step', str(fail_after_ui_commit_step)])
+
+    proc = subprocess.Popen(
+        cmd,
+        cwd=str(REPO_ROOT),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    deadline = time.time() + 15.0
+    while time.time() < deadline:
+        if proc.poll() is not None:
+            out, err = proc.communicate(timeout=2)
+            raise RuntimeError(f'Daemon exited early with code {proc.returncode}: stdout={out} stderr={err}')
+        line = proc.stdout.readline()
+        if line:
+            info = json.loads(line)
+            if info.get('status') == 'listening':
+                return proc
+        time.sleep(0.05)
+    proc.kill()
+    raise TimeoutError('Timed out waiting for daemon to listen')
+
+
+def stop_daemon(proc: subprocess.Popen) -> dict:
+    if proc.poll() is None:
+        proc.send_signal(signal.SIGTERM)
+        try:
+            out, err = proc.communicate(timeout=15)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            out, err = proc.communicate(timeout=5)
+    else:
+        out, err = proc.communicate(timeout=5)
+    return {'returncode': proc.returncode, 'stdout': out, 'stderr': err}
+
+
+def snapshot_core_hashes(run_dir: Path) -> dict[str, str]:
+    result = {}
+    for name in ('run.json', 'world.json', 'summary.json', 'checkpoint.json', 'events.jsonl', 'source-manifest.json'):
+        p = run_dir / name
+        if p.exists():
+            result[name] = hashlib.sha256(p.read_bytes()).hexdigest()
+    return result
+
+
+def verify_playwright_api_contract() -> dict:
+    """Verify that Driver invokes the exact Playwright 1.62.0 sync_api method signatures when HAS_PLAYWRIGHT is True."""
+    import importlib.util
+    calls = []
+
+    class MockElement:
+        def as_element(self):
+            return self
+        def click(self):
+            calls.append('element.click')
+        def fill(self, v):
+            calls.append(f'element.fill:{v}')
+        def select_option(self, label=None):
+            calls.append(f'element.select_option:{label}')
+        def set_checked(self, v):
+            calls.append(f'element.set_checked:{v}')
+
+    class MockHandle:
+        def get_property(self, idx):
+            return MockElement()
+        def dispose(self):
+            calls.append('handle.dispose')
+
+    class MockClock:
+        def install(self, time=None):
+            calls.append(f'page.clock.install:{time.isoformat() if hasattr(time, "isoformat") else time}')
+
+    class MockMouse:
+        def move(self, x, y):
+            calls.append(f'page.mouse.move:{x},{y}')
+        def wheel(self, dx, dy):
+            calls.append(f'page.mouse.wheel:{dx},{dy}')
+
+    class MockPage:
+        viewport_size = {'width': 390, 'height': 844}
+        clock = MockClock()
+        mouse = MockMouse()
+        def set_default_timeout(self, ms):
+            calls.append(f'page.set_default_timeout:{ms}')
+        def on(self, ev, cb):
+            calls.append(f'page.on:{ev}')
+        def goto(self, url, wait_until=None):
+            calls.append(f'page.goto:{wait_until}')
+        def wait_for_timeout(self, ms):
+            pass
+        def evaluate(self, script):
+            if 'localStorage' in script:
+                return {'lifegame-personal-lab-my-v1': json.dumps({'lastProcessed': '2026-11-16', 'revision': 1, 'ledger': []})}
+            return {
+                'title': 'LifeGame Lab',
+                'url': 'http://127.0.0.1:8041/personal-lab/',
+                'virtual_time_observed': '2026-11-16T18:00:00.000Z',
+                'modal': False,
+                'viewport': {'width': 390, 'height': 844},
+                'visible_text': 'LifeGame Lab',
+                'elements': [{'element': 'e1', 'label': 'Начать', 'type': 'button', 'disabled': False, 'rect': {'x': 10, 'y': 10, 'width': 50, 'height': 20}}],
+            }
+        def evaluate_handle(self, expr):
+            calls.append(f'page.evaluate_handle:{expr}')
+            return MockHandle()
+        def screenshot(self, path=None, animations=None):
+            calls.append(f'page.screenshot:{animations}')
+            Path(path).write_bytes(b'\x89PNG\r\n\x1a\n')
+        def close(self):
+            calls.append('page.close')
+
+    class MockTracing:
+        def start(self, screenshots=True, snapshots=True, sources=False):
+            calls.append(f'tracing.start:{screenshots},{snapshots},{sources}')
+        def start_chunk(self, title=''):
+            calls.append(f'tracing.start_chunk:{title}')
+        def stop_chunk(self, path=None):
+            calls.append('tracing.stop_chunk')
+            with zipfile.ZipFile(path, 'w') as zf:
+                zf.writestr('trace.trace', '{}\n')
+        def stop(self):
+            calls.append('tracing.stop')
+
+    class MockContext:
+        tracing = MockTracing()
+        pages = []
+        def route(self, pattern, handler):
+            calls.append(f'context.route:{pattern}')
+        def set_offline(self, offline):
+            calls.append(f'context.set_offline:{offline}')
+        def new_page(self):
+            calls.append('context.new_page')
+            return MockPage()
+        def close(self):
+            calls.append('context.close')
+
+    class MockPW:
+        class chromium:
+            @staticmethod
+            def launch_persistent_context(user_data_dir, **kwargs):
+                calls.append('chromium.launch_persistent_context')
+                return MockContext()
+        def start(self):
+            calls.append('pw.start')
+            return self
+        def stop(self):
+            calls.append('pw.stop')
+
+    spec = importlib.util.spec_from_file_location('drv_contract', DRIVER_PY)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    mod.HAS_PLAYWRIGHT = True
+    mod._pw_sync_playwright = lambda: MockPW()
+
+    with tempfile.TemporaryDirectory(prefix='lg_pw_contract_') as tmp:
+        d = mod.Driver(WORLD_PILOT, Path(tmp) / 'run')
+        res = d.session('P01', 1)
+        obs_id = res['observation']['observation_id']
+        d.action({'op': 'act', 'actor': 'P01', 'observation_id': obs_id, 'element': 'e1', 'action': 'click', 'intent': 'test'})
+        d.end('P01', outcome='done', memory='mem')
+        d.finish()
+
+    required = [
+        'pw.start',
+        'chromium.launch_persistent_context',
+        'context.route:**/*',
+        'tracing.start:True,True,False',
+        'context.set_offline:False',
+        'tracing.start_chunk:P01 day 1',
+        'context.new_page',
+        'page.clock.install:2026-11-16T21:00:00+03:00',
+        'page.goto:networkidle',
+        'element.click',
+        'tracing.stop_chunk',
+        'page.close',
+        'tracing.stop',
+        'context.close',
+        'pw.stop',
+    ]
+    missing = [r for r in required if r not in calls]
+    return {'pass': not missing, 'verified_calls': required, 'missing': missing}
+
+
+def main():
+    verif_root = REPO_ROOT / 'personal-lab' / 'verification'
+    run_dir = verif_root / 'resume-test-001'
+    budget_dir = verif_root / 'resume-budget-exhaust-check'
+    for d in (run_dir, budget_dir):
+        if d.exists():
+            shutil.rmtree(d)
+    verif_root.mkdir(parents=True, exist_ok=True)
+
+    report = {
+        'test_suite': 'LAB-004A-resume-verification',
+        'run_dir': str(run_dir),
+        'criteria': {},
+    }
+
+    http_srv = subprocess.Popen(
+        [sys.executable, '-m', 'http.server', '8041', '--bind', '127.0.0.1'],
+        cwd=str(REPO_ROOT),
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    time.sleep(0.5)
+    daemon = None
+    try:
+        # =====================================================================
+        # PHASE 1: Fresh start -> P01 Day 1 UI habit creation & P02 Day 1 UI task creation
+        # =====================================================================
+        port = 8052
+        daemon = start_daemon(run_dir, port, world=WORLD_PILOT, resume=False)
+
+        # P01 Day 1: Onboarding -> Lite -> Привычки -> + Новое -> fill -> scroll -> Создать -> end
+        code, r_p01_s1 = req(port, {'op': 'session', 'actor': 'P01', 'day': 1})
+        assert code == 200, r_p01_s1
+        obs = r_p01_s1['observation']
+
+        # Click "Начать свою жизнь в LifeGame"
+        el = find_element(obs, label_sub='Начать свою жизнь в LifeGame')
+        code, r = req(port, {'op': 'act', 'actor': 'P01', 'observation_id': obs['observation_id'], 'element': el, 'action': 'click', 'intent': 'Начать личное использование'})
+        assert code == 200 and r['success'], r
+        obs = r['observation']
+
+        # Check "Начать с LifeGame Lite"
+        el = find_element(obs, label_sub='Начать с LifeGame Lite')
+        code, r = req(port, {'op': 'act', 'actor': 'P01', 'observation_id': obs['observation_id'], 'element': el, 'action': 'check', 'value': True, 'intent': 'Выбрать режим Lite'})
+        assert code == 200 and r['success'], r
+        obs = r['observation']
+
+        # Click "Начать"
+        el = find_element(obs, exact_label='Начать')
+        code, r = req(port, {'op': 'act', 'actor': 'P01', 'observation_id': obs['observation_id'], 'element': el, 'action': 'click', 'intent': 'Открыть домашний экран'})
+        assert code == 200 and r['success'], r
+        obs = r['observation']
+
+        # Click "Привычки"
+        el = find_element(obs, exact_label='Привычки')
+        code, r = req(port, {'op': 'act', 'actor': 'P01', 'observation_id': obs['observation_id'], 'element': el, 'action': 'click', 'intent': 'Перейти в Привычки'})
+        assert code == 200 and r['success'], r
+        obs = r['observation']
+
+        # Click "+ Новое"
+        el = find_element(obs, label_sub='+ Новое')
+        code, r = req(port, {'op': 'act', 'actor': 'P01', 'observation_id': obs['observation_id'], 'element': el, 'action': 'click', 'intent': 'Открыть создание привычки'})
+        assert code == 200 and r['success'], r
+        obs = r['observation']
+
+        # Fill "Читать 10 минут вечером"
+        el = find_element(obs, el_type='text')
+        code, r = req(port, {'op': 'act', 'actor': 'P01', 'observation_id': obs['observation_id'], 'element': el, 'action': 'fill', 'value': 'Читать 10 минут вечером', 'intent': 'Записать название привычки'})
+        assert code == 200 and r['success'], r
+        obs = r['observation']
+
+        # Scroll down to "Создать"
+        code, r = req(port, {'op': 'scroll', 'actor': 'P01', 'observation_id': obs['observation_id'], 'dy': 554, 'intent': 'Прокрутить форму к кнопке Создать'})
+        assert code == 200 and r['success'], r
+        obs = r['observation']
+
+        # Click "Создать"
+        el = find_element(obs, exact_label='Создать')
+        code, r = req(port, {'op': 'act', 'actor': 'P01', 'observation_id': obs['observation_id'], 'element': el, 'action': 'click', 'intent': 'Сохранить привычку'})
+        assert code == 200 and r['success'], r
+        obs = r['observation']
+
+        # End P01 Day 1
+        code, r_p01_end1 = req(
+            port,
+            {
+                'op': 'end',
+                'actor': 'P01',
+                'outcome': 'Создала привычку Читать 10 минут вечером',
+                'memory': 'День 1: создала привычку «Читать 10 минут вечером», завтра хочу отметить выполнение.',
+                'frictions': [],
+            },
+        )
+        assert code == 200 and r_p01_end1['status'] == 'completed' and r_p01_end1['context_released'] is True, r_p01_end1
+
+        # P02 Day 1 (09:00 MSK): Create task "Собрать материалы проекта"
+        code, r_p02_s1 = req(port, {'op': 'session', 'actor': 'P02', 'day': 1})
+        assert code == 200, r_p02_s1
+        obs2 = r_p02_s1['observation']
+
+        el = find_element(obs2, label_sub='Начать свою жизнь в LifeGame')
+        code, r = req(port, {'op': 'act', 'actor': 'P02', 'observation_id': obs2['observation_id'], 'element': el, 'action': 'click', 'intent': 'Начать работу над проектом'})
+        assert code == 200 and r['success'], r
+        obs2 = r['observation']
+
+        el = find_element(obs2, label_sub='Начать с LifeGame Lite')
+        code, r = req(port, {'op': 'act', 'actor': 'P02', 'observation_id': obs2['observation_id'], 'element': el, 'action': 'check', 'value': True, 'intent': 'Включить Lite'})
+        assert code == 200 and r['success'], r
+        obs2 = r['observation']
+
+        el = find_element(obs2, exact_label='Начать')
+        code, r = req(port, {'op': 'act', 'actor': 'P02', 'observation_id': obs2['observation_id'], 'element': el, 'action': 'click', 'intent': 'Перейти к планировщику'})
+        assert code == 200 and r['success'], r
+        obs2 = r['observation']
+
+        el = find_element(obs2, exact_label='Задания')
+        code, r = req(port, {'op': 'act', 'actor': 'P02', 'observation_id': obs2['observation_id'], 'element': el, 'action': 'click', 'intent': 'Открыть раздел Задания'})
+        assert code == 200 and r['success'], r
+        obs2 = r['observation']
+
+        el = find_element(obs2, label_sub='+ Новое')
+        code, r = req(port, {'op': 'act', 'actor': 'P02', 'observation_id': obs2['observation_id'], 'element': el, 'action': 'click', 'intent': 'Создать новое задание'})
+        assert code == 200 and r['success'], r
+        obs2 = r['observation']
+
+        el = find_element(obs2, el_type='text')
+        code, r = req(port, {'op': 'act', 'actor': 'P02', 'observation_id': obs2['observation_id'], 'element': el, 'action': 'fill', 'value': 'Собрать материалы проекта', 'intent': 'Ввести название задачи проекта'})
+        assert code == 200 and r['success'], r
+        obs2 = r['observation']
+
+        code, r = req(port, {'op': 'scroll', 'actor': 'P02', 'observation_id': obs2['observation_id'], 'dy': 500, 'intent': 'Прокрутить к кнопке Создать'})
+        assert code == 200 and r['success'], r
+        obs2 = r['observation']
+
+        el = find_element(obs2, exact_label='Создать')
+        code, r = req(port, {'op': 'act', 'actor': 'P02', 'observation_id': obs2['observation_id'], 'element': el, 'action': 'click', 'intent': 'Сохранить задачу проекта'})
+        assert code == 200 and r['success'], r
+        obs2 = r['observation']
+
+        code, r_p02_end1 = req(
+            port,
+            {
+                'op': 'end',
+                'actor': 'P02',
+                'outcome': 'Создал задание Собрать материалы проекта',
+                'memory': 'День 1: записал задачу «Собрать материалы проекта» на эту неделю.',
+                'frictions': [],
+            },
+        )
+        assert code == 200 and r_p02_end1['status'] == 'completed', r_p02_end1
+
+        # Stop daemon after Day 1 completed for P01 and P02
+        stop_info_1 = stop_daemon(daemon)
+        daemon = None
+
+        # =====================================================================
+        # PHASE 2: Resume #1 -> Verify Criterion 1 & Criterion 2 on Day 2
+        # =====================================================================
+        daemon = start_daemon(run_dir, port, world=WORLD_PILOT, resume=True)
+
+        # Verify Day 1 cannot be repeated for P01
+        code_rep, r_rep = req(port, {'op': 'session', 'actor': 'P01', 'day': 1})
+        assert code_rep == 400 and 'next day must be 2' in r_rep.get('transport_error', ''), r_rep
+
+        # Open P01 Day 2 (2026-11-17): verify memory, date, and that habit from Day 1 is persisted and not duplicated
+        code, r_p01_s2 = req(port, {'op': 'session', 'actor': 'P01', 'day': 2})
+        assert code == 200, r_p01_s2
+        assert r_p01_s2['date'] == '2026-11-17'
+        assert r_p01_s2['last_completed_date'] == '2026-11-16'
+        assert 'Читать 10 минут вечером' in r_p01_s2['memory']
+        obs_p01_d2 = r_p01_s2['observation']
+        assert '17 ноября, вторник' in obs_p01_d2['visible_text'], obs_p01_d2['visible_text']
+
+        # Go to День and mark habit completed on Day 2
+        el = find_element(obs_p01_d2, exact_label='День')
+        code, r = req(port, {'op': 'act', 'actor': 'P01', 'observation_id': obs_p01_d2['observation_id'], 'element': el, 'action': 'click', 'intent': 'Открыть план дня 2'})
+        assert code == 200 and r['success'], r
+        obs_p01_d2 = r['observation']
+        assert 'Читать 10 минут вечером' in obs_p01_d2['visible_text'], obs_p01_d2['visible_text']
+
+        el = find_element(obs_p01_d2, label_sub='Отметить выполненным')
+        code, r = req(port, {'op': 'act', 'actor': 'P01', 'observation_id': obs_p01_d2['observation_id'], 'element': el, 'action': 'click', 'intent': 'Отметить выполнение чтения во второй день'})
+        assert code == 200 and r['success'], r
+
+        code, r_p01_end2 = req(
+            port,
+            {
+                'op': 'end',
+                'actor': 'P01',
+                'outcome': 'Отметила чтение за 17 ноября, привычка сохранилась с прошлого дня без дублей',
+                'memory': 'День 2: привычка «Читать 10 минут вечером» на месте, выполнила и получила +5 монет.',
+                'frictions': [],
+            },
+        )
+        assert code == 200, r_p01_end2
+        p01_d2_state = json.loads((run_dir / 'P01' / 'day-02' / 'observer-state.json').read_text())['lifegame-personal-lab-my-v1']
+        assert p01_d2_state['lastProcessed'] == '2026-11-17'
+        assert [h['title'] for h in p01_d2_state['habits']] == ['Читать 10 минут вечером']
+        assert len(p01_d2_state['tasks']) == 0
+
+        report['criteria']['1_ui_create_end_stop_resume_next_day'] = {
+            'pass': True,
+            'p01_day1_habits': ['Читать 10 минут вечером'],
+            'p01_day2_habits_after_resume': [h['title'] for h in p01_d2_state['habits']],
+            'p01_day2_lastProcessed': p01_d2_state['lastProcessed'],
+            'p01_day2_coins': sum(x.get('coins', 0) for x in p01_d2_state['ledger']),
+            'repeat_day1_rejected': r_rep.get('transport_error'),
+        }
+
+        # Open P02 Day 2 (2026-11-17 18:00 MSK) and verify isolation from P01
+        code, r_p02_s2 = req(port, {'op': 'session', 'actor': 'P02', 'day': 2})
+        assert code == 200, r_p02_s2
+        assert r_p02_s2['date'] == '2026-11-17'
+        assert r_p02_s2['last_completed_date'] == '2026-11-16'
+        assert 'Собрать материалы проекта' in r_p02_s2['memory']
+        assert 'Читать 10 минут' not in r_p02_s2['memory']
+        obs_p02_d2 = r_p02_s2['observation']
+        # P02 hour is 18:00 MSK = 15:00 UTC
+        assert obs_p02_d2['virtual_time_observed'].startswith('2026-11-17T15:00:'), obs_p02_d2['virtual_time_observed']
+
+        el = find_element(obs_p02_d2, exact_label='Задания')
+        code, r = req(port, {'op': 'act', 'actor': 'P02', 'observation_id': obs_p02_d2['observation_id'], 'element': el, 'action': 'click', 'intent': 'Проверить сохранённую задачу проекта'})
+        assert code == 200 and r['success'], r
+        obs_p02_d2 = r['observation']
+        assert 'Собрать материалы проекта' in obs_p02_d2['visible_text']
+        assert 'Читать 10 минут вечером' not in obs_p02_d2['visible_text']
+
+        code, r_p02_end2 = req(
+            port,
+            {
+                'op': 'end',
+                'actor': 'P02',
+                'outcome': 'Задача Собрать материалы проекта сохранена в профиле P02',
+                'memory': 'День 2: проверил задачу «Собрать материалы проекта», данные изолированы.',
+                'frictions': [],
+            },
+        )
+        assert code == 200, r_p02_end2
+        p02_d2_state = json.loads((run_dir / 'P02' / 'day-02' / 'observer-state.json').read_text())['lifegame-personal-lab-my-v1']
+
+        # =====================================================================
+        # PHASE 3: Criterion 3 -> no_use Day 3 + interrupted active session on Day 4 with spent budget & uncommitted draft
+        # =====================================================================
+        # P01 skips Day 3 (actor choice -> no_use)
+        code, r_p01_skip3 = req(
+            port,
+            {
+                'op': 'skip',
+                'actor': 'P01',
+                'day': 3,
+                'outcome': 'Сегодня слишком устала, пропускаю вход',
+                'memory': 'День 3: пропустила приложение (no_use).',
+            },
+        )
+        assert code == 200 and r_p01_skip3['no_use'] is True, r_p01_skip3
+
+        # P02 Day 3 is available=false in world.pilot.json -> session automatically records no_use without opening browser
+        code, r_p02_skip3 = req(port, {'op': 'session', 'actor': 'P02', 'day': 3})
+        assert code == 200 and r_p02_skip3['no_use'] is True and r_p02_skip3['reason'] == 'unavailable', r_p02_skip3
+
+        # P01 opens Day 4 (2026-11-19, budget=10), spends 2 actions (opening modal and typing uncommitted draft), then daemon stops mid-session!
+        code, r_p01_s4 = req(port, {'op': 'session', 'actor': 'P01', 'day': 4})
+        assert code == 200, r_p01_s4
+        obs_p01_d4 = r_p01_s4['observation']
+        assert obs_p01_d4['actions_used'] == 0 and obs_p01_d4['action_budget'] == 10
+
+        # Action 1 of 10: Click "Быстрое добавление"
+        el = find_element(obs_p01_d4, label_sub='Быстрое добавление')
+        code, r = req(port, {'op': 'act', 'actor': 'P01', 'observation_id': obs_p01_d4['observation_id'], 'element': el, 'action': 'click', 'intent': 'Открыть быстрое добавление для черновика'})
+        assert code == 200 and r['success'], r
+        obs_p01_d4 = r['observation']
+        assert obs_p01_d4['actions_used'] == 1
+
+        # Action 2 of 10: Fill uncommitted draft text (WITHOUT clicking submit/Создать!)
+        el = find_element(obs_p01_d4, el_type='text')
+        code, r = req(port, {'op': 'act', 'actor': 'P01', 'observation_id': obs_p01_d4['observation_id'], 'element': el, 'action': 'fill', 'value': 'Несохранённый черновик до сбоя', 'intent': 'Ввести черновик без сохранения'})
+        assert code == 200 and r['success'], r
+        obs_p01_d4_pre_stop = r['observation']
+        assert obs_p01_d4_pre_stop['actions_used'] == 2
+
+        # Stop daemon while P01 Day 4 is ACTIVE (2/10 budget spent)
+        stop_daemon(daemon)
+        daemon = None
+
+        # Pre-resume trace.zip for P01/day-04 was flushed on shutdown; record its hash to prove it is not overwritten
+        p01_d4_trace1 = run_dir / 'P01' / 'day-04' / 'trace.zip'
+        assert p01_d4_trace1.exists(), 'Expected initial partial trace.zip on graceful stop'
+        p01_d4_trace1_sha = hashlib.sha256(p01_d4_trace1.read_bytes()).hexdigest()
+
+        # Restart daemon with --resume (Resume #2)
+        daemon = start_daemon(run_dir, port, world=WORLD_PILOT, resume=True)
+
+        # Verify P01 Day 3 and P02 Day 3 are still no_use and cannot be opened retroactively
+        code_retro, r_retro = req(port, {'op': 'session', 'actor': 'P02', 'day': 3})
+        assert code_retro == 400 and 'next day must be 4' in r_retro.get('transport_error', ''), r_retro
+        assert not (run_dir / 'P01' / 'day-03').exists()
+        assert not (run_dir / 'P02' / 'day-03').exists()
+
+        # Verify P01 Day 4 is still active with steps=2, budget=10, and acting with pre-restart observation_id is blocked until observe
+        code_stale_act, r_stale_act = req(
+            port,
+            {
+                'op': 'act',
+                'actor': 'P01',
+                'observation_id': obs_p01_d4_pre_stop['observation_id'],
+                'element': 'e1',
+                'action': 'click',
+                'intent': 'Попытка клика по старому observation до observe',
+            },
+        )
+        assert code_stale_act == 400 and 'call observe first' in r_stale_act.get('transport_error', ''), r_stale_act
+
+        # Call observe on P01 Day 4 to safely reopen page at saved virtual time
+        code, obs_p01_d4_resumed = req(port, {'op': 'observe', 'actor': 'P01'})
+        assert code == 200, obs_p01_d4_resumed
+        assert obs_p01_d4_resumed['actions_used'] == 2
+        assert obs_p01_d4_resumed['action_budget'] == 10
+        assert obs_p01_d4_resumed.get('resumed_from_interruption') is True
+        assert obs_p01_d4_resumed.get('trace_interrupted') is True
+        assert obs_p01_d4_resumed.get('drafts_restored') is False
+        assert '19 ноября, четверг' in obs_p01_d4_resumed['visible_text']
+
+        # Spend 1 more action on P01 Day 4 (click День) -> actions_used becomes 3 of 10!
+        el = find_element(obs_p01_d4_resumed, exact_label='День')
+        code, r = req(port, {'op': 'act', 'actor': 'P01', 'observation_id': obs_p01_d4_resumed['observation_id'], 'element': el, 'action': 'click', 'intent': 'Проверить план 4-го дня после возобновления'})
+        assert code == 200 and r['success'], r
+        assert r['observation']['actions_used'] == 3 and r['observation']['action_budget'] == 10
+
+        # End P01 Day 4
+        code, r_p01_end4 = req(
+            port,
+            {
+                'op': 'end',
+                'actor': 'P01',
+                'outcome': 'Продолжила активную сессию 4-го дня с сохранённым бюджетом 3/10',
+                'memory': 'День 4: сессия восстановлена после перезапуска, бюджет не сбросился (3 из 10).',
+                'frictions': [],
+            },
+        )
+        assert code == 200 and r_p01_end4['actions'] == 3, r_p01_end4
+        p01_d4_trace_cont = run_dir / 'P01' / 'day-04' / 'trace-resume-01.zip'
+        assert p01_d4_trace_cont.exists(), 'Expected trace-resume-01.zip continuation trace'
+        assert hashlib.sha256(p01_d4_trace1.read_bytes()).hexdigest() == p01_d4_trace1_sha, 'Initial trace.zip must not be overwritten'
+
+        report['criteria']['2_two_actors_isolation_and_dates'] = {
+            'pass': True,
+            'p01_last_day': 4,
+            'p01_last_completed_date': '2026-11-19',
+            'p01_habits': [h['title'] for h in p01_d2_state['habits']],
+            'p01_tasks': [t['title'] for t in p01_d2_state['tasks']],
+            'p02_last_day': 3,
+            'p02_last_completed_date': '2026-11-18',
+            'p02_habits': [h['title'] for h in p02_d2_state['habits']],
+            'p02_tasks': [t['title'] for t in p02_d2_state['tasks']],
+            'p01_day4_virtual_time_prefix': obs_p01_d4_resumed['virtual_time_observed'][:13],
+            'p02_day2_virtual_time_prefix': obs_p02_d2['virtual_time_observed'][:13],
+        }
+        report['criteria']['3_no_use_and_active_budget_preserved'] = {
+            'pass': True,
+            'p01_day3_status': 'no_use',
+            'p02_day3_status': 'no_use',
+            'retroactive_open_rejected': r_retro.get('transport_error'),
+            'p01_day4_steps_before_stop': 2,
+            'p01_day4_steps_immediately_after_resume': obs_p01_d4_resumed['actions_used'],
+            'p01_day4_steps_after_one_post_resume_action': r_p01_end4['actions'],
+            'p01_day4_budget': 10,
+            'drafts_restored_flag': obs_p01_d4_resumed['drafts_restored'],
+            'trace_interrupted_flag': obs_p01_d4_resumed['trace_interrupted'],
+            'initial_trace_preserved_sha256': p01_d4_trace1_sha,
+            'continuation_trace_path': str(p01_d4_trace_cont),
+        }
+
+        # =====================================================================
+        # PHASE 4: Criterion 4 -> Real UI action committed in Chromium, daemon killed BEFORE confirmation
+        # =====================================================================
+        stop_daemon(daemon)
+        daemon = None
+
+        # Start daemon with --fail-after-ui-commit-step 8 (will crash right after step 8 click "Создать" for P03 Day 1)
+        daemon = start_daemon(run_dir, port, world=WORLD_PILOT, resume=True, fail_after_ui_commit_step=8)
+
+        code, r_p03_s1 = req(port, {'op': 'session', 'actor': 'P03', 'day': 1})
+        assert code == 200, r_p03_s1
+        obs3 = r_p03_s1['observation']
+
+        # Step 1: click Начать свою жизнь в LifeGame
+        el = find_element(obs3, label_sub='Начать свою жизнь в LifeGame')
+        code, r = req(port, {'op': 'act', 'actor': 'P03', 'observation_id': obs3['observation_id'], 'element': el, 'action': 'click', 'intent': 'Начать работу в приложении'})
+        assert code == 200 and r['success'], r
+        obs3 = r['observation']
+
+        # Step 2: check Lite
+        el = find_element(obs3, label_sub='Начать с LifeGame Lite')
+        code, r = req(port, {'op': 'act', 'actor': 'P03', 'observation_id': obs3['observation_id'], 'element': el, 'action': 'check', 'value': True, 'intent': 'Выбрать Lite'})
+        assert code == 200 and r['success'], r
+        obs3 = r['observation']
+
+        # Step 3: click Начать
+        el = find_element(obs3, exact_label='Начать')
+        code, r = req(port, {'op': 'act', 'actor': 'P03', 'observation_id': obs3['observation_id'], 'element': el, 'action': 'click', 'intent': 'Перейти на главную'})
+        assert code == 200 and r['success'], r
+        obs3 = r['observation']
+
+        # Step 4: click Привычки
+        el = find_element(obs3, exact_label='Привычки')
+        code, r = req(port, {'op': 'act', 'actor': 'P03', 'observation_id': obs3['observation_id'], 'element': el, 'action': 'click', 'intent': 'Открыть привычки'})
+        assert code == 200 and r['success'], r
+        obs3 = r['observation']
+
+        # Step 5: click + Новое
+        el = find_element(obs3, label_sub='+ Новое')
+        code, r = req(port, {'op': 'act', 'actor': 'P03', 'observation_id': obs3['observation_id'], 'element': el, 'action': 'click', 'intent': 'Создать привычку рисования'})
+        assert code == 200 and r['success'], r
+        obs3 = r['observation']
+
+        # Step 6: fill "Рисовать скетч 10 минут"
+        el = find_element(obs3, el_type='text')
+        code, r = req(port, {'op': 'act', 'actor': 'P03', 'observation_id': obs3['observation_id'], 'element': el, 'action': 'fill', 'value': 'Рисовать скетч 10 минут', 'intent': 'Ввести название привычки'})
+        assert code == 200 and r['success'], r
+        obs3 = r['observation']
+
+        # Step 7: scroll down to Создать
+        code, r = req(port, {'op': 'scroll', 'actor': 'P03', 'observation_id': obs3['observation_id'], 'dy': 554, 'intent': 'Прокрутить к кнопке Создать'})
+        assert code == 200 and r['success'], r
+        obs3 = r['observation']
+
+        # Step 8: click Создать -> daemon executes REAL UI click in Chromium (committing to localStorage) and crashes (os._exit(99)) BEFORE journal confirmation!
+        el_create = find_element(obs3, exact_label='Создать')
+        pre_crash_obs_id = obs3['observation_id']
+        connection_dropped_as_expected = False
+        try:
+            req(
+                port,
+                {
+                    'op': 'act',
+                    'actor': 'P03',
+                    'observation_id': pre_crash_obs_id,
+                    'element': el_create,
+                    'action': 'click',
+                    'intent': 'Сохранить привычку рисования (прерывание до подтверждения)',
+                },
+                timeout=10.0,
+            )
+        except Exception as exc:
+            connection_dropped_as_expected = True
+            crash_client_exception = repr(exc)
+
+        daemon.wait(timeout=10)
+        crash_exit_code = daemon.returncode
+        daemon = None
+        assert connection_dropped_as_expected and crash_exit_code == 99, f'Expected crash exit 99, got {crash_exit_code}'
+
+        # Inspect checkpoint.json right after crash: pending_action is in_flight_unconfirmed
+        ckpt_after_crash = json.loads((run_dir / 'checkpoint.json').read_text())
+        p03_ckpt_crash = ckpt_after_crash['actors']['P03']
+        assert p03_ckpt_crash['pending_action']['status'] == 'in_flight_unconfirmed'
+        assert p03_ckpt_crash['steps'] == 8
+
+        # Start new daemon with --resume (Resume #4)
+        daemon = start_daemon(run_dir, port, world=WORLD_PILOT, resume=True)
+
+        # Check status of P03 after resume: pending_action is flagged as ambiguous_unconfirmed_after_interruption, reconcile_required=True
+        code, p03_status = req(port, {'op': 'status', 'actor': 'P03'})
+        assert code == 200, p03_status
+        assert p03_status['reconcile_required'] is True
+        assert p03_status['pending_action']['status'] == 'ambiguous_unconfirmed_after_interruption'
+        assert p03_status['pending_action']['auto_retried'] is False
+
+        # Attempting to execute 'act' (or retry click) before calling 'observe' MUST be rejected!
+        code_retry, r_retry_blocked = req(
+            port,
+            {
+                'op': 'act',
+                'actor': 'P03',
+                'observation_id': pre_crash_obs_id,
+                'element': el_create,
+                'action': 'click',
+                'intent': 'Попытка повторного клика Создать без сверки',
+            },
+        )
+        assert code_retry == 400 and 'ambiguous pending_action' in r_retry_blocked.get('transport_error', ''), r_retry_blocked
+
+        # Now call 'observe' to safely restore observation and reconcile
+        code, obs3_reconciled = req(port, {'op': 'observe', 'actor': 'P03'})
+        assert code == 200, obs3_reconciled
+        assert obs3_reconciled.get('reconcile_required') is True
+        assert obs3_reconciled['ambiguous_pending_action']['status'] == 'ambiguous_unconfirmed_after_interruption'
+        assert obs3_reconciled['ambiguous_pending_action']['auto_retried'] is False
+        assert obs3_reconciled['actions_used'] == 8
+
+        # Navigate to Привычки in the reopened session to verify the habit WAS committed before the crash and was NOT duplicated!
+        el = find_element(obs3_reconciled, exact_label='Привычки')
+        code, r = req(port, {'op': 'act', 'actor': 'P03', 'observation_id': obs3_reconciled['observation_id'], 'element': el, 'action': 'click', 'intent': 'Проверить в разделе Привычки, сохранилось ли рисование до сбоя'})
+        assert code == 200 and r['success'], r
+        obs3_habits = r['observation']
+        assert 'Рисовать скетч 10 минут' in obs3_habits['visible_text'], obs3_habits['visible_text']
+
+        code, r_p03_end1 = req(
+            port,
+            {
+                'op': 'end',
+                'actor': 'P03',
+                'outcome': 'После прерывания на клике Создать сверила экран через observe: привычка Рисовать скетч 10 минут уже создана, повтор не потребовался',
+                'memory': 'День 1: привычка «Рисовать скетч 10 минут» сохранилась до обрыва связи; сверила без повторного создания.',
+                'frictions': [],
+            },
+        )
+        assert code == 200, r_p03_end1
+        p03_d1_state = json.loads((run_dir / 'P03' / 'day-01' / 'observer-state.json').read_text())['lifegame-personal-lab-my-v1']
+        assert [h['title'] for h in p03_d1_state['habits']] == ['Рисовать скетч 10 минут']
+
+        report['criteria']['4_pending_action_ambiguity_no_autoretry'] = {
+            'pass': True,
+            'daemon_crash_exit_code': crash_exit_code,
+            'client_connection_dropped': connection_dropped_as_expected,
+            'client_exception': crash_client_exception,
+            'act_before_observe_rejected': r_retry_blocked.get('transport_error'),
+            'ambiguous_pending_action_returned': obs3_reconciled['ambiguous_pending_action'],
+            'recovery_notice': obs3_reconciled['recovery_notice'],
+            'habits_in_localStorage_after_reconcile': [h['title'] for h in p03_d1_state['habits']],
+            'habit_count_exact_once': len(p03_d1_state['habits']) == 1,
+        }
+
+        # =====================================================================
+        # PHASE 5: Criterion 6 Error Control Checks (stale observation_id, unknown element, budget exhaustion)
+        # =====================================================================
+        # Open P02 Day 4 and test stale observation_id & unknown element handling
+        code, r_p02_s4 = req(port, {'op': 'session', 'actor': 'P02', 'day': 4})
+        assert code == 200, r_p02_s4
+        obs_p02_d4_1 = r_p02_s4['observation']
+
+        # Unknown element e999 consumes 1 action, returns error + new observation
+        code, r_bad_el = req(
+            port,
+            {
+                'op': 'act',
+                'actor': 'P02',
+                'observation_id': obs_p02_d4_1['observation_id'],
+                'element': 'e999',
+                'action': 'click',
+                'intent': 'Проверка обработки несуществующего элемента',
+            },
+        )
+        assert code == 200 and r_bad_el['success'] is False and r_bad_el['error'] == 'unknown visible element', r_bad_el
+        obs_p02_d4_2 = r_bad_el['observation']
+        assert obs_p02_d4_2['actions_used'] == 1
+
+        # Stale observation_id (using obs_p02_d4_1 after obs_p02_d4_2 was issued) is rejected with 400
+        code_stale, r_stale = req(
+            port,
+            {
+                'op': 'act',
+                'actor': 'P02',
+                'observation_id': obs_p02_d4_1['observation_id'],
+                'element': 'e1',
+                'action': 'click',
+                'intent': 'Проверка отклонения устаревшего observation_id',
+            },
+        )
+        assert code_stale == 400 and 'stale observation_id' in r_stale.get('transport_error', ''), r_stale
+
+        # Close P02 Day 4
+        code, r_p02_end4 = req(
+            port,
+            {
+                'op': 'end',
+                'actor': 'P02',
+                'outcome': 'Проверил контроль ошибок транспорта на 4-й день',
+                'memory': 'День 4: проверил обработку ошибки элемента и устаревшего observation_id.',
+                'frictions': [],
+            },
+        )
+        assert code == 200, r_p02_end4
+
+        # =====================================================================
+        # PHASE 6: Criterion 5 -> Guard checks (busy run-dir, busy profile, world mismatch, app version mismatch, finished run)
+        # =====================================================================
+        # 5a. Busy run-dir while daemon is still running on run_dir
+        busy_run_proc = subprocess.run(
+            [sys.executable, str(DRIVER_PY), 'serve', '--world', str(WORLD_PILOT), '--run-dir', str(run_dir), '--port', '8055', '--resume'],
+            cwd=str(REPO_ROOT),
+            capture_output=True,
+            text=True,
+        )
+        assert busy_run_proc.returncode != 0 and 'locked by another active daemon' in busy_run_proc.stderr, busy_run_proc.stderr
+
+        # 5b. Busy profile check: open an active session for P01 Day 5 (unavailable -> skip) then Day 6 (available -> active context holding profile lock!)
+        code, r_p01_s5 = req(port, {'op': 'session', 'actor': 'P01', 'day': 5})
+        assert code == 200 and r_p01_s5['no_use'] is True, r_p01_s5
+        code, r_p01_s6 = req(port, {'op': 'session', 'actor': 'P01', 'day': 6})
+        assert code == 200, r_p01_s6
+
+        # While P01 Day 6 is active and holding profiles/P01/.profile.lock, try to start a second daemon on a different run-dir sharing --profiles-dir
+        with tempfile.TemporaryDirectory(prefix='lg_busy_prof_') as tmp_run2:
+            busy_prof_proc = subprocess.run(
+                [
+                    sys.executable,
+                    str(DRIVER_PY),
+                    'serve',
+                    '--world',
+                    str(WORLD_PILOT),
+                    '--run-dir',
+                    str(Path(tmp_run2) / 'r2'),
+                    '--profiles-dir',
+                    str(run_dir / 'profiles'),
+                    '--port',
+                    '8056',
+                ],
+                cwd=str(REPO_ROOT),
+                capture_output=True,
+                text=True,
+            )
+            assert busy_prof_proc.returncode != 0 and 'locked by another active daemon' in busy_prof_proc.stderr, busy_prof_proc.stderr
+
+        # Finish P01 Day 6
+        code, _ = req(port, {'op': 'end', 'actor': 'P01', 'outcome': 'Завершила день 6', 'memory': 'День 6 завершён.'})
+        assert code == 200
+
+        # Stop daemon to test offline startup guards (without --resume, world mismatch, app version mismatch)
+        stop_daemon(daemon)
+        daemon = None
+        hashes_before_guards = snapshot_core_hashes(run_dir)
+
+        # 5c. Starting on existing run_dir WITHOUT --resume
+        no_resume_proc = subprocess.run(
+            [sys.executable, str(DRIVER_PY), 'serve', '--world', str(WORLD_PILOT), '--run-dir', str(run_dir), '--port', '8052'],
+            cwd=str(REPO_ROOT),
+            capture_output=True,
+            text=True,
+        )
+        assert no_resume_proc.returncode != 0 and 'run.json already exists' in no_resume_proc.stderr, no_resume_proc.stderr
+        assert snapshot_core_hashes(run_dir) == hashes_before_guards, 'Evidence modified after no-resume rejection!'
+
+        # 5d. World mismatch on --resume (passing world.month.json instead of world.pilot.json)
+        world_mismatch_proc = subprocess.run(
+            [sys.executable, str(DRIVER_PY), 'serve', '--world', str(WORLD_MONTH), '--run-dir', str(run_dir), '--port', '8052', '--resume'],
+            cwd=str(REPO_ROOT),
+            capture_output=True,
+            text=True,
+        )
+        assert world_mismatch_proc.returncode != 0 and 'world mismatch' in world_mismatch_proc.stderr, world_mismatch_proc.stderr
+        assert snapshot_core_hashes(run_dir) == hashes_before_guards, 'Evidence modified after world mismatch rejection!'
+
+        # 5e. App version mismatch on --resume (passing a temp copy of personal-lab with modified app.js)
+        with tempfile.TemporaryDirectory(prefix='lg_modified_app_') as tmp_app:
+            tmp_app_path = Path(tmp_app)
+            for fname in ('index.html', 'app.js', 'persistence.js', 'planning.js', 'style.css', 'sw.js', 'pwa.js', 'manifest.webmanifest'):
+                shutil.copy2(REPO_ROOT / 'personal-lab' / fname, tmp_app_path / fname)
+            (tmp_app_path / 'app.js').write_text((tmp_app_path / 'app.js').read_text() + '\n// modified version check\n')
+            app_mismatch_proc = subprocess.run(
+                [
+                    sys.executable,
+                    str(DRIVER_PY),
+                    'serve',
+                    '--world',
+                    str(WORLD_PILOT),
+                    '--run-dir',
+                    str(run_dir),
+                    '--app-dir',
+                    str(tmp_app_path),
+                    '--port',
+                    '8052',
+                    '--resume',
+                ],
+                cwd=str(REPO_ROOT),
+                capture_output=True,
+                text=True,
+            )
+            assert app_mismatch_proc.returncode != 0 and 'application version mismatch' in app_mismatch_proc.stderr, app_mismatch_proc.stderr
+            assert snapshot_core_hashes(run_dir) == hashes_before_guards, 'Evidence modified after app version mismatch rejection!'
+
+        # Resume daemon and finish the run cleanly, then test completed-run protection
+        daemon = start_daemon(run_dir, port, world=WORLD_PILOT, resume=True)
+        code, finish_summary = req(port, {'op': 'finish'})
+        assert code == 200 and finish_summary['finished'] is True, finish_summary
+        stop_daemon(daemon)
+        daemon = None
+
+        hashes_after_finish = snapshot_core_hashes(run_dir)
+
+        # 5f. Attempting --resume (mutable) on a finished run MUST be rejected without overwriting evidence
+        finished_resume_proc = subprocess.run(
+            [sys.executable, str(DRIVER_PY), 'serve', '--world', str(WORLD_PILOT), '--run-dir', str(run_dir), '--port', '8052', '--resume'],
+            cwd=str(REPO_ROOT),
+            capture_output=True,
+            text=True,
+        )
+        assert finished_resume_proc.returncode != 0 and 'refusing to resume completed run' in finished_resume_proc.stderr, finished_resume_proc.stderr
+        assert snapshot_core_hashes(run_dir) == hashes_after_finish, 'Evidence modified after finished-run resume rejection!'
+
+        # 5g. Opening finished run with --resume --read-only allows audit/brief and blocks session/mutations
+        daemon = start_daemon(run_dir, port, world=WORLD_PILOT, resume=True, read_only=True)
+        code_ro_audit, ro_audit = req(port, {'op': 'audit'})
+        assert code_ro_audit == 200 and ro_audit['finished'] is True
+        code_ro_mut, ro_mut = req(port, {'op': 'session', 'actor': 'P01', 'day': 7})
+        assert code_ro_mut == 400 and 'read-only' in ro_mut.get('transport_error', ''), ro_mut
+        stop_daemon(daemon)
+        daemon = None
+        assert snapshot_core_hashes(run_dir) == hashes_after_finish, 'Evidence modified during read-only inspection!'
+
+        report['criteria']['5_guards_world_version_lock_finished'] = {
+            'pass': True,
+            'without_resume_error': no_resume_proc.stderr.strip().splitlines()[-1],
+            'world_mismatch_error': world_mismatch_proc.stderr.strip().splitlines()[-1],
+            'app_version_mismatch_error': app_mismatch_proc.stderr.strip().splitlines()[-1],
+            'busy_run_dir_error': busy_run_proc.stderr.strip().splitlines()[-1],
+            'busy_profile_error': busy_prof_proc.stderr.strip().splitlines()[-1],
+            'finished_run_resume_error': finished_resume_proc.stderr.strip().splitlines()[-1],
+            'read_only_mutation_error': ro_mut.get('transport_error'),
+            'evidence_hashes_unchanged_across_all_rejections': True,
+        }
+
+        # =====================================================================
+        # PHASE 7: Budget exhaustion check & analyze_run.py schema + trace validation
+        # =====================================================================
+        # Quick budget exhaustion check on a 2-step budget world in budget_dir
+        small_world = json.loads(WORLD_PILOT.read_text())
+        small_world['sessions']['P01']['1']['budget'] = 2
+        small_world_path = verif_root / 'world.budget-check.json'
+        small_world_path.write_text(json.dumps(small_world, ensure_ascii=False, indent=2) + '\n')
+
+        daemon = start_daemon(budget_dir, 8057, world=small_world_path, resume=False)
+        code, r_b = req(8057, {'op': 'session', 'actor': 'P01', 'day': 1})
+        obs_b = r_b['observation']
+        el = find_element(obs_b, label_sub='Начать свою жизнь в LifeGame')
+        code, r_b1 = req(8057, {'op': 'act', 'actor': 'P01', 'observation_id': obs_b['observation_id'], 'element': el, 'action': 'click', 'intent': 'step 1 of 2'})
+        obs_b = r_b1['observation']
+
+        # Stop & resume after 1 of 2 budget steps used
+        stop_daemon(daemon)
+        daemon = start_daemon(budget_dir, 8057, world=small_world_path, resume=True)
+        code, obs_b = req(8057, {'op': 'observe', 'actor': 'P01'})
+        assert obs_b['actions_used'] == 1 and obs_b['action_budget'] == 2
+        el = find_element(obs_b, exact_label='Привычки')
+        code, r_b2 = req(8057, {'op': 'act', 'actor': 'P01', 'observation_id': obs_b['observation_id'], 'element': el, 'action': 'click', 'intent': 'step 2 of 2'})
+        obs_b = r_b2['observation']
+        assert obs_b['actions_used'] == 2
+
+        # Step 3 must return action_budget_exhausted
+        el = find_element(obs_b, label_sub='+ Новое')
+        code, r_b3 = req(8057, {'op': 'act', 'actor': 'P01', 'observation_id': obs_b['observation_id'], 'element': el, 'action': 'click', 'intent': 'step 3 over budget'})
+        assert code == 200 and r_b3.get('error') == 'action_budget_exhausted' and r_b3.get('actions_used') == 2, r_b3
+        code, _ = req(8057, {'op': 'end', 'actor': 'P01', 'outcome': 'Budget exhausted after 2 steps', 'memory': 'Budget test ok'})
+        assert code == 200
+        req(8057, {'op': 'finish'})
+        stop_daemon(daemon)
+        daemon = None
+        small_world_path.unlink(missing_ok=True)
+
+        # Run analyze_run.py on resume-test-001
+        analyze_proc = subprocess.run(
+            [sys.executable, str(ANALYZE_PY), str(run_dir)],
+            cwd=str(REPO_ROOT),
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        facts_report = json.loads((run_dir / 'facts-report.json').read_text())
+        assert facts_report['all_captured_personal_states_schema_valid'] is True, facts_report
+        assert facts_report['all_captured_namespaces_lab_only'] is True, facts_report
+        assert facts_report['profile_directories_distinct'] is True, facts_report
+        assert facts_report['runtime_files_changed_during_run'] == [], facts_report
+
+        # Also validate all trace-resume-*.zip continuation archives
+        continuation_traces = []
+        for tpath in sorted(run_dir.glob('P*/day-*/trace-resume-*.zip')):
+            with zipfile.ZipFile(tpath) as zf:
+                continuation_traces.append(
+                    {
+                        'path': str(tpath),
+                        'bytes': tpath.stat().st_size,
+                        'zip_valid': zf.testzip() is None,
+                        'has_trace': any(n.endswith('.trace') for n in zf.namelist()),
+                    }
+                )
+        assert continuation_traces and all(t['zip_valid'] and t['has_trace'] for t in continuation_traces), continuation_traces
+
+        # Verify Playwright 1.62.0 API contract
+        pw_contract = verify_playwright_api_contract()
+        assert pw_contract['pass'] is True, pw_contract
+
+        # Verify original pilot evidence remains 100% intact
+        orig_verify = subprocess.run(
+            [sys.executable, str(VERIFY_EVIDENCE_PY)],
+            cwd=str(REPO_ROOT),
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+
+        report['criteria']['6_traces_snapshots_schema_and_error_control'] = {
+            'pass': True,
+            'all_captured_personal_states_schema_valid': facts_report['all_captured_personal_states_schema_valid'],
+            'all_captured_namespaces_lab_only': facts_report['all_captured_namespaces_lab_only'],
+            'runtime_files_changed_during_run': facts_report['runtime_files_changed_during_run'],
+            'primary_traces_validated': len(facts_report['traces']),
+            'continuation_traces_validated': continuation_traces,
+            'resume_event_segments': sorted(str(p) for p in run_dir.glob('events.resume-*.jsonl')),
+            'stale_observation_rejected': r_stale.get('transport_error'),
+            'unknown_element_error_handled': r_bad_el['error'],
+            'budget_exhaustion_handled': r_b3,
+            'playwright_api_contract': pw_contract,
+            'original_evidence_verify_stdout': orig_verify.stdout.strip(),
+        }
+
+        report['all_criteria_passed'] = all(c.get('pass') for c in report['criteria'].values())
+        report_path = verif_root / 'resume-test-001' / 'verification-report.json'
+        report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
+        print(json.dumps({'all_criteria_passed': report['all_criteria_passed'], 'report': str(report_path)}, ensure_ascii=False))
+    finally:
+        if daemon is not None:
+            stop_daemon(daemon)
+        http_srv.kill()
+        http_srv.wait()
+
+
+if __name__ == '__main__':
+    main()

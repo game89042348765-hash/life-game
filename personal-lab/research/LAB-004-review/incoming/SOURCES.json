@@ -1,0 +1,47 @@
+{
+  "received_date_moscow": "2026-11-12",
+  "model_names": "not supplied; no attribution inferred",
+  "original_archive": {
+    "filename": "LAB-004A-resume-artifacts.zip",
+    "sha256": "f14098999fb6571ba35ccc41bb1698c3d14b2b1944f8bcde0054277a58772b6d",
+    "bytes": 5607053
+  },
+  "files": [
+    {
+      "file": "methodology-B1.md",
+      "original_filename": "LAB-004B-methodological-review.md",
+      "sha256": "f7e83a1c1abae882719d43d0285aadec11f67293e47462c1ab6f3528c08928b9",
+      "bytes": 11412
+    },
+    {
+      "file": "methodology-B2.md",
+      "original_filename": "LAB-004B-methodology-review.md",
+      "sha256": "3cedb31ec06f9fe9b9f64df00edc1843dcf671a699d725f99094574804da9013",
+      "bytes": 11941
+    },
+    {
+      "file": "executor-REPORT.md",
+      "original_filename": "REPORT.md",
+      "sha256": "ae6272c32902ccdd64307b0d4e64f1c644d09068f2a39f76fc2db236d9396f92",
+      "bytes": 18952
+    },
+    {
+      "file": "driver.py.txt",
+      "original_filename": "driver.py",
+      "sha256": "557f780b6f90d65dd8504a836cd20d37ccce3d3f6247fe6f5ff434be7ac45ab1",
+      "bytes": 83368
+    },
+    {
+      "file": "verify_resume.py.txt",
+      "original_filename": "verify_resume.py",
+      "sha256": "16ab0318da4e069cd5bf92e437dd964561bc653c629842e2b4511daef7fbdc2b",
+      "bytes": 56630
+    },
+    {
+      "file": "executor-README.md",
+      "original_filename": "README-DRIVER.md",
+      "sha256": "9dd82ea28f12aaab60f6de0f2b14f57790130e9f8128903edb0a0a7e018a0dc5",
+      "bytes": 19875
+    }
+  ]
+}
