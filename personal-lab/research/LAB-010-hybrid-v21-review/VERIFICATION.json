@@ -1,0 +1,36 @@
+{
+  "task": "LAB-010",
+  "decision": "needs_revision_before_mass_run",
+  "candidate_version": "2.1-hybrid",
+  "python": "3.12.14",
+  "native_checks_reproduced": 23,
+  "native_checks_claimed": 23,
+  "native_all_passed": true,
+  "independent_observations": 13,
+  "independent_confirmations": 9,
+  "residual_issue_ids": [
+    "R01_conflicting_default_in_shared_rubric",
+    "R02_compact_index_repeats_oversized_body",
+    "R03_sources_escape_packet_budget",
+    "R04_blind_publication_can_replace_concurrent_output"
+  ],
+  "independent_run_success_is_acceptance": false,
+  "zip_files": 50,
+  "manifest_records_verified": 49,
+  "crc_and_inventory_match": true,
+  "demo_validate_complete": true,
+  "candidate_tool_sha256": "10c3e098c2d7a554bb254148eb3e70b8c0e3850749e1cd0f8eaec78465cb152c",
+  "coordinator_probes_sha256": "11983ba627a535d3b51ca9ae2b3f675e0caa0cd3cd696413aa7aed890e29f692",
+  "commands": [
+    "python3 -B tools/atlas.py verify <fresh-extracted-v2.1>",
+    "python3 -B tools/atlas.py validate <candidate>/examples/demo --complete",
+    "python3 -B tools/verify_tools.py --report <new-report>",
+    "python3 -B acceptance_probes.py --out <new-report>"
+  ],
+  "local_artifacts": "/workspace/life-game/personal-lab/verification/LAB-010-20261112T135722Z",
+  "app_changed": false,
+  "real_research_executed": false,
+  "external_model_called": false,
+  "paid_api_calls": 0,
+  "human_acceptance": "not_substituted_by_this_review"
+}

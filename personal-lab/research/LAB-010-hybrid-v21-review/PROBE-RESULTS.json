@@ -1,0 +1,137 @@
+{
+  "task": "LAB-010",
+  "meaning": "reproduced_observations_not_blanket_acceptance",
+  "candidate_zip_sha256": "f6262b4db13149cd58d6a7d4421d0fe535ea81bd9ea424a39b977dccaabcb614",
+  "candidate_tool_sha256": "10c3e098c2d7a554bb254148eb3e70b8c0e3850749e1cd0f8eaec78465cb152c",
+  "observations": [
+    {
+      "probe": "A01_final_zip_integrity",
+      "status": "fixed",
+      "verified_files": 49,
+      "missing_or_extra": 0,
+      "clean_zip_cli_exit": 0
+    },
+    {
+      "probe": "A02_complete_review_aggregation",
+      "status": "fixed",
+      "Q": 71.25,
+      "Q_min": 67.5,
+      "Q_max": 75.0,
+      "known_counts": {
+        "value": 3,
+        "burden": 3,
+        "long_term": 3,
+        "adaptability": 3,
+        "agency": 3,
+        "composability": 2
+      }
+    },
+    {
+      "probe": "A03_partial_objection_and_resolution",
+      "status": "fixed",
+      "partial_dissent_blocks": true,
+      "omitted_dissenter_rejected": true,
+      "all_disputants_resolution_accepted": true
+    },
+    {
+      "probe": "A04_normal_10k_sharding",
+      "status": "fixed",
+      "findings": 10000,
+      "parts": 167,
+      "max_records": 60,
+      "max_findings_file_bytes": 40680,
+      "all_source_ids_attached": true,
+      "index_parts": 40
+    },
+    {
+      "probe": "A05_shard_preservation_and_path_validation",
+      "status": "fixed",
+      "existing_bytes_unchanged": true,
+      "input_descendant_refused": true,
+      "unsafe_code_refused_before_output": true
+    },
+    {
+      "probe": "A06_blind_default_preservation",
+      "status": "fixed",
+      "input_alias_refused": true,
+      "new_child_refused": true,
+      "existing_external_file_preserved": true
+    },
+    {
+      "probe": "A07_strict_quota",
+      "status": "fixed",
+      "default": 0,
+      "negative_bool_float_string_over_limit_rejected": true
+    },
+    {
+      "probe": "A08_mechanical_paste_and_task_sync",
+      "status": "fixed",
+      "three_paste_files_contain_current_scoring_and_contract": true,
+      "starter_hashes_match": true,
+      "meaning": "byte synchronization does not prove internal consistency"
+    },
+    {
+      "probe": "A09_full_atlas_sensitivity",
+      "status": "fixed",
+      "scenarios": 6,
+      "low_effort_full_atlas_jaccard": 0.6666666666666666
+    },
+    {
+      "probe": "R01_conflicting_default_in_shared_rubric",
+      "status": "residual_issue",
+      "priority": "P2",
+      "code_default": 0,
+      "document_defaults": [
+        25,
+        0
+      ],
+      "copied_to": [
+        "PASTE/02-ANALYZE.txt",
+        "PASTE/03-SELECT.txt",
+        "PASTE/05-COORDINATE.txt"
+      ],
+      "location": "SCORING.md:95 and SCORING.md:98",
+      "note": "The older G formula is explicitly replaced later; the two defaults within the same current clarification remain contradictory."
+    },
+    {
+      "probe": "R02_compact_index_repeats_oversized_body",
+      "status": "residual_issue",
+      "priority": "P1",
+      "finding_flagged_oversized": true,
+      "finding_limit_bytes": 4096,
+      "index_bytes": 300125,
+      "index_oversized_status": null,
+      "raw_description_preserved": true,
+      "problem": "The navigation index repeats the entire oversized description; it has no byte bound or per-entry oversized status."
+    },
+    {
+      "probe": "R03_sources_escape_packet_budget",
+      "status": "residual_issue",
+      "priority": "P1",
+      "records": 60,
+      "finding_bytes": 40620,
+      "sources_bytes": 397200,
+      "combined_bytes": 437820,
+      "configured_max_bytes": 120000,
+      "oversized_flags": [],
+      "problem": "Byte limit and manifest bytes cover only findings, not their attached sources; an ordinary unflagged job exceeds the budget."
+    },
+    {
+      "probe": "R04_blind_publication_can_replace_concurrent_output",
+      "status": "residual_issue",
+      "priority": "P2",
+      "existing_before_call_refused": true,
+      "file_published_after_last_exists_check_overwritten": true,
+      "interleaving": "controlled concurrent file creation immediately before actual os.replace; all paths inside TemporaryDirectory",
+      "problem": "Atomic replacement is not atomic no-overwrite publication."
+    }
+  ],
+  "executed": 13,
+  "residual_issues": [
+    "R01_conflicting_default_in_shared_rubric",
+    "R02_compact_index_repeats_oversized_body",
+    "R03_sources_escape_packet_budget",
+    "R04_blind_publication_can_replace_concurrent_output"
+  ],
+  "network_requests": 0
+}

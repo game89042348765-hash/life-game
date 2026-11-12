@@ -1,5 +1,8 @@
 # LifeGame Lab
 
+12 ноября 2026, **LAB-010**: [повторная проверка «ГИДРЫ» / Hybrid v2.1](research/LAB-010-hybrid-v21-review/README.md). 23/23 штатных теста и финальный ZIP проверены; 13 адресных наблюдений: девять подтверждений, четыре остаточных пункта. [Вывод](research/LAB-010-hybrid-v21-review/COORDINATOR-REVIEW.md), [узкий пакет R2](../downloads/lab-packets/LifeGame-LAB-010-HYDRA-v2.1-R2.zip). Рабочий стандарт пока не заменён; после исправлений — калибровка реальными источниками. Приложения/LAB-009 прежние, массовый сбор не запускался. Старые статусы ниже сохранены как история.
+
+
 LAB-009 доставлен коммитом `29b6978` в lab/synthetic-users; remote/pinned raw проверены. [Квитанция](experiments/flexible-complexity/DELIVERY.json). Main/Pages прежние; приёмка ожидается.
 
 
