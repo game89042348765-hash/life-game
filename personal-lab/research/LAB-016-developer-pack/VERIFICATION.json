@@ -1,0 +1,107 @@
+{
+  "task": "LAB-016",
+  "status": "cold_opening_check_only_not_full_product_regression",
+  "client_date": "2026-11-13",
+  "source_commit": "89112c29dacea254cd8f50c4197a8ee77e764917",
+  "environment": "Chromium/Linux/Playwright; fresh context per app; external requests blocked",
+  "checks": [
+    {
+      "route": "/personal/",
+      "status": 200,
+      "title": "LifeGame",
+      "control_count": 3,
+      "body_text_chars": 406,
+      "page_errors": [],
+      "local_http_errors": [],
+      "local_request_failures": [],
+      "blocked_external_hosts": [],
+      "passed": true
+    },
+    {
+      "route": "/personal-lab/",
+      "status": 200,
+      "title": "LifeGame Lab — лаборатория",
+      "control_count": 3,
+      "body_text_chars": 410,
+      "page_errors": [],
+      "local_http_errors": [],
+      "local_request_failures": [],
+      "blocked_external_hosts": [],
+      "passed": true
+    },
+    {
+      "route": "/personal-lab/experiments/flexible-complexity/",
+      "status": 200,
+      "title": "LifeGame Ритм Lab — лаборатория",
+      "control_count": 4,
+      "body_text_chars": 300,
+      "page_errors": [],
+      "local_http_errors": [],
+      "local_request_failures": [],
+      "blocked_external_hosts": [],
+      "passed": true
+    },
+    {
+      "route": "/personal-lab/experiments/ai-strategy/",
+      "status": 200,
+      "title": "LifeGame AI Lab — лаборатория",
+      "control_count": 3,
+      "body_text_chars": 413,
+      "page_errors": [],
+      "local_http_errors": [],
+      "local_request_failures": [],
+      "blocked_external_hosts": [],
+      "passed": true
+    },
+    {
+      "route": "/next/",
+      "status": 200,
+      "title": "LifeGame",
+      "control_count": 29,
+      "body_text_chars": 365,
+      "page_errors": [],
+      "local_http_errors": [],
+      "local_request_failures": [],
+      "blocked_external_hosts": [],
+      "passed": true
+    },
+    {
+      "route": "/",
+      "status": 200,
+      "title": "LifeGame",
+      "control_count": 27,
+      "body_text_chars": 542,
+      "page_errors": [],
+      "local_http_errors": [],
+      "local_request_failures": [],
+      "blocked_external_hosts": [],
+      "passed": true
+    }
+  ],
+  "passed": 6,
+  "total": 6,
+  "git_required": false,
+  "application_modified": false,
+  "final_package": {
+    "task": "LAB-016",
+    "file": "downloads/lab-packets/LifeGame-Developer-Pack-2026-11-13.zip",
+    "bytes": 15835996,
+    "sha256": "545dde467fa7a00c07aa6ad6e3337d37c0137ddc6297dbddf625c16afeab9c64",
+    "zip_entries": 578,
+    "manifest_entries": 577,
+    "repository_files": 570,
+    "excluded_tracked_files": 659,
+    "uncompressed_bytes": 24871729,
+    "source_commit": "89112c29dacea254cd8f50c4197a8ee77e764917",
+    "requested_max_bytes": 100000000
+  },
+  "source_file_identity_between_checked_and_final_package": true,
+  "final_integrity": {
+    "zip_crc": "passed",
+    "manifest_entries_verified": 577,
+    "all_repository_files_same_as_opening_check": 570,
+    "no_backups_nested_zip_git_history_or_browser_profiles": true
+  },
+  "scope": "Packaging/cold opening only; no full regression rerun and no product code changes",
+  "package_local_path": "/tmp/lab016-final-clean/LifeGame-Developer-Pack"
+}

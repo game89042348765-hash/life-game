@@ -1,0 +1,13 @@
+{
+  "task": "LAB-016",
+  "file": "downloads/lab-packets/LifeGame-Developer-Pack-2026-11-13.zip",
+  "bytes": 15835996,
+  "sha256": "545dde467fa7a00c07aa6ad6e3337d37c0137ddc6297dbddf625c16afeab9c64",
+  "zip_entries": 578,
+  "manifest_entries": 577,
+  "repository_files": 570,
+  "excluded_tracked_files": 659,
+  "uncompressed_bytes": 24871729,
+  "source_commit": "89112c29dacea254cd8f50c4197a8ee77e764917",
+  "requested_max_bytes": 100000000
+}
