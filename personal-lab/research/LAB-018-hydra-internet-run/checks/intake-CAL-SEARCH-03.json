@@ -1,0 +1,177 @@
+{
+  "package": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-03/attempt-001",
+  "sample_rule": "greedy new source type then new origin group then lexical source ID; min(max(5,ceil(source count/10)),source count); accessed sources only",
+  "required_minimum": 5,
+  "total_sources": 16,
+  "probed": 5,
+  "results": [
+    {
+      "source_id": "S-HI-C03-001",
+      "source_type": "official_documentation",
+      "origin_group": "khan-academy-mastery",
+      "original_url": "https://support.khanacademy.org/hc/en-us/articles/5548760867853--How-do-Khan-Academy-s-Mastery-levels-work",
+      "final_url": "https://support.khanacademy.org/hc/en-us/articles/5548760867853--How-do-Khan-Academy-s-Mastery-levels-work",
+      "http_status": 200,
+      "connect_status": 200,
+      "retrieved_at": "2026-11-13T08:11:29.358790+00:00",
+      "curl_exit": 0,
+      "error": null,
+      "body_sha256": "6cdee8673ca38bf9e5ffd18d362afd96666c722b09a959cbcc8ce9bf7dfec9b3",
+      "bytes": 44344,
+      "extracted_characters": 2766,
+      "short_preview": "How do Khan Academy's Mastery levels work? – Khan Academy Help Center Help Center Community Report a Problem Sign in Menu Help Center Community Report a Problem Sign in How can we help? Khan Academy Help Center Teachers & coaches Making assignments and Mastery Missions for your students Understanding the Khan Academy Mastery system Follow How do Kh",
+      "claims_to_review": [
+        {
+          "finding_id": "F-HI-C03-001",
+          "type": "existence",
+          "source_id": "S-HI-C03-001",
+          "locator": "Основной текст: блоки Attempted, Familiar, Proficient, Mastered, Not Started (после “Below are the Mastery levels”)",
+          "text": "<70% правильных в упражнении — Attempted; 70–99% — Familiar; 100% — Proficient. Mastered достигается после Proficient и правильного ответа на mixed-skill assessment. Ошибки переводят Proficient→Familiar и Mastered→Proficient.",
+          "basis": "paraphrase"
+        }
+      ],
+      "local_text_path": "/tmp/hydra-intake-S-HI-C03-001.txt",
+      "semantic_review": "matched_with_scope_limits",
+      "reviewer_id": "/root",
+      "review_note": "Read Attempted/Familiar/Proficient/Mastered thresholds and downgrade rules; confirms documentation, not learning efficacy."
+    },
+    {
+      "source_id": "S-HI-C03-011",
+      "source_type": "practice_manual",
+      "origin_group": "iris-secondary-behavior-module",
+      "original_url": "https://iris.peabody.vanderbilt.edu/module/beh2_sec/cresource/q2/p06/",
+      "final_url": "https://iris.peabody.vanderbilt.edu/module/beh2_sec/cresource/q2/p06/",
+      "http_status": 200,
+      "connect_status": 200,
+      "retrieved_at": "2026-11-13T08:11:29.921329+00:00",
+      "curl_exit": 0,
+      "error": null,
+      "body_sha256": "9b29e4212422f4618e1d7e4f0ed27b927a8873694073ce5c181c1d0dfc3156ee",
+      "bytes": 108669,
+      "extracted_characters": 14293,
+      "short_preview": "Page 6: Positive Consequences Resources IRIS Resource Locator Modules, case studies, activities, & more Evidence-Based Practice Summaries Research annotations High-Leverage Practices IRIS resources on HLPs Films Portrayals of people with disabilities Children's Books Portrayals of people with disabilities Glossary Disability related terms For PD Pr",
+      "claims_to_review": [
+        {
+          "finding_id": "F-HI-C03-009",
+          "type": "existence",
+          "source_id": "S-HI-C03-011",
+          "locator": "Developing Positive Consequences → Did You Know?, абзац “A token economy…”; Delivering Positive Consequences",
+          "text": "Ученики зарабатывают tokens/points за appropriate behaviors и обменивают их на tangible item, social opportunity или special activity. Доставку положительного последствия связывают с ожидаемым поведением и применяют consistently.",
+          "basis": "paraphrase"
+        },
+        {
+          "finding_id": "F-HI-C03-009",
+          "type": "existence",
+          "source_id": "S-HI-C03-011",
+          "locator": "Developing Positive Consequences, абзацы о differences/preferences; Transcript: Melissa Patterson, конец",
+          "text": "Руководство предлагает выяснять интересы и предпочтения; Patterson описывает список из трёх значимых для ученика вариантов положительных последствий.",
+          "basis": "paraphrase"
+        }
+      ],
+      "local_text_path": "/tmp/hydra-intake-S-HI-C03-011.txt",
+      "semantic_review": "matched_with_scope_limits",
+      "reviewer_id": "/root",
+      "review_note": "Read token economy exchange, teacher-selected preferences and Patterson transcript list of three meaningful options."
+    },
+    {
+      "source_id": "S-HI-C03-014",
+      "source_type": "research",
+      "origin_group": "almeida-2023-negative-effects-mapping",
+      "original_url": "https://arxiv.org/pdf/2305.08346",
+      "final_url": "https://arxiv.org/pdf/2305.08346",
+      "http_status": 200,
+      "connect_status": 200,
+      "retrieved_at": "2026-11-13T08:11:29.774032+00:00",
+      "curl_exit": 0,
+      "error": null,
+      "body_sha256": "e405c5a9f1ac539631e42878c4537ac641eff965a55cab47250e4f74719c6345",
+      "bytes": 1314020,
+      "extracted_characters": 135843,
+      "short_preview": "Negative Effects of Gamification in Education Software:\nSystematic Mapping and Practitioner Perceptions\nCláuvin Almeidaa , Marcos Kalinowskia , Anderson Uchôab , Bruno Feijóa\naPontifical Catholic University of Rio de Janeiro (PUC-Rio), Rio de Janeiro, Brazil\nb Federal University of Ceará (UFC), Itapajé, Brazil\n\nAbstract\nContext: While most res",
+      "claims_to_review": [
+        {
+          "finding_id": "F-HI-C03-006",
+          "type": "risk",
+          "source_id": "S-HI-C03-014",
+          "locator": "PDF p.23, §4.1; p.27, §4.1.4, абзац “the use of Badges may have…”",
+          "text": "Обзор образовательной геймификации перечисляет для badges случаи отсутствия эффекта, нерелевантности и ухудшения performance. Авторы говорят об ассоциациях в разных реализациях, не об установленном вреде Moodle.",
+          "basis": "paraphrase"
+        }
+      ],
+      "local_text_path": "/tmp/hydra-intake-S-HI-C03-014.txt",
+      "semantic_review": "matched_with_scope_limits",
+      "reviewer_id": "/root",
+      "review_note": "Read §4.1.4 page27 badge adverse/no-effect mapping and authors context-heterogeneity limitation; no causal claim for Moodle."
+    },
+    {
+      "source_id": "S-HI-C03-003",
+      "source_type": "official_documentation",
+      "origin_group": "factorio-official-wiki",
+      "original_url": "https://wiki.factorio.com/Research",
+      "final_url": "https://wiki.factorio.com/Research",
+      "http_status": 200,
+      "connect_status": 200,
+      "retrieved_at": "2026-11-13T08:11:29.447722+00:00",
+      "curl_exit": 0,
+      "error": null,
+      "body_sha256": "97d51f518b5cb395f3be3b532f4cfe2075704ec472eab85b591da4b924a85e9b",
+      "bytes": 194184,
+      "extracted_characters": 12113,
+      "short_preview": "Research - Factorio Wiki Factorio.com | Forums | Wiki | Mod Portal | API Docs In other languages: Research From Official Factorio Wiki Jump to navigation Jump to search The technology screen Research is used to unlock technologies, offering new recipes and bonuses. Research is performed by labs consuming different types of science packs. Contents 1",
+      "claims_to_review": [
+        {
+          "finding_id": "F-HI-C03-002",
+          "type": "existence",
+          "source_id": "S-HI-C03-003",
+          "locator": "Введение и #Mechanics, абзацы “Research is used to unlock technologies”, “only one technology”, “Each unit has a time and a science pack cost”",
+          "text": "Исследование открывает технологии; labs потребляют science packs. У каждой единицы прогресса есть время и цена. Активное исследование можно сменить, уже сделанный прогресс сохраняется.",
+          "basis": "paraphrase"
+        }
+      ],
+      "local_text_path": "/tmp/hydra-intake-S-HI-C03-003.txt",
+      "semantic_review": "matched_with_scope_limits",
+      "reviewer_id": "/root",
+      "review_note": "Read one technology per force, pack/time costs and retained partial progress after switching."
+    },
+    {
+      "source_id": "S-HI-C03-004",
+      "source_type": "official_documentation",
+      "origin_group": "eve-online-support",
+      "original_url": "https://support.eveonline.com/hc/en-us/articles/203217152-Standings",
+      "final_url": "https://support.eveonline.com/hc/en-us/articles/203217152-Standings",
+      "http_status": 200,
+      "connect_status": 200,
+      "retrieved_at": "2026-11-13T08:11:29.645870+00:00",
+      "curl_exit": 0,
+      "error": null,
+      "body_sha256": "905b4a853ae1636d3e9546a3690716500b0276dbd6822aef155bd8274664ea04",
+      "bytes": 63630,
+      "extracted_characters": 6884,
+      "short_preview": "Standings – EVE Online Skip to main content News News Channels Dev Blogs Patch Notes Community CSM Volunteer Program Fanfest Support Policies Bug Reports Fleet Fight Notification Third Party Applications Third Party Developers Download EVE English (United States) English Deutsch Español Français Русский 한국어 简体中文 Submit a request Sign in EVE Online ",
+      "claims_to_review": [
+        {
+          "finding_id": "F-HI-C03-003",
+          "type": "existence",
+          "source_id": "S-HI-C03-004",
+          "locator": "Required Standing; Standing gains and losses toward NPCs; The Math; Derived Standings",
+          "text": "Для агентов уровней 2–5 нужны standing 1/3/5/7, при отсутствии значений ≤−2. Формула gains ns=((10−s)*i)+s даёт убывающий прирост. Провал миссии или второй отказ за 4 часа снижает standing; storyline mission влияет на связанные фракции.",
+          "basis": "paraphrase"
+        },
+        {
+          "finding_id": "F-HI-C03-003",
+          "type": "risk",
+          "source_id": "S-HI-C03-004",
+          "locator": "Important Standing Milestones: строки −2 и −5; Derived Standings",
+          "text": "При −2 теряется доступ к агентам кроме level 1; при −5 NPC-фракции начинают стрелять. Положительный прогресс у одной фракции может вызвать derived loss у враждебной.",
+          "basis": "paraphrase"
+        }
+      ],
+      "local_text_path": "/tmp/hydra-intake-S-HI-C03-004.txt",
+      "semantic_review": "matched_with_scope_limits",
+      "reviewer_id": "/root",
+      "review_note": "Read standing threshold table, percentage-to-boundary formula, derived standings and access-loss milestones."
+    }
+  ],
+  "overall": "sample_passed",
+  "full_source_truth_verified": false
+}

@@ -1,0 +1,121 @@
+{
+  "task_id": "CAL-SEARCH-02",
+  "attempt": 1,
+  "stage": "search",
+  "status": "submitted",
+  "input_snapshot": "Hybrid-2.1.1+lab.1@98680d75f1c4512b9b1c32ce03e073081300012f",
+  "protocol_version": "2.1",
+  "taxonomy_version": "2.1",
+  "rubric_version": "2.1",
+  "owner_id": "/root/cal_search_02",
+  "created_at": "2026-11-13T08:16:22.717930+00:00",
+  "read_ids": [
+    "S-HI-C02-001",
+    "S-HI-C02-002",
+    "S-HI-C02-003",
+    "S-HI-C02-004",
+    "S-HI-C02-005",
+    "S-HI-C02-006",
+    "S-HI-C02-007",
+    "S-HI-C02-008",
+    "S-HI-C02-009",
+    "S-HI-C02-010",
+    "S-HI-C02-011",
+    "S-HI-C02-012",
+    "S-HI-C02-013",
+    "S-HI-C02-014"
+  ],
+  "read_input_files": [
+    "/workspace/life-game/AGENTS.md",
+    "/workspace/life-game/personal-lab/AGENTS.md",
+    "/workspace/life-game/personal-lab/research/LAB-011-hybrid-v211-review/release/DATA_CONTRACT.md",
+    "/workspace/life-game/personal-lab/research/LAB-011-hybrid-v211-review/release/TAXONOMY.md",
+    "/workspace/life-game/personal-lab/research/LAB-011-hybrid-v211-review/release/SYSTEM.md",
+    "/workspace/life-game/personal-lab/research/LAB-011-hybrid-v211-review/release/PROMPTS/01-SEARCH.md",
+    "/workspace/life-game/personal-lab/research/LAB-018-hydra-internet-run/tasks/CAL-SEARCH-02.json"
+  ],
+  "validated_input_hashes": {
+    "DATA_CONTRACT.md": "8a785c5249d4008cd31cdef41280daf22372bfd127989bde51fd86ac9ac88bad",
+    "TAXONOMY.md": "e42b9a34e6f742ee6e2b683454360361a1173f1e8d386dd31ef73ac3524b5ff2",
+    "SYSTEM.md": "9e0cf21146ee76c95b2b64832fae6630cbd9d0fc91accfbfb0e655c227013594",
+    "PROMPTS/01-SEARCH.md": "50070e7c43ddbcd8c93dd3a54a36069de04b0ea1d541de994bf29949d48e53cc"
+  },
+  "output_counts": {
+    "sources": 14,
+    "findings": 12,
+    "verified_findings": 12,
+    "leads": 3,
+    "search_log_records": 33,
+    "origin_groups": 12,
+    "search_queries": 8,
+    "http_attempts": 33,
+    "http_200": 29,
+    "http_404": 3,
+    "http_timeout": 1,
+    "ratings": 0,
+    "canonical_elements": null,
+    "category_occurrences": {
+      "C09": 11,
+      "C12": 5
+    }
+  },
+  "validation": {
+    "structural_checks": "passed",
+    "existence_links": "passed",
+    "short_quotes_checked": 3,
+    "task_copy_byte_equal": true,
+    "input_hashes_checked": 4,
+    "source_semantics_independent_audit": "not performed by searcher; orchestrator acceptance is separate"
+  },
+  "limitations": [
+    "Bounded calibration collection; no saturation test and no claim of internet completeness.",
+    "No specialized search API. Four Bing queries returned mostly irrelevant first-term/homonym results; four Brave queries supplied organic links. SERP fragments are not verified sources.",
+    "English coverage plus one Russian source; Russian clinical/manual and first-person coverage remains incomplete.",
+    "Spoon Theory original page timed out; the full attributed authorized Lymphoma Action PDF reproduction was read, with one origin_group.",
+    "Official/clinical/game instructions establish described practices; efficacy is not inferred from documentation. Only PLOS effect findings are reported separately.",
+    "PLOS contains an internal discrepancy: Abstract performance d=.16 p=.116; Results d=.16 p=.17 CI[-.04,.37]. Both are nonsignificant; the discrepancy is preserved.",
+    "PLOS primary studies were not independently reviewed; clinical applicability remains condition-specific.",
+    "The Russian legal consultation is dated 2024; a full legal update to November 2026 was not performed.",
+    "Applications were not run, registrations/payments/external messages/settings changes were not performed.",
+    "taxonomy.json and current application feature inventory were not read; optional taxonomy axes were not guessed.",
+    "Canonical mechanism count and ratings belong to later stages. Final acceptance by the orchestrator is pending."
+  ],
+  "files": [
+    {
+      "path": "TASK.json",
+      "bytes": 1933,
+      "sha256": "cd7af1f38b36abc72a3ecaac75b2c240402ac2018042ba252f9d3a0e2b783a89"
+    },
+    {
+      "path": "sources.jsonl",
+      "bytes": 13670,
+      "sha256": "1961e3d6acc8031ae129d9de3c6e757bbe4a752f140e90e776fdd94d4ae3e20a"
+    },
+    {
+      "path": "findings.jsonl",
+      "bytes": 36376,
+      "sha256": "ddf087982a332fda1e396279b0a89ab27025be678fe45c764a099a9bcc643829"
+    },
+    {
+      "path": "leads.jsonl",
+      "bytes": 2613,
+      "sha256": "ec6c27da14bd72d9bdb3a8f64ab499658f55019db7efbeb537a648e7f2586321"
+    },
+    {
+      "path": "search_log.jsonl",
+      "bytes": 35124,
+      "sha256": "35d07e26f3b1754dac9bbb6f949851a067945f321b9e21b8e62ad1e0cee76cf5"
+    },
+    {
+      "path": "COVERAGE.md",
+      "bytes": 7339,
+      "sha256": "bddcbf668552238b35d7bde15ee75e0698ce720761d78590ea30b14cf2c9350b"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 9676,
+      "sha256": "dd012738aeb47fac1e3ccb05a6129a043825d7506c68463aa19b0d9298827a18"
+    }
+  ],
+  "manifest_excludes_self": true
+}

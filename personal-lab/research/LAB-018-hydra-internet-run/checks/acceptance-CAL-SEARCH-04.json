@@ -1,0 +1,18 @@
+{
+  "task_id": "CAL-SEARCH-04",
+  "decision": "accepted",
+  "at": "2026-11-13T08:11:57.239363+00:00",
+  "coordinator_id": "/root",
+  "checks": {
+    "manifest_files": 7,
+    "hash_errors": [],
+    "atlas_validate": "passed",
+    "sources": 14,
+    "findings": 12,
+    "source_sample_required": 5,
+    "source_sample_reopened_and_reviewed": 5
+  },
+  "manifest_sha256": "025a016c31e05db6f3bcf5d727a397cd2823c11b8569a62e4f69d2a037d592ab",
+  "source_evidence_ref": "checks/intake-CAL-SEARCH-04.json",
+  "limits": "Sample acceptance only; final independent all-card existence audit still required."
+}

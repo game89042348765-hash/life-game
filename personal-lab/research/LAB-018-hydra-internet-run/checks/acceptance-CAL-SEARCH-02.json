@@ -1,0 +1,18 @@
+{
+  "task_id": "CAL-SEARCH-02",
+  "decision": "accepted",
+  "at": "2026-11-13T08:20:42.660690+00:00",
+  "coordinator_id": "/root",
+  "checks": {
+    "manifest_files": 7,
+    "hash_errors": [],
+    "atlas_validate": "passed",
+    "sources": 14,
+    "findings": 12,
+    "source_sample_required": 5,
+    "source_sample_reopened_and_reviewed": 5
+  },
+  "manifest_sha256": "0d4beef869703c4c08fabb024e7c1abf928735b87759bd4e3eb0fb4f2353964f",
+  "source_evidence_ref": "checks/intake-CAL-SEARCH-02.json",
+  "limits": "Full independent audit still required; primary source numerical discrepancy documented, clinical rules context-specific. Usage-limit interruption happened after on-disk submission."
+}

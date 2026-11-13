@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    {
+      "input": "personal-lab/research/LAB-018-hydra-internet-run/accepted/CAL-SEARCH-01/attempt-001",
+      "sha256": {
+        "findings.jsonl": "6afbb33215b840053991d614f6ab1813dff3d7ce5268dc319e29aba9a7d01ce3",
+        "leads.jsonl": "c6f317b6bdeac8d7f7f7a36038090ffcf945e9d5280aeb86ee4430e8eb2a7335",
+        "search_log.jsonl": "367650d35a90ddaadc1863ae054126025d9be5d9794600a55626c5890b277ee8",
+        "sources.jsonl": "12dee33441ae9d104df3677adb40101013bb8189d9c999704a64128b8e3b59ee"
+      }
+    },
+    {
+      "input": "personal-lab/research/LAB-018-hydra-internet-run/accepted/CAL-SEARCH-02/attempt-001",
+      "sha256": {
+        "findings.jsonl": "ddf087982a332fda1e396279b0a89ab27025be678fe45c764a099a9bcc643829",
+        "leads.jsonl": "ec6c27da14bd72d9bdb3a8f64ab499658f55019db7efbeb537a648e7f2586321",
+        "search_log.jsonl": "35d07e26f3b1754dac9bbb6f949851a067945f321b9e21b8e62ad1e0cee76cf5",
+        "sources.jsonl": "1961e3d6acc8031ae129d9de3c6e757bbe4a752f140e90e776fdd94d4ae3e20a"
+      }
+    },
+    {
+      "input": "personal-lab/research/LAB-018-hydra-internet-run/accepted/CAL-SEARCH-03/attempt-001",
+      "sha256": {
+        "findings.jsonl": "6d731d3610d5ebdc4c5c6c97e28e734ab613432c84ee807de3c5d116e0291729",
+        "leads.jsonl": "b735edb6808090661bfa47b498dc9a48c3aba1c647aa27ebe4f5533f5ca8e6df",
+        "search_log.jsonl": "6752977c82531cc1d7e1fae0ec59500c0dde7411766464dc3bc5921177b9e357",
+        "sources.jsonl": "ff7ecc5c3259754c66697e51ca460875952a7608b2d9b9cb49cf89cd4024f34e"
+      }
+    },
+    {
+      "input": "personal-lab/research/LAB-018-hydra-internet-run/accepted/CAL-SEARCH-04/attempt-001",
+      "sha256": {
+        "findings.jsonl": "d06e7486230b118092bab8cf787ee6026e299fa173e93b0acaafaef5438d209b",
+        "leads.jsonl": "d15fce8b4b5004e4506a66f7f76b464595dce80e38bf48518f7f6fc707649d82",
+        "search_log.jsonl": "82416a76e5d437565d0d64624f468227301e2dc6b6e29964adf878c83286d406",
+        "sources.jsonl": "d1b2391b67d309c3b1053d266521dfc7c59b4df99d1340f5da324d39cce2db27"
+      }
+    }
+  ],
+  "semantic_deduplication": "not_performed"
+}

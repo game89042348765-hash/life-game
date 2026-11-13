@@ -1,0 +1,18 @@
+{
+  "task_id": "CAL-SEARCH-03",
+  "decision": "accepted",
+  "at": "2026-11-13T08:15:23.542745+00:00",
+  "coordinator_id": "/root",
+  "checks": {
+    "manifest_files": 7,
+    "hash_errors": [],
+    "atlas_validate": "passed",
+    "sources": 16,
+    "findings": 12,
+    "source_sample_required": 5,
+    "source_sample_reopened_and_reviewed": 5
+  },
+  "manifest_sha256": "c393a6cf579dd0a962f517389b1cc5fbe07600c5638dc32abf9cf9f16232a09e",
+  "source_evidence_ref": "checks/intake-CAL-SEARCH-03.json",
+  "limits": "Sample acceptance, final independent audit still required. Rested XP third-party description; Duolingo 2025 limited rollout; source-internal Wesnoth income inconsistency not used for a rate claim."
+}

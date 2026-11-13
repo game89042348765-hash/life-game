@@ -5,7 +5,7 @@
   "protocol_version": "2.1",
   "taxonomy_version": "2.1",
   "rubric_version": "2.1",
-  "status": "calibration_collecting",
+  "status": "calibration_normalizing",
   "purpose": "Справочный атлас возможностей; не обязательный план разработки",
   "application_context_policy": "No LifeGame feature list in search, analysis or general selection; separate mapping after release",
   "tools_observed": {
@@ -58,6 +58,25 @@
       "participant_id": "/root/cal_search_04",
       "roles": [
         "search"
+      ],
+      "context_type": "spawn_agent",
+      "fork_turns": "none",
+      "model_id": null
+    },
+    {
+      "participant_id": "/root/cal_audit",
+      "roles": [
+        "independent_source_audit",
+        "final_audit"
+      ],
+      "context_type": "spawn_agent",
+      "fork_turns": "none",
+      "model_id": null
+    },
+    {
+      "participant_id": "/root/cal_normalize",
+      "roles": [
+        "normalize"
       ],
       "context_type": "spawn_agent",
       "fork_turns": "none",

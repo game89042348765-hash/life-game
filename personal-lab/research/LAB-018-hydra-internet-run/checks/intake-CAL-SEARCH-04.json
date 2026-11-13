@@ -1,0 +1,192 @@
+{
+  "package": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-04/attempt-001",
+  "sample_rule": "greedy new source type then new origin group then lexical source ID; min(max(5,ceil(source count/10)),source count); accessed sources only",
+  "required_minimum": 5,
+  "total_sources": 14,
+  "probed": 5,
+  "results": [
+    {
+      "source_id": "S-HI-C04-001",
+      "source_type": "official_documentation",
+      "origin_group": "OG-HI-OBSIDIAN",
+      "original_url": "https://raw.githubusercontent.com/obsidianmd/obsidian-help/master/en/Files%20and%20folders/How%20Obsidian%20stores%20data.md",
+      "final_url": "https://raw.githubusercontent.com/obsidianmd/obsidian-help/master/en/Files%20and%20folders/How%20Obsidian%20stores%20data.md",
+      "http_status": 200,
+      "connect_status": 200,
+      "retrieved_at": "2026-11-13T08:08:37.109179+00:00",
+      "curl_exit": 0,
+      "error": null,
+      "body_sha256": "add03088da7be4ab2fd364918c17b006d646eafedffada5440db83217f6942e6",
+      "bytes": 3473,
+      "extracted_characters": 3408,
+      "short_preview": "--- aliases: - Advanced topics/How Obsidian stores data description: This page explains how Obsidian stores its data on your device. mobile: true permalink: data-storage publish: true --- Obsidian stores your notes as [[Basic formatting syntax|Markdown-formatted]] plain text files in a _vault_. A vault is a folder on your local file system, includi",
+      "claims_to_review": [
+        {
+          "finding_id": "F-HI-C04-001",
+          "type": "existence",
+          "source_id": "S-HI-C04-001",
+          "locator": "How Obsidian stores data.md, opening paragraphs, lines 10–14 (master content SHA-256 recorded in source)",
+          "text": "Документация определяет vault как локальную папку с Markdown-файлами и прямо разрешает редактирование другими текстовыми редакторами; приложение отслеживает внешние изменения.",
+          "basis": "paraphrase",
+          "supporting_fragment": "A vault is a folder on your local file system"
+        },
+        {
+          "finding_id": "F-HI-C04-001",
+          "type": "risk",
+          "source_id": "S-HI-C04-001",
+          "locator": "How Obsidian stores data.md, warning “Vaults within vaults”, lines 18–19",
+          "text": "Вложенные vault не рекомендуются: локальные для vault внутренние ссылки могут обновляться неверно.",
+          "basis": "paraphrase"
+        }
+      ],
+      "local_text_path": "/tmp/hydra-intake-S-HI-C04-001.txt",
+      "semantic_review": "matched_with_scope_limits",
+      "reviewer_id": "/root",
+      "review_note": "Read plain Markdown/local filesystem/external edits and nested-vault warning."
+    },
+    {
+      "source_id": "S-HI-C04-011",
+      "source_type": "source_code",
+      "origin_group": "OG-HI-RESTIC",
+      "original_url": "https://raw.githubusercontent.com/restic/restic/v0.17.3/internal/checker/checker.go",
+      "final_url": "https://raw.githubusercontent.com/restic/restic/v0.17.3/internal/checker/checker.go",
+      "http_status": 200,
+      "connect_status": 200,
+      "retrieved_at": "2026-11-13T08:08:37.159150+00:00",
+      "curl_exit": 0,
+      "error": null,
+      "body_sha256": "0cbb4f7bdcff79617c187a78b4620ef73611ac71003f776b7374b394531cb4e2",
+      "bytes": 14584,
+      "extracted_characters": 13646,
+      "short_preview": "package checker import ( \"bufio\" \"context\" \"fmt\" \"runtime\" \"sync\" \"github.com/klauspost/compress/zstd\" \"github.com/restic/restic/internal/backend\" \"github.com/restic/restic/internal/backend/s3\" \"github.com/restic/restic/internal/debug\" \"github.com/restic/restic/internal/errors\" \"github.com/restic/restic/internal/repository\" \"github.com/restic/resti",
+      "claims_to_review": [
+        {
+          "finding_id": "F-HI-C04-010",
+          "type": "existence",
+          "source_id": "S-HI-C04-011",
+          "locator": "v0.17.3 internal/checker/checker.go, lines 475–478 and 482–565; ReadData/ReadPacks",
+          "text": "В реально прочитанном коде ReadData передаёт весь c.packs в ReadPacks; рабочие потоки вызывают repository.CheckPack для каждого задания и передают обнаруженные ошибки в errChan.",
+          "basis": "paraphrase",
+          "supporting_fragment": "c.ReadPacks(ctx, c.packs, nil, errChan)"
+        }
+      ],
+      "local_text_path": "/tmp/hydra-intake-S-HI-C04-011.txt",
+      "semantic_review": "matched_with_scope_limits",
+      "reviewer_id": "/root",
+      "review_note": "Read v0.17.3 ReadData→ReadPacks→repository.CheckPack and errChan; source-code pointer matches."
+    },
+    {
+      "source_id": "S-HI-C04-013",
+      "source_type": "first_person_report",
+      "origin_group": "OG-HI-GITLAB-INCIDENT-2017",
+      "original_url": "https://about.gitlab.com/blog/gitlab-dot-com-database-incident/",
+      "final_url": "https://about.gitlab.com/blog/gitlab-dot-com-database-incident/",
+      "http_status": 200,
+      "connect_status": 200,
+      "retrieved_at": "2026-11-13T08:08:37.032613+00:00",
+      "curl_exit": 0,
+      "error": null,
+      "body_sha256": "fa798333f9976bc5ffc46ccb2e77499ed64b6bf043ee11b6d00b818b1d0caa3e",
+      "bytes": 185497,
+      "extracted_characters": 9725,
+      "short_preview": "GitLab.com database incidentClose To search repositories and projects, login to gitlab.com. SuggestionsGitLab Duo Agent PlatformCode Suggestions (AI)CI/CDGitLab on AWSGitLab on Google CloudWhy GitLab? PlatformDevOps CI/CD Source Code Management Agile Delivery Artifact ManagementSecurity & Governance Application Security Testing Governance & Complia",
+      "claims_to_review": [
+        {
+          "finding_id": "F-HI-C04-011",
+          "type": "failure",
+          "source_id": "S-HI-C04-013",
+          "locator": "#problems-encountered, final summary before pg_basebackup paragraph; #recovery",
+          "text": "В оперативном отчёте участников аварии GitLab 2017 сказано, что из пяти предусмотренных способов backup/replication ни один не работал надёжно или не был настроен; в итоге использовали шестичасовую копию.",
+          "basis": "paraphrase",
+          "supporting_fragment": "We ended up restoring a six-hour-old backup."
+        }
+      ],
+      "local_text_path": "/tmp/hydra-intake-S-HI-C04-013.txt",
+      "semantic_review": "matched_with_scope_limits",
+      "reviewer_id": "/root",
+      "review_note": "Read five failed backup methods and six-hour restoration loss; narrative supports this incident, not frequency of failure elsewhere."
+    },
+    {
+      "source_id": "S-HI-C04-002",
+      "source_type": "official_documentation",
+      "origin_group": "OG-HI-NOTION",
+      "original_url": "https://www.notion.com/help/export-your-content",
+      "final_url": "https://www.notion.com/help/export-your-content",
+      "http_status": 200,
+      "connect_status": 200,
+      "retrieved_at": "2026-11-13T08:08:37.061451+00:00",
+      "curl_exit": 0,
+      "error": null,
+      "body_sha256": "5a9d6f4387b7d05fcaf6772466f832d5b7622c66801c2306901e31387b2f8a41",
+      "bytes": 486134,
+      "extracted_characters": 12064,
+      "short_preview": "Export your Notion content | Notion HelpProductFeaturesSee all features→ CaptureBring everything into one system of record. FindGet answers, instantly—with citations. AutomateKeep work moving 24/7 with agents.. See what’s new→Download the Notion App→ResourcesNotion forEnterpriseSmall businessesStartupsDevelopersDiscoverWhat's NewCustomer storiesWeb",
+      "claims_to_review": [
+        {
+          "finding_id": "F-HI-C04-002",
+          "type": "existence",
+          "source_id": "S-HI-C04-002",
+          "locator": "Export as Markdown & CSV, opening paragraph and On desktop steps",
+          "text": "Страницы вне базы экспортируются как Markdown, full-page databases — CSV с Markdown для подстраниц; пользователь выбирает включение подстраниц и получает ZIP.",
+          "basis": "paraphrase",
+          "supporting_fragment": "You can open the Markdown files as plain text with Markdown syntax."
+        },
+        {
+          "finding_id": "F-HI-C04-002",
+          "type": "risk",
+          "source_id": "S-HI-C04-002",
+          "locator": "Export your entire workspace, paragraph beginning “Pages that the exporter…” and final Note",
+          "text": "Экспорт не включает страницы без доступа экспортирующего пользователя; рабочую область нельзя мгновенно воссоздать повторной загрузкой её экспорта.",
+          "basis": "paraphrase",
+          "supporting_fragment": "You can’t instantly recreate your workspace by reuploading your exported workspace content."
+        }
+      ],
+      "local_text_path": "/tmp/hydra-intake-S-HI-C04-002.txt",
+      "semantic_review": "matched_with_scope_limits",
+      "reviewer_id": "/root",
+      "review_note": "Read Markdown/CSV export, inaccessible-page omission and explicit non-round-trip warning."
+    },
+    {
+      "source_id": "S-HI-C04-003",
+      "source_type": "official_documentation",
+      "origin_group": "OG-HI-BITWARDEN",
+      "original_url": "https://bitwarden.com/help/encrypted-export/",
+      "final_url": "https://bitwarden.com/help/encrypted-export/",
+      "http_status": 200,
+      "connect_status": 200,
+      "retrieved_at": "2026-11-13T08:08:37.227998+00:00",
+      "curl_exit": 0,
+      "error": null,
+      "body_sha256": "8232c720a469643d7f84f49f24b02798abf62c65fad269529b9c72671456a7ff",
+      "bytes": 428387,
+      "extracted_characters": 12610,
+      "short_preview": "Encrypted Exports | Bitwarden ...Log InGet StartedBusiness SalesContact supportDownload BitwardenFeature RequestAsk the CommunityContributor GuidelinesCopy for LLMOpen page as MarkdownDownload as PDFBusiness salesGet startedLog InDocsCoursesPassword ManagerImport & ExportDocsCoursesHomeRelease NotesAccount AccessCreate a Bitwarden AccountChoos",
+      "claims_to_review": [
+        {
+          "finding_id": "F-HI-C04-003",
+          "type": "existence",
+          "source_id": "S-HI-C04-003",
+          "locator": "#encrypted-exports, list item “Password protected”",
+          "text": "Password protected экспорт шифруется с паролем пользователя и может быть импортирован в любую учётную запись Bitwarden.",
+          "basis": "paraphrase",
+          "supporting_fragment": "can be imported to any Bitwarden account"
+        },
+        {
+          "finding_id": "F-HI-C04-003",
+          "type": "risk",
+          "source_id": "S-HI-C04-003",
+          "locator": "#encrypted-exports, warning after the two export types",
+          "text": "Account restricted экспорт нельзя импортировать в другую учётную запись, даже с тем же email; смена encryption key делает прежний такой экспорт нерасшифровываемым.",
+          "basis": "paraphrase",
+          "supporting_fragment": "rotating your account's encryption key will render an account restricted export impossible to decrypt."
+        }
+      ],
+      "local_text_path": "/tmp/hydra-intake-S-HI-C04-003.txt",
+      "semantic_review": "matched_with_scope_limits",
+      "reviewer_id": "/root",
+      "review_note": "Read portable password-protected export vs account restriction and key rotation invalidation."
+    }
+  ],
+  "overall": "sample_passed",
+  "full_source_truth_verified": false
+}

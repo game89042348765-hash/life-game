@@ -1,11 +1,12 @@
 task_id,stage,owner_id,scope,input_snapshot,protocol_version,status,attempt,submitted_path,accepted_path,issues,next_action
 CAL-SEARCH-01,search,/root/cal_search_01,"C05,C08",Hybrid-2.1.1+lab.1@98680d75f1c4512b9b1c32ce03e073081300012f,2.1,accepted,1,incoming/CAL-SEARCH-01/attempt-001,accepted/CAL-SEARCH-01/attempt-001,,"Full normalization, analysis and independent review"
-CAL-SEARCH-02,search,/root/cal_search_02,"C09,C12",Hybrid-2.1.1+lab.1@98680d75f1c4512b9b1c32ce03e073081300012f,2.1,assigned,1,incoming/CAL-SEARCH-02/attempt-001,,,Collect and submit real sources
-CAL-SEARCH-03,search,/root/cal_search_03,"C21,C22",Hybrid-2.1.1+lab.1@98680d75f1c4512b9b1c32ce03e073081300012f,2.1,assigned,1,incoming/CAL-SEARCH-03/attempt-001,,,Collect and submit real sources
-CAL-SEARCH-04,search,/root/cal_search_04,"C28,C29",Hybrid-2.1.1+lab.1@98680d75f1c4512b9b1c32ce03e073081300012f,2.1,assigned,1,incoming/CAL-SEARCH-04/attempt-001,,,Collect and submit real sources
-CAL-NORMALIZE-01,normalize,,All calibration input (not yet available),,2.1,planned,1,,,,Wait for actual input snapshot
+CAL-SEARCH-02,search,/root/cal_search_02,"C09,C12",Hybrid-2.1.1+lab.1@98680d75f1c4512b9b1c32ce03e073081300012f,2.1,accepted,1,incoming/CAL-SEARCH-02/attempt-001,accepted/CAL-SEARCH-02/attempt-001,,Global normalization and full analysis
+CAL-SEARCH-03,search,/root/cal_search_03,"C21,C22",Hybrid-2.1.1+lab.1@98680d75f1c4512b9b1c32ce03e073081300012f,2.1,accepted,1,incoming/CAL-SEARCH-03/attempt-001,accepted/CAL-SEARCH-03/attempt-001,,Global normalization and full analysis
+CAL-SEARCH-04,search,/root/cal_search_04,"C28,C29",Hybrid-2.1.1+lab.1@98680d75f1c4512b9b1c32ce03e073081300012f,2.1,accepted,1,incoming/CAL-SEARCH-04/attempt-001,accepted/CAL-SEARCH-04/attempt-001,,Global normalization and full analysis
+CAL-NORMALIZE-01,normalize,/root/cal_normalize,All48 accepted findings; global cross-category units and families,calibration-raw-0001,2.1,assigned,1,incoming/CAL-NORMALIZE-01/attempt-001,,,Normalize all raw records
 CAL-ANALYZE-01,analyze,,All calibration input (not yet available),,2.1,planned,1,,,,Wait for actual input snapshot
 CAL-RATE-A,rate,,All calibration input (not yet available),,2.1,planned,1,,,,Wait for actual input snapshot
 CAL-RATE-B,rate,,All calibration input (not yet available),,2.1,planned,1,,,,Wait for actual input snapshot
 CAL-RANK-01,select,,All calibration input (not yet available),,2.1,planned,1,,,,Wait for actual input snapshot
 CAL-AUDIT-01,audit,,All calibration input (not yet available),,2.1,planned,1,,,,Wait for actual input snapshot
+CAL-SOURCE-AUDIT-01,audit,/root/cal_audit,48 findings source preflight,four-calibration-incoming-attempt-001-source-preflight,2.1,assigned,1,checks/independent-source-preflight-0001,,,Independent source GET and semantic review

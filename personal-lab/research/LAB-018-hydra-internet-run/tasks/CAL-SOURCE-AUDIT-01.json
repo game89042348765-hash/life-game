@@ -1,0 +1,60 @@
+{
+  "template": false,
+  "task_id": "CAL-SOURCE-AUDIT-01",
+  "stage": "audit",
+  "mode": null,
+  "owner_id": "/root/cal_audit",
+  "status": "assigned",
+  "attempt": 1,
+  "protocol_version": "2.1",
+  "taxonomy_version": "2.1",
+  "rubric_version": "2.1",
+  "input_snapshot": "four-calibration-incoming-attempt-001-source-preflight",
+  "input_hashes": {
+    "incoming/CAL-SEARCH-01/attempt-001/findings.jsonl": "6afbb33215b840053991d614f6ab1813dff3d7ce5268dc319e29aba9a7d01ce3",
+    "incoming/CAL-SEARCH-01/attempt-001/sources.jsonl": "12dee33441ae9d104df3677adb40101013bb8189d9c999704a64128b8e3b59ee",
+    "incoming/CAL-SEARCH-02/attempt-001/findings.jsonl": "643b2bdae982120e1c1f3eed3fcad677ae0d1468efea19449e934c4a808dba26",
+    "incoming/CAL-SEARCH-02/attempt-001/sources.jsonl": "444b9b512ceced9038b0cd749e443b583b9a6d8dc56e7515edf1484bd4afe8d9",
+    "incoming/CAL-SEARCH-03/attempt-001/findings.jsonl": "6d731d3610d5ebdc4c5c6c97e28e734ab613432c84ee807de3c5d116e0291729",
+    "incoming/CAL-SEARCH-03/attempt-001/sources.jsonl": "ff7ecc5c3259754c66697e51ca460875952a7608b2d9b9cb49cf89cd4024f34e",
+    "incoming/CAL-SEARCH-04/attempt-001/findings.jsonl": "d06e7486230b118092bab8cf787ee6026e299fa173e93b0acaafaef5438d209b",
+    "incoming/CAL-SEARCH-04/attempt-001/sources.jsonl": "d1b2391b67d309c3b1053d266521dfc7c59b4df99d1340f5da324d39cce2db27"
+  },
+  "scope": {
+    "category_ids": [
+      "C05",
+      "C08",
+      "C09",
+      "C12",
+      "C21",
+      "C22",
+      "C28",
+      "C29"
+    ],
+    "contexts": [
+      "all 48 calibration findings; source preflight, not final selection audit"
+    ]
+  },
+  "exclusions": [
+    "Do not use current LifeGame feature inventory to limit discovery",
+    "Do not invent sources or completed checks"
+  ],
+  "id_prefixes": {
+    "source": null,
+    "finding": null,
+    "element": null,
+    "rating": null
+  },
+  "deliverables": [
+    "AUDIT.md",
+    "issues.jsonl",
+    "source_checks.jsonl",
+    "REPORT.md"
+  ],
+  "acceptance": [
+    "Actual source content checked",
+    "Exact checked and unchecked IDs, HTTP provenance",
+    "No application or independent other-model results"
+  ],
+  "due_at": null
+}

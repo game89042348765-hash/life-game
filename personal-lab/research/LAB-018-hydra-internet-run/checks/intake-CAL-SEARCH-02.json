@@ -1,0 +1,257 @@
+{
+  "package": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-02/attempt-001",
+  "sample_rule": "greedy new source type then new origin group then lexical source ID; min(max(5,ceil(source count/10)),source count); accessed sources only",
+  "required_minimum": 5,
+  "total_sources": 14,
+  "probed": 5,
+  "results": [
+    {
+      "source_id": "S-HI-C02-001",
+      "source_type": "practice_manual",
+      "origin_group": "NICE-NG206",
+      "original_url": "https://www.nice.org.uk/guidance/ng206/chapter/Recommendations",
+      "final_url": "https://www.nice.org.uk/guidance/ng206/chapter/Recommendations",
+      "http_status": 200,
+      "connect_status": 200,
+      "retrieved_at": "2026-11-13T08:12:22.937242+00:00",
+      "curl_exit": 0,
+      "error": null,
+      "body_sha256": "8ac1ed80ec5b06891df2ffc7ec49e7eefcb716d6ba6b3eec9cc31763efad01b4",
+      "bytes": 230178,
+      "extracted_characters": 78794,
+      "short_preview": "Recommendations | Myalgic encephalomyelitis (or encephalopathy)/chronic fatigue syndrome: diagnosis and management | Guidance | NICE You are here: Home NICE Guidance Conditions and diseases ME/CFS Myalgic encephalomyelitis (or encephalopathy)/chronic fatigue syndrome: diagnosis and management NICE guideline Reference number: NG206 Published: 29 Oct",
+      "claims_to_review": [
+        {
+          "finding_id": "F-HI-C02-001",
+          "type": "existence",
+          "source_id": "S-HI-C02-001",
+          "locator": "Energy management, recommendations 1.11.2–1.11.7 (#energy-management)",
+          "text": "NICE описывает персональный план в пределах текущего и колеблющегося energy limit, предварительный отдых, чередование и дробление действий, согласованный пересмотр и простое самонаблюдение.",
+          "basis": "paraphrase"
+        },
+        {
+          "finding_id": "F-HI-C02-001",
+          "type": "existence",
+          "source_id": "S-HI-C02-001",
+          "locator": "Energy management, recommendation 1.11.2",
+          "text": "activity is never automatically increased",
+          "basis": "quote"
+        },
+        {
+          "finding_id": "F-HI-C02-002",
+          "type": "existence",
+          "source_id": "S-HI-C02-001",
+          "locator": "Flare-ups and relapse, recommendations 1.11.15–1.11.16",
+          "text": "NICE предписывает снижать физическую активность до текущего предела и устанавливать новую physical activity baseline только после стабилизации, когда человек ощущает готовность возобновить активность.",
+          "basis": "paraphrase"
+        },
+        {
+          "finding_id": "F-HI-C02-002",
+          "type": "existence",
+          "source_id": "S-HI-C02-001",
+          "locator": "Managing flare-ups in symptoms and relapse, recommendations 1.14.5 and 1.14.8 (#managing-flare-ups-in-symptoms-and-relapse)",
+          "text": "В care and support plan включают правила уменьшения/остановки активности, увеличения отдыха и пересмотра плана после стабилизации.",
+          "basis": "paraphrase"
+        },
+        {
+          "finding_id": "F-HI-C02-002",
+          "type": "risk",
+          "source_id": "S-HI-C02-001",
+          "locator": "Incorporating physical activity and exercise, recommendation 1.11.14 and Box 4",
+          "text": "Для ME/CFS NICE запрещает программы с фиксированным наращиванием активности (в определении guideline — graded exercise therapy); общее правило возврата к прежней нагрузке по расписанию здесь неприемлемо.",
+          "basis": "paraphrase"
+        }
+      ],
+      "local_text_path": "/tmp/hydra-intake-S-HI-C02-001.txt",
+      "semantic_review": "matched_with_scope_limits",
+      "reviewer_id": "/root",
+      "review_note": "Read 1.11.2, 1.11.14–16,1.14.5; scoped to ME/CFS, no automatic graded increase or universal healthy-user advice."
+    },
+    {
+      "source_id": "S-HI-C02-004",
+      "source_type": "research",
+      "origin_group": "AlbulescuEtAl2022-Microbreaks",
+      "original_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0272460",
+      "final_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0272460",
+      "http_status": 200,
+      "connect_status": 200,
+      "retrieved_at": "2026-11-13T08:12:22.173006+00:00",
+      "curl_exit": 0,
+      "error": null,
+      "body_sha256": "5bec600d43cd4e0d75d108471f9fe546f8bcb57c56780e797e36af112f697bf9",
+      "bytes": 359867,
+      "extracted_characters": 92807,
+      "short_preview": "\"Give me a break!\" A systematic review and meta-analysis on the efficacy of micro-breaks for increasing well-being and performance | PLOS One Skip to main content Advertisement PLOS One Publish Submissions Getting Started Submission Guidelines Figures Tables Supporting Information LaTeX What We Publish Preprints Revising Your Manuscript Submit Now ",
+      "claims_to_review": [
+        {
+          "finding_id": "F-HI-C02-004",
+          "type": "existence",
+          "source_id": "S-HI-C02-004",
+          "locator": "Introduction, paragraph beginning \"The concept of micro-breaks originates\"",
+          "text": "В обзоре операционализированы micro-breaks: short discontinuities in one’s tasks of no longer than 10 minutes; это существующий класс исследованных практик, а не рекомендация одной точной дозы.",
+          "basis": "paraphrase"
+        },
+        {
+          "finding_id": "F-HI-C02-004",
+          "type": "benefit",
+          "source_id": "S-HI-C02-004",
+          "locator": "Abstract",
+          "text": "В 22 независимых выборках (N=2335) метаанализ сообщил небольшие эффекты на бодрость (d=.36) и снижение усталости (d=.35). Это сводный результат включённых экспериментальных и квазиэкспериментальных работ, не гарантия индивидуального эффекта.",
+          "basis": "paraphrase"
+        },
+        {
+          "finding_id": "F-HI-C02-004",
+          "type": "failure",
+          "source_id": "S-HI-C02-004",
+          "locator": "Abstract; Discussion, paragraph beginning \"However, when it comes to cognitively demanding tasks\"",
+          "text": "Общий эффект на производительность в Abstract не был статистически значим (d=.16, p=.116). При тяжёлых когнитивных задачах паузы до 10 минут могут быть недостаточны; такая интерпретация авторов требует дальнейшей проверки.",
+          "basis": "paraphrase"
+        },
+        {
+          "finding_id": "F-HI-C02-004",
+          "type": "risk",
+          "source_id": "S-HI-C02-004",
+          "locator": "Limitations, future research directions, and conclusions, first three limitations",
+          "text": "Авторы отмечают небольшое число работ для исходов, неоднородность измерений и невозможность надёжно разобрать многие модераторы; показатели бодрости и усталости были самоотчётами.",
+          "basis": "paraphrase"
+        }
+      ],
+      "local_text_path": "/tmp/hydra-intake-S-HI-C02-004.txt",
+      "semantic_review": "matched_with_scope_limits",
+      "reviewer_id": "/root",
+      "review_note": "Read Abstract and Results; small well-being effects, overall performance nonsignificant; internally different p=.116 vs p=.17 explicitly retained in final source/finding/report."
+    },
+    {
+      "source_id": "S-HI-C02-008",
+      "source_type": "first_person_report",
+      "origin_group": "Miserandino-SpoonTheory-2003",
+      "original_url": "https://lymphoma-action.org.uk/sites/default/files/media/documents/2020-05/Spoon%20theory%20by%20Christine%20Miserandino.pdf",
+      "final_url": "https://lymphoma-action.org.uk/sites/default/files/media/documents/2020-05/Spoon%20theory%20by%20Christine%20Miserandino.pdf",
+      "http_status": 200,
+      "connect_status": 200,
+      "retrieved_at": "2026-11-13T08:12:21.835000+00:00",
+      "curl_exit": 0,
+      "error": null,
+      "body_sha256": "213622b901b07d0ba08acbf3ead517066d3c7ba8ad80b43f8a03b48f5df127ec",
+      "bytes": 143403,
+      "extracted_characters": 12212,
+      "short_preview": "The Spoon Theory\nby Christine Miserandino\nwww.butyoudontlooksick.com\nMy best friend and I were in the diner, talking. As usual, it was very late and we were eating French\nfries with gravy. Like normal girls our age, we spent a lot of time in the diner while in college, and\nmost of the time we spent talking about boys, music or trivial things, that ",
+      "claims_to_review": [
+        {
+          "finding_id": "F-HI-C02-007",
+          "type": "existence",
+          "source_id": "S-HI-C02-008",
+          "locator": "PDF p.1, paragraphs beginning \"I asked her to count her spoons\" and p.2 \"I asked her to list off the tasks\"",
+          "text": "Мизерандино описывает упражнение с 12 ложками и последовательным вычитанием ложек за повседневные действия, включая подготовку к работе.",
+          "basis": "paraphrase"
+        },
+        {
+          "finding_id": "F-HI-C02-007",
+          "type": "existence",
+          "source_id": "S-HI-C02-008",
+          "locator": "PDF p.2, paragraph beginning \"I think she was starting to understand\" and paragraph beginning \"I rarely see her emotional\"",
+          "text": "В рассказе предлагается осторожно выбирать оставшиеся дела, учитывать заимствование завтрашних ложек и держать дополнительную ложку в резерве.",
+          "basis": "paraphrase"
+        },
+        {
+          "finding_id": "F-HI-C02-007",
+          "type": "origin",
+          "source_id": "S-HI-C02-008",
+          "locator": "PDF p.3, attribution and reproduction notice",
+          "text": "Текст подписан Christine Miserandino, © 2003; на прочитанной копии указана разрешённая перепечатка для Lymphoma Action conference 2020.",
+          "basis": "paraphrase"
+        }
+      ],
+      "local_text_path": "/tmp/hydra-intake-S-HI-C02-008.txt",
+      "semantic_review": "matched_with_scope_limits",
+      "reviewer_id": "/root",
+      "review_note": "Read finite 12-spoon exercise, daily deductions, reserve spoon and permitted 2020 reprint credit; analogy, not physiology measurement."
+    },
+    {
+      "source_id": "S-HI-C02-002",
+      "source_type": "practice_manual",
+      "origin_group": "CDC-MECFS-Management",
+      "original_url": "https://www.cdc.gov/me-cfs/management/index.html",
+      "final_url": "https://www.cdc.gov/me-cfs/management/index.html",
+      "http_status": 200,
+      "connect_status": 200,
+      "retrieved_at": "2026-11-13T08:12:21.849596+00:00",
+      "curl_exit": 0,
+      "error": null,
+      "body_sha256": "b27957d41cfce55f95a58a313b4f92169fef62b5d0751df2d38fada93244b076",
+      "bytes": 59922,
+      "extracted_characters": 11715,
+      "short_preview": "Manage ME/CFS | ME/CFS | CDC Skip directly to site content Skip directly to search An official website of the United States government Here's how you know Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you've safely connected ",
+      "claims_to_review": [
+        {
+          "finding_id": "F-HI-C02-001",
+          "type": "existence",
+          "source_id": "S-HI-C02-002",
+          "locator": "Symptoms to potentially address → Post-exertion malaise, paragraphs beginning \"PEM can be addressed\" and \"People with ME/CFS have different limits\"",
+          "text": "CDC описывает pacing как баланс активности и отдыха, поиск индивидуальных пределов и дневники активности/симптомов.",
+          "basis": "paraphrase"
+        },
+        {
+          "finding_id": "F-HI-C02-001",
+          "type": "risk",
+          "source_id": "S-HI-C02-002",
+          "locator": "Post-exertion malaise, paragraphs beginning \"When having a good day\" and \"Exercise is not a cure\"",
+          "text": "CDC предупреждает о цикле push-and-crash при попытке наверстать упущенное в хороший день; стандартные рекомендации упражнений для здоровых людей могут быть вредны при ME/CFS.",
+          "basis": "paraphrase"
+        }
+      ],
+      "local_text_path": "/tmp/hydra-intake-S-HI-C02-002.txt",
+      "semantic_review": "matched_with_scope_limits",
+      "reviewer_id": "/root",
+      "review_note": "Read PEM pacing, individual energy limits, push-crash warning and harmful general exercise recommendation caveat."
+    },
+    {
+      "source_id": "S-HI-C02-003",
+      "source_type": "practice_manual",
+      "origin_group": "HSE-DSE-WorkRoutine",
+      "original_url": "https://www.hse.gov.uk/msd/dse/work-routine.htm",
+      "final_url": "https://www.hse.gov.uk/msd/dse/work-routine.htm",
+      "http_status": 200,
+      "connect_status": 200,
+      "retrieved_at": "2026-11-13T08:12:22.041098+00:00",
+      "curl_exit": 0,
+      "error": null,
+      "body_sha256": "defcb43dc4e868f07b6cbbdd4ed621a16bf1514c8dc5c547d7dda100b2f4f238",
+      "bytes": 38608,
+      "extracted_characters": 3296,
+      "short_preview": "Working safely with display screen equipment - HSE Skip to content Search HSE.GOV.UK Industries Construction Health and social care services Pesticides Domestic gas Public services Agriculture Entertainment Waste management and recycling Motor vehicle repair Offshore oil and gas Industries A to Z Topics Basics for your business RIDDOR COSHH Display",
+      "claims_to_review": [
+        {
+          "finding_id": "F-HI-C02-003",
+          "type": "existence",
+          "source_id": "S-HI-C02-003",
+          "locator": "4. Work routine and breaks, paragraphs 1–4",
+          "text": "HSE требует планировать перерывы или смену деятельности и рекомендует частые короткие паузы; 5–10 минут каждый час приводятся как пример в сравнении с 20 минутами раз в 2 часа.",
+          "basis": "paraphrase"
+        },
+        {
+          "finding_id": "F-HI-C02-003",
+          "type": "existence",
+          "source_id": "S-HI-C02-003",
+          "locator": "4. Work routine and breaks, paragraph 2",
+          "text": "Ideally, users should be able to choose when to take breaks.",
+          "basis": "quote"
+        },
+        {
+          "finding_id": "F-HI-C02-003",
+          "type": "risk",
+          "source_id": "S-HI-C02-003",
+          "locator": "Break-monitoring software",
+          "text": "HSE указывает, что программное напоминание не снимает с работодателя ответственность за планирование работы и подходящие перерывы.",
+          "basis": "paraphrase"
+        }
+      ],
+      "local_text_path": "/tmp/hydra-intake-S-HI-C02-003.txt",
+      "semantic_review": "matched_with_scope_limits",
+      "reviewer_id": "/root",
+      "review_note": "Read short frequent pauses, user choice and employer responsibility beyond reminder software."
+    }
+  ],
+  "overall": "sample_passed_with_source_internal_discrepancy_noted",
+  "full_source_truth_verified": false
+}

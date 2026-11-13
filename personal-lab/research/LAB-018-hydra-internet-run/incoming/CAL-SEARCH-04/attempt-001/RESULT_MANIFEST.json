@@ -1,0 +1,130 @@
+{
+  "task_id": "CAL-SEARCH-04",
+  "attempt": 1,
+  "stage": "search",
+  "status": "submitted",
+  "packet_state": "sealed_for_review",
+  "input_snapshot": "Hybrid-2.1.1+lab.1@98680d75f1c4512b9b1c32ce03e073081300012f",
+  "protocol_version": "2.1",
+  "taxonomy_version": "2.1",
+  "rubric_version": "2.1",
+  "input_hashes": {
+    "PROMPTS/01-SEARCH.md": "50070e7c43ddbcd8c93dd3a54a36069de04b0ea1d541de994bf29949d48e53cc",
+    "DATA_CONTRACT.md": "8a785c5249d4008cd31cdef41280daf22372bfd127989bde51fd86ac9ac88bad",
+    "TAXONOMY.md": "e42b9a34e6f742ee6e2b683454360361a1173f1e8d386dd31ef73ac3524b5ff2",
+    "taxonomy.json": "317bd62120fad45150543fbb752740ddb8b47c7b7ea00e0bd5f60d96cef94dbd",
+    "SYSTEM.md": "9e0cf21146ee76c95b2b64832fae6630cbd9d0fc91accfbfb0e655c227013594"
+  },
+  "read_ids": [
+    "CAL-SEARCH-04",
+    "S-HI-C04-001",
+    "S-HI-C04-002",
+    "S-HI-C04-003",
+    "S-HI-C04-004",
+    "S-HI-C04-005",
+    "S-HI-C04-006",
+    "S-HI-C04-007",
+    "S-HI-C04-008",
+    "S-HI-C04-009",
+    "S-HI-C04-010",
+    "S-HI-C04-011",
+    "S-HI-C04-012",
+    "S-HI-C04-013",
+    "S-HI-C04-014"
+  ],
+  "read_local_inputs": [
+    "AGENTS.md",
+    "personal-lab/AGENTS.md",
+    "personal-lab/research/LAB-011-hybrid-v211-review/release/DATA_CONTRACT.md",
+    "personal-lab/research/LAB-011-hybrid-v211-review/release/TAXONOMY.md",
+    "personal-lab/research/LAB-011-hybrid-v211-review/release/SYSTEM.md",
+    "personal-lab/research/LAB-011-hybrid-v211-review/release/PROMPTS/01-SEARCH.md",
+    "personal-lab/research/LAB-018-hydra-internet-run/tasks/CAL-SEARCH-04.json"
+  ],
+  "output_counts": {
+    "sources": 14,
+    "findings": 12,
+    "verified_findings": 12,
+    "leads": 2,
+    "search_log": 21,
+    "claims": 25,
+    "existence_claims": 14,
+    "origin_groups": 13,
+    "http_requests": 21,
+    "search_queries": 6
+  },
+  "source_type_counts": {
+    "official_documentation": 12,
+    "source_code": 1,
+    "first_person_report": 1
+  },
+  "category_memberships": {
+    "C28": 4,
+    "C29": 11
+  },
+  "http_status_counts": {
+    "200": 20,
+    "503": 1
+  },
+  "source_language_counts": {
+    "en": 14
+  },
+  "limitations": [
+    "No specialized search tool; public HTTP search used. Bing results had low relevance; Yahoo returned HTTP 503.",
+    "All 14 used sources are English. Two Russian search queries were run; two Russian target pages remain unverified leads.",
+    "Existence is verified against inspected documentary/code sections only. Products, exports/imports, conflicts, undo and restores were not executed; effects were not measured.",
+    "Some documentation aliases are mutable. restic source code is v0.17.3 and docs render 0.19.1; their complete equivalence is not asserted.",
+    "This is a calibration search packet, without normalization, scores, selection, saturation claim or final acceptance.",
+    "GitLab is a specific preliminary first-person corporate incident report, not a population estimate."
+  ],
+  "checks": {
+    "atlas_validate_valid_structure": true,
+    "atlas_validate_errors": [],
+    "atlas_validate_malformed_lines": [],
+    "source_truth_checked_by_validator": false,
+    "custom_jsonl_ids_links_verified_sources_and_fragments": "passed",
+    "task_copy_byte_equal": true,
+    "input_hashes_match": true,
+    "runtime_product_tests_performed": false
+  },
+  "packet_path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-04/attempt-001",
+  "created_at": "2026-11-13T08:10:53.504330+00:00",
+  "files": [
+    {
+      "path": "TASK.json",
+      "bytes": 1932,
+      "sha256": "e797a91c8c729e93f49243abe3a339b642db5f62cb3d0203c97dd032fbfa49fb"
+    },
+    {
+      "path": "sources.jsonl",
+      "bytes": 14117,
+      "sha256": "d1b2391b67d309c3b1053d266521dfc7c59b4df99d1340f5da324d39cce2db27"
+    },
+    {
+      "path": "findings.jsonl",
+      "bytes": 29292,
+      "sha256": "d06e7486230b118092bab8cf787ee6026e299fa173e93b0acaafaef5438d209b"
+    },
+    {
+      "path": "leads.jsonl",
+      "bytes": 1397,
+      "sha256": "d15fce8b4b5004e4506a66f7f76b464595dce80e38bf48518f7f6fc707649d82"
+    },
+    {
+      "path": "search_log.jsonl",
+      "bytes": 40598,
+      "sha256": "82416a76e5d437565d0d64624f468227301e2dc6b6e29964adf878c83286d406"
+    },
+    {
+      "path": "COVERAGE.md",
+      "bytes": 7767,
+      "sha256": "7ec3c8034a8626151db1399293a9e3f02a66407e969a876e3f25ce351f6caee1"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 5757,
+      "sha256": "e071661f4c522ccb039842ca1b1e428fe777831d9adaee7a93cd9948700d2b12"
+    }
+  ],
+  "manifest_self_hash_excluded": true
+}
