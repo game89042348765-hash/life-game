@@ -1,0 +1,572 @@
+{
+  "status": "draft_requires_content_and_source_audit",
+  "config": {
+    "target": 200,
+    "core": 100,
+    "rare_gems_quota": 4,
+    "quality_floor": 60,
+    "weights": {
+      "value": 0.3,
+      "burden": 0.15,
+      "long_term": 0.2,
+      "adaptability": 0.1,
+      "agency": 0.15,
+      "composability": 0.1
+    },
+    "mode": "research"
+  },
+  "selected": [
+    {
+      "id": "E-W1-016",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-044",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-056",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-014",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-026",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-046",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-062",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-074",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-020",
+      "tier": "core",
+      "Q": 95.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-040",
+      "tier": "core",
+      "Q": 95.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-048",
+      "tier": "core",
+      "Q": 94.375,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-038",
+      "tier": "core",
+      "Q": 93.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-042",
+      "tier": "core",
+      "Q": 93.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-017",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-041",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-043",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-047",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-049",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-059",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-061",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-073",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-025",
+      "tier": "core",
+      "Q": 91.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-055",
+      "tier": "core",
+      "Q": 91.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-065",
+      "tier": "core",
+      "Q": 91.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-008",
+      "tier": "core",
+      "Q": 90.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-052",
+      "tier": "core",
+      "Q": 90.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-064",
+      "tier": "core",
+      "Q": 90.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-068",
+      "tier": "core",
+      "Q": 90.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-002",
+      "tier": "core",
+      "Q": 90.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-022",
+      "tier": "core",
+      "Q": 90.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-058",
+      "tier": "core",
+      "Q": 90.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-004",
+      "tier": "core",
+      "Q": 88.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-010",
+      "tier": "core",
+      "Q": 88.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-024",
+      "tier": "core",
+      "Q": 88.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-039",
+      "tier": "core",
+      "Q": 88.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-050",
+      "tier": "core",
+      "Q": 88.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-051",
+      "tier": "core",
+      "Q": 88.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-070",
+      "tier": "core",
+      "Q": 88.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-045",
+      "tier": "core",
+      "Q": 87.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-012",
+      "tier": "core",
+      "Q": 86.875,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-028",
+      "tier": "core",
+      "Q": 86.875,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-032",
+      "tier": "core",
+      "Q": 86.875,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-072",
+      "tier": "core",
+      "Q": 86.875,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-006",
+      "tier": "core",
+      "Q": 86.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-018",
+      "tier": "core",
+      "Q": 86.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-034",
+      "tier": "core",
+      "Q": 86.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-054",
+      "tier": "core",
+      "Q": 86.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-066",
+      "tier": "core",
+      "Q": 86.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-001",
+      "tier": "core",
+      "Q": 85.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-007",
+      "tier": "core",
+      "Q": 85.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-011",
+      "tier": "core",
+      "Q": 85.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-013",
+      "tier": "core",
+      "Q": 85.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-019",
+      "tier": "core",
+      "Q": 85.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-023",
+      "tier": "core",
+      "Q": 85.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-053",
+      "tier": "core",
+      "Q": 85.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-067",
+      "tier": "core",
+      "Q": 85.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-060",
+      "tier": "core",
+      "Q": 84.375,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-005",
+      "tier": "core",
+      "Q": 83.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-003",
+      "tier": "core",
+      "Q": 81.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-009",
+      "tier": "core",
+      "Q": 81.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-027",
+      "tier": "core",
+      "Q": 81.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-029",
+      "tier": "core",
+      "Q": 81.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-030",
+      "tier": "core",
+      "Q": 81.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-031",
+      "tier": "core",
+      "Q": 81.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-037",
+      "tier": "core",
+      "Q": 81.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-057",
+      "tier": "core",
+      "Q": 81.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-069",
+      "tier": "core",
+      "Q": 81.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-033",
+      "tier": "core",
+      "Q": 77.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-W1-063",
+      "tier": "core",
+      "Q": 77.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    }
+  ]
+}

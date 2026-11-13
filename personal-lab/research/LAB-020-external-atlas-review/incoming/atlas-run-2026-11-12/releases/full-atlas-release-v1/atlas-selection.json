@@ -1,0 +1,1620 @@
+{
+  "status": "draft_requires_content_and_source_audit",
+  "config": {
+    "target": 200,
+    "core": 100,
+    "rare_gems_quota": 6,
+    "quality_floor": 60,
+    "weights": {
+      "value": 0.3,
+      "burden": 0.15,
+      "long_term": 0.2,
+      "adaptability": 0.1,
+      "agency": 0.15,
+      "composability": 0.1
+    },
+    "mode": "research"
+  },
+  "selected": [
+    {
+      "id": "E-ATLAS-016",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-044",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-056",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-076",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-088",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-104",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-136",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-148",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-152",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-172",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-188",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-196",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-208",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-014",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-026",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-046",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-062",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-074",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-106",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-122",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-142",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-146",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-154",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-158",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-194",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-206",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-130",
+      "tier": "core",
+      "Q": 96.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-190",
+      "tier": "core",
+      "Q": 96.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-020",
+      "tier": "core",
+      "Q": 95.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-040",
+      "tier": "core",
+      "Q": 95.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-100",
+      "tier": "core",
+      "Q": 95.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-140",
+      "tier": "core",
+      "Q": 95.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-200",
+      "tier": "core",
+      "Q": 95.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-048",
+      "tier": "core",
+      "Q": 94.375,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-084",
+      "tier": "core",
+      "Q": 94.375,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-096",
+      "tier": "core",
+      "Q": 94.375,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-132",
+      "tier": "core",
+      "Q": 94.375,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-144",
+      "tier": "core",
+      "Q": 94.375,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-156",
+      "tier": "core",
+      "Q": 94.375,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-192",
+      "tier": "core",
+      "Q": 94.375,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-204",
+      "tier": "core",
+      "Q": 94.375,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-038",
+      "tier": "core",
+      "Q": 93.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-042",
+      "tier": "core",
+      "Q": 93.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-078",
+      "tier": "core",
+      "Q": 93.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-102",
+      "tier": "core",
+      "Q": 93.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-114",
+      "tier": "core",
+      "Q": 93.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-126",
+      "tier": "core",
+      "Q": 93.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-138",
+      "tier": "core",
+      "Q": 93.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-162",
+      "tier": "core",
+      "Q": 93.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-198",
+      "tier": "core",
+      "Q": 93.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-017",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-041",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-043",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-047",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-049",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-059",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-061",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-073",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-077",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-079",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-083",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-089",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-090",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-097",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-103",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-107",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-119",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-121",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-127",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-131",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-137",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-139",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-143",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-149",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-150",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-151",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-157",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-161",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-163",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-179",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-187",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-191",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-193",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-197",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-199",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-120",
+      "tier": "core",
+      "Q": 91.875,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-180",
+      "tier": "core",
+      "Q": 91.875,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-025",
+      "tier": "core",
+      "Q": 91.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-055",
+      "tier": "core",
+      "Q": 91.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-065",
+      "tier": "core",
+      "Q": 91.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-115",
+      "tier": "core",
+      "Q": 91.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-125",
+      "tier": "core",
+      "Q": 91.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-155",
+      "tier": "core",
+      "Q": 91.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-205",
+      "tier": "core",
+      "Q": 91.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-008",
+      "tier": "core",
+      "Q": 90.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-052",
+      "tier": "core",
+      "Q": 90.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-064",
+      "tier": "core",
+      "Q": 90.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-068",
+      "tier": "core",
+      "Q": 90.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-092",
+      "tier": "core",
+      "Q": 90.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-112",
+      "tier": "core",
+      "Q": 90.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-ATLAS-170",
+      "tier": "rare_lateral_gem",
+      "Q": 88.75,
+      "G": null,
+      "U": 88.75,
+      "reason": "protected_rare_lateral_lane"
+    },
+    {
+      "id": "E-ATLAS-072",
+      "tier": "rare_lateral_gem",
+      "Q": 86.875,
+      "G": null,
+      "U": 86.875,
+      "reason": "protected_rare_lateral_lane"
+    },
+    {
+      "id": "E-ATLAS-001",
+      "tier": "rare_lateral_gem",
+      "Q": 85.0,
+      "G": null,
+      "U": 85.0,
+      "reason": "protected_rare_lateral_lane"
+    },
+    {
+      "id": "E-ATLAS-067",
+      "tier": "rare_lateral_gem",
+      "Q": 85.0,
+      "G": null,
+      "U": 85.0,
+      "reason": "protected_rare_lateral_lane"
+    },
+    {
+      "id": "E-ATLAS-185",
+      "tier": "rare_lateral_gem",
+      "Q": 83.75,
+      "G": null,
+      "U": 83.75,
+      "reason": "protected_rare_lateral_lane"
+    },
+    {
+      "id": "E-ATLAS-027",
+      "tier": "rare_lateral_gem",
+      "Q": 81.25,
+      "G": null,
+      "U": 81.25,
+      "reason": "protected_rare_lateral_lane"
+    },
+    {
+      "id": "E-ATLAS-116",
+      "tier": "extension",
+      "Q": 90.625,
+      "G": 0.2,
+      "U": 69.4375,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-124",
+      "tier": "extension",
+      "Q": 90.625,
+      "G": 0.2,
+      "U": 69.4375,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-128",
+      "tier": "extension",
+      "Q": 90.625,
+      "G": 0.2,
+      "U": 69.4375,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-176",
+      "tier": "extension",
+      "Q": 90.625,
+      "G": 0.2,
+      "U": 69.4375,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-184",
+      "tier": "extension",
+      "Q": 90.625,
+      "G": 0.2,
+      "U": 69.4375,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-002",
+      "tier": "extension",
+      "Q": 90.0,
+      "G": 0.2,
+      "U": 69.0,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-022",
+      "tier": "extension",
+      "Q": 90.0,
+      "G": 0.2,
+      "U": 69.0,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-058",
+      "tier": "extension",
+      "Q": 90.0,
+      "G": 0.2,
+      "U": 69.0,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-082",
+      "tier": "extension",
+      "Q": 90.0,
+      "G": 0.2,
+      "U": 69.0,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-086",
+      "tier": "extension",
+      "Q": 90.0,
+      "G": 0.2,
+      "U": 69.0,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-094",
+      "tier": "extension",
+      "Q": 90.0,
+      "G": 0.2,
+      "U": 69.0,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-098",
+      "tier": "extension",
+      "Q": 90.0,
+      "G": 0.2,
+      "U": 69.0,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-118",
+      "tier": "extension",
+      "Q": 90.0,
+      "G": 0.2,
+      "U": 69.0,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-134",
+      "tier": "extension",
+      "Q": 90.0,
+      "G": 0.2,
+      "U": 69.0,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-178",
+      "tier": "extension",
+      "Q": 90.0,
+      "G": 0.2,
+      "U": 69.0,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-182",
+      "tier": "extension",
+      "Q": 90.0,
+      "G": 0.2,
+      "U": 69.0,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-202",
+      "tier": "extension",
+      "Q": 90.0,
+      "G": 0.2,
+      "U": 69.0,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-004",
+      "tier": "extension",
+      "Q": 88.75,
+      "G": 0.2,
+      "U": 68.125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-010",
+      "tier": "extension",
+      "Q": 88.75,
+      "G": 0.2,
+      "U": 68.125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-024",
+      "tier": "extension",
+      "Q": 88.75,
+      "G": 0.2,
+      "U": 68.125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-039",
+      "tier": "extension",
+      "Q": 88.75,
+      "G": 0.2,
+      "U": 68.125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-050",
+      "tier": "extension",
+      "Q": 88.75,
+      "G": 0.2,
+      "U": 68.125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-051",
+      "tier": "extension",
+      "Q": 88.75,
+      "G": 0.2,
+      "U": 68.125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-070",
+      "tier": "extension",
+      "Q": 88.75,
+      "G": 0.2,
+      "U": 68.125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-087",
+      "tier": "extension",
+      "Q": 88.75,
+      "G": 0.2,
+      "U": 68.125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-099",
+      "tier": "extension",
+      "Q": 88.75,
+      "G": 0.2,
+      "U": 68.125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-110",
+      "tier": "extension",
+      "Q": 88.75,
+      "G": 0.2,
+      "U": 68.125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-123",
+      "tier": "extension",
+      "Q": 88.75,
+      "G": 0.2,
+      "U": 68.125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-129",
+      "tier": "extension",
+      "Q": 88.75,
+      "G": 0.2,
+      "U": 68.125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-141",
+      "tier": "extension",
+      "Q": 88.75,
+      "G": 0.2,
+      "U": 68.125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-153",
+      "tier": "extension",
+      "Q": 88.75,
+      "G": 0.2,
+      "U": 68.125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-189",
+      "tier": "extension",
+      "Q": 88.75,
+      "G": 0.2,
+      "U": 68.125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-207",
+      "tier": "extension",
+      "Q": 88.75,
+      "G": 0.2,
+      "U": 68.125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-080",
+      "tier": "extension",
+      "Q": 88.125,
+      "G": 0.2,
+      "U": 67.6875,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-045",
+      "tier": "extension",
+      "Q": 87.5,
+      "G": 0.2,
+      "U": 67.25,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-075",
+      "tier": "extension",
+      "Q": 87.5,
+      "G": 0.2,
+      "U": 67.25,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-095",
+      "tier": "extension",
+      "Q": 87.5,
+      "G": 0.2,
+      "U": 67.25,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-105",
+      "tier": "extension",
+      "Q": 87.5,
+      "G": 0.2,
+      "U": 67.25,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-135",
+      "tier": "extension",
+      "Q": 87.5,
+      "G": 0.2,
+      "U": 67.25,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-195",
+      "tier": "extension",
+      "Q": 87.5,
+      "G": 0.2,
+      "U": 67.25,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-012",
+      "tier": "extension",
+      "Q": 86.875,
+      "G": 0.2,
+      "U": 66.8125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-028",
+      "tier": "extension",
+      "Q": 86.875,
+      "G": 0.2,
+      "U": 66.8125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-032",
+      "tier": "extension",
+      "Q": 86.875,
+      "G": 0.2,
+      "U": 66.8125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-108",
+      "tier": "extension",
+      "Q": 86.875,
+      "G": 0.2,
+      "U": 66.8125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-164",
+      "tier": "extension",
+      "Q": 86.875,
+      "G": 0.2,
+      "U": 66.8125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-168",
+      "tier": "extension",
+      "Q": 86.875,
+      "G": 0.2,
+      "U": 66.8125,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-006",
+      "tier": "extension",
+      "Q": 86.25,
+      "G": 0.2,
+      "U": 66.375,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-018",
+      "tier": "extension",
+      "Q": 86.25,
+      "G": 0.2,
+      "U": 66.375,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-034",
+      "tier": "extension",
+      "Q": 86.25,
+      "G": 0.2,
+      "U": 66.375,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-054",
+      "tier": "extension",
+      "Q": 86.25,
+      "G": 0.2,
+      "U": 66.375,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-066",
+      "tier": "extension",
+      "Q": 86.25,
+      "G": 0.2,
+      "U": 66.375,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-160",
+      "tier": "extension",
+      "Q": 86.25,
+      "G": 0.2,
+      "U": 66.375,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-166",
+      "tier": "extension",
+      "Q": 86.25,
+      "G": 0.2,
+      "U": 66.375,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-186",
+      "tier": "extension",
+      "Q": 86.25,
+      "G": 0.2,
+      "U": 66.375,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-007",
+      "tier": "extension",
+      "Q": 85.0,
+      "G": 0.2,
+      "U": 65.5,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-011",
+      "tier": "extension",
+      "Q": 85.0,
+      "G": 0.2,
+      "U": 65.5,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-013",
+      "tier": "extension",
+      "Q": 85.0,
+      "G": 0.2,
+      "U": 65.5,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-019",
+      "tier": "extension",
+      "Q": 85.0,
+      "G": 0.2,
+      "U": 65.5,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-023",
+      "tier": "extension",
+      "Q": 85.0,
+      "G": 0.2,
+      "U": 65.5,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-053",
+      "tier": "extension",
+      "Q": 85.0,
+      "G": 0.2,
+      "U": 65.5,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-091",
+      "tier": "extension",
+      "Q": 85.0,
+      "G": 0.2,
+      "U": 65.5,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-101",
+      "tier": "extension",
+      "Q": 85.0,
+      "G": 0.2,
+      "U": 65.5,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-109",
+      "tier": "extension",
+      "Q": 85.0,
+      "G": 0.2,
+      "U": 65.5,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-113",
+      "tier": "extension",
+      "Q": 85.0,
+      "G": 0.2,
+      "U": 65.5,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-133",
+      "tier": "extension",
+      "Q": 85.0,
+      "G": 0.2,
+      "U": 65.5,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-167",
+      "tier": "extension",
+      "Q": 85.0,
+      "G": 0.2,
+      "U": 65.5,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-173",
+      "tier": "extension",
+      "Q": 85.0,
+      "G": 0.2,
+      "U": 65.5,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-203",
+      "tier": "extension",
+      "Q": 85.0,
+      "G": 0.2,
+      "U": 65.5,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-209",
+      "tier": "extension",
+      "Q": 85.0,
+      "G": 0.2,
+      "U": 65.5,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-210",
+      "tier": "extension",
+      "Q": 85.0,
+      "G": 0.2,
+      "U": 65.5,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-060",
+      "tier": "extension",
+      "Q": 84.375,
+      "G": 0.2,
+      "U": 65.0625,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-005",
+      "tier": "extension",
+      "Q": 83.75,
+      "G": 0.2,
+      "U": 64.625,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-085",
+      "tier": "extension",
+      "Q": 83.75,
+      "G": 0.2,
+      "U": 64.625,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-175",
+      "tier": "extension",
+      "Q": 83.75,
+      "G": 0.2,
+      "U": 64.625,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-174",
+      "tier": "extension",
+      "Q": 82.5,
+      "G": 0.2,
+      "U": 63.74999999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-003",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-009",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-029",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-030",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-031",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-037",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-057",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-069",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-081",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-093",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-111",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-117",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-147",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-159",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-169",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-171",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-181",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-183",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    },
+    {
+      "id": "E-ATLAS-201",
+      "tier": "extension",
+      "Q": 81.25,
+      "G": 0.2,
+      "U": 62.87499999999999,
+      "reason": "quality_and_marginal_coverage"
+    }
+  ]
+}

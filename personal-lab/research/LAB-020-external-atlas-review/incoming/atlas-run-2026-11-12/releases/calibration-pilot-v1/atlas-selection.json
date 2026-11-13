@@ -1,0 +1,380 @@
+{
+  "status": "draft_requires_content_and_source_audit",
+  "config": {
+    "target": 200,
+    "core": 100,
+    "rare_gems_quota": 4,
+    "quality_floor": 60,
+    "weights": {
+      "value": 0.3,
+      "burden": 0.15,
+      "long_term": 0.2,
+      "adaptability": 0.1,
+      "agency": 0.15,
+      "composability": 0.1
+    },
+    "mode": "research"
+  },
+  "selected": [
+    {
+      "id": "E-CAL-016",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-044",
+      "tier": "core",
+      "Q": 98.125,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-014",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-026",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-046",
+      "tier": "core",
+      "Q": 97.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-020",
+      "tier": "core",
+      "Q": 95.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-040",
+      "tier": "core",
+      "Q": 95.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-048",
+      "tier": "core",
+      "Q": 94.375,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-038",
+      "tier": "core",
+      "Q": 93.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-042",
+      "tier": "core",
+      "Q": 93.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-017",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-041",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-043",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-047",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-049",
+      "tier": "core",
+      "Q": 92.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-025",
+      "tier": "core",
+      "Q": 91.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-008",
+      "tier": "core",
+      "Q": 90.625,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-002",
+      "tier": "core",
+      "Q": 90.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-022",
+      "tier": "core",
+      "Q": 90.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-004",
+      "tier": "core",
+      "Q": 88.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-010",
+      "tier": "core",
+      "Q": 88.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-024",
+      "tier": "core",
+      "Q": 88.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-039",
+      "tier": "core",
+      "Q": 88.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-045",
+      "tier": "core",
+      "Q": 87.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-012",
+      "tier": "core",
+      "Q": 86.875,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-028",
+      "tier": "core",
+      "Q": 86.875,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-032",
+      "tier": "core",
+      "Q": 86.875,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-006",
+      "tier": "core",
+      "Q": 86.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-018",
+      "tier": "core",
+      "Q": 86.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-034",
+      "tier": "core",
+      "Q": 86.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-001",
+      "tier": "core",
+      "Q": 85.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-007",
+      "tier": "core",
+      "Q": 85.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-011",
+      "tier": "core",
+      "Q": 85.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-013",
+      "tier": "core",
+      "Q": 85.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-019",
+      "tier": "core",
+      "Q": 85.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-023",
+      "tier": "core",
+      "Q": 85.0,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-005",
+      "tier": "core",
+      "Q": 83.75,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-003",
+      "tier": "core",
+      "Q": 81.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-009",
+      "tier": "core",
+      "Q": 81.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-027",
+      "tier": "core",
+      "Q": 81.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-029",
+      "tier": "core",
+      "Q": 81.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-030",
+      "tier": "core",
+      "Q": 81.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-031",
+      "tier": "core",
+      "Q": 81.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-037",
+      "tier": "core",
+      "Q": 81.25,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    },
+    {
+      "id": "E-CAL-033",
+      "tier": "core",
+      "Q": 77.5,
+      "G": null,
+      "U": null,
+      "reason": "quality_order"
+    }
+  ]
+}

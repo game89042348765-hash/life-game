@@ -1,0 +1,1376 @@
+{
+  "schema_version": "2.1.1+lab.1",
+  "input_sha256": {
+    "decisions.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "elements.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "findings.jsonl": "31e6d09c2d368dcb74bb0cc837fca06eb1d8998a276f99c2546a02b468c7020b",
+    "merge_map.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ratings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "relations.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sources.jsonl": "4f46a1de4e6667f9d91ce6900ad380139fde8db724357fe6d967cdd6557b177b"
+  },
+  "limits": {
+    "max_records_per_shard": 15,
+    "max_packet_total_bytes": 120000,
+    "max_findings_bytes_per_shard": 120000,
+    "prompt_reserve_bytes": 93896,
+    "index_max_records": 80,
+    "index_max_bytes": 35000,
+    "preview_chars": 140
+  },
+  "total_findings": 211,
+  "total_shard_parts": 47,
+  "largest_part_records": 14,
+  "largest_standard_part_bytes": 20964,
+  "largest_standard_packet_total_bytes": 119225,
+  "oversized_single_records": [],
+  "index_parts": [
+    {
+      "file": "compact_findings_index_part001.txt",
+      "records": 45,
+      "bytes": 34345,
+      "contains_oversized_records": false,
+      "oversized_record_ids": [],
+      "truncated_previews_count": 45
+    },
+    {
+      "file": "compact_findings_index_part002.txt",
+      "records": 44,
+      "bytes": 34946,
+      "contains_oversized_records": false,
+      "oversized_record_ids": [],
+      "truncated_previews_count": 44
+    },
+    {
+      "file": "compact_findings_index_part003.txt",
+      "records": 44,
+      "bytes": 34557,
+      "contains_oversized_records": false,
+      "oversized_record_ids": [],
+      "truncated_previews_count": 44
+    },
+    {
+      "file": "compact_findings_index_part004.txt",
+      "records": 45,
+      "bytes": 34660,
+      "contains_oversized_records": false,
+      "oversized_record_ids": [],
+      "truncated_previews_count": 45
+    },
+    {
+      "file": "compact_findings_index_part005.txt",
+      "records": 33,
+      "bytes": 25965,
+      "contains_oversized_records": false,
+      "oversized_record_ids": [],
+      "truncated_previews_count": 33
+    }
+  ],
+  "shards": {
+    "SHARD_C28__GENERAL__part001": {
+      "group": "SHARD_C28__GENERAL",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 9,
+      "bytes": 18812,
+      "findings_bytes": 18812,
+      "sources_bytes": 1782,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 114490,
+      "finding_ids": [
+        "F-CAL04-001",
+        "F-CAL04-002",
+        "F-CAL04-003",
+        "F-CAL04-004",
+        "F-CAL04-005",
+        "F-CAL04-008",
+        "F-CAL04-009",
+        "F-CAL04-010",
+        "F-CAL04-011"
+      ],
+      "source_ids": [
+        "S-CAL04-001",
+        "S-CAL04-002",
+        "S-CAL04-003",
+        "S-CAL04-004",
+        "S-CAL04-005"
+      ],
+      "file": "SHARD_C28__GENERAL__part001.jsonl",
+      "sources_file": "SHARD_C28__GENERAL__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_C29__GENERAL__part001": {
+      "group": "SHARD_C29__GENERAL",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 2,
+      "bytes": 4216,
+      "findings_bytes": 4216,
+      "sources_bytes": 312,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 98424,
+      "finding_ids": [
+        "F-CAL04-006",
+        "F-CAL04-007"
+      ],
+      "source_ids": [
+        "S-CAL04-003"
+      ],
+      "file": "SHARD_C29__GENERAL__part001.jsonl",
+      "sources_file": "SHARD_C29__GENERAL__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P1_CAPTURE_TRIAGE__F1_INITIATION_PARALYSIS__part001": {
+      "group": "SHARD_P1_CAPTURE_TRIAGE__F1_INITIATION_PARALYSIS",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 3,
+      "bytes": 5069,
+      "findings_bytes": 5069,
+      "sources_bytes": 1229,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 100194,
+      "finding_ids": [
+        "F-CAL01-011",
+        "F-W2S01-009",
+        "F-W2S05-005"
+      ],
+      "source_ids": [
+        "S-CAL01-004",
+        "S-W2S01-004",
+        "S-W2S05-003"
+      ],
+      "file": "SHARD_P1_CAPTURE_TRIAGE__F1_INITIATION_PARALYSIS__part001.jsonl",
+      "sources_file": "SHARD_P1_CAPTURE_TRIAGE__F1_INITIATION_PARALYSIS__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P1_CAPTURE_TRIAGE__F2_CHOICE_OVERLOAD__part001": {
+      "group": "SHARD_P1_CAPTURE_TRIAGE__F2_CHOICE_OVERLOAD",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 5,
+      "bytes": 8195,
+      "findings_bytes": 8195,
+      "sources_bytes": 2136,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 104227,
+      "finding_ids": [
+        "F-CAL01-002",
+        "F-CAL02-012",
+        "F-W2S01-017",
+        "F-W2S02-003",
+        "F-W2S04-001"
+      ],
+      "source_ids": [
+        "S-CAL01-001",
+        "S-CAL02-007",
+        "S-W2S01-008",
+        "S-W2S02-002",
+        "S-W2S04-001"
+      ],
+      "file": "SHARD_P1_CAPTURE_TRIAGE__F2_CHOICE_OVERLOAD__part001.jsonl",
+      "sources_file": "SHARD_P1_CAPTURE_TRIAGE__F2_CHOICE_OVERLOAD__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P1_CAPTURE_TRIAGE__F5_RELAPSE_SPIRAL__part001": {
+      "group": "SHARD_P1_CAPTURE_TRIAGE__F5_RELAPSE_SPIRAL",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 2,
+      "bytes": 3258,
+      "findings_bytes": 3258,
+      "sources_bytes": 824,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 97978,
+      "finding_ids": [
+        "F-W2S05-008",
+        "F-W2S05-016"
+      ],
+      "source_ids": [
+        "S-W2S05-004",
+        "S-W2S05-006"
+      ],
+      "file": "SHARD_P1_CAPTURE_TRIAGE__F5_RELAPSE_SPIRAL__part001.jsonl",
+      "sources_file": "SHARD_P1_CAPTURE_TRIAGE__F5_RELAPSE_SPIRAL__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P1_CAPTURE_TRIAGE__F6_ENERGY_DEPLETION__part001": {
+      "group": "SHARD_P1_CAPTURE_TRIAGE__F6_ENERGY_DEPLETION",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 2,
+      "bytes": 3701,
+      "findings_bytes": 3701,
+      "sources_bytes": 798,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 98395,
+      "finding_ids": [
+        "F-CAL01-003",
+        "F-W1S03-002"
+      ],
+      "source_ids": [
+        "S-CAL01-002",
+        "S-W1S03-002"
+      ],
+      "file": "SHARD_P1_CAPTURE_TRIAGE__F6_ENERGY_DEPLETION__part001.jsonl",
+      "sources_file": "SHARD_P1_CAPTURE_TRIAGE__F6_ENERGY_DEPLETION__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P2_SENSEMAKING_DESIGN__F1_INITIATION_PARALYSIS__part001": {
+      "group": "SHARD_P2_SENSEMAKING_DESIGN__F1_INITIATION_PARALYSIS",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 6,
+      "bytes": 9152,
+      "findings_bytes": 9152,
+      "sources_bytes": 2661,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 105709,
+      "finding_ids": [
+        "F-W2S01-015",
+        "F-W2S01-025",
+        "F-W2S02-016",
+        "F-W2S03-019",
+        "F-W2S04-016",
+        "F-W2S05-022"
+      ],
+      "source_ids": [
+        "S-W2S01-004",
+        "S-W2S01-007",
+        "S-W2S02-008",
+        "S-W2S03-003",
+        "S-W2S04-008",
+        "S-W2S05-005"
+      ],
+      "file": "SHARD_P2_SENSEMAKING_DESIGN__F1_INITIATION_PARALYSIS__part001.jsonl",
+      "sources_file": "SHARD_P2_SENSEMAKING_DESIGN__F1_INITIATION_PARALYSIS__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P2_SENSEMAKING_DESIGN__F2_CHOICE_OVERLOAD__part001": {
+      "group": "SHARD_P2_SENSEMAKING_DESIGN__F2_CHOICE_OVERLOAD",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 12,
+      "bytes": 19845,
+      "findings_bytes": 19845,
+      "sources_bytes": 4873,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 118614,
+      "finding_ids": [
+        "F-CAL01-007",
+        "F-CAL01-010",
+        "F-CAL01-012",
+        "F-W1S01-001",
+        "F-W1S03-004",
+        "F-W1S04-005",
+        "F-W2S01-001",
+        "F-W2S01-003",
+        "F-W2S01-007",
+        "F-W2S01-016",
+        "F-W2S01-018",
+        "F-W2S01-021"
+      ],
+      "source_ids": [
+        "S-CAL01-003",
+        "S-CAL01-004",
+        "S-CAL01-005",
+        "S-W1S01-005",
+        "S-W1S03-003",
+        "S-W1S03-004",
+        "S-W1S04-005",
+        "S-W1S04-006",
+        "S-W2S01-001",
+        "S-W2S01-003",
+        "S-W2S01-007",
+        "S-W2S01-008"
+      ],
+      "file": "SHARD_P2_SENSEMAKING_DESIGN__F2_CHOICE_OVERLOAD__part001.jsonl",
+      "sources_file": "SHARD_P2_SENSEMAKING_DESIGN__F2_CHOICE_OVERLOAD__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P2_SENSEMAKING_DESIGN__F2_CHOICE_OVERLOAD__part002": {
+      "group": "SHARD_P2_SENSEMAKING_DESIGN__F2_CHOICE_OVERLOAD",
+      "part": 2,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 7,
+      "bytes": 10946,
+      "findings_bytes": 10946,
+      "sources_bytes": 3110,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 107952,
+      "finding_ids": [
+        "F-W2S01-024",
+        "F-W2S03-005",
+        "F-W2S04-010",
+        "F-W2S04-017",
+        "F-W2S05-013",
+        "F-W2S05-018",
+        "F-W2S05-021"
+      ],
+      "source_ids": [
+        "S-W2S01-008",
+        "S-W2S03-003",
+        "S-W2S04-001",
+        "S-W2S04-005",
+        "S-W2S05-001",
+        "S-W2S05-005",
+        "S-W2S05-007"
+      ],
+      "file": "SHARD_P2_SENSEMAKING_DESIGN__F2_CHOICE_OVERLOAD__part002.jsonl",
+      "sources_file": "SHARD_P2_SENSEMAKING_DESIGN__F2_CHOICE_OVERLOAD__part002.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P2_SENSEMAKING_DESIGN__F3_TIME_HORIZON_BLINDNESS__part001": {
+      "group": "SHARD_P2_SENSEMAKING_DESIGN__F3_TIME_HORIZON_BLINDNESS",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 13,
+      "bytes": 19717,
+      "findings_bytes": 19717,
+      "sources_bytes": 5253,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 118866,
+      "finding_ids": [
+        "F-CAL03-003",
+        "F-W1S01-002",
+        "F-W1S01-003",
+        "F-W1S01-004",
+        "F-W1S03-001",
+        "F-W2S01-002",
+        "F-W2S01-004",
+        "F-W2S01-005",
+        "F-W2S01-006",
+        "F-W2S01-023",
+        "F-W2S02-015",
+        "F-W2S04-012",
+        "F-W2S04-018"
+      ],
+      "source_ids": [
+        "S-CAL03-004",
+        "S-W1S01-001",
+        "S-W1S01-002",
+        "S-W1S01-003",
+        "S-W1S01-004",
+        "S-W1S03-001",
+        "S-W2S01-001",
+        "S-W2S01-002",
+        "S-W2S01-003",
+        "S-W2S02-008",
+        "S-W2S04-002",
+        "S-W2S04-006"
+      ],
+      "file": "SHARD_P2_SENSEMAKING_DESIGN__F3_TIME_HORIZON_BLINDNESS__part001.jsonl",
+      "sources_file": "SHARD_P2_SENSEMAKING_DESIGN__F3_TIME_HORIZON_BLINDNESS__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P2_SENSEMAKING_DESIGN__F3_TIME_HORIZON_BLINDNESS__part002": {
+      "group": "SHARD_P2_SENSEMAKING_DESIGN__F3_TIME_HORIZON_BLINDNESS",
+      "part": 2,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 1,
+      "bytes": 1497,
+      "findings_bytes": 1497,
+      "sources_bytes": 465,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 95858,
+      "finding_ids": [
+        "F-W2S05-010"
+      ],
+      "source_ids": [
+        "S-W2S05-005"
+      ],
+      "file": "SHARD_P2_SENSEMAKING_DESIGN__F3_TIME_HORIZON_BLINDNESS__part002.jsonl",
+      "sources_file": "SHARD_P2_SENSEMAKING_DESIGN__F3_TIME_HORIZON_BLINDNESS__part002.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P2_SENSEMAKING_DESIGN__F6_ENERGY_DEPLETION__part001": {
+      "group": "SHARD_P2_SENSEMAKING_DESIGN__F6_ENERGY_DEPLETION",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 7,
+      "bytes": 10944,
+      "findings_bytes": 10944,
+      "sources_bytes": 2565,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 107405,
+      "finding_ids": [
+        "F-CAL01-006",
+        "F-CAL02-001",
+        "F-W2S02-010",
+        "F-W2S02-018",
+        "F-W2S02-027",
+        "F-W2S03-002",
+        "F-W2S05-019"
+      ],
+      "source_ids": [
+        "S-CAL01-003",
+        "S-CAL02-001",
+        "S-W2S02-005",
+        "S-W2S02-007",
+        "S-W2S03-001",
+        "S-W2S05-008"
+      ],
+      "file": "SHARD_P2_SENSEMAKING_DESIGN__F6_ENERGY_DEPLETION__part001.jsonl",
+      "sources_file": "SHARD_P2_SENSEMAKING_DESIGN__F6_ENERGY_DEPLETION__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P2_SENSEMAKING_DESIGN__F7_NOVELTY_STARVATION__part001": {
+      "group": "SHARD_P2_SENSEMAKING_DESIGN__F7_NOVELTY_STARVATION",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 2,
+      "bytes": 3287,
+      "findings_bytes": 3287,
+      "sources_bytes": 790,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 97973,
+      "finding_ids": [
+        "F-W1S04-006",
+        "F-W2S05-001"
+      ],
+      "source_ids": [
+        "S-W1S04-007",
+        "S-W2S05-001"
+      ],
+      "file": "SHARD_P2_SENSEMAKING_DESIGN__F7_NOVELTY_STARVATION__part001.jsonl",
+      "sources_file": "SHARD_P2_SENSEMAKING_DESIGN__F7_NOVELTY_STARVATION__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P2_SENSEMAKING_DESIGN__F8_ISOLATION_DRIFT__part001": {
+      "group": "SHARD_P2_SENSEMAKING_DESIGN__F8_ISOLATION_DRIFT",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 3,
+      "bytes": 4810,
+      "findings_bytes": 4810,
+      "sources_bytes": 415,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 99121,
+      "finding_ids": [
+        "F-W2S03-010",
+        "F-W2S03-011",
+        "F-W2S03-022"
+      ],
+      "source_ids": [
+        "S-W2S03-006"
+      ],
+      "file": "SHARD_P2_SENSEMAKING_DESIGN__F8_ISOLATION_DRIFT__part001.jsonl",
+      "sources_file": "SHARD_P2_SENSEMAKING_DESIGN__F8_ISOLATION_DRIFT__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P3_INITIATION_ACTIVATION__F1_INITIATION_PARALYSIS__part001": {
+      "group": "SHARD_P3_INITIATION_ACTIVATION__F1_INITIATION_PARALYSIS",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 12,
+      "bytes": 19401,
+      "findings_bytes": 19401,
+      "sources_bytes": 5928,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 119225,
+      "finding_ids": [
+        "F-CAL01-001",
+        "F-CAL02-010",
+        "F-CAL03-008",
+        "F-W1S03-003",
+        "F-W1S04-003",
+        "F-W2S01-010",
+        "F-W2S01-013",
+        "F-W2S01-019",
+        "F-W2S02-005",
+        "F-W2S02-014",
+        "F-W2S03-015",
+        "F-W2S03-025"
+      ],
+      "source_ids": [
+        "S-CAL01-001",
+        "S-CAL02-010",
+        "S-CAL03-011",
+        "S-W1S03-005",
+        "S-W1S03-006",
+        "S-W1S04-003",
+        "S-W1S04-004",
+        "S-W2S01-004",
+        "S-W2S01-006",
+        "S-W2S01-008",
+        "S-W2S02-003",
+        "S-W2S02-007",
+        "S-W2S03-002",
+        "S-W2S03-008"
+      ],
+      "file": "SHARD_P3_INITIATION_ACTIVATION__F1_INITIATION_PARALYSIS__part001.jsonl",
+      "sources_file": "SHARD_P3_INITIATION_ACTIVATION__F1_INITIATION_PARALYSIS__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P3_INITIATION_ACTIVATION__F1_INITIATION_PARALYSIS__part002": {
+      "group": "SHARD_P3_INITIATION_ACTIVATION__F1_INITIATION_PARALYSIS",
+      "part": 2,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 5,
+      "bytes": 8145,
+      "findings_bytes": 8145,
+      "sources_bytes": 2255,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 104296,
+      "finding_ids": [
+        "F-W2S04-002",
+        "F-W2S04-005",
+        "F-W2S04-007",
+        "F-W2S04-022",
+        "F-W2S05-015"
+      ],
+      "source_ids": [
+        "S-W2S04-001",
+        "S-W2S04-002",
+        "S-W2S04-003",
+        "S-W2S04-007",
+        "S-W2S05-006"
+      ],
+      "file": "SHARD_P3_INITIATION_ACTIVATION__F1_INITIATION_PARALYSIS__part002.jsonl",
+      "sources_file": "SHARD_P3_INITIATION_ACTIVATION__F1_INITIATION_PARALYSIS__part002.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P3_INITIATION_ACTIVATION__F2_CHOICE_OVERLOAD__part001": {
+      "group": "SHARD_P3_INITIATION_ACTIVATION__F2_CHOICE_OVERLOAD",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 2,
+      "bytes": 2918,
+      "findings_bytes": 2918,
+      "sources_bytes": 912,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 97726,
+      "finding_ids": [
+        "F-W2S01-026",
+        "F-W2S03-006"
+      ],
+      "source_ids": [
+        "S-W2S01-004",
+        "S-W2S03-003"
+      ],
+      "file": "SHARD_P3_INITIATION_ACTIVATION__F2_CHOICE_OVERLOAD__part001.jsonl",
+      "sources_file": "SHARD_P3_INITIATION_ACTIVATION__F2_CHOICE_OVERLOAD__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P3_INITIATION_ACTIVATION__F3_TIME_HORIZON_BLINDNESS__part001": {
+      "group": "SHARD_P3_INITIATION_ACTIVATION__F3_TIME_HORIZON_BLINDNESS",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 2,
+      "bytes": 2963,
+      "findings_bytes": 2963,
+      "sources_bytes": 948,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 97807,
+      "finding_ids": [
+        "F-W1S04-004",
+        "F-W2S04-023"
+      ],
+      "source_ids": [
+        "S-W1S04-003",
+        "S-W2S04-008"
+      ],
+      "file": "SHARD_P3_INITIATION_ACTIVATION__F3_TIME_HORIZON_BLINDNESS__part001.jsonl",
+      "sources_file": "SHARD_P3_INITIATION_ACTIVATION__F3_TIME_HORIZON_BLINDNESS__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P3_INITIATION_ACTIVATION__F4_MOTIVATIONAL_DECAY__part001": {
+      "group": "SHARD_P3_INITIATION_ACTIVATION__F4_MOTIVATIONAL_DECAY",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 3,
+      "bytes": 4379,
+      "findings_bytes": 4379,
+      "sources_bytes": 902,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 99177,
+      "finding_ids": [
+        "F-W1S02-004",
+        "F-W2S02-006",
+        "F-W2S02-024"
+      ],
+      "source_ids": [
+        "S-W1S02-006",
+        "S-W2S02-003"
+      ],
+      "file": "SHARD_P3_INITIATION_ACTIVATION__F4_MOTIVATIONAL_DECAY__part001.jsonl",
+      "sources_file": "SHARD_P3_INITIATION_ACTIVATION__F4_MOTIVATIONAL_DECAY__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P3_INITIATION_ACTIVATION__F5_RELAPSE_SPIRAL__part001": {
+      "group": "SHARD_P3_INITIATION_ACTIVATION__F5_RELAPSE_SPIRAL",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 1,
+      "bytes": 1923,
+      "findings_bytes": 1923,
+      "sources_bytes": 905,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 96724,
+      "finding_ids": [
+        "F-CAL02-009"
+      ],
+      "source_ids": [
+        "S-CAL02-011",
+        "S-CAL02-012"
+      ],
+      "file": "SHARD_P3_INITIATION_ACTIVATION__F5_RELAPSE_SPIRAL__part001.jsonl",
+      "sources_file": "SHARD_P3_INITIATION_ACTIVATION__F5_RELAPSE_SPIRAL__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P3_INITIATION_ACTIVATION__F7_NOVELTY_STARVATION__part001": {
+      "group": "SHARD_P3_INITIATION_ACTIVATION__F7_NOVELTY_STARVATION",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 1,
+      "bytes": 1443,
+      "findings_bytes": 1443,
+      "sources_bytes": 457,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 95796,
+      "finding_ids": [
+        "F-W2S04-021"
+      ],
+      "source_ids": [
+        "S-W2S04-006"
+      ],
+      "file": "SHARD_P3_INITIATION_ACTIVATION__F7_NOVELTY_STARVATION__part001.jsonl",
+      "sources_file": "SHARD_P3_INITIATION_ACTIVATION__F7_NOVELTY_STARVATION__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P3_INITIATION_ACTIVATION__F8_ISOLATION_DRIFT__part001": {
+      "group": "SHARD_P3_INITIATION_ACTIVATION__F8_ISOLATION_DRIFT",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 2,
+      "bytes": 3092,
+      "findings_bytes": 3092,
+      "sources_bytes": 1304,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 98292,
+      "finding_ids": [
+        "F-W1S02-003",
+        "F-W2S01-027"
+      ],
+      "source_ids": [
+        "S-W1S02-004",
+        "S-W1S02-005",
+        "S-W2S01-005"
+      ],
+      "file": "SHARD_P3_INITIATION_ACTIVATION__F8_ISOLATION_DRIFT__part001.jsonl",
+      "sources_file": "SHARD_P3_INITIATION_ACTIVATION__F8_ISOLATION_DRIFT__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P4_EXECUTION_PACING__F2_CHOICE_OVERLOAD__part001": {
+      "group": "SHARD_P4_EXECUTION_PACING__F2_CHOICE_OVERLOAD",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 5,
+      "bytes": 7129,
+      "findings_bytes": 7129,
+      "sources_bytes": 2291,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 103316,
+      "finding_ids": [
+        "F-CAL02-006",
+        "F-W2S02-013",
+        "F-W2S02-023",
+        "F-W2S03-026",
+        "F-W2S05-011"
+      ],
+      "source_ids": [
+        "S-CAL02-013",
+        "S-W2S02-007",
+        "S-W2S02-008",
+        "S-W2S03-008",
+        "S-W2S05-005"
+      ],
+      "file": "SHARD_P4_EXECUTION_PACING__F2_CHOICE_OVERLOAD__part001.jsonl",
+      "sources_file": "SHARD_P4_EXECUTION_PACING__F2_CHOICE_OVERLOAD__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P4_EXECUTION_PACING__F3_TIME_HORIZON_BLINDNESS__part001": {
+      "group": "SHARD_P4_EXECUTION_PACING__F3_TIME_HORIZON_BLINDNESS",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 6,
+      "bytes": 10824,
+      "findings_bytes": 10824,
+      "sources_bytes": 2037,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 106757,
+      "finding_ids": [
+        "F-CAL01-004",
+        "F-CAL01-008",
+        "F-CAL01-009",
+        "F-W2S03-001",
+        "F-W2S04-020",
+        "F-W2S05-027"
+      ],
+      "source_ids": [
+        "S-CAL01-003",
+        "S-CAL01-004",
+        "S-W2S03-001",
+        "S-W2S04-006",
+        "S-W2S05-008"
+      ],
+      "file": "SHARD_P4_EXECUTION_PACING__F3_TIME_HORIZON_BLINDNESS__part001.jsonl",
+      "sources_file": "SHARD_P4_EXECUTION_PACING__F3_TIME_HORIZON_BLINDNESS__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P4_EXECUTION_PACING__F4_MOTIVATIONAL_DECAY__part001": {
+      "group": "SHARD_P4_EXECUTION_PACING__F4_MOTIVATIONAL_DECAY",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 2,
+      "bytes": 2968,
+      "findings_bytes": 2968,
+      "sources_bytes": 882,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 97746,
+      "finding_ids": [
+        "F-W2S01-014",
+        "F-W2S03-003"
+      ],
+      "source_ids": [
+        "S-W2S01-006",
+        "S-W2S03-002"
+      ],
+      "file": "SHARD_P4_EXECUTION_PACING__F4_MOTIVATIONAL_DECAY__part001.jsonl",
+      "sources_file": "SHARD_P4_EXECUTION_PACING__F4_MOTIVATIONAL_DECAY__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P4_EXECUTION_PACING__F5_RELAPSE_SPIRAL__part001": {
+      "group": "SHARD_P4_EXECUTION_PACING__F5_RELAPSE_SPIRAL",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 4,
+      "bytes": 6258,
+      "findings_bytes": 6258,
+      "sources_bytes": 1733,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 101887,
+      "finding_ids": [
+        "F-W2S03-014",
+        "F-W2S04-006",
+        "F-W2S04-026",
+        "F-W2S05-024"
+      ],
+      "source_ids": [
+        "S-W2S03-007",
+        "S-W2S04-003",
+        "S-W2S04-004",
+        "S-W2S05-004"
+      ],
+      "file": "SHARD_P4_EXECUTION_PACING__F5_RELAPSE_SPIRAL__part001.jsonl",
+      "sources_file": "SHARD_P4_EXECUTION_PACING__F5_RELAPSE_SPIRAL__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P4_EXECUTION_PACING__F6_ENERGY_DEPLETION__part001": {
+      "group": "SHARD_P4_EXECUTION_PACING__F6_ENERGY_DEPLETION",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 14,
+      "bytes": 20964,
+      "findings_bytes": 20964,
+      "sources_bytes": 4006,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 118866,
+      "finding_ids": [
+        "F-CAL02-002",
+        "F-CAL02-004",
+        "F-CAL02-005",
+        "F-W2S01-011",
+        "F-W2S01-012",
+        "F-W2S01-020",
+        "F-W2S02-001",
+        "F-W2S02-002",
+        "F-W2S02-007",
+        "F-W2S02-009",
+        "F-W2S02-017",
+        "F-W2S02-019",
+        "F-W2S02-021",
+        "F-W2S02-022"
+      ],
+      "source_ids": [
+        "S-CAL02-002",
+        "S-CAL02-003",
+        "S-CAL02-014",
+        "S-W2S01-005",
+        "S-W2S01-008",
+        "S-W2S02-001",
+        "S-W2S02-004",
+        "S-W2S02-005",
+        "S-W2S02-007"
+      ],
+      "file": "SHARD_P4_EXECUTION_PACING__F6_ENERGY_DEPLETION__part001.jsonl",
+      "sources_file": "SHARD_P4_EXECUTION_PACING__F6_ENERGY_DEPLETION__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P4_EXECUTION_PACING__F6_ENERGY_DEPLETION__part002": {
+      "group": "SHARD_P4_EXECUTION_PACING__F6_ENERGY_DEPLETION",
+      "part": 2,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 7,
+      "bytes": 10647,
+      "findings_bytes": 10647,
+      "sources_bytes": 2700,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 107243,
+      "finding_ids": [
+        "F-W2S04-004",
+        "F-W2S04-008",
+        "F-W2S04-009",
+        "F-W2S04-019",
+        "F-W2S04-024",
+        "F-W2S05-007",
+        "F-W2S05-025"
+      ],
+      "source_ids": [
+        "S-W2S04-002",
+        "S-W2S04-003",
+        "S-W2S04-004",
+        "S-W2S04-005",
+        "S-W2S05-003",
+        "S-W2S05-006"
+      ],
+      "file": "SHARD_P4_EXECUTION_PACING__F6_ENERGY_DEPLETION__part002.jsonl",
+      "sources_file": "SHARD_P4_EXECUTION_PACING__F6_ENERGY_DEPLETION__part002.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P4_EXECUTION_PACING__F7_NOVELTY_STARVATION__part001": {
+      "group": "SHARD_P4_EXECUTION_PACING__F7_NOVELTY_STARVATION",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 3,
+      "bytes": 4614,
+      "findings_bytes": 4614,
+      "sources_bytes": 1884,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 100394,
+      "finding_ids": [
+        "F-W1S04-001",
+        "F-W2S02-020",
+        "F-W2S04-027"
+      ],
+      "source_ids": [
+        "S-W1S04-001",
+        "S-W1S04-002",
+        "S-W2S02-007",
+        "S-W2S04-005"
+      ],
+      "file": "SHARD_P4_EXECUTION_PACING__F7_NOVELTY_STARVATION__part001.jsonl",
+      "sources_file": "SHARD_P4_EXECUTION_PACING__F7_NOVELTY_STARVATION__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P4_EXECUTION_PACING__F8_ISOLATION_DRIFT__part001": {
+      "group": "SHARD_P4_EXECUTION_PACING__F8_ISOLATION_DRIFT",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 5,
+      "bytes": 7647,
+      "findings_bytes": 7647,
+      "sources_bytes": 1662,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 103205,
+      "finding_ids": [
+        "F-W1S04-010",
+        "F-W1S04-011",
+        "F-W2S03-016",
+        "F-W2S05-003",
+        "F-W2S05-028"
+      ],
+      "source_ids": [
+        "S-W1S04-010",
+        "S-W1S04-011",
+        "S-W2S03-008",
+        "S-W2S05-002"
+      ],
+      "file": "SHARD_P4_EXECUTION_PACING__F8_ISOLATION_DRIFT__part001.jsonl",
+      "sources_file": "SHARD_P4_EXECUTION_PACING__F8_ISOLATION_DRIFT__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P5_FEEDBACK_REWARD__F1_INITIATION_PARALYSIS__part001": {
+      "group": "SHARD_P5_FEEDBACK_REWARD__F1_INITIATION_PARALYSIS",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 1,
+      "bytes": 1391,
+      "findings_bytes": 1391,
+      "sources_bytes": 433,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 95720,
+      "finding_ids": [
+        "F-CAL02-007"
+      ],
+      "source_ids": [
+        "S-CAL02-013"
+      ],
+      "file": "SHARD_P5_FEEDBACK_REWARD__F1_INITIATION_PARALYSIS__part001.jsonl",
+      "sources_file": "SHARD_P5_FEEDBACK_REWARD__F1_INITIATION_PARALYSIS__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P5_FEEDBACK_REWARD__F2_CHOICE_OVERLOAD__part001": {
+      "group": "SHARD_P5_FEEDBACK_REWARD__F2_CHOICE_OVERLOAD",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 1,
+      "bytes": 1542,
+      "findings_bytes": 1542,
+      "sources_bytes": 465,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 95903,
+      "finding_ids": [
+        "F-CAL03-005"
+      ],
+      "source_ids": [
+        "S-CAL03-005"
+      ],
+      "file": "SHARD_P5_FEEDBACK_REWARD__F2_CHOICE_OVERLOAD__part001.jsonl",
+      "sources_file": "SHARD_P5_FEEDBACK_REWARD__F2_CHOICE_OVERLOAD__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P5_FEEDBACK_REWARD__F3_TIME_HORIZON_BLINDNESS__part001": {
+      "group": "SHARD_P5_FEEDBACK_REWARD__F3_TIME_HORIZON_BLINDNESS",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 5,
+      "bytes": 7247,
+      "findings_bytes": 7247,
+      "sources_bytes": 2098,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 103241,
+      "finding_ids": [
+        "F-W1S02-002",
+        "F-W2S03-004",
+        "F-W2S03-021",
+        "F-W2S03-023",
+        "F-W2S05-026"
+      ],
+      "source_ids": [
+        "S-W1S02-003",
+        "S-W2S03-002",
+        "S-W2S03-004",
+        "S-W2S03-005",
+        "S-W2S05-003"
+      ],
+      "file": "SHARD_P5_FEEDBACK_REWARD__F3_TIME_HORIZON_BLINDNESS__part001.jsonl",
+      "sources_file": "SHARD_P5_FEEDBACK_REWARD__F3_TIME_HORIZON_BLINDNESS__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P5_FEEDBACK_REWARD__F4_MOTIVATIONAL_DECAY__part001": {
+      "group": "SHARD_P5_FEEDBACK_REWARD__F4_MOTIVATIONAL_DECAY",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 8,
+      "bytes": 12978,
+      "findings_bytes": 12978,
+      "sources_bytes": 4828,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 111702,
+      "finding_ids": [
+        "F-CAL03-001",
+        "F-CAL03-007",
+        "F-CAL03-010",
+        "F-CAL03-011",
+        "F-W1S02-001",
+        "F-W2S03-008",
+        "F-W2S03-017",
+        "F-W2S04-015"
+      ],
+      "source_ids": [
+        "S-CAL03-001",
+        "S-CAL03-002",
+        "S-CAL03-007",
+        "S-CAL03-008",
+        "S-CAL03-009",
+        "S-CAL03-010",
+        "S-W1S02-001",
+        "S-W1S02-002",
+        "S-W2S03-004",
+        "S-W2S03-005",
+        "S-W2S04-008"
+      ],
+      "file": "SHARD_P5_FEEDBACK_REWARD__F4_MOTIVATIONAL_DECAY__part001.jsonl",
+      "sources_file": "SHARD_P5_FEEDBACK_REWARD__F4_MOTIVATIONAL_DECAY__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P5_FEEDBACK_REWARD__F5_RELAPSE_SPIRAL__part001": {
+      "group": "SHARD_P5_FEEDBACK_REWARD__F5_RELAPSE_SPIRAL",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 1,
+      "bytes": 2074,
+      "findings_bytes": 2074,
+      "sources_bytes": 472,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 96442,
+      "finding_ids": [
+        "F-CAL03-009"
+      ],
+      "source_ids": [
+        "S-CAL03-006"
+      ],
+      "file": "SHARD_P5_FEEDBACK_REWARD__F5_RELAPSE_SPIRAL__part001.jsonl",
+      "sources_file": "SHARD_P5_FEEDBACK_REWARD__F5_RELAPSE_SPIRAL__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P5_FEEDBACK_REWARD__F6_ENERGY_DEPLETION__part001": {
+      "group": "SHARD_P5_FEEDBACK_REWARD__F6_ENERGY_DEPLETION",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 3,
+      "bytes": 4678,
+      "findings_bytes": 4678,
+      "sources_bytes": 847,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 99421,
+      "finding_ids": [
+        "F-W2S02-008",
+        "F-W2S03-009",
+        "F-W2S03-027"
+      ],
+      "source_ids": [
+        "S-W2S02-004",
+        "S-W2S03-005"
+      ],
+      "file": "SHARD_P5_FEEDBACK_REWARD__F6_ENERGY_DEPLETION__part001.jsonl",
+      "sources_file": "SHARD_P5_FEEDBACK_REWARD__F6_ENERGY_DEPLETION__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P5_FEEDBACK_REWARD__F7_NOVELTY_STARVATION__part001": {
+      "group": "SHARD_P5_FEEDBACK_REWARD__F7_NOVELTY_STARVATION",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 5,
+      "bytes": 8461,
+      "findings_bytes": 8461,
+      "sources_bytes": 2225,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 104582,
+      "finding_ids": [
+        "F-CAL03-002",
+        "F-CAL03-004",
+        "F-W1S04-007",
+        "F-W1S04-009",
+        "F-W2S05-002"
+      ],
+      "source_ids": [
+        "S-CAL03-003",
+        "S-CAL03-004",
+        "S-W1S04-008",
+        "S-W1S04-009",
+        "S-W2S05-001"
+      ],
+      "file": "SHARD_P5_FEEDBACK_REWARD__F7_NOVELTY_STARVATION__part001.jsonl",
+      "sources_file": "SHARD_P5_FEEDBACK_REWARD__F7_NOVELTY_STARVATION__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P5_FEEDBACK_REWARD__F8_ISOLATION_DRIFT__part001": {
+      "group": "SHARD_P5_FEEDBACK_REWARD__F8_ISOLATION_DRIFT",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 3,
+      "bytes": 4561,
+      "findings_bytes": 4561,
+      "sources_bytes": 1672,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 100129,
+      "finding_ids": [
+        "F-W1S04-012",
+        "F-W2S04-013",
+        "F-W2S05-004"
+      ],
+      "source_ids": [
+        "S-W1S04-011",
+        "S-W1S04-012",
+        "S-W2S04-006",
+        "S-W2S05-002"
+      ],
+      "file": "SHARD_P5_FEEDBACK_REWARD__F8_ISOLATION_DRIFT__part001.jsonl",
+      "sources_file": "SHARD_P5_FEEDBACK_REWARD__F8_ISOLATION_DRIFT__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P6_RECOVERY_ADAPTATION__F1_INITIATION_PARALYSIS__part001": {
+      "group": "SHARD_P6_RECOVERY_ADAPTATION__F1_INITIATION_PARALYSIS",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 1,
+      "bytes": 1485,
+      "findings_bytes": 1485,
+      "sources_bytes": 444,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 95825,
+      "finding_ids": [
+        "F-W2S02-026"
+      ],
+      "source_ids": [
+        "S-W2S02-002"
+      ],
+      "file": "SHARD_P6_RECOVERY_ADAPTATION__F1_INITIATION_PARALYSIS__part001.jsonl",
+      "sources_file": "SHARD_P6_RECOVERY_ADAPTATION__F1_INITIATION_PARALYSIS__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P6_RECOVERY_ADAPTATION__F2_CHOICE_OVERLOAD__part001": {
+      "group": "SHARD_P6_RECOVERY_ADAPTATION__F2_CHOICE_OVERLOAD",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 3,
+      "bytes": 4266,
+      "findings_bytes": 4266,
+      "sources_bytes": 1743,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 99905,
+      "finding_ids": [
+        "F-CAL02-011",
+        "F-W2S01-008",
+        "F-W2S05-014"
+      ],
+      "source_ids": [
+        "S-CAL02-006",
+        "S-CAL02-007",
+        "S-W2S01-003",
+        "S-W2S05-005"
+      ],
+      "file": "SHARD_P6_RECOVERY_ADAPTATION__F2_CHOICE_OVERLOAD__part001.jsonl",
+      "sources_file": "SHARD_P6_RECOVERY_ADAPTATION__F2_CHOICE_OVERLOAD__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P6_RECOVERY_ADAPTATION__F3_TIME_HORIZON_BLINDNESS__part001": {
+      "group": "SHARD_P6_RECOVERY_ADAPTATION__F3_TIME_HORIZON_BLINDNESS",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 5,
+      "bytes": 8694,
+      "findings_bytes": 8694,
+      "sources_bytes": 2059,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 104649,
+      "finding_ids": [
+        "F-CAL01-005",
+        "F-CAL03-006",
+        "F-W2S01-022",
+        "F-W2S05-006",
+        "F-W2S05-017"
+      ],
+      "source_ids": [
+        "S-CAL01-003",
+        "S-CAL03-005",
+        "S-W2S01-001",
+        "S-W2S05-003",
+        "S-W2S05-007"
+      ],
+      "file": "SHARD_P6_RECOVERY_ADAPTATION__F3_TIME_HORIZON_BLINDNESS__part001.jsonl",
+      "sources_file": "SHARD_P6_RECOVERY_ADAPTATION__F3_TIME_HORIZON_BLINDNESS__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P6_RECOVERY_ADAPTATION__F4_MOTIVATIONAL_DECAY__part001": {
+      "group": "SHARD_P6_RECOVERY_ADAPTATION__F4_MOTIVATIONAL_DECAY",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 4,
+      "bytes": 5737,
+      "findings_bytes": 5737,
+      "sources_bytes": 1294,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 100927,
+      "finding_ids": [
+        "F-W1S04-008",
+        "F-W2S03-018",
+        "F-W2S03-024",
+        "F-W2S04-025"
+      ],
+      "source_ids": [
+        "S-W1S04-008",
+        "S-W2S03-001",
+        "S-W2S04-001"
+      ],
+      "file": "SHARD_P6_RECOVERY_ADAPTATION__F4_MOTIVATIONAL_DECAY__part001.jsonl",
+      "sources_file": "SHARD_P6_RECOVERY_ADAPTATION__F4_MOTIVATIONAL_DECAY__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P6_RECOVERY_ADAPTATION__F5_RELAPSE_SPIRAL__part001": {
+      "group": "SHARD_P6_RECOVERY_ADAPTATION__F5_RELAPSE_SPIRAL",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 12,
+      "bytes": 18960,
+      "findings_bytes": 18960,
+      "sources_bytes": 5285,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 118141,
+      "finding_ids": [
+        "F-CAL02-003",
+        "F-CAL02-013",
+        "F-CAL02-014",
+        "F-CAL02-015",
+        "F-W1S02-005",
+        "F-W1S04-002",
+        "F-W2S02-011",
+        "F-W2S02-012",
+        "F-W2S02-025",
+        "F-W2S03-007",
+        "F-W2S03-013",
+        "F-W2S04-014"
+      ],
+      "source_ids": [
+        "S-CAL02-002",
+        "S-CAL02-004",
+        "S-CAL02-005",
+        "S-CAL02-009",
+        "S-CAL02-015",
+        "S-W1S02-007",
+        "S-W1S04-013",
+        "S-W2S02-003",
+        "S-W2S02-006",
+        "S-W2S03-004",
+        "S-W2S03-007",
+        "S-W2S04-007"
+      ],
+      "file": "SHARD_P6_RECOVERY_ADAPTATION__F5_RELAPSE_SPIRAL__part001.jsonl",
+      "sources_file": "SHARD_P6_RECOVERY_ADAPTATION__F5_RELAPSE_SPIRAL__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P6_RECOVERY_ADAPTATION__F5_RELAPSE_SPIRAL__part002": {
+      "group": "SHARD_P6_RECOVERY_ADAPTATION__F5_RELAPSE_SPIRAL",
+      "part": 2,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 3,
+      "bytes": 4750,
+      "findings_bytes": 4750,
+      "sources_bytes": 1289,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 99935,
+      "finding_ids": [
+        "F-W2S05-012",
+        "F-W2S05-020",
+        "F-W2S05-023"
+      ],
+      "source_ids": [
+        "S-W2S05-005",
+        "S-W2S05-007",
+        "S-W2S05-008"
+      ],
+      "file": "SHARD_P6_RECOVERY_ADAPTATION__F5_RELAPSE_SPIRAL__part002.jsonl",
+      "sources_file": "SHARD_P6_RECOVERY_ADAPTATION__F5_RELAPSE_SPIRAL__part002.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P6_RECOVERY_ADAPTATION__F6_ENERGY_DEPLETION__part001": {
+      "group": "SHARD_P6_RECOVERY_ADAPTATION__F6_ENERGY_DEPLETION",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 6,
+      "bytes": 8990,
+      "findings_bytes": 8990,
+      "sources_bytes": 2678,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 105564,
+      "finding_ids": [
+        "F-CAL02-008",
+        "F-W2S02-004",
+        "F-W2S03-012",
+        "F-W2S04-003",
+        "F-W2S04-011",
+        "F-W2S05-009"
+      ],
+      "source_ids": [
+        "S-CAL02-008",
+        "S-W2S02-002",
+        "S-W2S03-006",
+        "S-W2S04-001",
+        "S-W2S04-005",
+        "S-W2S05-004"
+      ],
+      "file": "SHARD_P6_RECOVERY_ADAPTATION__F6_ENERGY_DEPLETION__part001.jsonl",
+      "sources_file": "SHARD_P6_RECOVERY_ADAPTATION__F6_ENERGY_DEPLETION__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P6_RECOVERY_ADAPTATION__F7_NOVELTY_STARVATION__part001": {
+      "group": "SHARD_P6_RECOVERY_ADAPTATION__F7_NOVELTY_STARVATION",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 1,
+      "bytes": 1485,
+      "findings_bytes": 1485,
+      "sources_bytes": 497,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 95878,
+      "finding_ids": [
+        "F-CAL03-012"
+      ],
+      "source_ids": [
+        "S-CAL03-007"
+      ],
+      "file": "SHARD_P6_RECOVERY_ADAPTATION__F7_NOVELTY_STARVATION__part001.jsonl",
+      "sources_file": "SHARD_P6_RECOVERY_ADAPTATION__F7_NOVELTY_STARVATION__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P6_RECOVERY_ADAPTATION__F8_ISOLATION_DRIFT__part001": {
+      "group": "SHARD_P6_RECOVERY_ADAPTATION__F8_ISOLATION_DRIFT",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 1,
+      "bytes": 1390,
+      "findings_bytes": 1390,
+      "sources_bytes": 403,
+      "prompt_reserve_bytes": 93896,
+      "total_bytes": 95689,
+      "finding_ids": [
+        "F-W2S03-020"
+      ],
+      "source_ids": [
+        "S-W2S03-007"
+      ],
+      "file": "SHARD_P6_RECOVERY_ADAPTATION__F8_ISOLATION_DRIFT__part001.jsonl",
+      "sources_file": "SHARD_P6_RECOVERY_ADAPTATION__F8_ISOLATION_DRIFT__part001.sources.jsonl",
+      "oversized_single_record": false
+    }
+  }
+}

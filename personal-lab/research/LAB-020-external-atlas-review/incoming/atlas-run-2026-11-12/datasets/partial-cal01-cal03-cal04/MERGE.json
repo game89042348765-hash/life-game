@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    {
+      "input": "/working_dir/c_29410a70aee32432/artifacts/file_generation/ttl=63d/intermediate/atlas-run-2026-11-12/accepted/CAL-SEARCH-01/attempt-001",
+      "sha256": {
+        "findings.jsonl": "1dd8c8d7779ed27db60d61c7487eed0dafd8b4983c4b749dd3c0e61729e8afe7",
+        "leads.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "search_log.jsonl": "68bf3b7ebbac7a6e8ef3e439aa091cba266eb26b8de55da8d4ef6035b6db2600",
+        "sources.jsonl": "ce33acbd50f10c31d75196548e25a7387f6c8f2903147a40bf2e6051cc6c00d6"
+      }
+    },
+    {
+      "input": "/working_dir/c_29410a70aee32432/artifacts/file_generation/ttl=63d/intermediate/atlas-run-2026-11-12/accepted/CAL-SEARCH-03/attempt-001",
+      "sha256": {
+        "findings.jsonl": "22f959d1fef7dc1c8e90d8e531cbb9ef5421fc8f89349ad72a74776ae63e360a",
+        "leads.jsonl": "5235cabc5acf436efaeaa04b2a7a186b76b829e38e7e5252b8ac05f653ac1c17",
+        "search_log.jsonl": "6822099057947baf14d4807fb8be20d0286628649f58c3ad61963790f235fb98",
+        "sources.jsonl": "9ccedbada3827955f0fe821355b4b0a71a6bf161e79264b9937a8ad4f92e1c56"
+      }
+    },
+    {
+      "input": "/working_dir/c_29410a70aee32432/artifacts/file_generation/ttl=63d/intermediate/atlas-run-2026-11-12/accepted/CAL-SEARCH-04/attempt-001",
+      "sha256": {
+        "findings.jsonl": "5b01eaca5b5dd668c3d8c423434349ece9be23d0ba8fea1ed9f3f62b9d10126f",
+        "leads.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "search_log.jsonl": "1a7282cad76cddfbd676ba10a3ab4e7bf618c51797616a06939dd32c81c9dce8",
+        "sources.jsonl": "db2154c54d5d8a1db5c97b7c384265d4a74b8400cf76cfb8561ff18a72298724"
+      }
+    }
+  ],
+  "semantic_deduplication": "not_performed"
+}

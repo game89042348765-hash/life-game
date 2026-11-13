@@ -1,0 +1,11 @@
+task_id,stage,scope_categories,owner_id,status,attempt,output_path,notes
+CAL-SEARCH-01,search,C05|C08,orchestrator-gemini-vm,accepted,1,accepted/CAL-SEARCH-01/attempt-001,12 verified findings / 5 sources
+CAL-SEARCH-02,search,C09|C12,arena-ai-4models-plus-orchestrator-audit,accepted,1,accepted/CAL-SEARCH-02/attempt-001,15 verified findings / 15 sources
+CAL-SEARCH-03,search,C21|C22,arena-ai-2models-plus-orchestrator-audit,accepted,1,accepted/CAL-SEARCH-03/attempt-001,12 verified findings / 11 sources
+CAL-SEARCH-04,search,C28|C29,orchestrator-gemini-vm,accepted,1,accepted/CAL-SEARCH-04/attempt-001,11 verified findings / 5 sources
+CAL-SHARD-01,shard,C05|C08|C09|C12|C21|C22|C28|C29,orchestrator-gemini-vm,complete,1,shards/calibration-shards-50findings,23 shards with prompt_reserve_bytes=93896
+CAL-NORM-01,normalize_analyze,ALL_CALIBRATION,orchestrator-gemini-vm,complete,1,datasets/calibration-complete-v1,49 elements / 50 merge_map / 8 relations
+CAL-RATE-A-01,blind_rate,ALL_CALIBRATION,cal-rater-A,complete,1,datasets/calibration-complete-v1/ratings.jsonl,45 blind ratings context A
+CAL-RATE-B-01,blind_rate,ALL_CALIBRATION,cal-rater-B,complete,1,datasets/calibration-complete-v1/ratings.jsonl,45 blind ratings context B + 2 resolved disagreements
+CAL-RANK-01,rank,ALL_CALIBRATION,orchestrator-gemini-vm,complete,1,releases/calibration-pilot-v1,45 selected / target_reached=false / ATLAS-DRAFT.md
+CAL-AUDIT-01,audit_seal,ALL_CALIBRATION,orchestrator-gemini-vm,complete,1,CALIBRATION-REPORT.md,Sealed & verified BUNDLE_MANIFEST.json

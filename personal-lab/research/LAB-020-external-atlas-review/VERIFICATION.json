@@ -1,0 +1,90 @@
+{
+  "task_id": "LAB-020",
+  "checked_at": "2026-11-13T11:06:15.539480+03:00",
+  "base_commit": "98680d75f1c4512b9b1c32ce03e073081300012f",
+  "decision": "needs_revision_content_not_accepted_as_full_research",
+  "checks": {
+    "original_zip_sha256_and_crc": "passed",
+    "original_extracted_file_hashes": 419,
+    "bundle_manifest_verified_files": 418,
+    "dataset_structure": "valid_structure, source truth not checked",
+    "counts": {
+      "sources": 107,
+      "findings": 211,
+      "elements": 210,
+      "ratings": 408,
+      "merge_map": 211,
+      "relations": 10,
+      "decisions": 4
+    },
+    "rerank": {
+      "eligible": 204,
+      "selected": 200,
+      "target_reached": true,
+      "status": "draft_requires_content_and_source_audit",
+      "comparison": {
+        "byte_identical": [
+          "atlas-selection.json",
+          "quality-ranked.csv",
+          "ATLAS-DRAFT.md"
+        ],
+        "audit_only_different_fields": [
+          "generated_at"
+        ],
+        "audit_equal_excluding_generated_at": true,
+        "received_status": "draft_requires_content_and_source_audit"
+      }
+    },
+    "local_markdown_links_checked": 10,
+    "old_shared_document_text_preserved": [
+      "LifeGame_CURRENT_WORK.md",
+      "LABORATORY_HANDOFF.md",
+      "personal-lab/README.md",
+      "personal-lab/CHANGELOG.md"
+    ],
+    "tracked_changes_only_shared_document_additions": true,
+    "untracked_changes_only_in_review_directory": true,
+    "git_diff_check": "passed for coordinator documents; received originals retained verbatim"
+  },
+  "content_findings": {
+    "all_210_identical_fields": [
+      "benefit",
+      "conditions",
+      "contexts",
+      "costs",
+      "risks",
+      "vendor_claim"
+    ],
+    "all_408_identical_rating_rationales": [
+      "burden",
+      "long_term",
+      "adaptability",
+      "agency",
+      "composability"
+    ],
+    "effect_supports": 205,
+    "effect_adverse": 5,
+    "independent_full_review_source_packets": "not established by supplied artifacts",
+    "independent_substantive_release_audit": "not provided"
+  },
+  "source_access_check": {
+    "attempted": 8,
+    "origin_http_200": 1,
+    "proxy_connect_403": 7,
+    "claims_independently_verified": 0
+  },
+  "not_executed": [
+    "incoming code",
+    "application or browser tests",
+    "own HYDRA full source collection",
+    "new independent scoring agents",
+    "paid APIs or external accounts",
+    "transfer to Personal/main/Pages"
+  ],
+  "limitations": [
+    "All 107 source contents/claims not independently verified in this session.",
+    "Missing artifacts do not prove the whole research fabricated.",
+    "Independent internet run not read, modified or compared.",
+    "Delivery checked separately after commit and push."
+  ]
+}

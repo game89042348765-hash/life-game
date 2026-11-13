@@ -1,0 +1,12 @@
+{
+  "byte_identical": [
+    "atlas-selection.json",
+    "quality-ranked.csv",
+    "ATLAS-DRAFT.md"
+  ],
+  "audit_only_different_fields": [
+    "generated_at"
+  ],
+  "audit_equal_excluding_generated_at": true,
+  "received_status": "draft_requires_content_and_source_audit"
+}

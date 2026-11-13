@@ -1,0 +1,66 @@
+[
+  {
+    "check": "manifest",
+    "command": [
+      "python3",
+      "-B",
+      "personal-lab/research/LAB-011-hybrid-v211-review/release/tools/atlas.py",
+      "verify",
+      "personal-lab/research/LAB-020-external-atlas-review/incoming/atlas-run-2026-11-12"
+    ],
+    "exit_code": 0,
+    "result": {
+      "verified_files": 418,
+      "meaning": "byte integrity, not authenticity or research quality"
+    }
+  },
+  {
+    "check": "dataset",
+    "command": [
+      "python3",
+      "-B",
+      "personal-lab/research/LAB-011-hybrid-v211-review/release/tools/atlas.py",
+      "validate",
+      "personal-lab/research/LAB-020-external-atlas-review/incoming/atlas-run-2026-11-12/datasets/full-atlas-complete-v1",
+      "--complete"
+    ],
+    "exit_code": 0,
+    "result": {
+      "valid_structure": true,
+      "complete_normalization_required": true,
+      "counts": {
+        "sources": 107,
+        "findings": 211,
+        "elements": 210,
+        "ratings": 408,
+        "merge_map": 211,
+        "relations": 10,
+        "decisions": 4
+      },
+      "malformed_lines": [],
+      "errors": [],
+      "source_truth_checked": false
+    }
+  },
+  {
+    "check": "rerank",
+    "command": [
+      "python3",
+      "-B",
+      "personal-lab/research/LAB-011-hybrid-v211-review/release/tools/atlas.py",
+      "rank",
+      "personal-lab/research/LAB-020-external-atlas-review/incoming/atlas-run-2026-11-12/datasets/full-atlas-complete-v1",
+      "--config",
+      "personal-lab/research/LAB-020-external-atlas-review/incoming/atlas-run-2026-11-12/RUN.json",
+      "--out",
+      "personal-lab/research/LAB-020-external-atlas-review/checks/rerank-001"
+    ],
+    "exit_code": 0,
+    "result": {
+      "eligible": 204,
+      "selected": 200,
+      "target_reached": true,
+      "status": "draft_requires_content_and_source_audit"
+    }
+  }
+]

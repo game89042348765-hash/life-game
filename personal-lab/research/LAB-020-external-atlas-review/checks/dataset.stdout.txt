@@ -1,0 +1,16 @@
+{
+  "valid_structure": true,
+  "complete_normalization_required": true,
+  "counts": {
+    "sources": 107,
+    "findings": 211,
+    "elements": 210,
+    "ratings": 408,
+    "merge_map": 211,
+    "relations": 10,
+    "decisions": 4
+  },
+  "malformed_lines": [],
+  "errors": [],
+  "source_truth_checked": false
+}

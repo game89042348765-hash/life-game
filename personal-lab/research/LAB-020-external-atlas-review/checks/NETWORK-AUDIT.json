@@ -1,0 +1,84 @@
+{
+  "scope": "bounded access check of 8 selected existing source URLs, not new broad research",
+  "results": [
+    {
+      "source_id": "S-CAL01-001",
+      "url": "https://blog.beeminder.com/forster/",
+      "origin_http_status": null,
+      "checked_at": "2026-11-13T08:00:03.316283+00:00",
+      "claim_content_verified": false,
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "proxy_connect_status": 403
+    },
+    {
+      "source_id": "S-W2S03-001",
+      "url": "https://github.com/open-spaced-repetition/fsrs4anki",
+      "origin_http_status": 200,
+      "checked_at": "2026-11-13T08:00:03.317003+00:00",
+      "claim_content_verified": false,
+      "final_url": "https://github.com/open-spaced-repetition/fsrs4anki",
+      "sample_bytes_read": 283208,
+      "sample_sha256": "456f82fec515d08335b35d0ce50ebd43046eade09d9d86eb96afc6c8b75e2964",
+      "scope": "availability/body sample only; source claims not independently verified"
+    },
+    {
+      "source_id": "S-W2S04-003",
+      "url": "https://www.maddymakesgames.com/articles/celeste_and_forgiveness/index.html",
+      "origin_http_status": null,
+      "checked_at": "2026-11-13T08:00:03.317384+00:00",
+      "claim_content_verified": false,
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "proxy_connect_status": 403
+    },
+    {
+      "source_id": "S-W2S05-003",
+      "url": "https://www.inkandswitch.com/essay/local-first/",
+      "origin_http_status": null,
+      "checked_at": "2026-11-13T08:00:03.317855+00:00",
+      "claim_content_verified": false,
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "proxy_connect_status": 403
+    },
+    {
+      "source_id": "S-W2S05-004",
+      "url": "https://www.sqlite.org/wal.html",
+      "origin_http_status": null,
+      "checked_at": "2026-11-13T08:00:03.318676+00:00",
+      "claim_content_verified": false,
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "proxy_connect_status": 403
+    },
+    {
+      "source_id": "S-W2S05-005",
+      "url": "https://www.microsoft.com/en-us/research/project/guidelines-for-human-ai-interaction/",
+      "origin_http_status": null,
+      "checked_at": "2026-11-13T08:00:03.319492+00:00",
+      "claim_content_verified": false,
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "proxy_connect_status": 403
+    },
+    {
+      "source_id": "S-W2S05-006",
+      "url": "https://www.w3.org/TR/coga-usable/",
+      "origin_http_status": null,
+      "checked_at": "2026-11-13T08:00:03.319997+00:00",
+      "claim_content_verified": false,
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "proxy_connect_status": 403
+    },
+    {
+      "source_id": "S-W2S05-007",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10016625/",
+      "origin_http_status": null,
+      "checked_at": "2026-11-13T08:00:03.320557+00:00",
+      "claim_content_verified": false,
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "proxy_connect_status": 403
+    }
+  ],
+  "limitations": [
+    "Availability does not establish source content/claim support.",
+    "Proxy blocks are not evidence that the cited URL is fabricated.",
+    "No login, paid API, environment changes or policy bypass attempted."
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "inputs": [
+    {
+      "input": "/working_dir/c_29410a70aee32432/artifacts/file_generation/ttl=63d/intermediate/atlas-run-2026-11-12/accepted/CAL-SEARCH-01/attempt-001",
+      "sha256": {
+        "findings.jsonl": "1dd8c8d7779ed27db60d61c7487eed0dafd8b4983c4b749dd3c0e61729e8afe7",
+        "leads.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "search_log.jsonl": "68bf3b7ebbac7a6e8ef3e439aa091cba266eb26b8de55da8d4ef6035b6db2600",
+        "sources.jsonl": "ce33acbd50f10c31d75196548e25a7387f6c8f2903147a40bf2e6051cc6c00d6"
+      }
+    },
+    {
+      "input": "/working_dir/c_29410a70aee32432/artifacts/file_generation/ttl=63d/intermediate/atlas-run-2026-11-12/accepted/CAL-SEARCH-02/attempt-001",
+      "sha256": {
+        "findings.jsonl": "f15c8a783b3f0619d1a563e19efeb9a20cf47c86917a5739969130f7b029bdee",
+        "leads.jsonl": "7122712830182079a772d2ae9bca3aea8a1efc64ba697162d71b87b2755f7db6",
+        "search_log.jsonl": "b8844f0c70a786a8afbab2f8f3fe30d0d362b300846e8b0b2906f597b94ad01a",
+        "sources.jsonl": "342ad874d3363659ce9bf27195c7b075041ad6f2e4a07bdf65b7aafe479332bd"
+      }
+    },
+    {
+      "input": "/working_dir/c_29410a70aee32432/artifacts/file_generation/ttl=63d/intermediate/atlas-run-2026-11-12/accepted/CAL-SEARCH-03/attempt-001",
+      "sha256": {
+        "findings.jsonl": "22f959d1fef7dc1c8e90d8e531cbb9ef5421fc8f89349ad72a74776ae63e360a",
+        "leads.jsonl": "5235cabc5acf436efaeaa04b2a7a186b76b829e38e7e5252b8ac05f653ac1c17",
+        "search_log.jsonl": "6822099057947baf14d4807fb8be20d0286628649f58c3ad61963790f235fb98",
+        "sources.jsonl": "9ccedbada3827955f0fe821355b4b0a71a6bf161e79264b9937a8ad4f92e1c56"
+      }
+    },
+    {
+      "input": "/working_dir/c_29410a70aee32432/artifacts/file_generation/ttl=63d/intermediate/atlas-run-2026-11-12/accepted/CAL-SEARCH-04/attempt-001",
+      "sha256": {
+        "findings.jsonl": "5b01eaca5b5dd668c3d8c423434349ece9be23d0ba8fea1ed9f3f62b9d10126f",
+        "leads.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "search_log.jsonl": "1a7282cad76cddfbd676ba10a3ab4e7bf618c51797616a06939dd32c81c9dce8",
+        "sources.jsonl": "db2154c54d5d8a1db5c97b7c384265d4a74b8400cf76cfb8561ff18a72298724"
+      }
+    },
+    {
+      "input": "/working_dir/c_29410a70aee32432/artifacts/file_generation/ttl=63d/intermediate/atlas-run-2026-11-12/accepted/WAVE1-SEARCH-01/attempt-001",
+      "sha256": {
+        "findings.jsonl": "7d244c4f746335314dfb00f6ccd3cfc44ed79f53f2bc6be34b4d32cf6224b20d",
+        "leads.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "search_log.jsonl": "78f83b95c72301292148db7cceb3433ef907475bafcfe891ee7c2f76712845bf",
+        "sources.jsonl": "0213572b48684a6d776d0a2c41779d35798adb5bdaf6f62f8b514cf4b43b95e9"
+      }
+    },
+    {
+      "input": "/working_dir/c_29410a70aee32432/artifacts/file_generation/ttl=63d/intermediate/atlas-run-2026-11-12/accepted/WAVE1-SEARCH-02/attempt-001",
+      "sha256": {
+        "findings.jsonl": "97cbf4d99ef67b6652326cec6910651f324e356307a3ef151f0fd2dd4344368e",
+        "leads.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "search_log.jsonl": "5346da5f63d14f523bf581a109ad93838b7e3e8e9c05ce8b3a2b9c91d6ebe506",
+        "sources.jsonl": "d4e2675a6709060ace1cc12284d7a5a23d7edccdf13c1827c11e2ba427306bdb"
+      }
+    },
+    {
+      "input": "/working_dir/c_29410a70aee32432/artifacts/file_generation/ttl=63d/intermediate/atlas-run-2026-11-12/accepted/WAVE1-SEARCH-03/attempt-001",
+      "sha256": {
+        "findings.jsonl": "11468139ea1792497526951d225a4d5aaa4cdfb74f6a87b335c3075b733b8927",
+        "leads.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "search_log.jsonl": "47bbe6e9d8f55ddd24d538ee2cc382f8004773d95a5c2a8ff1e57bda502b67ef",
+        "sources.jsonl": "8500614ed2e0e8e97f4a939064985469bc7f82211607d912f78ee72f61ad7afb"
+      }
+    },
+    {
+      "input": "/working_dir/c_29410a70aee32432/artifacts/file_generation/ttl=63d/intermediate/atlas-run-2026-11-12/accepted/WAVE1-SEARCH-04/attempt-001",
+      "sha256": {
+        "findings.jsonl": "fbdf085f1926d3624ebd4e36158707fe7c3ce1fcafe42c4ddaed2728c70f2b12",
+        "leads.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "search_log.jsonl": "1d12653b1a7eb27be5ac6e3b15abebdaa1dd8c790cd93e27301d0482c4f7b217",
+        "sources.jsonl": "43e36d6a6842a046184eb2b2073a5b44d7dce706174b020453a9fff2b57e297e"
+      }
+    }
+  ],
+  "semantic_deduplication": "not_performed"
+}

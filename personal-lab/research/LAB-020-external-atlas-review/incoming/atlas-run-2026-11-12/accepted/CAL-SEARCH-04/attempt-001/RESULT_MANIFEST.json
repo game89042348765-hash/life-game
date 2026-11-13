@@ -1,0 +1,60 @@
+{
+  "template": false,
+  "task_id": "CAL-SEARCH-04",
+  "attempt": 1,
+  "stage": "search",
+  "status": "complete",
+  "input_snapshot": "LifeGame-Atlas-Hybrid-v2.1.1+lab.1",
+  "protocol_version": "2.1",
+  "taxonomy_version": "2.1",
+  "rubric_version": "2.1",
+  "read_ids": [],
+  "output_counts": {
+    "sources": 5,
+    "findings": 11,
+    "leads": 0
+  },
+  "checks_executed": [
+    "atlas.py validate"
+  ],
+  "limitations": [
+    "Calibrated sample of 11 verified data-control & continuity mechanisms"
+  ],
+  "files": [
+    {
+      "path": "sources.jsonl",
+      "bytes": 1782,
+      "sha256": "db2154c54d5d8a1db5c97b7c384265d4a74b8400cf76cfb8561ff18a72298724"
+    },
+    {
+      "path": "findings.jsonl",
+      "bytes": 23028,
+      "sha256": "5b01eaca5b5dd668c3d8c423434349ece9be23d0ba8fea1ed9f3f62b9d10126f"
+    },
+    {
+      "path": "leads.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "search_log.jsonl",
+      "bytes": 1108,
+      "sha256": "1a7282cad76cddfbd676ba10a3ab4e7bf618c51797616a06939dd32c81c9dce8"
+    },
+    {
+      "path": "COVERAGE.md",
+      "bytes": 352,
+      "sha256": "ab5cae5fc3a852026bcddf1ac51805a1ee377837d7904b74f5ae40dc0bc6da3e"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 352,
+      "sha256": "474594a7ec7ec5eaed8726213a99e531a603993978d0d4097c9a939db5b27e8e"
+    },
+    {
+      "path": "TASK.json",
+      "bytes": 1839,
+      "sha256": "6c9399364470abd99ba5cfb8b4b7e587fdaf7d18599ee0c9f10e940a7386a520"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+{
+  "verified_files": 418,
+  "meaning": "byte integrity, not authenticity or research quality"
+}

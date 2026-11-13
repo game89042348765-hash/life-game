@@ -1,0 +1,2114 @@
+{
+  "task_id": "LAB-020",
+  "archive": "LifeGame-Atlas-Full-Release-200Selected-v2.1.1.zip",
+  "archive_bytes": 1507298,
+  "archive_sha256": "4873f230769460c03d8c7c77df2c7d675441f697e49966a5b090019771e0932b",
+  "base_commit": "98680d75f1c4512b9b1c32ce03e073081300012f",
+  "files": [
+    {
+      "path": "atlas-run-2026-11-12/BUNDLE_MANIFEST.json",
+      "bytes": 83584,
+      "sha256": "46cc612aa8d48c787301b25b1c072d096331294cab15a671992ac5dcbb03a7d5"
+    },
+    {
+      "path": "atlas-run-2026-11-12/CALIBRATION-REPORT.md",
+      "bytes": 11322,
+      "sha256": "3596cfd27324d19e6bf2e2e07ec4e1497f046045303980f965433c3106455ce2"
+    },
+    {
+      "path": "atlas-run-2026-11-12/FULL-ATLAS-REPORT.md",
+      "bytes": 10040,
+      "sha256": "4c2bb7dc0a9db3a955be1a3bfb29579e77522cc6067d3349a870539bd8bf8588"
+    },
+    {
+      "path": "atlas-run-2026-11-12/NEXT.md",
+      "bytes": 743,
+      "sha256": "339b44846f51e14d89c614f9b734689fd5f3ad1fdf2ace01d2228a26c5f8be8b"
+    },
+    {
+      "path": "atlas-run-2026-11-12/RUN.json",
+      "bytes": 2316,
+      "sha256": "072c6bd83c6e55f063f56cbf9429984803f5740602d62b5f2f1686eafbd552f8"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-01/attempt-001/COVERAGE.md",
+      "bytes": 297,
+      "sha256": "d0c839c54c636e47b70f0b428d54250c50e97885eae5d1e4e20084dd22d544b5"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-01/attempt-001/REPORT.md",
+      "bytes": 261,
+      "sha256": "4f4e8bfd4d1a8029a755e39feff5f5bf384e7621966a29b0e93d0d79de83cb4d"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-01/attempt-001/RESULT_MANIFEST.json",
+      "bytes": 1522,
+      "sha256": "e9f2cbc6ffe27370aa0afd0a19d74757808cceb248db6f0f027fdd638d967748"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-01/attempt-001/TASK.json",
+      "bytes": 1832,
+      "sha256": "50421ee233ea0cb00827c89b8774c8f3445125090dcb0334e75e18b0ec0b8eef"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-01/attempt-001/findings.jsonl",
+      "bytes": 24602,
+      "sha256": "1dd8c8d7779ed27db60d61c7487eed0dafd8b4983c4b749dd3c0e61729e8afe7"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-01/attempt-001/leads.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-01/attempt-001/search_log.jsonl",
+      "bytes": 1359,
+      "sha256": "68bf3b7ebbac7a6e8ef3e439aa091cba266eb26b8de55da8d4ef6035b6db2600"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-01/attempt-001/sources.jsonl",
+      "bytes": 1928,
+      "sha256": "ce33acbd50f10c31d75196548e25a7387f6c8f2903147a40bf2e6051cc6c00d6"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-02/attempt-001/COVERAGE.md",
+      "bytes": 1358,
+      "sha256": "d49f11a4a66cae557ad34e1397f87722c71ef2f57548ff59c6dd80925a97158c"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-02/attempt-001/REPORT.md",
+      "bytes": 719,
+      "sha256": "82faa10628275adffb249c252793c8f5ced629fa2b590febd34861242520229b"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-02/attempt-001/RESULT_MANIFEST.json",
+      "bytes": 1602,
+      "sha256": "bb42aa2d6773c3390459b6896063d8ce045244c3fa93230d0672a460e923bb31"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-02/attempt-001/TASK.json",
+      "bytes": 1858,
+      "sha256": "996a064626949e5a9818e928876328394b3d7e841906c478145a3de0f3345a25"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-02/attempt-001/findings.jsonl",
+      "bytes": 22913,
+      "sha256": "f15c8a783b3f0619d1a563e19efeb9a20cf47c86917a5739969130f7b029bdee"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-02/attempt-001/leads.jsonl",
+      "bytes": 1221,
+      "sha256": "7122712830182079a772d2ae9bca3aea8a1efc64ba697162d71b87b2755f7db6"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-02/attempt-001/search_log.jsonl",
+      "bytes": 2397,
+      "sha256": "b8844f0c70a786a8afbab2f8f3fe30d0d362b300846e8b0b2906f597b94ad01a"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-02/attempt-001/sources.jsonl",
+      "bytes": 6640,
+      "sha256": "342ad874d3363659ce9bf27195c7b075041ad6f2e4a07bdf65b7aafe479332bd"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-03/attempt-001/COVERAGE.md",
+      "bytes": 674,
+      "sha256": "4d35d5b2f0bc3975200bfa169979c1580c7e4003eff4a335849e2b881e3de73b"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-03/attempt-001/REPORT.md",
+      "bytes": 498,
+      "sha256": "498cba9ca38e2a6e469c7de7935a704c7e444085bf52bfead0bf5b529e2014cd"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-03/attempt-001/RESULT_MANIFEST.json",
+      "bytes": 1582,
+      "sha256": "19c1503ddcc8725b7125312647421a3b8a06480b2f55190705ebc11e4a7f71ca"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-03/attempt-001/TASK.json",
+      "bytes": 1885,
+      "sha256": "2d4d9c83ce414a4e6197a2af1eeed523568843d2b6cffaee4ce95070b24e86b8"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-03/attempt-001/findings.jsonl",
+      "bytes": 20825,
+      "sha256": "22f959d1fef7dc1c8e90d8e531cbb9ef5421fc8f89349ad72a74776ae63e360a"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-03/attempt-001/leads.jsonl",
+      "bytes": 1138,
+      "sha256": "5235cabc5acf436efaeaa04b2a7a186b76b829e38e7e5252b8ac05f653ac1c17"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-03/attempt-001/search_log.jsonl",
+      "bytes": 2041,
+      "sha256": "6822099057947baf14d4807fb8be20d0286628649f58c3ad61963790f235fb98"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-03/attempt-001/sources.jsonl",
+      "bytes": 4925,
+      "sha256": "9ccedbada3827955f0fe821355b4b0a71a6bf161e79264b9937a8ad4f92e1c56"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-04/attempt-001/COVERAGE.md",
+      "bytes": 352,
+      "sha256": "ab5cae5fc3a852026bcddf1ac51805a1ee377837d7904b74f5ae40dc0bc6da3e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-04/attempt-001/REPORT.md",
+      "bytes": 352,
+      "sha256": "474594a7ec7ec5eaed8726213a99e531a603993978d0d4097c9a939db5b27e8e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-04/attempt-001/RESULT_MANIFEST.json",
+      "bytes": 1548,
+      "sha256": "6c189d72fd8d5cd3f71c2f238285c78c5330abe8de2edf8bff10cef156e6aa4a"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-04/attempt-001/TASK.json",
+      "bytes": 1839,
+      "sha256": "6c9399364470abd99ba5cfb8b4b7e587fdaf7d18599ee0c9f10e940a7386a520"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-04/attempt-001/findings.jsonl",
+      "bytes": 23028,
+      "sha256": "5b01eaca5b5dd668c3d8c423434349ece9be23d0ba8fea1ed9f3f62b9d10126f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-04/attempt-001/leads.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-04/attempt-001/search_log.jsonl",
+      "bytes": 1108,
+      "sha256": "1a7282cad76cddfbd676ba10a3ab4e7bf618c51797616a06939dd32c81c9dce8"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/CAL-SEARCH-04/attempt-001/sources.jsonl",
+      "bytes": 1782,
+      "sha256": "db2154c54d5d8a1db5c97b7c384265d4a74b8400cf76cfb8561ff18a72298724"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-01/attempt-001/COVERAGE.md",
+      "bytes": 86,
+      "sha256": "55ac0b903b682dd0bda04f5e6bc4e9d8d7e1946b10670b0de4e47399da8c052c"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-01/attempt-001/REPORT.md",
+      "bytes": 89,
+      "sha256": "3f14a6977eb2a07231aa07fd06bdbfde071d35a9af87e94f30b81693163f9d38"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-01/attempt-001/RESULT_MANIFEST.json",
+      "bytes": 1509,
+      "sha256": "fdea6a8975e5fa863064bdabf326d1e8a1218a0904ab11d1f7662abb3ef3afc5"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-01/attempt-001/TASK.json",
+      "bytes": 1896,
+      "sha256": "45855f6ed08b7020beada4aa4af1ac16af723ff39b87b234508b93aaa5c19293"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-01/attempt-001/findings.jsonl",
+      "bytes": 6631,
+      "sha256": "7d244c4f746335314dfb00f6ccd3cfc44ed79f53f2bc6be34b4d32cf6224b20d"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-01/attempt-001/leads.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-01/attempt-001/search_log.jsonl",
+      "bytes": 623,
+      "sha256": "78f83b95c72301292148db7cceb3433ef907475bafcfe891ee7c2f76712845bf"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-01/attempt-001/sources.jsonl",
+      "bytes": 2260,
+      "sha256": "0213572b48684a6d776d0a2c41779d35798adb5bdaf6f62f8b514cf4b43b95e9"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-02/attempt-001/COVERAGE.md",
+      "bytes": 86,
+      "sha256": "59f005355f9bce0060e39a9aa29cad5b877d0746403b3af4628a83a37b204902"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-02/attempt-001/REPORT.md",
+      "bytes": 89,
+      "sha256": "de5715023f4456d1541956016f3697286941686089687031842314c27f77fbce"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-02/attempt-001/RESULT_MANIFEST.json",
+      "bytes": 1524,
+      "sha256": "0bbdbe485cfc451a4c13a8feab2459cb9ca8d44f088992a2afcf904776e9cb4e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-02/attempt-001/TASK.json",
+      "bytes": 1909,
+      "sha256": "b907a71f623e582c3c2c17935ba0690e533566986ddbb216660c9e9f728eff0e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-02/attempt-001/findings.jsonl",
+      "bytes": 7928,
+      "sha256": "97cbf4d99ef67b6652326cec6910651f324e356307a3ef151f0fd2dd4344368e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-02/attempt-001/leads.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-02/attempt-001/search_log.jsonl",
+      "bytes": 770,
+      "sha256": "5346da5f63d14f523bf581a109ad93838b7e3e8e9c05ce8b3a2b9c91d6ebe506"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-02/attempt-001/sources.jsonl",
+      "bytes": 2941,
+      "sha256": "d4e2675a6709060ace1cc12284d7a5a23d7edccdf13c1827c11e2ba427306bdb"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-03/attempt-001/COVERAGE.md",
+      "bytes": 86,
+      "sha256": "eb804072a5cee896ea73da9ceac215ec9ea37f69ff121927e0e639497dcd3b7c"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-03/attempt-001/REPORT.md",
+      "bytes": 89,
+      "sha256": "dca20eb92de0bcbd812369eda935ca45d624bbfe378ba20299a88ee5d406ac00"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-03/attempt-001/RESULT_MANIFEST.json",
+      "bytes": 1509,
+      "sha256": "e19da85011f3375fac054b05658174e2fdb72108c6a38d183d597cc92f10b6e2"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-03/attempt-001/TASK.json",
+      "bytes": 1909,
+      "sha256": "6b793e46c8cfae4e7c445c94eb9a8dbe9caa08836c151c8d0bfbbd2504d9b064"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-03/attempt-001/findings.jsonl",
+      "bytes": 7386,
+      "sha256": "11468139ea1792497526951d225a4d5aaa4cdfb74f6a87b335c3075b733b8927"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-03/attempt-001/leads.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-03/attempt-001/search_log.jsonl",
+      "bytes": 610,
+      "sha256": "47bbe6e9d8f55ddd24d538ee2cc382f8004773d95a5c2a8ff1e57bda502b67ef"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-03/attempt-001/sources.jsonl",
+      "bytes": 2505,
+      "sha256": "8500614ed2e0e8e97f4a939064985469bc7f82211607d912f78ee72f61ad7afb"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-04/attempt-001/COVERAGE.md",
+      "bytes": 91,
+      "sha256": "3c169d3b2189b0a2df48fd7ddf7f610263b184a296c2e21198ef0016676e0d8d"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-04/attempt-001/REPORT.md",
+      "bytes": 89,
+      "sha256": "8d3207114c19379c16342671ac384ae758b22e34d7990c9f349221269f51b65e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-04/attempt-001/RESULT_MANIFEST.json",
+      "bytes": 1527,
+      "sha256": "a381ee1b5caa62de7d7f9c0bd15d61d12e6701249e15fb008071e1de21831d16"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-04/attempt-001/TASK.json",
+      "bytes": 1930,
+      "sha256": "7a4a8a2ce03b05615c46dc1e2fe0d0f3eee359259ea74f3657eb68d17c3d62e6"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-04/attempt-001/findings.jsonl",
+      "bytes": 18024,
+      "sha256": "fbdf085f1926d3624ebd4e36158707fe7c3ce1fcafe42c4ddaed2728c70f2b12"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-04/attempt-001/leads.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-04/attempt-001/search_log.jsonl",
+      "bytes": 744,
+      "sha256": "1d12653b1a7eb27be5ac6e3b15abebdaa1dd8c790cd93e27301d0482c4f7b217"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE1-SEARCH-04/attempt-001/sources.jsonl",
+      "bytes": 5368,
+      "sha256": "43e36d6a6842a046184eb2b2073a5b44d7dce706174b020453a9fff2b57e297e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-01/attempt-001/COVERAGE.md",
+      "bytes": 121,
+      "sha256": "6fc89143a34f7b503f4407504d9eb1a5c56089baf385a7365f30dd728f1b28c5"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-01/attempt-001/REPORT.md",
+      "bytes": 123,
+      "sha256": "d1acea82721a06c3adcdfb99a5a48904a962ad1b888679e78a82e7c8b13adcda"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-01/attempt-001/RESULT_MANIFEST.json",
+      "bytes": 1514,
+      "sha256": "53511bde57ada50bbc1de05c50ce4bb597bd22fb8ea127e9f7ed01aa7990cdf5"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-01/attempt-001/TASK.json",
+      "bytes": 2022,
+      "sha256": "732af24ff630e69bf5720e106e4b36a8e24a0dfd1e865e590a27ce7f22da7faa"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-01/attempt-001/findings.jsonl",
+      "bytes": 38814,
+      "sha256": "f7b5b36b19b02ca07efac49abd2c5ab89ddd2d1cf50fd980ed4b9b4787aca17f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-01/attempt-001/leads.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-01/attempt-001/search_log.jsonl",
+      "bytes": 745,
+      "sha256": "5b60d6debb111fa8945629d2b348d9522e902b48a293b13c680c7a5249aa001c"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-01/attempt-001/sources.jsonl",
+      "bytes": 3357,
+      "sha256": "481114d3284cb7003dcfdd5e9b0aa0581357ebfc60999b4abc74f727d2f685a8"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-02/attempt-001/COVERAGE.md",
+      "bytes": 121,
+      "sha256": "70a5856e1e398126ab4ae4aed8e856d21563a5dea61130962a6ebb35434d1e4f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-02/attempt-001/REPORT.md",
+      "bytes": 123,
+      "sha256": "876391dd578ce4d58206d9747876ba98214522087db3dfae08d3d1fd092ccce4"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-02/attempt-001/RESULT_MANIFEST.json",
+      "bytes": 1514,
+      "sha256": "e0f8bd32ba8cfbaa9ba8bf00a84249ff669b823f4fbd9657b9cecfed1280b25d"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-02/attempt-001/TASK.json",
+      "bytes": 2071,
+      "sha256": "2ec204a4cf5c61a5a2493320755d946f4c0ad2e0fabf73266fcda2ff07ab0198"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-02/attempt-001/findings.jsonl",
+      "bytes": 40426,
+      "sha256": "7025a345687ed395231ba7b37f0fba91385d38499c83729280a594187ca3b3f6"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-02/attempt-001/leads.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-02/attempt-001/search_log.jsonl",
+      "bytes": 786,
+      "sha256": "c17f73a5cae19cbde1625305069809f824509d4d2f55fd08f9bab4a2612ddb0b"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-02/attempt-001/sources.jsonl",
+      "bytes": 3530,
+      "sha256": "361acdd0b1553c16e42a10132f4f5e6e16255dd2b9428579b6ffb44f9613a4e6"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-03/attempt-001/COVERAGE.md",
+      "bytes": 121,
+      "sha256": "2457f009be40e2e343c1ac4f58cad81555d8f7cb7fef3a0f0c7415aa18694403"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-03/attempt-001/REPORT.md",
+      "bytes": 123,
+      "sha256": "2f2dbdb294b80b06fa83ab9f7fec240bf832a66d094fa82ebd3d53847fd82056"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-03/attempt-001/RESULT_MANIFEST.json",
+      "bytes": 1514,
+      "sha256": "157a8c4e3441ba07e71e43f3e51577bbea84a19ca25ac1996843900da2d6c272"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-03/attempt-001/TASK.json",
+      "bytes": 2195,
+      "sha256": "887025fda33152d3ddd8ded8a2dae59f674b61a2c1173d287f2f2f0eff8b53a2"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-03/attempt-001/findings.jsonl",
+      "bytes": 40599,
+      "sha256": "50eee6ba9a14565a7216f46c7b13c6d047dc6a473cf6847ec29dc07d6c21b46f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-03/attempt-001/leads.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-03/attempt-001/search_log.jsonl",
+      "bytes": 715,
+      "sha256": "0e5bbe2ccd6df2593929ea50ae69735abd1b9d44d4d87d00c45d60bce134d007"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-03/attempt-001/sources.jsonl",
+      "bytes": 3438,
+      "sha256": "6667835a8b491c0c6c3a37d92ee9a3d23d64f5dd7a1dc61d033d1b2dc6776d74"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-04/attempt-001/COVERAGE.md",
+      "bytes": 121,
+      "sha256": "0b3e3a4a1e66e9513688988cc764b82aa1baa5a3c4a7c8fce1a6141f0d753044"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-04/attempt-001/REPORT.md",
+      "bytes": 123,
+      "sha256": "0588d1bdafe5ea4bc28bda1198c97e8e319700496b34465141a1dff9e0482354"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-04/attempt-001/RESULT_MANIFEST.json",
+      "bytes": 1515,
+      "sha256": "b99c880d27d16f393bbf72cb125788590156eac8412fd013a8a2c2a237dd230f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-04/attempt-001/TASK.json",
+      "bytes": 2200,
+      "sha256": "14bdb86882f650e344f84f85ab786c073dcfac3d164c999429f19e8c384ba717"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-04/attempt-001/findings.jsonl",
+      "bytes": 42772,
+      "sha256": "9a1c97ce95b7070d99426e7d280f4c4507e3ffa0c8c48349b01f9e4a7a015824"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-04/attempt-001/leads.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-04/attempt-001/search_log.jsonl",
+      "bytes": 1015,
+      "sha256": "b60bd9bd369e6d244c75756deb5b06e0308030744d1ec87e0f2361f6a540b388"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-04/attempt-001/sources.jsonl",
+      "bytes": 3686,
+      "sha256": "cb760ad9eb3737c59534174b92cc3bf9563c6146a966c5ecd322752992807775"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-05/attempt-001/COVERAGE.md",
+      "bytes": 131,
+      "sha256": "c3d00d877fe3a6a3f3312b3c312a5d3b2973b1516e056e4b8103bbbb77960eed"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-05/attempt-001/REPORT.md",
+      "bytes": 123,
+      "sha256": "7931081a79c91873c3885e62441f786e6190dee30b64168a228100947c10269f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-05/attempt-001/RESULT_MANIFEST.json",
+      "bytes": 1514,
+      "sha256": "ae1f53497b6db3ff4d6bbdba07510dcfbd18304327c3b91cbe57f07aa744943a"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-05/attempt-001/TASK.json",
+      "bytes": 2199,
+      "sha256": "7509ae1c33e5a0a43bc16b4b21e717ab054cf065592cf3765d19c9ea0a99bc3a"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-05/attempt-001/findings.jsonl",
+      "bytes": 43505,
+      "sha256": "0aa84a15b5565ccc28ebd5d74c6d372d30d38c511a0d0b7a3f213c0f8b151f3b"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-05/attempt-001/leads.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-05/attempt-001/search_log.jsonl",
+      "bytes": 822,
+      "sha256": "545206b12de6e9b71e3648b62c95ed3a5d93973d2c8ee17306fe57bb64d07051"
+    },
+    {
+      "path": "atlas-run-2026-11-12/accepted/WAVE2-SEARCH-05/attempt-001/sources.jsonl",
+      "bytes": 3474,
+      "sha256": "7a8c4374918f5901334ec8363e95b9190c60efa35c82dd4ce7e3649aec78eaf7"
+    },
+    {
+      "path": "atlas-run-2026-11-12/blind_packets/calibration_blind_elements.jsonl",
+      "bytes": 118360,
+      "sha256": "43c98549cb4d3bb760047750b7950a5017459bb673b9f513ae1b2e3863f299b6"
+    },
+    {
+      "path": "atlas-run-2026-11-12/blind_packets/full_atlas_blind_elements_204.jsonl",
+      "bytes": 539779,
+      "sha256": "7276577238708758abcc0b191373121b17c796fdecde92265b7e1ed4a559c370"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/calibration-complete-v1/decisions.jsonl",
+      "bytes": 1408,
+      "sha256": "682797e5d703cb025a188755bdfa232e9342e96039553d5e17ca9e42c0f1582b"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/calibration-complete-v1/elements.jsonl",
+      "bytes": 156706,
+      "sha256": "2fb87d1edcabf5f09bf24954e4417f0092f6cb42dcbea7027fee29d28f2250fd"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/calibration-complete-v1/findings.jsonl",
+      "bytes": 91368,
+      "sha256": "787785a08d43909773e93a467415f47305bf5c231ccf7aa2c5ee509a3e8ae793"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/calibration-complete-v1/merge_map.jsonl",
+      "bytes": 11005,
+      "sha256": "6a5b8318a5d1ec9626dff360062711f2e6d61410bf86947c4b20e078ea11e00a"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/calibration-complete-v1/ratings.jsonl",
+      "bytes": 103883,
+      "sha256": "006a9d22eba9060c15a7a529851f34baa266d9b4f635d0418df54de3b175cfd7"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/calibration-complete-v1/relations.jsonl",
+      "bytes": 2918,
+      "sha256": "8d85b3878fe6492208b4a70f396e79941e3f9663b4808dadd28a03930b4ad50a"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/calibration-complete-v1/sources.jsonl",
+      "bytes": 15275,
+      "sha256": "22621020bf975a7fd9d33915f462c956c910b1a964fd625b7b69f72c2a27b99f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/calibration-search-all4/MERGE.json",
+      "bytes": 2326,
+      "sha256": "895b83d3b69052ea37d413365540491b8567ac2f44824d8d68caf837fd918ed1"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/calibration-search-all4/decisions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/calibration-search-all4/elements.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/calibration-search-all4/findings.jsonl",
+      "bytes": 91368,
+      "sha256": "787785a08d43909773e93a467415f47305bf5c231ccf7aa2c5ee509a3e8ae793"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/calibration-search-all4/merge_map.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/calibration-search-all4/ratings.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/calibration-search-all4/relations.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/calibration-search-all4/sources.jsonl",
+      "bytes": 15275,
+      "sha256": "22621020bf975a7fd9d33915f462c956c910b1a964fd625b7b69f72c2a27b99f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/full-13packets-search-merged/MERGE.json",
+      "bytes": 7429,
+      "sha256": "4cbf2b2372e8dcc857e79e60f5def601c953a08b9ff203e78bfc90991aa26536"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/full-13packets-search-merged/decisions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/full-13packets-search-merged/elements.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/full-13packets-search-merged/findings.jsonl",
+      "bytes": 337445,
+      "sha256": "6f506c841a48d6a927491d836c5538cf88cc7c6c4e0d07abf7bd4ae44c30710b"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/full-13packets-search-merged/merge_map.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/full-13packets-search-merged/ratings.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/full-13packets-search-merged/relations.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/full-13packets-search-merged/sources.jsonl",
+      "bytes": 45834,
+      "sha256": "4f46a1de4e6667f9d91ce6900ad380139fde8db724357fe6d967cdd6557b177b"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/full-atlas-complete-v1/decisions.jsonl",
+      "bytes": 2556,
+      "sha256": "126841ad34d3af4a546f9da4d77782cdf68897c41f24f08bf0b3e97601f25381"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/full-atlas-complete-v1/elements.jsonl",
+      "bytes": 674848,
+      "sha256": "4a8e11c60c49fef4b1d2245cc7b430d79db520eb1f6f7dc1b80084dca0fb8ddd"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/full-atlas-complete-v1/findings.jsonl",
+      "bytes": 337445,
+      "sha256": "6f506c841a48d6a927491d836c5538cf88cc7c6c4e0d07abf7bd4ae44c30710b"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/full-atlas-complete-v1/merge_map.jsonl",
+      "bytes": 48068,
+      "sha256": "1db50b8df2afc97e5d6180a12ab192467b07f8e96e96bc1ba56ed61754bb8c9c"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/full-atlas-complete-v1/ratings.jsonl",
+      "bytes": 454568,
+      "sha256": "de9598036fe262b3e243ee3bc191e18457aff202fa39740f8503ec2098329432"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/full-atlas-complete-v1/relations.jsonl",
+      "bytes": 3620,
+      "sha256": "5373ae7ac75d49e2a78347b9b09d751532beafe84b82da987dcbfe38fd87b84c"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/full-atlas-complete-v1/sources.jsonl",
+      "bytes": 45834,
+      "sha256": "4f46a1de4e6667f9d91ce6900ad380139fde8db724357fe6d967cdd6557b177b"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/partial-cal01-cal03-cal04/MERGE.json",
+      "bytes": 1761,
+      "sha256": "6d8e18c60f5ba149dd4fa2a71c10b1ee2fb53c77e4f2401e97b3732905012311"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/partial-cal01-cal03-cal04/decisions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/partial-cal01-cal03-cal04/elements.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/partial-cal01-cal03-cal04/findings.jsonl",
+      "bytes": 68455,
+      "sha256": "a8575ef6aab2474bbe52c221004150047c30d31124a71961cc4e6e6091c9d5cf"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/partial-cal01-cal03-cal04/merge_map.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/partial-cal01-cal03-cal04/ratings.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/partial-cal01-cal03-cal04/relations.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/partial-cal01-cal03-cal04/sources.jsonl",
+      "bytes": 8635,
+      "sha256": "b6e743baf5bf08c70fe074dac879b22ef176c5594c1879e8ce8c35506af134b6"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/partial-cal01-cal04/MERGE.json",
+      "bytes": 996,
+      "sha256": "5d3f1b7ee58fb790c0800a3ce9985bc38042dc19892af61cfe21227adf3af690"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/partial-cal01-cal04/decisions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/partial-cal01-cal04/elements.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/partial-cal01-cal04/findings.jsonl",
+      "bytes": 47630,
+      "sha256": "4bf76df67ee2168a31a5ad66e21eb89185ccac47ff9f43b6c5e3505c4b1cc7ad"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/partial-cal01-cal04/merge_map.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/partial-cal01-cal04/ratings.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/partial-cal01-cal04/relations.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/partial-cal01-cal04/sources.jsonl",
+      "bytes": 3710,
+      "sha256": "7081983966e950c4914ef948f48b5afca542761b67ef12825673e15e4316fd99"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-all32cats-search-merged/MERGE.json",
+      "bytes": 4594,
+      "sha256": "e8a9a1a1b6466ce516b0e54764882587b958c4ddaf373628b95947738082194c"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-all32cats-search-merged/decisions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-all32cats-search-merged/elements.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-all32cats-search-merged/findings.jsonl",
+      "bytes": 131329,
+      "sha256": "3cc54a43a5a51c7bf614c1521585666b959cf515268dd9786dc54add7e6a0a1c"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-all32cats-search-merged/merge_map.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-all32cats-search-merged/ratings.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-all32cats-search-merged/relations.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-all32cats-search-merged/sources.jsonl",
+      "bytes": 28349,
+      "sha256": "53e738bde0852cf1c30c6d48fbd60624e26d078d6cc2d3d3ec0f923ff188da6d"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-complete-all32cats/decisions.jsonl",
+      "bytes": 1028,
+      "sha256": "1d0cb6db71d36df1112efbfb2cd2eda99a36ee74e2a1e199a97a0bc6f15653fc"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-complete-all32cats/elements.jsonl",
+      "bytes": 236629,
+      "sha256": "1817da9c301574a21c1d88b90ddd0c65eae1b2bb981259176fff136b7bcfb0ff"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-complete-all32cats/findings.jsonl",
+      "bytes": 131329,
+      "sha256": "3cc54a43a5a51c7bf614c1521585666b959cf515268dd9786dc54add7e6a0a1c"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-complete-all32cats/merge_map.jsonl",
+      "bytes": 18285,
+      "sha256": "94b631ec79fa11877f5802cce8bd4af8608f76cfbdff78e4f9f61d175846d3f8"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-complete-all32cats/ratings.jsonl",
+      "bytes": 154106,
+      "sha256": "340a15a6f6771a113c30d05051fb944b8b3572e63e3c1d9ddffde5469d48e750"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-complete-all32cats/relations.jsonl",
+      "bytes": 2533,
+      "sha256": "655a92035366fbf6f3dfec055f63b5c864e3b839a1f2ce9e9f9e2d5825a3ee39"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-complete-all32cats/sources.jsonl",
+      "bytes": 28349,
+      "sha256": "53e738bde0852cf1c30c6d48fbd60624e26d078d6cc2d3d3ec0f923ff188da6d"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-search-6packets/MERGE.json",
+      "bytes": 3460,
+      "sha256": "5b65c29e450d68b159171326e6ccfab0bdb442940431d29840e30e561c1d3057"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-search-6packets/decisions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-search-6packets/elements.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-search-6packets/findings.jsonl",
+      "bytes": 105385,
+      "sha256": "6f332f3c8151b91cd1541d06455446e8da7991e2620ad41ac79d8337d6bf6c36"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-search-6packets/merge_map.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-search-6packets/ratings.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-search-6packets/relations.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/datasets/wave1-search-6packets/sources.jsonl",
+      "bytes": 20040,
+      "sha256": "7da5e731dff9dcf623b6440702170c02cc62f9d4f213ae708484ed88c4e66e59"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-01/attempt-001/COVERAGE.md",
+      "bytes": 297,
+      "sha256": "d0c839c54c636e47b70f0b428d54250c50e97885eae5d1e4e20084dd22d544b5"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-01/attempt-001/REPORT.md",
+      "bytes": 261,
+      "sha256": "4f4e8bfd4d1a8029a755e39feff5f5bf384e7621966a29b0e93d0d79de83cb4d"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-01/attempt-001/RESULT_MANIFEST.json",
+      "bytes": 1522,
+      "sha256": "e9f2cbc6ffe27370aa0afd0a19d74757808cceb248db6f0f027fdd638d967748"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-01/attempt-001/TASK.json",
+      "bytes": 1832,
+      "sha256": "50421ee233ea0cb00827c89b8774c8f3445125090dcb0334e75e18b0ec0b8eef"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-01/attempt-001/findings.jsonl",
+      "bytes": 24602,
+      "sha256": "1dd8c8d7779ed27db60d61c7487eed0dafd8b4983c4b749dd3c0e61729e8afe7"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-01/attempt-001/leads.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-01/attempt-001/search_log.jsonl",
+      "bytes": 1359,
+      "sha256": "68bf3b7ebbac7a6e8ef3e439aa091cba266eb26b8de55da8d4ef6035b6db2600"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-01/attempt-001/sources.jsonl",
+      "bytes": 1928,
+      "sha256": "ce33acbd50f10c31d75196548e25a7387f6c8f2903147a40bf2e6051cc6c00d6"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-02/arena-candidate-1/AUDIT_NOTE.md",
+      "bytes": 334,
+      "sha256": "a5f0139cc7ecc71c985a204a244c1f2e8c855b9b118755fd5897047f40254fe8"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-02/arena-candidate-1/raw_arena_output.txt",
+      "bytes": 13616,
+      "sha256": "1d179a3320b1938a5c8194cdd83f309a2687ad6c1979cb0ae1991adbd9487e09"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-02/arena-candidate-2/AUDIT_NOTE.md",
+      "bytes": 437,
+      "sha256": "2bc912234df2033561da448237ad87762fed0616a62ce0126e1d105795e27191"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-02/arena-candidate-2/raw_arena_output.txt",
+      "bytes": 23565,
+      "sha256": "480f4729874e3ef8f2782592f0d7aba4725b6751dcd981b53b24dba124d51330"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-02/arena-candidate-3/AUDIT_NOTE.md",
+      "bytes": 471,
+      "sha256": "1f492db96670a9f1cf50665e35ef14b3d8dde1f7bbd4ec401f2e844d1a082088"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-02/arena-candidate-3/raw_arena_output.txt",
+      "bytes": 22706,
+      "sha256": "129975ecf20d08090d16dbc598aa5d9fa3a868686413523e42d9b9f138a405a4"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-02/arena-candidate-4/AUDIT_NOTE.md",
+      "bytes": 556,
+      "sha256": "8d5101c160a383b9792333c36b198f90ab13a58b81702568676702b00fd77e28"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-02/arena-candidate-4/raw_arena_output.txt",
+      "bytes": 15891,
+      "sha256": "70109127ad4f919c71e9ed5ce80d36bf7c9d27974925931aeaa7b37876d353be"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-03/arena-model-A/AUDIT_NOTE.md",
+      "bytes": 202,
+      "sha256": "ed4dedcf91602e7d1f4fcd84a7c5442014e42d41a4d2b50435cd47e915e81355"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-03/arena-model-B/AUDIT_NOTE.md",
+      "bytes": 195,
+      "sha256": "25dd00fc6f35e62f486a7a0f810220417efc93b1a9d29420c523f269371ebc52"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-04/attempt-001/COVERAGE.md",
+      "bytes": 352,
+      "sha256": "ab5cae5fc3a852026bcddf1ac51805a1ee377837d7904b74f5ae40dc0bc6da3e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-04/attempt-001/REPORT.md",
+      "bytes": 352,
+      "sha256": "474594a7ec7ec5eaed8726213a99e531a603993978d0d4097c9a939db5b27e8e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-04/attempt-001/RESULT_MANIFEST.json",
+      "bytes": 1548,
+      "sha256": "6c189d72fd8d5cd3f71c2f238285c78c5330abe8de2edf8bff10cef156e6aa4a"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-04/attempt-001/TASK.json",
+      "bytes": 1839,
+      "sha256": "6c9399364470abd99ba5cfb8b4b7e587fdaf7d18599ee0c9f10e940a7386a520"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-04/attempt-001/findings.jsonl",
+      "bytes": 23028,
+      "sha256": "5b01eaca5b5dd668c3d8c423434349ece9be23d0ba8fea1ed9f3f62b9d10126f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-04/attempt-001/leads.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-04/attempt-001/search_log.jsonl",
+      "bytes": 1108,
+      "sha256": "1a7282cad76cddfbd676ba10a3ab4e7bf618c51797616a06939dd32c81c9dce8"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/CAL-SEARCH-04/attempt-001/sources.jsonl",
+      "bytes": 1782,
+      "sha256": "db2154c54d5d8a1db5c97b7c384265d4a74b8400cf76cfb8561ff18a72298724"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/WAVE1-SEARCH-04/arena-model-A/AUDIT_NOTE.md",
+      "bytes": 925,
+      "sha256": "20e73b789f24b225e9ee230e8246295308b9107df890545298187792f28941c0"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/WAVE1-SEARCH-04/arena-model-A/raw_arena_output.txt",
+      "bytes": 10462,
+      "sha256": "4c8978be8af3875e0380c599a3ea23c25e8c679ae46cf7b109701b86dc50fecb"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/WAVE1-SEARCH-04/arena-model-B/AUDIT_NOTE.md",
+      "bytes": 683,
+      "sha256": "84fb1558bcf493f37bb56f632b3e65cb269f4fa63deb25cb43fd896e14dbb795"
+    },
+    {
+      "path": "atlas-run-2026-11-12/incoming/WAVE1-SEARCH-04/arena-model-B/raw_arena_output.txt",
+      "bytes": 23199,
+      "sha256": "dd2e9b8b8a71f0eaf603c0fd6995ee80054c48b0b633a8834de32bf3f49d8ada"
+    },
+    {
+      "path": "atlas-run-2026-11-12/logs/decisions.jsonl",
+      "bytes": 743,
+      "sha256": "64fcd7178f9477af1920fd9b32df4364a67e50133258df4a22475186f0233a8d"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-01/DATA_CONTRACT.md",
+      "bytes": 17413,
+      "sha256": "8a785c5249d4008cd31cdef41280daf22372bfd127989bde51fd86ac9ac88bad"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-01/PROMPTS/01-SEARCH.md",
+      "bytes": 7230,
+      "sha256": "50070e7c43ddbcd8c93dd3a54a36069de04b0ea1d541de994bf29949d48e53cc"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-01/SYSTEM.md",
+      "bytes": 23474,
+      "sha256": "9e0cf21146ee76c95b2b64832fae6630cbd9d0fc91accfbfb0e655c227013594"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-01/TASK.json",
+      "bytes": 1811,
+      "sha256": "11cc84511ca7b01b510c848d37896c9b805bfbac6bbcc93f87ffbeb6e3514d0d"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-01/TAXONOMY.md",
+      "bytes": 14645,
+      "sha256": "e42b9a34e6f742ee6e2b683454360361a1173f1e8d386dd31ef73ac3524b5ff2"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-01/taxonomy.json",
+      "bytes": 27405,
+      "sha256": "317bd62120fad45150543fbb752740ddb8b47c7b7ea00e0bd5f60d96cef94dbd"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-01/templates/NEXT.md",
+      "bytes": 507,
+      "sha256": "29817dd9478f5b36317bc533e7515b54900de291823f23650e4bc4459df4be6c"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-01/templates/REPORT.md",
+      "bytes": 570,
+      "sha256": "ea3d023cb465d119a835e7bc97e441787c519817562ac8c8b7b17af90acd5770"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-01/templates/RESULT_MANIFEST.json",
+      "bytes": 388,
+      "sha256": "e1cf1db65e65f89e69caa1fb8f1754a14ad414e899fccaf7292fb11ac6d33fd0"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-01/templates/search_log.example.json",
+      "bytes": 183,
+      "sha256": "73f92d685ed799223eebe356ac100d07ea1fcb98e1e95ec3eadf39e2d8f8c31e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-01-PASTE.txt",
+      "bytes": 65352,
+      "sha256": "9fc23a7fda7503e47ea990a10103098009de5c1156ad93431eac7db85572e7f7"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-02/DATA_CONTRACT.md",
+      "bytes": 17413,
+      "sha256": "8a785c5249d4008cd31cdef41280daf22372bfd127989bde51fd86ac9ac88bad"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-02/PROMPTS/01-SEARCH.md",
+      "bytes": 7230,
+      "sha256": "50070e7c43ddbcd8c93dd3a54a36069de04b0ea1d541de994bf29949d48e53cc"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-02/SYSTEM.md",
+      "bytes": 23474,
+      "sha256": "9e0cf21146ee76c95b2b64832fae6630cbd9d0fc91accfbfb0e655c227013594"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-02/TASK.json",
+      "bytes": 1819,
+      "sha256": "5473a0039f1d45013ca3a7b95148049b431e4225d43879a1609ec8f95d244b6b"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-02/TAXONOMY.md",
+      "bytes": 14645,
+      "sha256": "e42b9a34e6f742ee6e2b683454360361a1173f1e8d386dd31ef73ac3524b5ff2"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-02/taxonomy.json",
+      "bytes": 27405,
+      "sha256": "317bd62120fad45150543fbb752740ddb8b47c7b7ea00e0bd5f60d96cef94dbd"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-02/templates/NEXT.md",
+      "bytes": 507,
+      "sha256": "29817dd9478f5b36317bc533e7515b54900de291823f23650e4bc4459df4be6c"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-02/templates/REPORT.md",
+      "bytes": 570,
+      "sha256": "ea3d023cb465d119a835e7bc97e441787c519817562ac8c8b7b17af90acd5770"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-02/templates/RESULT_MANIFEST.json",
+      "bytes": 388,
+      "sha256": "e1cf1db65e65f89e69caa1fb8f1754a14ad414e899fccaf7292fb11ac6d33fd0"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-02/templates/search_log.example.json",
+      "bytes": 183,
+      "sha256": "73f92d685ed799223eebe356ac100d07ea1fcb98e1e95ec3eadf39e2d8f8c31e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-02-PASTE.txt",
+      "bytes": 65360,
+      "sha256": "b86a44c0e3d92427f163ee01e04a705d2b83485b7c564ee191ed1b013a58efa3"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-03/DATA_CONTRACT.md",
+      "bytes": 17413,
+      "sha256": "8a785c5249d4008cd31cdef41280daf22372bfd127989bde51fd86ac9ac88bad"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-03/PROMPTS/01-SEARCH.md",
+      "bytes": 7230,
+      "sha256": "50070e7c43ddbcd8c93dd3a54a36069de04b0ea1d541de994bf29949d48e53cc"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-03/SYSTEM.md",
+      "bytes": 23474,
+      "sha256": "9e0cf21146ee76c95b2b64832fae6630cbd9d0fc91accfbfb0e655c227013594"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-03/TASK.json",
+      "bytes": 1854,
+      "sha256": "3f7d5f46b55612d369b30170d0a6c464a425febbd1626e098e75060c9fbb1bbc"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-03/TAXONOMY.md",
+      "bytes": 14645,
+      "sha256": "e42b9a34e6f742ee6e2b683454360361a1173f1e8d386dd31ef73ac3524b5ff2"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-03/taxonomy.json",
+      "bytes": 27405,
+      "sha256": "317bd62120fad45150543fbb752740ddb8b47c7b7ea00e0bd5f60d96cef94dbd"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-03/templates/NEXT.md",
+      "bytes": 507,
+      "sha256": "29817dd9478f5b36317bc533e7515b54900de291823f23650e4bc4459df4be6c"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-03/templates/REPORT.md",
+      "bytes": 570,
+      "sha256": "ea3d023cb465d119a835e7bc97e441787c519817562ac8c8b7b17af90acd5770"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-03/templates/RESULT_MANIFEST.json",
+      "bytes": 388,
+      "sha256": "e1cf1db65e65f89e69caa1fb8f1754a14ad414e899fccaf7292fb11ac6d33fd0"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-03/templates/search_log.example.json",
+      "bytes": 183,
+      "sha256": "73f92d685ed799223eebe356ac100d07ea1fcb98e1e95ec3eadf39e2d8f8c31e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-03-PASTE.txt",
+      "bytes": 65395,
+      "sha256": "734f0438f439f6bce2d144c5f7f2085802587ed78c441d65e51b39f6f69ab54a"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-04/DATA_CONTRACT.md",
+      "bytes": 17413,
+      "sha256": "8a785c5249d4008cd31cdef41280daf22372bfd127989bde51fd86ac9ac88bad"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-04/PROMPTS/01-SEARCH.md",
+      "bytes": 7230,
+      "sha256": "50070e7c43ddbcd8c93dd3a54a36069de04b0ea1d541de994bf29949d48e53cc"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-04/SYSTEM.md",
+      "bytes": 23474,
+      "sha256": "9e0cf21146ee76c95b2b64832fae6630cbd9d0fc91accfbfb0e655c227013594"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-04/TASK.json",
+      "bytes": 1818,
+      "sha256": "2b21cd936252cb094df3dd406a0b5ab17f4c69ae3fae549ad6cf0f0ac3d099dd"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-04/TAXONOMY.md",
+      "bytes": 14645,
+      "sha256": "e42b9a34e6f742ee6e2b683454360361a1173f1e8d386dd31ef73ac3524b5ff2"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-04/taxonomy.json",
+      "bytes": 27405,
+      "sha256": "317bd62120fad45150543fbb752740ddb8b47c7b7ea00e0bd5f60d96cef94dbd"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-04/templates/NEXT.md",
+      "bytes": 507,
+      "sha256": "29817dd9478f5b36317bc533e7515b54900de291823f23650e4bc4459df4be6c"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-04/templates/REPORT.md",
+      "bytes": 570,
+      "sha256": "ea3d023cb465d119a835e7bc97e441787c519817562ac8c8b7b17af90acd5770"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-04/templates/RESULT_MANIFEST.json",
+      "bytes": 388,
+      "sha256": "e1cf1db65e65f89e69caa1fb8f1754a14ad414e899fccaf7292fb11ac6d33fd0"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-04/templates/search_log.example.json",
+      "bytes": 183,
+      "sha256": "73f92d685ed799223eebe356ac100d07ea1fcb98e1e95ec3eadf39e2d8f8c31e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/outbound_packets/CAL-SEARCH-04-PASTE.txt",
+      "bytes": 65359,
+      "sha256": "e5838328d0fc8d3efa78e8985dbdb37c2a885598a705ca269b994846566f198f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/registry/tasks.csv",
+      "bytes": 1540,
+      "sha256": "91c69998eb23d7b339aa8947b3948492eeb18391a83a1ea6af3a79eec4017dc5"
+    },
+    {
+      "path": "atlas-run-2026-11-12/releases/calibration-pilot-v1/ATLAS-DRAFT.md",
+      "bytes": 115427,
+      "sha256": "91fe892965e716f825b0c39c03ab7ddd69f60ccaa0ecb1def8d7e09df248fd65"
+    },
+    {
+      "path": "atlas-run-2026-11-12/releases/calibration-pilot-v1/atlas-selection.json",
+      "bytes": 6844,
+      "sha256": "f6a91c8bd9350c9af6fc4f89ee2d633c67107d319ddddfcbea5fe7256ff2aae7"
+    },
+    {
+      "path": "atlas-run-2026-11-12/releases/calibration-pilot-v1/audit.json",
+      "bytes": 17149,
+      "sha256": "783111d95799bd39da1e02d37d3078ea82c8180da8ff8f92599ab681a6a66d08"
+    },
+    {
+      "path": "atlas-run-2026-11-12/releases/calibration-pilot-v1/quality-ranked.csv",
+      "bytes": 11713,
+      "sha256": "816c0dd85993b31044b182ebd101676ecc59f971c3879d8f954cd3991094731a"
+    },
+    {
+      "path": "atlas-run-2026-11-12/releases/full-atlas-release-v1/ATLAS-DRAFT.md",
+      "bytes": 514557,
+      "sha256": "5bbf2ccd17520058e56c69af7acac409f924409a2a32a0b089fed667ffd47a54"
+    },
+    {
+      "path": "atlas-run-2026-11-12/releases/full-atlas-release-v1/atlas-selection.json",
+      "bytes": 31936,
+      "sha256": "63d769a2d4823c18c091dc5fc34bdcfa09f05c66f7397f39da1fc7ad81c7d3a8"
+    },
+    {
+      "path": "atlas-run-2026-11-12/releases/full-atlas-release-v1/audit.json",
+      "bytes": 55783,
+      "sha256": "e1b4a61d9cbedf995f41a905794f48cd386a2d16d83d175d964b07f62277215a"
+    },
+    {
+      "path": "atlas-run-2026-11-12/releases/full-atlas-release-v1/quality-ranked.csv",
+      "bytes": 54912,
+      "sha256": "d53003785f9bc19ba9dd026040710653ec6336017dda2acd92158110607c158f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/releases/wave1-all32cats-v1/ATLAS-DRAFT.md",
+      "bytes": 177093,
+      "sha256": "f2ef62d13a530f2aa4cdffb43008eeee5f67ad5f203af3fbd0f6802e17556efa"
+    },
+    {
+      "path": "atlas-run-2026-11-12/releases/wave1-all32cats-v1/atlas-selection.json",
+      "bytes": 10228,
+      "sha256": "4b2ebc10fb6d051cbc566bf1faef3a4a64013b22b2fb388b09b9a58da882b884"
+    },
+    {
+      "path": "atlas-run-2026-11-12/releases/wave1-all32cats-v1/audit.json",
+      "bytes": 24108,
+      "sha256": "b012cbd279dc6a53ff85f54e192fadb0270c32a80aa242a43306d067fbe5a498"
+    },
+    {
+      "path": "atlas-run-2026-11-12/releases/wave1-all32cats-v1/quality-ranked.csv",
+      "bytes": 17802,
+      "sha256": "dead10edc259206dea41f44af55c2be5772a3f3dce35618ce7e3932a61b9a615"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_C28__GENERAL__part001.jsonl",
+      "bytes": 18812,
+      "sha256": "e220c02acf0833a1e5c44087d5aced36b59c55a73747669b7a241e9835f3c72c"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_C28__GENERAL__part001.sources.jsonl",
+      "bytes": 1782,
+      "sha256": "db2154c54d5d8a1db5c97b7c384265d4a74b8400cf76cfb8561ff18a72298724"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_C29__GENERAL__part001.jsonl",
+      "bytes": 4216,
+      "sha256": "a325a00d7e43bc809db4168b744b8ecc2001364460ad3649f7446fd9a924476f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_C29__GENERAL__part001.sources.jsonl",
+      "bytes": 312,
+      "sha256": "b3aee5fab06e1a962d38a45c4cad914472dacdf2c1e7e65ec4a6c21e71dd6994"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P1_CAPTURE_TRIAGE__F1_INITIATION_PARALYSIS__part001.jsonl",
+      "bytes": 2113,
+      "sha256": "c6337639badd0c12fbc6ea811ccddf7aa49d8499db74a3b534f8ebb181d38b1d"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P1_CAPTURE_TRIAGE__F1_INITIATION_PARALYSIS__part001.sources.jsonl",
+      "bytes": 384,
+      "sha256": "4fe87fec580ef6c2b4b74b729dc6c89b9baae58f969012539b4d0b1e7f88647f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P1_CAPTURE_TRIAGE__F2_CHOICE_OVERLOAD__part001.jsonl",
+      "bytes": 3490,
+      "sha256": "25df6f447a397507b4d5559a2bae87f62e474f5d6c4219f31eae6a649264757a"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P1_CAPTURE_TRIAGE__F2_CHOICE_OVERLOAD__part001.sources.jsonl",
+      "bytes": 846,
+      "sha256": "668484479b8f26beebf51947eff5e7fcf9ebecd8eefb26876e2066bd1cd1ab7a"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P1_CAPTURE_TRIAGE__F6_ENERGY_DEPLETION__part001.jsonl",
+      "bytes": 1999,
+      "sha256": "140836f0613c3c491d9b4a81436f249805941fce4e6780f144203f8664edf73b"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P1_CAPTURE_TRIAGE__F6_ENERGY_DEPLETION__part001.sources.jsonl",
+      "bytes": 383,
+      "sha256": "56b4ba1022ba7f9a491171806216e2277eda55309e8345faeb84fc003bb2d0c2"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P2_SENSEMAKING_DESIGN__F2_CHOICE_OVERLOAD__part001.jsonl",
+      "bytes": 6027,
+      "sha256": "f28414c4cbd690adf35ad029cd9f0c64b09c6d05c1ad0c12bee32cb9d2cc7605"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P2_SENSEMAKING_DESIGN__F2_CHOICE_OVERLOAD__part001.sources.jsonl",
+      "bytes": 1143,
+      "sha256": "28e51c93221011ec04721fd8edf627c5affe507ab6e4ffe2d9e6e19163380653"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P2_SENSEMAKING_DESIGN__F3_TIME_HORIZON_BLINDNESS__part001.jsonl",
+      "bytes": 1384,
+      "sha256": "3e39d313a806524db09fe91400c725a4d0923bfa9e39c89d2331a48aa6318247"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P2_SENSEMAKING_DESIGN__F3_TIME_HORIZON_BLINDNESS__part001.sources.jsonl",
+      "bytes": 459,
+      "sha256": "56244213847823a88f48d4a9685fcfdfeb676792b039b5f80a04abe4905a0765"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P2_SENSEMAKING_DESIGN__F6_ENERGY_DEPLETION__part001.jsonl",
+      "bytes": 3364,
+      "sha256": "c5ac9e366b91a1e2458dc7f33c4129f90669560f2473cc2eb62bab3d19609e08"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P2_SENSEMAKING_DESIGN__F6_ENERGY_DEPLETION__part001.sources.jsonl",
+      "bytes": 807,
+      "sha256": "37d55594d9f8b4e5c3fa22448f4070487557eb9a8fe90f7c36fde1a52f00c26e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P3_INITIATION_ACTIVATION__F1_INITIATION_PARALYSIS__part001.jsonl",
+      "bytes": 5285,
+      "sha256": "4d3c6c5f877375f94e9e777f2db49a63ef23edbc96d16d96300c7b08b2326063"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P3_INITIATION_ACTIVATION__F1_INITIATION_PARALYSIS__part001.sources.jsonl",
+      "bytes": 1062,
+      "sha256": "b8e25792dfc8b4165ed6359a0957ef1149eb588947c829c15dee4ee41438edef"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P3_INITIATION_ACTIVATION__F5_RELAPSE_SPIRAL__part001.jsonl",
+      "bytes": 1923,
+      "sha256": "cfeb390ca667b2cc621f726b50df9572a99048dedd9b611b2a6da74c0230f5dd"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P3_INITIATION_ACTIVATION__F5_RELAPSE_SPIRAL__part001.sources.jsonl",
+      "bytes": 905,
+      "sha256": "b21b6c699d6cce1cdc5f0561414e18202f39e7117fd54b247d34f37acc95ebf0"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P4_EXECUTION_PACING__F2_CHOICE_OVERLOAD__part001.jsonl",
+      "bytes": 1329,
+      "sha256": "ebb3ecd7c5399160d3046134a7425230b4f7bfa196dc11d1e18557780605b082"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P4_EXECUTION_PACING__F2_CHOICE_OVERLOAD__part001.sources.jsonl",
+      "bytes": 433,
+      "sha256": "0d001f984cd55c02592aee74fc9850a2c00b5e4a39d86ebece58158ed11e0853"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P4_EXECUTION_PACING__F3_TIME_HORIZON_BLINDNESS__part001.jsonl",
+      "bytes": 6175,
+      "sha256": "a6d42d3659ecbfe9dca8f65298d1976cbe4cbcd9de1eac272d5738bad6f50e8e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P4_EXECUTION_PACING__F3_TIME_HORIZON_BLINDNESS__part001.sources.jsonl",
+      "bytes": 750,
+      "sha256": "23b1affe549b566a1f6f3f2cc698edcc2564e6978ca92e33d86462c5b37ee201"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P4_EXECUTION_PACING__F6_ENERGY_DEPLETION__part001.jsonl",
+      "bytes": 4516,
+      "sha256": "24db6e87842444ff5bce16fc5a72f729a82535d91a09e6dd78768f733e519f8d"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P4_EXECUTION_PACING__F6_ENERGY_DEPLETION__part001.sources.jsonl",
+      "bytes": 1365,
+      "sha256": "0a9b6b4a21a14cb8be0774690a0de9e311bb288a3846b405175e8e0c56ee98e5"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P5_FEEDBACK_REWARD__F1_INITIATION_PARALYSIS__part001.jsonl",
+      "bytes": 1391,
+      "sha256": "6c4e5880b2261e36af0ca7c900a0096e91748c26a4e5ec0b78c405fe3c274fa6"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P5_FEEDBACK_REWARD__F1_INITIATION_PARALYSIS__part001.sources.jsonl",
+      "bytes": 433,
+      "sha256": "0d001f984cd55c02592aee74fc9850a2c00b5e4a39d86ebece58158ed11e0853"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P5_FEEDBACK_REWARD__F2_CHOICE_OVERLOAD__part001.jsonl",
+      "bytes": 1542,
+      "sha256": "2a5d40c71dd82b77d5c7a6606e0c0cf997336bef76a12d17b52f887196921d6a"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P5_FEEDBACK_REWARD__F2_CHOICE_OVERLOAD__part001.sources.jsonl",
+      "bytes": 465,
+      "sha256": "b7eb1d0393b351c941d8928d63a6c99f812e35247707c5eeb253674b6e2fa458"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P5_FEEDBACK_REWARD__F4_MOTIVATIONAL_DECAY__part001.jsonl",
+      "bytes": 6884,
+      "sha256": "7a166a266e921bd32ab5e7a6dfbfcc53d455c34d405a74ac38853a3b160dacf9"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P5_FEEDBACK_REWARD__F4_MOTIVATIONAL_DECAY__part001.sources.jsonl",
+      "bytes": 2755,
+      "sha256": "71427f5ae7d60af5f5ee6458ccc6e503a1161f77a7064b0cb50a620306ac5ec5"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P5_FEEDBACK_REWARD__F5_RELAPSE_SPIRAL__part001.jsonl",
+      "bytes": 2074,
+      "sha256": "d30c84a77375408008b88a0171223da4a050f8d2db91bf9cd595c495e4bf38bc"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P5_FEEDBACK_REWARD__F5_RELAPSE_SPIRAL__part001.sources.jsonl",
+      "bytes": 472,
+      "sha256": "f43c10c2a90d223d6ce218b8eb300f44a699bb796d4ca5515d88ad01a0fbf218"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P5_FEEDBACK_REWARD__F7_NOVELTY_STARVATION__part001.jsonl",
+      "bytes": 4201,
+      "sha256": "dd9989c682533635bace8bbbccf5997903140e95630dca7d56b9d5aaba9d1f1e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P5_FEEDBACK_REWARD__F7_NOVELTY_STARVATION__part001.sources.jsonl",
+      "bytes": 921,
+      "sha256": "f53fe7501abcd6f1eed5375a0d46fa342c3e376e8dd1dee9b74fc5f4d69f7076"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P6_RECOVERY_ADAPTATION__F2_CHOICE_OVERLOAD__part001.jsonl",
+      "bytes": 1514,
+      "sha256": "d839cd57d243772f115f16fb8b173d6e4863fc1b3aa77becc4dc97afb92d926a"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P6_RECOVERY_ADAPTATION__F2_CHOICE_OVERLOAD__part001.sources.jsonl",
+      "bytes": 846,
+      "sha256": "5231a44153f465b487c4ada2e4f4db030dc5656237076ec57fb2b8b2590085b3"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P6_RECOVERY_ADAPTATION__F3_TIME_HORIZON_BLINDNESS__part001.jsonl",
+      "bytes": 3814,
+      "sha256": "808721c20154989b081d2bf32e81216e9972272c7342360b46cc2fabf91a4245"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P6_RECOVERY_ADAPTATION__F3_TIME_HORIZON_BLINDNESS__part001.sources.jsonl",
+      "bytes": 831,
+      "sha256": "21f863f5590cee6b4a050a4f007d3573a50287d767d03d8de3008de7504ed0d1"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P6_RECOVERY_ADAPTATION__F5_RELAPSE_SPIRAL__part001.jsonl",
+      "bytes": 6345,
+      "sha256": "8d1894306b9d95bf55784731d0eaa96c20d72066caf48287d40b5d8bca05bd60"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P6_RECOVERY_ADAPTATION__F5_RELAPSE_SPIRAL__part001.sources.jsonl",
+      "bytes": 2319,
+      "sha256": "ab943d86f904cbd16e362b6ebd421fe81eb9c286408a1707d300029ebd482515"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P6_RECOVERY_ADAPTATION__F6_ENERGY_DEPLETION__part001.jsonl",
+      "bytes": 1485,
+      "sha256": "f06dc9c63201c10f89d9aba8c2352039633f975d64423bbd98710a2928c607d1"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P6_RECOVERY_ADAPTATION__F6_ENERGY_DEPLETION__part001.sources.jsonl",
+      "bytes": 524,
+      "sha256": "6f2ceaf5d8f9ea4ac83d3a49e73b0f46cae49c0dad5d8b861c5b2ef3d41fd444"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P6_RECOVERY_ADAPTATION__F7_NOVELTY_STARVATION__part001.jsonl",
+      "bytes": 1485,
+      "sha256": "9c85e130b9fa378a83791020ed0871fd1cd19a7fb30ee8b0caf723d1e8729e59"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/SHARD_P6_RECOVERY_ADAPTATION__F7_NOVELTY_STARVATION__part001.sources.jsonl",
+      "bytes": 497,
+      "sha256": "ef3470728fad9525ee39da7bd806f299545614fc48012ef975ae308d1adca7f6"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/compact_findings_index_part001.txt",
+      "bytes": 29955,
+      "sha256": "409159a5a72057838b6b57f59b6eac967afe8bc4b7e5d29d4f76b4a492aa685e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/compact_findings_index_part002.txt",
+      "bytes": 7540,
+      "sha256": "a3d5698af625e560b44948919755e03d94333e2566599995e378e0b2b2350e8c"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/calibration-shards-50findings/shards_manifest.json",
+      "bytes": 19313,
+      "sha256": "c5485fac89c4ab84ccb52be5f5c4efc4ab5e7a803f5d8cf682e3af1efc57424f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_C28__GENERAL__part001.jsonl",
+      "bytes": 18812,
+      "sha256": "e220c02acf0833a1e5c44087d5aced36b59c55a73747669b7a241e9835f3c72c"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_C28__GENERAL__part001.sources.jsonl",
+      "bytes": 1782,
+      "sha256": "db2154c54d5d8a1db5c97b7c384265d4a74b8400cf76cfb8561ff18a72298724"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_C29__GENERAL__part001.jsonl",
+      "bytes": 4216,
+      "sha256": "a325a00d7e43bc809db4168b744b8ecc2001364460ad3649f7446fd9a924476f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_C29__GENERAL__part001.sources.jsonl",
+      "bytes": 312,
+      "sha256": "b3aee5fab06e1a962d38a45c4cad914472dacdf2c1e7e65ec4a6c21e71dd6994"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P1_CAPTURE_TRIAGE__F1_INITIATION_PARALYSIS__part001.jsonl",
+      "bytes": 5069,
+      "sha256": "ff0086ecb8dad6e3693a4435b4abccb6cbca36f6949268f175e9864a33c0a437"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P1_CAPTURE_TRIAGE__F1_INITIATION_PARALYSIS__part001.sources.jsonl",
+      "bytes": 1229,
+      "sha256": "61acb199fb5d0d07439feff41c516f96a92269b1b853a8a87820e42a771a0819"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P1_CAPTURE_TRIAGE__F2_CHOICE_OVERLOAD__part001.jsonl",
+      "bytes": 8195,
+      "sha256": "c514e2c78e52fea12ca2b231109b59627374cd3914821b7ea0c57d5219b55045"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P1_CAPTURE_TRIAGE__F2_CHOICE_OVERLOAD__part001.sources.jsonl",
+      "bytes": 2136,
+      "sha256": "deb4abaf5f003c3f9c02cf161aeb80cc7fc2aeae9782a7e644d1cea55636c0a0"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P1_CAPTURE_TRIAGE__F5_RELAPSE_SPIRAL__part001.jsonl",
+      "bytes": 3258,
+      "sha256": "01cd99d6bbe8457c1161a882de2fb2a8e12060c6087b8a150e7f672d7045e66d"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P1_CAPTURE_TRIAGE__F5_RELAPSE_SPIRAL__part001.sources.jsonl",
+      "bytes": 824,
+      "sha256": "04913800505f6e4663c444ed4c390ac7718cbfed73fc2042a79e1e676426f0cf"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P1_CAPTURE_TRIAGE__F6_ENERGY_DEPLETION__part001.jsonl",
+      "bytes": 3701,
+      "sha256": "2e4224a381c984992cacbf0b66bdb4f31911948b9d4b8ae419d78c0ffa45d0a2"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P1_CAPTURE_TRIAGE__F6_ENERGY_DEPLETION__part001.sources.jsonl",
+      "bytes": 798,
+      "sha256": "8b7e53c5befebb00c0139d90851bc97595dcbdc36a9d38af60549970f1e88689"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P2_SENSEMAKING_DESIGN__F1_INITIATION_PARALYSIS__part001.jsonl",
+      "bytes": 9152,
+      "sha256": "e34d5ec3e4c4533a95a24ffb6ee0abcf17cfd72f1967aa1072daf6cb69602ce2"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P2_SENSEMAKING_DESIGN__F1_INITIATION_PARALYSIS__part001.sources.jsonl",
+      "bytes": 2661,
+      "sha256": "56e9b726cd72872f9ec64650c057b38306b45ec1d573823e3b9a9e56774f79b5"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P2_SENSEMAKING_DESIGN__F2_CHOICE_OVERLOAD__part001.jsonl",
+      "bytes": 19845,
+      "sha256": "aaebba5594ef0911673318119e5994806181a6951f236f349bacfca631b73a58"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P2_SENSEMAKING_DESIGN__F2_CHOICE_OVERLOAD__part001.sources.jsonl",
+      "bytes": 4873,
+      "sha256": "da538751b022c42c7434880663af532c9642da5ef75f73ac25f7071abad0318e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P2_SENSEMAKING_DESIGN__F2_CHOICE_OVERLOAD__part002.jsonl",
+      "bytes": 10946,
+      "sha256": "21ae20cfaece4d22abcdc0a5647592b8b6a2a1b706b34c65ce2f45ba2e5056c4"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P2_SENSEMAKING_DESIGN__F2_CHOICE_OVERLOAD__part002.sources.jsonl",
+      "bytes": 3110,
+      "sha256": "1e618455060b017bf8f6436cf2cadb708d1d7748e12c107ad5390c07daea190f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P2_SENSEMAKING_DESIGN__F3_TIME_HORIZON_BLINDNESS__part001.jsonl",
+      "bytes": 19717,
+      "sha256": "b4f408ae64b97ae51f8428d14e9276f2896fa41ab86c312e163cbaf7b50eb11f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P2_SENSEMAKING_DESIGN__F3_TIME_HORIZON_BLINDNESS__part001.sources.jsonl",
+      "bytes": 5253,
+      "sha256": "635fc249cd0ab1ec30cb8968c0d059de29f4052071ef661f9291651fb8b81291"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P2_SENSEMAKING_DESIGN__F3_TIME_HORIZON_BLINDNESS__part002.jsonl",
+      "bytes": 1497,
+      "sha256": "aab4695c5e336a2ed45c0d1b44b89cff0fa0401c124ce2249f20816cd412ae75"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P2_SENSEMAKING_DESIGN__F3_TIME_HORIZON_BLINDNESS__part002.sources.jsonl",
+      "bytes": 465,
+      "sha256": "5a76c92fa0d823ac91d5cf8554073136f0d043565715ca8f2a7dccc18e96fb44"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P2_SENSEMAKING_DESIGN__F6_ENERGY_DEPLETION__part001.jsonl",
+      "bytes": 10944,
+      "sha256": "9e43ef2aac0c916dbc633dc3eca53290422efa091acff8f437f9773185858dea"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P2_SENSEMAKING_DESIGN__F6_ENERGY_DEPLETION__part001.sources.jsonl",
+      "bytes": 2565,
+      "sha256": "b5e7d38a446238862f825d5d426902cb96cfbe1115e06d7ee47e1346b4e08160"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P2_SENSEMAKING_DESIGN__F7_NOVELTY_STARVATION__part001.jsonl",
+      "bytes": 3287,
+      "sha256": "88e444cf50891911491266ca969719a43c0276b5c9f98c6729ab7299901403d2"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P2_SENSEMAKING_DESIGN__F7_NOVELTY_STARVATION__part001.sources.jsonl",
+      "bytes": 790,
+      "sha256": "107c0aa02cdaa02991f3ea70fe6470afd4d674024b4f15517e683a2bddc629e2"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P2_SENSEMAKING_DESIGN__F8_ISOLATION_DRIFT__part001.jsonl",
+      "bytes": 4810,
+      "sha256": "33de2b81d3a180b74d8a0ab828351dcd00840180fa86f42344a47febd19b4545"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P2_SENSEMAKING_DESIGN__F8_ISOLATION_DRIFT__part001.sources.jsonl",
+      "bytes": 415,
+      "sha256": "1d70c9e79d41810b8c85b5d4daa78736100f08e4c9d1e40740de769b9af18dc7"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P3_INITIATION_ACTIVATION__F1_INITIATION_PARALYSIS__part001.jsonl",
+      "bytes": 19401,
+      "sha256": "2eade7f3d260b9565cdc7724eb859141959bf7f992f6dcaa25ee9e74009fa5f1"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P3_INITIATION_ACTIVATION__F1_INITIATION_PARALYSIS__part001.sources.jsonl",
+      "bytes": 5928,
+      "sha256": "e79d32bbdfe5d58a95d8db391f8fae03c85798850793c5ca9d1cca58df214701"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P3_INITIATION_ACTIVATION__F1_INITIATION_PARALYSIS__part002.jsonl",
+      "bytes": 8145,
+      "sha256": "1ee9c04d51c6d729d664a9b936d75e387774fbdb634ca2cba0fa0e9b507daba2"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P3_INITIATION_ACTIVATION__F1_INITIATION_PARALYSIS__part002.sources.jsonl",
+      "bytes": 2255,
+      "sha256": "4c25558c977326e047636584df03c11e63e10669c5392e02c7db902fc0301b20"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P3_INITIATION_ACTIVATION__F2_CHOICE_OVERLOAD__part001.jsonl",
+      "bytes": 2918,
+      "sha256": "621e01fbd5ab7af73aa4e7bcc6405fe1e6c98903c0bb8fcdb327479b373bc334"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P3_INITIATION_ACTIVATION__F2_CHOICE_OVERLOAD__part001.sources.jsonl",
+      "bytes": 912,
+      "sha256": "1ac660c30448e5f8e46e52fa803d36dff69f82d5c95837e8d12dbd1658798240"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P3_INITIATION_ACTIVATION__F3_TIME_HORIZON_BLINDNESS__part001.jsonl",
+      "bytes": 2963,
+      "sha256": "22f3ebe09c610dba4a727a59cb3bd2987b97125a0b74195e9bd58ede35166668"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P3_INITIATION_ACTIVATION__F3_TIME_HORIZON_BLINDNESS__part001.sources.jsonl",
+      "bytes": 948,
+      "sha256": "a58665077691291c309c5c29df38a73b4cac2708d0637149db98957633bb6b2b"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P3_INITIATION_ACTIVATION__F4_MOTIVATIONAL_DECAY__part001.jsonl",
+      "bytes": 4379,
+      "sha256": "ae28881f39c615903246a06473aa84b132e02af6c50e2b3b5f978bd74d1781af"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P3_INITIATION_ACTIVATION__F4_MOTIVATIONAL_DECAY__part001.sources.jsonl",
+      "bytes": 902,
+      "sha256": "0615c8d222c3a2c7afc15f08249ed28a74492339fdf1a73366fcb8ff3fea9383"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P3_INITIATION_ACTIVATION__F5_RELAPSE_SPIRAL__part001.jsonl",
+      "bytes": 1923,
+      "sha256": "cfeb390ca667b2cc621f726b50df9572a99048dedd9b611b2a6da74c0230f5dd"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P3_INITIATION_ACTIVATION__F5_RELAPSE_SPIRAL__part001.sources.jsonl",
+      "bytes": 905,
+      "sha256": "b21b6c699d6cce1cdc5f0561414e18202f39e7117fd54b247d34f37acc95ebf0"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P3_INITIATION_ACTIVATION__F7_NOVELTY_STARVATION__part001.jsonl",
+      "bytes": 1443,
+      "sha256": "02b543aca6d219c539471308edf1ce7c791bda9a66439ee158c9d42dad56f055"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P3_INITIATION_ACTIVATION__F7_NOVELTY_STARVATION__part001.sources.jsonl",
+      "bytes": 457,
+      "sha256": "89b0968483b3d6d68ae1a84eda44f6136b0d0dd1dde678bd2318e1965d70f503"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P3_INITIATION_ACTIVATION__F8_ISOLATION_DRIFT__part001.jsonl",
+      "bytes": 3092,
+      "sha256": "45381711cd3d9d19b0fe685a28c29459f127b0d39e6d923cadca7193f2d3a9eb"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P3_INITIATION_ACTIVATION__F8_ISOLATION_DRIFT__part001.sources.jsonl",
+      "bytes": 1304,
+      "sha256": "513e34bb7e610ce58f501a77c40a01a9fa42073c57cf6ab31513d19edb5040f0"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P4_EXECUTION_PACING__F2_CHOICE_OVERLOAD__part001.jsonl",
+      "bytes": 7129,
+      "sha256": "3d3850a18b896705a96bb78b23e4e9eb4bd9364ba2bbc76f5f3608b0265d1d57"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P4_EXECUTION_PACING__F2_CHOICE_OVERLOAD__part001.sources.jsonl",
+      "bytes": 2291,
+      "sha256": "c16eb5b686b4b4bc6a460aa615368035dc4843588e9bef1fbd94b40704ab16d8"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P4_EXECUTION_PACING__F3_TIME_HORIZON_BLINDNESS__part001.jsonl",
+      "bytes": 10824,
+      "sha256": "b7eef57233ee66955f500a986b105b5f9287878d6946618c21d75ee1c96640ae"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P4_EXECUTION_PACING__F3_TIME_HORIZON_BLINDNESS__part001.sources.jsonl",
+      "bytes": 2037,
+      "sha256": "39ea5aa500e8d5984d02663e3c0c989808b8515fafb6b9f15793f5a3451eb871"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P4_EXECUTION_PACING__F4_MOTIVATIONAL_DECAY__part001.jsonl",
+      "bytes": 2968,
+      "sha256": "9d0ae1e8da9ad0f98419de27da7e1355b3ca17369ce457cddbd44c1a2b7c7be3"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P4_EXECUTION_PACING__F4_MOTIVATIONAL_DECAY__part001.sources.jsonl",
+      "bytes": 882,
+      "sha256": "26d02a5badaca89df5751e20639bf7fa6e90a0b969d90ab114a64425b015f99f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P4_EXECUTION_PACING__F5_RELAPSE_SPIRAL__part001.jsonl",
+      "bytes": 6258,
+      "sha256": "7b4626dba516d090d5c864d6223a9fd04e75d2ea5b54731a9c1053262710b385"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P4_EXECUTION_PACING__F5_RELAPSE_SPIRAL__part001.sources.jsonl",
+      "bytes": 1733,
+      "sha256": "1a722260bf033832133fb1b4c9d31ebac8a8e628ace87afcc7be632c4921c987"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P4_EXECUTION_PACING__F6_ENERGY_DEPLETION__part001.jsonl",
+      "bytes": 20964,
+      "sha256": "15a59396ff8b662e5f40fabe85f4705d3a5327fdb922e0bd33bbac5b4b3d9c4e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P4_EXECUTION_PACING__F6_ENERGY_DEPLETION__part001.sources.jsonl",
+      "bytes": 4006,
+      "sha256": "a072e64eed0f9632e6b6fd1a68f2ef1cbd4126001f0ee25fbeb628dfa63ffa56"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P4_EXECUTION_PACING__F6_ENERGY_DEPLETION__part002.jsonl",
+      "bytes": 10647,
+      "sha256": "ab0d9121df61c25a81c261f7ba508934ecc1b9f986615cdc22fb64b08e96014a"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P4_EXECUTION_PACING__F6_ENERGY_DEPLETION__part002.sources.jsonl",
+      "bytes": 2700,
+      "sha256": "86a597622d37d3da688f165b137176f4a36c6c41bfe7e31379955c3c3384c592"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P4_EXECUTION_PACING__F7_NOVELTY_STARVATION__part001.jsonl",
+      "bytes": 4614,
+      "sha256": "591a80a6dab2dcce0b8751688a0c0eafad9747fe994aed4cacae9defd14bd92e"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P4_EXECUTION_PACING__F7_NOVELTY_STARVATION__part001.sources.jsonl",
+      "bytes": 1884,
+      "sha256": "ef68d7a1d43b4fd695beb5e485ea889357437374ec115d9063da96a99ebee1b8"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P4_EXECUTION_PACING__F8_ISOLATION_DRIFT__part001.jsonl",
+      "bytes": 7647,
+      "sha256": "e0ef2e4451782db21b8d50e938d3d490e428289617278436163f00d9fdfd4fbb"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P4_EXECUTION_PACING__F8_ISOLATION_DRIFT__part001.sources.jsonl",
+      "bytes": 1662,
+      "sha256": "5baf96e2a05fcfbf9f22b2aa0bf174d958bab0d50663c167bcbb1d70834ba158"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P5_FEEDBACK_REWARD__F1_INITIATION_PARALYSIS__part001.jsonl",
+      "bytes": 1391,
+      "sha256": "6c4e5880b2261e36af0ca7c900a0096e91748c26a4e5ec0b78c405fe3c274fa6"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P5_FEEDBACK_REWARD__F1_INITIATION_PARALYSIS__part001.sources.jsonl",
+      "bytes": 433,
+      "sha256": "0d001f984cd55c02592aee74fc9850a2c00b5e4a39d86ebece58158ed11e0853"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P5_FEEDBACK_REWARD__F2_CHOICE_OVERLOAD__part001.jsonl",
+      "bytes": 1542,
+      "sha256": "2a5d40c71dd82b77d5c7a6606e0c0cf997336bef76a12d17b52f887196921d6a"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P5_FEEDBACK_REWARD__F2_CHOICE_OVERLOAD__part001.sources.jsonl",
+      "bytes": 465,
+      "sha256": "b7eb1d0393b351c941d8928d63a6c99f812e35247707c5eeb253674b6e2fa458"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P5_FEEDBACK_REWARD__F3_TIME_HORIZON_BLINDNESS__part001.jsonl",
+      "bytes": 7247,
+      "sha256": "5ded5263ebc88c152e770d72288f114b82f050646de97206373c97f2a8219d39"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P5_FEEDBACK_REWARD__F3_TIME_HORIZON_BLINDNESS__part001.sources.jsonl",
+      "bytes": 2098,
+      "sha256": "4cab84068fb1e615524215a44f10a28f870e7ea4a2a6dbc044392cc7ad023816"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P5_FEEDBACK_REWARD__F4_MOTIVATIONAL_DECAY__part001.jsonl",
+      "bytes": 12978,
+      "sha256": "70e6f6d9678bf8213c09798db39b3878f18ab2256139f7f4dc0636fa3b5ef606"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P5_FEEDBACK_REWARD__F4_MOTIVATIONAL_DECAY__part001.sources.jsonl",
+      "bytes": 4828,
+      "sha256": "dd82043b0049473f26d83132f30d5b4f4308da3a255268cc6ac2a81c0d201167"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P5_FEEDBACK_REWARD__F5_RELAPSE_SPIRAL__part001.jsonl",
+      "bytes": 2074,
+      "sha256": "d30c84a77375408008b88a0171223da4a050f8d2db91bf9cd595c495e4bf38bc"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P5_FEEDBACK_REWARD__F5_RELAPSE_SPIRAL__part001.sources.jsonl",
+      "bytes": 472,
+      "sha256": "f43c10c2a90d223d6ce218b8eb300f44a699bb796d4ca5515d88ad01a0fbf218"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P5_FEEDBACK_REWARD__F6_ENERGY_DEPLETION__part001.jsonl",
+      "bytes": 4678,
+      "sha256": "dc748def80a6dd548cfd3c555d1bf9002c4b26463af3d626006c86fde3043846"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P5_FEEDBACK_REWARD__F6_ENERGY_DEPLETION__part001.sources.jsonl",
+      "bytes": 847,
+      "sha256": "e6663d4b3a11c0e23300c5ef898d71b070388ac8ef1c02a6b3a7b1141e4e3a89"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P5_FEEDBACK_REWARD__F7_NOVELTY_STARVATION__part001.jsonl",
+      "bytes": 8461,
+      "sha256": "9e2cf651553f92208df85a25115167ac0b7f73213f8e00ba7ab5421eeb4e05c6"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P5_FEEDBACK_REWARD__F7_NOVELTY_STARVATION__part001.sources.jsonl",
+      "bytes": 2225,
+      "sha256": "a64069a87564f721ae2801dac5cbc8bcf89e4eeb13e8d40fc4b7a16d3694ea8f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P5_FEEDBACK_REWARD__F8_ISOLATION_DRIFT__part001.jsonl",
+      "bytes": 4561,
+      "sha256": "995459f06e7fd0b729e9478ff99d87616769216b88c1add0334ab9a71ea1247f"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P5_FEEDBACK_REWARD__F8_ISOLATION_DRIFT__part001.sources.jsonl",
+      "bytes": 1672,
+      "sha256": "b65a05bbeb8f462967e096a37d752fd20464e46809ed99a51c0d64a842d32fcf"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F1_INITIATION_PARALYSIS__part001.jsonl",
+      "bytes": 1485,
+      "sha256": "3fd54f45661d967e6cfdb5d69463a917fe8815e4b280a7df75bb8eceadd688ea"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F1_INITIATION_PARALYSIS__part001.sources.jsonl",
+      "bytes": 444,
+      "sha256": "3ba2ed3a0f46aec6016106e739c5175796746e4d9135c03757ac10687e7d73a4"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F2_CHOICE_OVERLOAD__part001.jsonl",
+      "bytes": 4266,
+      "sha256": "9d383915039c7888b0e0bb1d68c8b2b9536ea8e93e2a480fc525b6c547740df2"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F2_CHOICE_OVERLOAD__part001.sources.jsonl",
+      "bytes": 1743,
+      "sha256": "d1993238e31f340d3e0398c4e28c67359aa6595f9d5325b41f51f0f2e5cc4b23"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F3_TIME_HORIZON_BLINDNESS__part001.jsonl",
+      "bytes": 8694,
+      "sha256": "d61cc15d148571fc61131ae1569e4155ff70d01c62c99a7cf2d74e3f401e2e06"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F3_TIME_HORIZON_BLINDNESS__part001.sources.jsonl",
+      "bytes": 2059,
+      "sha256": "11301ebbd82940ac5c4251dffefbb38bac50f572c86b93e04858521ad3a60976"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F4_MOTIVATIONAL_DECAY__part001.jsonl",
+      "bytes": 5737,
+      "sha256": "eda106467b05a097fb8c62aebef2251d37493838a3c9aadc417a1ca3250a8512"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F4_MOTIVATIONAL_DECAY__part001.sources.jsonl",
+      "bytes": 1294,
+      "sha256": "92b461f84af264289c505a343f1237c305f9956b06b74bb94da7fdee588beaf2"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F5_RELAPSE_SPIRAL__part001.jsonl",
+      "bytes": 18960,
+      "sha256": "d1e7f8d7b60b5f453d891506318cf4556bf23cf35215fdeafff898c2d7df3c1b"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F5_RELAPSE_SPIRAL__part001.sources.jsonl",
+      "bytes": 5285,
+      "sha256": "f7c9eebe85f414a6e06e7656d9012b6f1dc82caf49ff10acb0f3bbf991a95888"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F5_RELAPSE_SPIRAL__part002.jsonl",
+      "bytes": 4750,
+      "sha256": "81a78cae3158497fbaeee140ccb3a528f6db2dd15aad50ce0e69c111dd171757"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F5_RELAPSE_SPIRAL__part002.sources.jsonl",
+      "bytes": 1289,
+      "sha256": "4aa4f096ce31351055ec31a0aa851d81fc5827272a5deb9471f7d3501ed6cbe3"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F6_ENERGY_DEPLETION__part001.jsonl",
+      "bytes": 8990,
+      "sha256": "78584d330fca295aa58a4da54c721dfaab490eb3aba3fcbc5ab93c892993fd61"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F6_ENERGY_DEPLETION__part001.sources.jsonl",
+      "bytes": 2678,
+      "sha256": "cd189fd452f6e12168d1a842fd78bd2762131dae61bbf31914e86c363ba12e10"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F7_NOVELTY_STARVATION__part001.jsonl",
+      "bytes": 1485,
+      "sha256": "9c85e130b9fa378a83791020ed0871fd1cd19a7fb30ee8b0caf723d1e8729e59"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F7_NOVELTY_STARVATION__part001.sources.jsonl",
+      "bytes": 497,
+      "sha256": "ef3470728fad9525ee39da7bd806f299545614fc48012ef975ae308d1adca7f6"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F8_ISOLATION_DRIFT__part001.jsonl",
+      "bytes": 1390,
+      "sha256": "b0e082720476c5d621f230fad7e6ea5a19bfda2f0dc3f2e9128771887ce7bfb5"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/SHARD_P6_RECOVERY_ADAPTATION__F8_ISOLATION_DRIFT__part001.sources.jsonl",
+      "bytes": 403,
+      "sha256": "bea93816ab861f09bd03b08c186e82be9fa961e233c3b515bdcb5acba5527da7"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/compact_findings_index_part001.txt",
+      "bytes": 34345,
+      "sha256": "74e0910fdec511afa5d2461f0c1e48295c5995fffdf1c1ff739b141f15394786"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/compact_findings_index_part002.txt",
+      "bytes": 34946,
+      "sha256": "3727bae09d7b1fbde3e5ba56aec300da0ff75b6602b77eaf1211190bb9977c5b"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/compact_findings_index_part003.txt",
+      "bytes": 34557,
+      "sha256": "94f7b80af195e9e075897bf58d47270f8d1a6b2407e07822a2479545c2bd33a7"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/compact_findings_index_part004.txt",
+      "bytes": 34660,
+      "sha256": "9a1578bfe09d3373f24d79053b40c39e122dc473de56cd4e1a7390c75294cd5d"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/compact_findings_index_part005.txt",
+      "bytes": 25965,
+      "sha256": "5aab63e4a003535b7234e8bdcd78c8472620e3bbb007ad2915206a3179fd8f13"
+    },
+    {
+      "path": "atlas-run-2026-11-12/shards/full-shards-211findings/shards_manifest.json",
+      "bytes": 43655,
+      "sha256": "195bdd6e658b413ba9891ec62fcc4ec26464170e2ef5d85f71efe50b4b97c892"
+    },
+    {
+      "path": "atlas-run-2026-11-12/taxonomy.json",
+      "bytes": 27405,
+      "sha256": "317bd62120fad45150543fbb752740ddb8b47c7b7ea00e0bd5f60d96cef94dbd"
+    },
+    {
+      "path": "atlas-run-2026-11-12/tools/atlas.py",
+      "bytes": 64666,
+      "sha256": "a47e9b5d51db57b5888bb0deee79870b7e2e74e055cff50df5ccf78b39592035"
+    }
+  ],
+  "files_count": 419,
+  "unpacked_bytes": 7407580,
+  "zip_crc": "passed",
+  "unsafe_paths": 0,
+  "external_code_executed": false,
+  "purpose": "Preserved external model research; not accepted by importing",
+  "received_from": "User upload sediment file_00000000675081f58066f5ead2f91c32",
+  "recorded_at": "2026-11-13T11:06:15.444661+03:00",
+  "interpretation": "External author claims completed study; coordinator review is separate and does not endorse claims.",
+  "original_inputs_modified": false
+}

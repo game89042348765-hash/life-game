@@ -1,0 +1,6 @@
+{
+  "eligible": 204,
+  "selected": 200,
+  "target_reached": true,
+  "status": "draft_requires_content_and_source_audit"
+}

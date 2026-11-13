@@ -1,0 +1,177 @@
+{
+  "search_packets": 13,
+  "registered_search_packets": 4,
+  "missing_search_tasks_in_registry": [
+    "WAVE1-SEARCH-01",
+    "WAVE1-SEARCH-02",
+    "WAVE1-SEARCH-03",
+    "WAVE1-SEARCH-04",
+    "WAVE2-SEARCH-01",
+    "WAVE2-SEARCH-02",
+    "WAVE2-SEARCH-03",
+    "WAVE2-SEARCH-04",
+    "WAVE2-SEARCH-05"
+  ],
+  "run_status": "calibration_planned",
+  "search_logs": [
+    {
+      "task": "WAVE1-SEARCH-01",
+      "rows": 1,
+      "queried": [
+        "Wave 1 targeted search for WAVE1-SEARCH-01 (C01, C02, C04)"
+      ],
+      "tools": [
+        "google:search"
+      ]
+    },
+    {
+      "task": "WAVE2-SEARCH-04",
+      "rows": 1,
+      "queried": [
+        "Wave 2 full research expansion for WAVE2-SEARCH-04 (C19, C20, C21, C22, C23, C24)"
+      ],
+      "tools": [
+        "google:search"
+      ]
+    },
+    {
+      "task": "WAVE1-SEARCH-03",
+      "rows": 1,
+      "queried": [
+        "Wave 1 targeted search for WAVE1-SEARCH-03 (C19, C20, C27)"
+      ],
+      "tools": [
+        "google:search"
+      ]
+    },
+    {
+      "task": "WAVE1-SEARCH-04",
+      "rows": 1,
+      "queried": [
+        "Wave 1 Step 2 search for WAVE1-SEARCH-04 (C23, C24, C25, C26)"
+      ],
+      "tools": [
+        "google:search"
+      ]
+    },
+    {
+      "task": "CAL-SEARCH-02",
+      "rows": 4,
+      "queried": [
+        "Strategies to Prevent Worsening of Symptoms CDC ME/CFS AND Spoon theory Christine Miserandino lymphoma-action",
+        "The Official Guide to The Kanban Method kanban.university AND Nine personal kanban board layouts goalsandprogress",
+        "Don't Put That In Your Backlog Humanizing Work AND Backlog Bankruptcy Why Your Jira Backlog Keeps Growing keypup",
+        "Protecting streaks from site issues Duolingo blog AND Self-compassion increases self-improvement motivation PubMed 22645164 AND Gold Silver Bronze Routines envisionadhd"
+      ],
+      "tools": [
+        "arena.ai+google:search"
+      ]
+    },
+    {
+      "task": "CAL-SEARCH-03",
+      "rows": 4,
+      "queried": [
+        "Hades God Mode damage resistance progression design phenixxgaming hades.fandom",
+        "gamescrye progression design without the grind OR appscale game economy sinks faucets inflation",
+        "thedecisionlab streak creep OR yukaichou overjustification effect intrinsic retention paradox",
+        "g2a pity system mobile games OR dotgg gacha pity OR acnh nook miles"
+      ],
+      "tools": [
+        "arena.ai+google:search+browse",
+        "google:search"
+      ]
+    },
+    {
+      "task": "WAVE2-SEARCH-02",
+      "rows": 1,
+      "queried": [
+        "Wave 2 full research expansion for WAVE2-SEARCH-02 (C07, C08, C09, C10, C11, C12)"
+      ],
+      "tools": [
+        "google:search"
+      ]
+    },
+    {
+      "task": "WAVE2-SEARCH-05",
+      "rows": 1,
+      "queried": [
+        "Wave 2 full research expansion for WAVE2-SEARCH-05 (C25, C26, C27, C28, C29, C30, C31, C32)"
+      ],
+      "tools": [
+        "google:search"
+      ]
+    },
+    {
+      "task": "WAVE2-SEARCH-03",
+      "rows": 1,
+      "queried": [
+        "Wave 2 full research expansion for WAVE2-SEARCH-03 (C13, C14, C15, C16, C17, C18)"
+      ],
+      "tools": [
+        "google:search"
+      ]
+    },
+    {
+      "task": "WAVE2-SEARCH-01",
+      "rows": 1,
+      "queried": [
+        "Wave 2 full research expansion for WAVE2-SEARCH-01 (C01, C02, C03, C04, C05, C06)"
+      ],
+      "tools": [
+        "google:search"
+      ]
+    },
+    {
+      "task": "WAVE1-SEARCH-02",
+      "rows": 1,
+      "queried": [
+        "Wave 1 Step 2 search for WAVE1-SEARCH-02 (C17, C18, C32)"
+      ],
+      "tools": [
+        "google:search"
+      ]
+    },
+    {
+      "task": "CAL-SEARCH-01",
+      "rows": 4,
+      "queried": [
+        "\"goblin.tools\" OR \"Amazing Marvin\" timeblocking capture procrastination mechanics documentation",
+        "\"SuperMemo\" incremental reading OR \"prospective memory\" task reminder implementation",
+        "\"Mark Forster\" Autofocus OR \"Final Version\" time management rules algorithm",
+        "\"Skedpal\" OR \"Motion\" liquid calendar time maps adaptive rescheduling documentation"
+      ],
+      "tools": [
+        "google:search+browse"
+      ]
+    },
+    {
+      "task": "CAL-SEARCH-04",
+      "rows": 3,
+      "queried": [
+        "\"Obsidian\" file recovery local snapshots sync conflict resolution documentation",
+        "\"Actual Budget\" OR \"Logseq\" local-first CRDT sync conflict undo history documentation",
+        "\"Anki\" database backup automatic export data ownership documentation"
+      ],
+      "tools": [
+        "google:search+browse"
+      ]
+    }
+  ],
+  "game_related_findings_by_any_C21_C26_tag": 54,
+  "findings_by_primary_source_task": {
+    "CAL-SEARCH-01": 12,
+    "CAL-SEARCH-02": 15,
+    "CAL-SEARCH-03": 12,
+    "CAL-SEARCH-04": 11,
+    "WAVE1-SEARCH-01": 4,
+    "WAVE1-SEARCH-02": 5,
+    "WAVE1-SEARCH-03": 4,
+    "WAVE1-SEARCH-04": 12,
+    "WAVE2-SEARCH-01": 27,
+    "WAVE2-SEARCH-02": 27,
+    "WAVE2-SEARCH-03": 27,
+    "WAVE2-SEARCH-04": 27,
+    "WAVE2-SEARCH-05": 28
+  },
+  "sources_notes_verified_via_search": 63
+}
