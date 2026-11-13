@@ -1,0 +1,85 @@
+{
+  "template": false,
+  "run_id": "HYDRA-INTERNET-001",
+  "created_at": "2026-11-13T07:55:01.104412+00:00",
+  "protocol_version": "2.1",
+  "taxonomy_version": "2.1",
+  "rubric_version": "2.1",
+  "status": "calibration_collecting",
+  "purpose": "Справочный атлас возможностей; не обязательный план разработки",
+  "application_context_policy": "No LifeGame feature list in search, analysis or general selection; separate mapping after release",
+  "tools_observed": {
+    "web_search": false,
+    "open_pages": "curl GET and lxml text extraction verified on Notion, Wikipedia and GitHub Docs",
+    "read_files": true,
+    "write_files": true,
+    "execute_python": "3.12.14",
+    "separate_contexts": "collaboration.spawn_agent supports fork_turns=none; actual calls recorded as made",
+    "http_search": "Bing readable results; Google JS shell; DuckDuckGo CAPTCHA"
+  },
+  "participants": [
+    {
+      "participant_id": "/root",
+      "roles": [
+        "coordinator",
+        "acceptance"
+      ],
+      "context_type": "root",
+      "model_id": null
+    }
+  ],
+  "languages": [
+    "ru",
+    "en"
+  ],
+  "research_bounds": {
+    "raw_findings_orientation": "1000–2000 planning/organization plus about 1000 game-related; may grow beyond 10000; no padding",
+    "source_classes": [
+      "official_documentation",
+      "source_code",
+      "research",
+      "practice_manual",
+      "first_person_report",
+      "review",
+      "other"
+    ],
+    "stop_rule": "coverage and two comparable targeted waves with less than 10 percent new canonical elements; remaining gaps documented",
+    "budget": null
+  },
+  "selection": {
+    "target": 200,
+    "core": 100,
+    "quality_floor": 60,
+    "mode": "research",
+    "weights": {
+      "value": 0.3,
+      "burden": 0.15,
+      "long_term": 0.2,
+      "adaptability": 0.1,
+      "agency": 0.15,
+      "composability": 0.1
+    },
+    "rare_gems_quota": 0
+  },
+  "approved_snapshot": null,
+  "known_limits": [
+    "No specialized search connector",
+    "Google shell and DuckDuckGo CAPTCHA unusable",
+    "Bing provides links but not a guarantee of relevance",
+    "Public HTTP access does not establish account/API permissions",
+    "Initial Todoist guessed article URL redirects to help index; not read as an article"
+  ],
+  "source_commit": "98680d75f1c4512b9b1c32ce03e073081300012f",
+  "source_branch": "lab/synthetic-users",
+  "research_branch": "research/hydra-internet",
+  "bundle_version": "2.1.1+lab.1",
+  "model_id": null,
+  "tokens": null,
+  "monetary_cost": null,
+  "measurement_note": "Model backend ID, token usage and monetary cost are not exposed; do not infer them.",
+  "bundle_integrity": {
+    "verified_files": 53,
+    "command": "python3 -B release/tools/atlas.py verify release",
+    "result": "passed"
+  }
+}

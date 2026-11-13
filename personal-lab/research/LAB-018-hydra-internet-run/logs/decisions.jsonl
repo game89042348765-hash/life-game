@@ -1,0 +1,1 @@
+{"id": "D-HI-001", "at": "2026-11-13T07:55:01.104412+00:00", "type": "initialization", "reason": "Clean checkout; created research branch from fetched lab ref. No source, application or shared status changes. Calibration starts with fixed template parameters.", "source_commit": "98680d75f1c4512b9b1c32ce03e073081300012f"}
