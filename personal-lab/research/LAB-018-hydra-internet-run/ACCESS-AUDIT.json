@@ -205,6 +205,40 @@
       "extracted_characters": 288,
       "text_preview": "DuckDuckGo DuckDuckGo Unfortunately, bots use DuckDuckGo too. Please complete the following challenge to confirm this search was made by a human. Select all squares containing a duck: Submit Images not loading? Please email the following code to: error-lite+66d9@duckduckgo.com Code: 66d9",
       "useful_text_review": "unusable_bot_challenge; not_bypassed"
+    },
+    {
+      "kind": "search",
+      "original_url": "https://search.yahoo.com/search?p=implementation+intentions+systematic+review",
+      "final_url": "https://search.yahoo.com/search?p=implementation+intentions+systematic+review",
+      "retrieved_at": "2026-11-13T07:59:54.311190+00:00",
+      "http_status": 500,
+      "http_connect": 200,
+      "redirect_count": 0,
+      "curl_exit": 0,
+      "error": null,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "title": null,
+      "extracted_characters": 0,
+      "text_preview": "",
+      "useful_text_review": "HTTP500 empty response for this query; no useful text"
+    },
+    {
+      "kind": "search",
+      "original_url": "https://search.brave.com/search?q=implementation+intentions+systematic+review",
+      "final_url": "https://search.brave.com/search?q=implementation+intentions+systematic+review",
+      "retrieved_at": "2026-11-13T07:59:54.802872+00:00",
+      "http_status": 200,
+      "http_connect": 200,
+      "redirect_count": 0,
+      "curl_exit": 0,
+      "error": null,
+      "bytes": 228390,
+      "sha256": "f431a4c575ea74ab3cdd26e5af02d649aacfda23461d6db12a89fadeede10060",
+      "title": "implementation intentions systematic review - Brave Search",
+      "extracted_characters": 9258,
+      "text_preview": "implementation intentions systematic review - Brave Search Ask All Images News Videos Maps Goggles More PubMed pubmed.ncbi.nlm.nih.gov › 41784001 The effectiveness of implementation intentions in children: A systematic review and meta-analysis - PubMed March 5, 2026 - Implementation intentions are simple plans that could promote goal achievement in children. However, little is known about their overall effectiveness and moderating factors in children. PLOS journals.plos.org › plosone › article Impact of implementation intentions on physical activity practice in adults: A systematic review and ",
+      "useful_text_review": "readable search links and snippets; leads only, underlying pages require reading"
     }
   ],
   "manual_review_at": "2026-11-13T07:57:45.968798+00:00",
@@ -213,6 +247,8 @@
     "Google shell and DuckDuckGo CAPTCHA unusable",
     "Bing provides links but not a guarantee of relevance",
     "Public HTTP access does not establish account/API permissions",
-    "Initial Todoist guessed article URL redirects to help index; not read as an article"
+    "Initial Todoist guessed article URL redirects to help index; not read as an article",
+    "Yahoo worked in CAL-03 context but root implementation-intentions query returned HTTP500; availability is query-dependent",
+    "Brave organic results verified in root HTTP search; snippets remain leads"
   ]
 }

@@ -1,0 +1,18 @@
+{
+  "task_id": "CAL-SEARCH-01",
+  "decision": "accepted",
+  "at": "2026-11-13T08:10:09.709077+00:00",
+  "coordinator_id": "/root",
+  "checks": {
+    "manifest_files": 7,
+    "hash_errors": [],
+    "atlas_validate": "passed",
+    "sources": 17,
+    "findings": 12,
+    "source_sample_required": 5,
+    "source_sample_reopened_and_reviewed": 5
+  },
+  "manifest_sha256": "5c893732a676718fbf7420c7444838e704a0e232ccc6c350f531f71f56852f08",
+  "source_evidence_ref": "checks/intake-CAL-SEARCH-01.json",
+  "limits": "Sample acceptance is not final all-card source audit; primary collection by separate subagent, same inherited model family unknown."
+}

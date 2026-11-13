@@ -1,0 +1,120 @@
+{
+  "task_id": "CAL-SEARCH-01",
+  "attempt": 1,
+  "stage": "search",
+  "status": "submitted",
+  "input_snapshot": "Hybrid-2.1.1+lab.1@98680d75f1c4512b9b1c32ce03e073081300012f",
+  "protocol_version": "2.1",
+  "taxonomy_version": "2.1",
+  "rubric_version": "2.1",
+  "created_at": "2026-11-13T08:08:57.070163+00:00",
+  "read_ids": [
+    "S-HI-C01-001",
+    "S-HI-C01-002",
+    "S-HI-C01-003",
+    "S-HI-C01-004",
+    "S-HI-C01-005",
+    "S-HI-C01-006",
+    "S-HI-C01-007",
+    "S-HI-C01-008",
+    "S-HI-C01-009",
+    "S-HI-C01-010",
+    "S-HI-C01-011",
+    "S-HI-C01-012",
+    "S-HI-C01-013",
+    "S-HI-C01-014",
+    "S-HI-C01-015",
+    "S-HI-C01-016",
+    "S-HI-C01-017"
+  ],
+  "read_inputs": [
+    "tasks/CAL-SEARCH-01.json",
+    "DATA_CONTRACT.md",
+    "TAXONOMY.md",
+    "SYSTEM.md",
+    "PROMPTS/01-SEARCH.md"
+  ],
+  "input_verification": {
+    "matched_sha256": {
+      "PROMPTS/01-SEARCH.md": "50070e7c43ddbcd8c93dd3a54a36069de04b0ea1d541de994bf29949d48e53cc",
+      "DATA_CONTRACT.md": "8a785c5249d4008cd31cdef41280daf22372bfd127989bde51fd86ac9ac88bad",
+      "TAXONOMY.md": "e42b9a34e6f742ee6e2b683454360361a1173f1e8d386dd31ef73ac3524b5ff2",
+      "SYSTEM.md": "9e0cf21146ee76c95b2b64832fae6630cbd9d0fc91accfbfb0e655c227013594"
+    },
+    "not_independently_checked": [
+      "taxonomy.json: outside explicitly limited reading scope"
+    ]
+  },
+  "output_counts": {
+    "sources": 17,
+    "accessed_sources": 17,
+    "findings": 12,
+    "verified_findings": 12,
+    "leads": 1,
+    "inaccessible_leads": 1,
+    "search_log": 47,
+    "elements": 0,
+    "ratings": 0,
+    "existence_claims": 20,
+    "risk_claims": 7,
+    "failure_claims": 7,
+    "benefit_claims": 0
+  },
+  "limitations": [
+    "Специализированного веб-поиска нет; Google HTTP200 был JS-shell, DuckDuckGo HTTP202 CAPTCHA, Bing нерелевантен, два запроса Yahoo HTTP500. Использованы публичные GET и навигация/внутренний поиск документации.",
+    "Оригинальная Hipster PDA страница перенаправляет на parked page и сохранена только как inaccessible lead.",
+    "17 текстов подтверждают существование документированных процедур, не величину пользы. Экспериментальные проверки, логин, изменения настроек, реальные уведомления и платные API не выполнялись.",
+    "Русский источник — локализация английского Google Help в общей origin_group. Независимого русского первоисточника в пакете нет.",
+    "Remind подтверждён историческими PDF-слайдами copyright 2007; актуальная версия программы не запускалась. Taskwarrior подтверждён документацией с учебными датами 2014–2015, без установления версии.",
+    "12 сырых находок не равны 12 нормализованным независимым элементам; глобальное объединение и независимая содержательная приёмка впереди. Остановка по бюджету, насыщение не установлено.",
+    "Проверен отдельный статический валидатор полей, ID и ссылок. Штатный tools/atlas.py не читался и не запускался из-за заданной области чтения.",
+    "Манифест не включает собственный хеш; files перечисляет остальные семь файлов. Полные страницы и PDF оставлены вне checkout в /tmp."
+  ],
+  "validation": {
+    "jsonl_parsed": true,
+    "required_fields": true,
+    "unique_ids": true,
+    "source_and_log_references": true,
+    "verified_existence_accessed_links": true,
+    "task_byte_identical": true,
+    "output_counts_reconciled": true,
+    "content_independently_audited": false
+  },
+  "files": [
+    {
+      "path": "TASK.json",
+      "bytes": 1925,
+      "sha256": "4c80ccff36ef633e769dedb5b0ed8d744dac18964f53221a50f7fbc7f0309768"
+    },
+    {
+      "path": "sources.jsonl",
+      "bytes": 18477,
+      "sha256": "12dee33441ae9d104df3677adb40101013bb8189d9c999704a64128b8e3b59ee"
+    },
+    {
+      "path": "findings.jsonl",
+      "bytes": 28967,
+      "sha256": "6afbb33215b840053991d614f6ab1813dff3d7ce5268dc319e29aba9a7d01ce3"
+    },
+    {
+      "path": "leads.jsonl",
+      "bytes": 957,
+      "sha256": "c6f317b6bdeac8d7f7f7a36038090ffcf945e9d5280aeb86ee4430e8eb2a7335"
+    },
+    {
+      "path": "search_log.jsonl",
+      "bytes": 41562,
+      "sha256": "367650d35a90ddaadc1863ae054126025d9be5d9794600a55626c5890b277ee8"
+    },
+    {
+      "path": "COVERAGE.md",
+      "bytes": 4973,
+      "sha256": "3e201485fb5609e542533eac0923e18346956c3b08ad0777c8253a7cf3b691e9"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 6241,
+      "sha256": "ca601ebb66f2d4d4f678c06366ba20c171c12d26a2248591ba2abd643494488a"
+    }
+  ]
+}

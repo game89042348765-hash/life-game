@@ -1,5 +1,5 @@
 task_id,stage,owner_id,scope,input_snapshot,protocol_version,status,attempt,submitted_path,accepted_path,issues,next_action
-CAL-SEARCH-01,search,/root/cal_search_01,"C05,C08",Hybrid-2.1.1+lab.1@98680d75f1c4512b9b1c32ce03e073081300012f,2.1,assigned,1,incoming/CAL-SEARCH-01/attempt-001,,,Collect and submit real sources
+CAL-SEARCH-01,search,/root/cal_search_01,"C05,C08",Hybrid-2.1.1+lab.1@98680d75f1c4512b9b1c32ce03e073081300012f,2.1,accepted,1,incoming/CAL-SEARCH-01/attempt-001,accepted/CAL-SEARCH-01/attempt-001,,"Full normalization, analysis and independent review"
 CAL-SEARCH-02,search,/root/cal_search_02,"C09,C12",Hybrid-2.1.1+lab.1@98680d75f1c4512b9b1c32ce03e073081300012f,2.1,assigned,1,incoming/CAL-SEARCH-02/attempt-001,,,Collect and submit real sources
 CAL-SEARCH-03,search,/root/cal_search_03,"C21,C22",Hybrid-2.1.1+lab.1@98680d75f1c4512b9b1c32ce03e073081300012f,2.1,assigned,1,incoming/CAL-SEARCH-03/attempt-001,,,Collect and submit real sources
 CAL-SEARCH-04,search,/root/cal_search_04,"C28,C29",Hybrid-2.1.1+lab.1@98680d75f1c4512b9b1c32ce03e073081300012f,2.1,assigned,1,incoming/CAL-SEARCH-04/attempt-001,,,Collect and submit real sources
