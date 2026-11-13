@@ -1,0 +1,63 @@
+{
+  "task_id": "LAB-020",
+  "status": "payload_delivery_verified",
+  "checked_at": "2026-11-13T11:07:44.537064+03:00",
+  "payload_commit": "cca88826b2a17c65600308e0b993c784a8adcc7f",
+  "branch": "lab/synthetic-users",
+  "remote_ref_matches": true,
+  "remote_main": "90df9542bbffa5651fd31bdad12460a4c586c3ef",
+  "main_unchanged_by_this_task": true,
+  "pinned_files": [
+    {
+      "path": "personal-lab/research/LAB-020-external-atlas-review/README.md",
+      "http_status": 200,
+      "bytes": 4833,
+      "sha256": "ac35900a870e1e2d9ae43ff17bfae8574ebf519ebc014a2e76ebe5431462a60d",
+      "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/cca88826b2a17c65600308e0b993c784a8adcc7f/personal-lab/research/LAB-020-external-atlas-review/README.md"
+    },
+    {
+      "path": "personal-lab/research/LAB-020-external-atlas-review/REVIEW.md",
+      "http_status": 200,
+      "bytes": 17377,
+      "sha256": "b341e3f4ce8be4c41bc59dd9ac0b426c17bb4cc685857133591426833fe313d8",
+      "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/cca88826b2a17c65600308e0b993c784a8adcc7f/personal-lab/research/LAB-020-external-atlas-review/REVIEW.md"
+    },
+    {
+      "path": "personal-lab/research/LAB-020-external-atlas-review/REVISION_REQUEST.md",
+      "http_status": 200,
+      "bytes": 8449,
+      "sha256": "4f99b24a67f8df5a4dde23753449b43530c332e08d57ef438e4aa8084052ad29",
+      "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/cca88826b2a17c65600308e0b993c784a8adcc7f/personal-lab/research/LAB-020-external-atlas-review/REVISION_REQUEST.md"
+    },
+    {
+      "path": "personal-lab/research/LAB-020-external-atlas-review/SOURCE.json",
+      "http_status": 200,
+      "bytes": 93273,
+      "sha256": "33b9b55183088b18b0939b262a607320c0ddedd61343ea8b2579cccf40fbdd56",
+      "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/cca88826b2a17c65600308e0b993c784a8adcc7f/personal-lab/research/LAB-020-external-atlas-review/SOURCE.json"
+    },
+    {
+      "path": "personal-lab/research/LAB-020-external-atlas-review/VERIFICATION.json",
+      "http_status": 200,
+      "bytes": 2762,
+      "sha256": "fb8e40c545c20018f23fb27387232bf09e7a411d1222fd87f4f3088f352cbd15",
+      "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/cca88826b2a17c65600308e0b993c784a8adcc7f/personal-lab/research/LAB-020-external-atlas-review/VERIFICATION.json"
+    },
+    {
+      "path": "personal-lab/research/LAB-020-external-atlas-review/incoming/LifeGame-Atlas-Full-Release-200Selected-v2.1.1.zip",
+      "http_status": 200,
+      "bytes": 1507298,
+      "sha256": "4873f230769460c03d8c7c77df2c7d675441f697e49966a5b090019771e0932b",
+      "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/cca88826b2a17c65600308e0b993c784a8adcc7f/personal-lab/research/LAB-020-external-atlas-review/incoming/LifeGame-Atlas-Full-Release-200Selected-v2.1.1.zip",
+      "zip_crc": "passed",
+      "original_files_sha_verified": 419
+    }
+  ],
+  "content_acceptance": "needs_revision",
+  "own_research_started": false,
+  "application_modified": false,
+  "limits": [
+    "Subsequent receipt commit is not part of the reviewed payload.",
+    "Delivery does not validate truth of external source claims."
+  ]
+}
