@@ -1,0 +1,19 @@
+{
+  "snapshot": "calibration-raw-0001",
+  "checked_at": "2026-11-13T08:26:02.154693+00:00",
+  "command": "python3 -B personal-lab/research/LAB-011-hybrid-v211-review/release/tools/atlas.py validate personal-lab/research/LAB-018-hydra-internet-run/datasets/calibration-raw-0001",
+  "exit_code": 0,
+  "valid_structure": true,
+  "complete_normalization_required": false,
+  "counts": {
+    "sources": 61,
+    "findings": 48,
+    "elements": 0,
+    "ratings": 0,
+    "merge_map": 0,
+    "relations": 0,
+    "decisions": 0
+  },
+  "errors": [],
+  "source_truth_checked_by_validator": false
+}

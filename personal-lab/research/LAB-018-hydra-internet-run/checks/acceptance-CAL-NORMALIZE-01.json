@@ -1,0 +1,23 @@
+{
+  "task_id": "CAL-NORMALIZE-01",
+  "decision": "accepted_for_analysis_not_for_scoring",
+  "at": "2026-11-13T08:43:00.164141+00:00",
+  "reviewer_id": "/root",
+  "checks": {
+    "manifest_files": 10,
+    "manifest_errors": [],
+    "all48_mapped": true,
+    "reciprocal": true,
+    "all61_sources_preserved": true,
+    "joplin_alias_resolved": true,
+    "global_comparisons_reviewed": true
+  },
+  "counts": {
+    "elements": 52,
+    "standalone": 51,
+    "reference_composite": 1,
+    "families": 24,
+    "source_origins": 43
+  },
+  "semantic_review": "Merge HSE/microbreak retains effect/context limits; split run/walk-rest-flexibility, badge issuance-portability and document persistence-app shell changes rules, not brands. Composite reference excluded from main competition later. Full analytic fields pending."
+}

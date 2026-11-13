@@ -1,0 +1,1015 @@
+{
+  "task_id": "CAL-NORMALIZE-01",
+  "policy": "Консервативный учёт владельца и зависимого происхождения. Разная страница/домен/язык/версия/число элементов не доказывают независимость. Разные группы также не доказывают независимость исследований или общей базы литературы. Raw sources не изменены.",
+  "source_to_origin_group": {
+    "S-HI-C01-001": "OG-HI-GTD",
+    "S-HI-C01-002": "OG-HI-BULLET-JOURNAL",
+    "S-HI-C01-003": "OG-HI-BULLET-JOURNAL",
+    "S-HI-C01-004": "OG-HI-GNU-EMACS-ORG",
+    "S-HI-C01-005": "OG-HI-GNU-EMACS-ORG",
+    "S-HI-C01-006": "OG-HI-JOPLIN",
+    "S-HI-C01-007": "OG-HI-APPLE",
+    "S-HI-C01-008": "OG-HI-GTD",
+    "S-HI-C01-009": "OG-HI-DOIST",
+    "S-HI-C01-010": "OG-HI-GOOGLE",
+    "S-HI-C01-011": "OG-HI-GOOGLE",
+    "S-HI-C01-012": "OG-HI-GOOGLE",
+    "S-HI-C01-013": "OG-HI-TASKWARRIOR",
+    "S-HI-C01-014": "OG-HI-REMIND",
+    "S-HI-C01-015": "OG-HI-DOIST",
+    "S-HI-C01-016": "OG-HI-RESCUETIME",
+    "S-HI-C01-017": "OG-HI-GTD",
+    "S-HI-C02-001": "OG-HI-NICE",
+    "S-HI-C02-002": "OG-HI-CDC",
+    "S-HI-C02-003": "OG-HI-HSE",
+    "S-HI-C02-004": "OG-HI-ALBULESCU-2022",
+    "S-HI-C02-005": "OG-HI-NHS",
+    "S-HI-C02-006": "OG-HI-BLADES-SRD",
+    "S-HI-C02-007": "OG-HI-BLADES-SRD",
+    "S-HI-C02-008": "OG-HI-MISERANDINO-2003",
+    "S-HI-C02-009": "OG-HI-BEEMINDER",
+    "S-HI-C02-010": "OG-HI-ANKI",
+    "S-HI-C02-011": "OG-HI-ANKI",
+    "S-HI-C02-012": "OG-HI-WORKRAVE",
+    "S-HI-C02-013": "OG-HI-FIDE",
+    "S-HI-C02-014": "OG-HI-GARANT",
+    "S-HI-C03-001": "OG-HI-KHAN",
+    "S-HI-C03-002": "OG-HI-KHAN",
+    "S-HI-C03-003": "OG-HI-FACTORIO",
+    "S-HI-C03-004": "OG-HI-CCP-EVE",
+    "S-HI-C03-005": "OG-HI-STACK-OVERFLOW",
+    "S-HI-C03-006": "OG-HI-STACK-OVERFLOW",
+    "S-HI-C03-007": "OG-HI-MOODLE",
+    "S-HI-C03-008": "OG-HI-MOODLE",
+    "S-HI-C03-009": "OG-HI-WESNOTH",
+    "S-HI-C03-010": "OG-HI-WESNOTH",
+    "S-HI-C03-011": "OG-HI-IRIS",
+    "S-HI-C03-012": "OG-HI-DUOLINGO",
+    "S-HI-C03-013": "OG-HI-ICY-VEINS",
+    "S-HI-C03-014": "OG-HI-ALMEIDA-2023",
+    "S-HI-C03-015": "OG-HI-DOMINION",
+    "S-HI-C03-016": "OG-HI-IRIS",
+    "S-HI-C04-001": "OG-HI-OBSIDIAN",
+    "S-HI-C04-002": "OG-HI-NOTION",
+    "S-HI-C04-003": "OG-HI-BITWARDEN",
+    "S-HI-C04-004": "OG-HI-JOPLIN",
+    "S-HI-C04-005": "OG-HI-SYNCTHING",
+    "S-HI-C04-006": "OG-HI-YJS",
+    "S-HI-C04-007": "OG-HI-IETF-RFC9110",
+    "S-HI-C04-008": "OG-HI-SQLITE",
+    "S-HI-C04-009": "OG-HI-GNU-EMACS-ORG",
+    "S-HI-C04-010": "OG-HI-RESTIC",
+    "S-HI-C04-011": "OG-HI-RESTIC",
+    "S-HI-C04-012": "OG-HI-GOOGLE",
+    "S-HI-C04-013": "OG-HI-GITLAB",
+    "S-HI-C04-014": "OG-HI-NEXTCLOUD"
+  },
+  "source_map": [
+    {
+      "source_id": "S-HI-C01-001",
+      "canonical_origin_group": "OG-HI-GTD",
+      "raw_origin_group": "gtd-david-allen",
+      "raw_owner": "David Allen Company",
+      "canonical_owner_or_dependency": "David Allen Company / GTD",
+      "rationale": "Официальное описание, гостевая адаптация и явно зависимая трактовка FacileThings одного метода; не три независимых происхождения."
+    },
+    {
+      "source_id": "S-HI-C01-002",
+      "canonical_origin_group": "OG-HI-BULLET-JOURNAL",
+      "raw_origin_group": "bullet-journal-method",
+      "raw_owner": "Lightcage LLC / Bullet Journal",
+      "canonical_owner_or_dependency": "Lightcage LLC / Bullet Journal",
+      "rationale": "Один владелец/методическая публикационная среда; FAQ и авторский разбор не независимые подтверждения."
+    },
+    {
+      "source_id": "S-HI-C01-003",
+      "canonical_origin_group": "OG-HI-BULLET-JOURNAL",
+      "raw_origin_group": "bullet-journal-method",
+      "raw_owner": "Lightcage LLC / Bullet Journal",
+      "canonical_owner_or_dependency": "Lightcage LLC / Bullet Journal",
+      "rationale": "Один владелец/методическая публикационная среда; FAQ и авторский разбор не независимые подтверждения."
+    },
+    {
+      "source_id": "S-HI-C01-004",
+      "canonical_origin_group": "OG-HI-GNU-EMACS-ORG",
+      "raw_origin_group": "org-manual",
+      "raw_owner": "Org mode maintainers",
+      "canonical_owner_or_dependency": "GNU Emacs / Org documentation",
+      "rationale": "Консервативно общий кластер официальной GNU/Emacs/Org-документации; отдельные страницы и команды не независимые подтверждения. Идентичность команд редакторов не утверждается."
+    },
+    {
+      "source_id": "S-HI-C01-005",
+      "canonical_origin_group": "OG-HI-GNU-EMACS-ORG",
+      "raw_origin_group": "org-manual",
+      "raw_owner": "Org mode maintainers",
+      "canonical_owner_or_dependency": "GNU Emacs / Org documentation",
+      "rationale": "Консервативно общий кластер официальной GNU/Emacs/Org-документации; отдельные страницы и команды не независимые подтверждения. Идентичность команд редакторов не утверждается."
+    },
+    {
+      "source_id": "S-HI-C01-006",
+      "canonical_origin_group": "OG-HI-JOPLIN",
+      "raw_origin_group": "joplin-documentation",
+      "raw_owner": "Laurent Cozic / Joplin project",
+      "canonical_owner_or_dependency": "Joplin / Laurent Cozic",
+      "rationale": "Один проект и владелец документации, включая страницы clipper и conflict в разных пакетах."
+    },
+    {
+      "source_id": "S-HI-C01-007",
+      "canonical_origin_group": "OG-HI-APPLE",
+      "raw_origin_group": "apple-reminders-support",
+      "raw_owner": "Apple Inc.",
+      "canonical_owner_or_dependency": "Apple Inc.",
+      "rationale": "Один владелец документации."
+    },
+    {
+      "source_id": "S-HI-C01-008",
+      "canonical_origin_group": "OG-HI-GTD",
+      "raw_origin_group": "gtd-david-allen",
+      "raw_owner": "David Allen Company",
+      "canonical_owner_or_dependency": "David Allen Company / GTD",
+      "rationale": "Официальное описание, гостевая адаптация и явно зависимая трактовка FacileThings одного метода; не три независимых происхождения."
+    },
+    {
+      "source_id": "S-HI-C01-009",
+      "canonical_origin_group": "OG-HI-DOIST",
+      "raw_origin_group": "doist-publications",
+      "raw_owner": "Doist / Todoist",
+      "canonical_owner_or_dependency": "Doist / Todoist",
+      "rationale": "Справка повторений и методический материал одного владельца."
+    },
+    {
+      "source_id": "S-HI-C01-010",
+      "canonical_origin_group": "OG-HI-GOOGLE",
+      "raw_origin_group": "google-calendar-help",
+      "raw_owner": "Google LLC",
+      "canonical_owner_or_dependency": "Google LLC / Google Cloud",
+      "rationale": "Один владелец; EN/RU timezone — перевод одной страницы; Cloud и Calendar сохраняют разные темы, но не считаются независимыми владельцами."
+    },
+    {
+      "source_id": "S-HI-C01-011",
+      "canonical_origin_group": "OG-HI-GOOGLE",
+      "raw_origin_group": "google-calendar-help",
+      "raw_owner": "Google LLC",
+      "canonical_owner_or_dependency": "Google LLC / Google Cloud",
+      "rationale": "Один владелец; EN/RU timezone — перевод одной страницы; Cloud и Calendar сохраняют разные темы, но не считаются независимыми владельцами."
+    },
+    {
+      "source_id": "S-HI-C01-012",
+      "canonical_origin_group": "OG-HI-GOOGLE",
+      "raw_origin_group": "google-calendar-help",
+      "raw_owner": "Google LLC",
+      "canonical_owner_or_dependency": "Google LLC / Google Cloud",
+      "rationale": "Один владелец; EN/RU timezone — перевод одной страницы; Cloud и Calendar сохраняют разные темы, но не считаются независимыми владельцами."
+    },
+    {
+      "source_id": "S-HI-C01-013",
+      "canonical_origin_group": "OG-HI-TASKWARRIOR",
+      "raw_origin_group": "taskwarrior-documentation",
+      "raw_owner": "Gothenburg Bit Factory",
+      "canonical_owner_or_dependency": "Gothenburg Bit Factory",
+      "rationale": "Официальная документация одного проекта."
+    },
+    {
+      "source_id": "S-HI-C01-014",
+      "canonical_origin_group": "OG-HI-REMIND",
+      "raw_origin_group": "remind-author-slides",
+      "raw_owner": "Dianne Skoll",
+      "canonical_owner_or_dependency": "Dianne Skoll / Remind",
+      "rationale": "Один авторский первоисточник, исторические слайды."
+    },
+    {
+      "source_id": "S-HI-C01-015",
+      "canonical_origin_group": "OG-HI-DOIST",
+      "raw_origin_group": "doist-publications",
+      "raw_owner": "Doist / Todoist",
+      "canonical_owner_or_dependency": "Doist / Todoist",
+      "rationale": "Справка повторений и методический материал одного владельца."
+    },
+    {
+      "source_id": "S-HI-C01-016",
+      "canonical_origin_group": "OG-HI-RESCUETIME",
+      "raw_origin_group": "rescuetime-timeblocking-guide",
+      "raw_owner": "RescueTime",
+      "canonical_owner_or_dependency": "RescueTime / Jory MacKay",
+      "rationale": "Отдельный от Doist владелец практического разбора; экспериментальная независимость этим не устанавливается."
+    },
+    {
+      "source_id": "S-HI-C01-017",
+      "canonical_origin_group": "OG-HI-GTD",
+      "raw_origin_group": "gtd-david-allen",
+      "raw_owner": "FacileThings",
+      "canonical_owner_or_dependency": "David Allen Company / GTD",
+      "rationale": "Официальное описание, гостевая адаптация и явно зависимая трактовка FacileThings одного метода; не три независимых происхождения."
+    },
+    {
+      "source_id": "S-HI-C02-001",
+      "canonical_origin_group": "OG-HI-NICE",
+      "raw_origin_group": "NICE-NG206",
+      "raw_owner": "National Institute for Health and Care Excellence (NICE)",
+      "canonical_owner_or_dependency": "NICE",
+      "rationale": "Один guideline NG206 для обычного планирования и обострения."
+    },
+    {
+      "source_id": "S-HI-C02-002",
+      "canonical_origin_group": "OG-HI-CDC",
+      "raw_origin_group": "CDC-MECFS-Management",
+      "raw_owner": "Centers for Disease Control and Prevention (CDC), NCEZID",
+      "canonical_owner_or_dependency": "CDC",
+      "rationale": "Отдельный владелец клинической страницы; независимость от общей доказательной базы NICE не установлена."
+    },
+    {
+      "source_id": "S-HI-C02-003",
+      "canonical_origin_group": "OG-HI-HSE",
+      "raw_origin_group": "HSE-DSE-WorkRoutine",
+      "raw_owner": "Health and Safety Executive (HSE)",
+      "canonical_owner_or_dependency": "HSE",
+      "rationale": "Один государственный источник организации экранной работы."
+    },
+    {
+      "source_id": "S-HI-C02-004",
+      "canonical_origin_group": "OG-HI-ALBULESCU-2022",
+      "raw_origin_group": "AlbulescuEtAl2022-Microbreaks",
+      "raw_owner": "Patricia Albulescu, Irina Macsinga, Andrei Rusu, Coralia Sulea, Alexandra Bodnaru, Bogdan Tudor Tulbure / PLOS ONE",
+      "canonical_owner_or_dependency": "Albulescu et al., 2022",
+      "rationale": "Один метаанализ, не 22 прочитанных первичных источника; Abstract/Results не независимые подтверждения."
+    },
+    {
+      "source_id": "S-HI-C02-005",
+      "canonical_origin_group": "OG-HI-NHS",
+      "raw_origin_group": "NHS-CouchTo5K",
+      "raw_owner": "NHS / Better Health",
+      "canonical_owner_or_dependency": "NHS / Better Health",
+      "rationale": "Все компоненты программы восходят к одной странице; split не увеличивает число подтверждений."
+    },
+    {
+      "source_id": "S-HI-C02-006",
+      "canonical_origin_group": "OG-HI-BLADES-SRD",
+      "raw_origin_group": "BladesInTheDark-SRD",
+      "raw_owner": "Blades in the Dark RPG — SRD на bladesinthedark.com",
+      "canonical_owner_or_dependency": "Blades in the Dark SRD",
+      "rationale": "Разделы downtime и vice одного свода правил."
+    },
+    {
+      "source_id": "S-HI-C02-007",
+      "canonical_origin_group": "OG-HI-BLADES-SRD",
+      "raw_origin_group": "BladesInTheDark-SRD",
+      "raw_owner": "Blades in the Dark RPG — SRD на bladesinthedark.com",
+      "canonical_owner_or_dependency": "Blades in the Dark SRD",
+      "rationale": "Разделы downtime и vice одного свода правил."
+    },
+    {
+      "source_id": "S-HI-C02-008",
+      "canonical_origin_group": "OG-HI-MISERANDINO-2003",
+      "raw_origin_group": "Miserandino-SpoonTheory-2003",
+      "raw_owner": "Christine Miserandino; разрешённая перепечатка Lymphoma Action",
+      "canonical_owner_or_dependency": "Christine Miserandino",
+      "rationale": "Атрибутированная перепечатка Lymphoma Action; оригинальный сайт не прочитан. Перепечатка не второе происхождение."
+    },
+    {
+      "source_id": "S-HI-C02-009",
+      "canonical_origin_group": "OG-HI-BEEMINDER",
+      "raw_origin_group": "Beeminder-GoalBreaks",
+      "raw_owner": "Beeminder",
+      "canonical_owner_or_dependency": "Beeminder",
+      "rationale": "Один владелец и руководство."
+    },
+    {
+      "source_id": "S-HI-C02-010",
+      "canonical_origin_group": "OG-HI-ANKI",
+      "raw_origin_group": "Anki-Manual",
+      "raw_owner": "Ankitects / Anki documentation",
+      "canonical_owner_or_dependency": "Ankitects / Anki documentation",
+      "rationale": "Руководство и FAQ одного проекта; Catching Up — цитата опыта одного пользователя."
+    },
+    {
+      "source_id": "S-HI-C02-011",
+      "canonical_origin_group": "OG-HI-ANKI",
+      "raw_origin_group": "Anki-Manual",
+      "raw_owner": "Ankitects / Anki documentation",
+      "canonical_owner_or_dependency": "Ankitects / Anki documentation",
+      "rationale": "Руководство и FAQ одного проекта; Catching Up — цитата опыта одного пользователя."
+    },
+    {
+      "source_id": "S-HI-C02-012",
+      "canonical_origin_group": "OG-HI-WORKRAVE",
+      "raw_origin_group": "Workrave-1.11-Manual",
+      "raw_owner": "Raymond Penners & Rob Caelers / Workrave",
+      "canonical_owner_or_dependency": "Workrave / Raymond Penners & Rob Caelers",
+      "rationale": "Одна документация реализации таймера."
+    },
+    {
+      "source_id": "S-HI-C02-013",
+      "canonical_origin_group": "OG-HI-FIDE",
+      "raw_origin_group": "FIDE-Laws-2023",
+      "raw_owner": "Fédération Internationale des Échecs (FIDE)",
+      "canonical_owner_or_dependency": "FIDE",
+      "rationale": "Один официальный источник Guidelines."
+    },
+    {
+      "source_id": "S-HI-C02-014",
+      "canonical_origin_group": "OG-HI-GARANT",
+      "raw_origin_group": "Garant-Consult-1760323",
+      "raw_owner": "Ирина Ипполитова, служба Правового консалтинга ГАРАНТ",
+      "canonical_owner_or_dependency": "ГАРАНТ / Ирина Ипполитова",
+      "rationale": "Одна правовая консультация; упомянутые в ней акты не считались отдельно прочитанными источниками."
+    },
+    {
+      "source_id": "S-HI-C03-001",
+      "canonical_origin_group": "OG-HI-KHAN",
+      "raw_origin_group": "khan-academy-mastery",
+      "raw_owner": "Khan Academy",
+      "canonical_owner_or_dependency": "Khan Academy",
+      "rationale": "Уровни и агрегация mastery описаны одним владельцем."
+    },
+    {
+      "source_id": "S-HI-C03-002",
+      "canonical_origin_group": "OG-HI-KHAN",
+      "raw_origin_group": "khan-academy-mastery",
+      "raw_owner": "Khan Academy",
+      "canonical_owner_or_dependency": "Khan Academy",
+      "rationale": "Уровни и агрегация mastery описаны одним владельцем."
+    },
+    {
+      "source_id": "S-HI-C03-003",
+      "canonical_origin_group": "OG-HI-FACTORIO",
+      "raw_origin_group": "factorio-official-wiki",
+      "raw_owner": "Wube Software / Official Factorio Wiki contributors",
+      "canonical_owner_or_dependency": "Wube Software / Official Factorio Wiki",
+      "rationale": "Официальная wiki одного проекта."
+    },
+    {
+      "source_id": "S-HI-C03-004",
+      "canonical_origin_group": "OG-HI-CCP-EVE",
+      "raw_origin_group": "eve-online-support",
+      "raw_owner": "CCP Games; Lead GM Carbon",
+      "canonical_owner_or_dependency": "CCP Games",
+      "rationale": "Один владелец документации EVE."
+    },
+    {
+      "source_id": "S-HI-C03-005",
+      "canonical_origin_group": "OG-HI-STACK-OVERFLOW",
+      "raw_origin_group": "stack-overflow-help",
+      "raw_owner": "Stack Overflow / Stack Exchange",
+      "canonical_owner_or_dependency": "Stack Overflow / Stack Exchange",
+      "rationale": "Начисление reputation и расход bounty — один владелец и связанная экономика."
+    },
+    {
+      "source_id": "S-HI-C03-006",
+      "canonical_origin_group": "OG-HI-STACK-OVERFLOW",
+      "raw_origin_group": "stack-overflow-help",
+      "raw_owner": "Stack Overflow / Stack Exchange",
+      "canonical_owner_or_dependency": "Stack Overflow / Stack Exchange",
+      "rationale": "Начисление reputation и расход bounty — один владелец и связанная экономика."
+    },
+    {
+      "source_id": "S-HI-C03-007",
+      "canonical_origin_group": "OG-HI-MOODLE",
+      "raw_origin_group": "moodle-docs-badges",
+      "raw_owner": "Moodle / MoodleDocs contributors",
+      "canonical_owner_or_dependency": "Moodle / MoodleDocs",
+      "rationale": "Разделы выдачи и переноса значков одного проекта; не два независимых подтверждения."
+    },
+    {
+      "source_id": "S-HI-C03-008",
+      "canonical_origin_group": "OG-HI-MOODLE",
+      "raw_origin_group": "moodle-docs-badges",
+      "raw_owner": "Moodle / MoodleDocs contributors",
+      "canonical_owner_or_dependency": "Moodle / MoodleDocs",
+      "rationale": "Разделы выдачи и переноса значков одного проекта; не два независимых подтверждения."
+    },
+    {
+      "source_id": "S-HI-C03-009",
+      "canonical_origin_group": "OG-HI-WESNOTH",
+      "raw_origin_group": "wesnoth-manual-1.18.5",
+      "raw_owner": "The Battle for Wesnoth Project",
+      "canonical_owner_or_dependency": "The Battle for Wesnoth Project",
+      "rationale": "EN/RU — оригинал и перевод одного manual 1.18.5, включая одно и то же численное расхождение."
+    },
+    {
+      "source_id": "S-HI-C03-010",
+      "canonical_origin_group": "OG-HI-WESNOTH",
+      "raw_origin_group": "wesnoth-manual-1.18.5",
+      "raw_owner": "The Battle for Wesnoth Project; переводчики русского руководства",
+      "canonical_owner_or_dependency": "The Battle for Wesnoth Project",
+      "rationale": "EN/RU — оригинал и перевод одного manual 1.18.5, включая одно и то же численное расхождение."
+    },
+    {
+      "source_id": "S-HI-C03-011",
+      "canonical_origin_group": "OG-HI-IRIS",
+      "raw_origin_group": "iris-secondary-behavior-module",
+      "raw_owner": "The IRIS Center, Vanderbilt University",
+      "canonical_owner_or_dependency": "The IRIS Center, Vanderbilt University",
+      "rationale": "Страницы positive/negative consequences одного учебного модуля."
+    },
+    {
+      "source_id": "S-HI-C03-012",
+      "canonical_origin_group": "OG-HI-DUOLINGO",
+      "raw_origin_group": "duolingo-official-energy",
+      "raw_owner": "Duolingo Team",
+      "canonical_owner_or_dependency": "Duolingo",
+      "rationale": "Официальный материал об ограниченном тесте; маркетинговые эффекты не независимы."
+    },
+    {
+      "source_id": "S-HI-C03-013",
+      "canonical_origin_group": "OG-HI-ICY-VEINS",
+      "raw_origin_group": "icy-veins-rested-xp-guide",
+      "raw_owner": "Daylea / Icy Veins",
+      "canonical_owner_or_dependency": "Daylea / Icy Veins",
+      "rationale": "Один сторонний гайд; официальное подтверждение Blizzard отсутствует в входе."
+    },
+    {
+      "source_id": "S-HI-C03-014",
+      "canonical_origin_group": "OG-HI-ALMEIDA-2023",
+      "raw_origin_group": "almeida-2023-negative-effects-mapping",
+      "raw_owner": "Cláuvin Almeida, Marcos Kalinowski, Anderson Uchôa, Bruno Feijó",
+      "canonical_owner_or_dependency": "Almeida et al.",
+      "rationale": "Один исследовательский обзор; arXiv author version и DOI не считаются разными происхождениями."
+    },
+    {
+      "source_id": "S-HI-C03-015",
+      "canonical_origin_group": "OG-HI-DOMINION",
+      "raw_origin_group": "dominion-rio-grande-2021-rules",
+      "raw_owner": "Donald X. Vaccarino / Rio Grande Games",
+      "canonical_owner_or_dependency": "Donald X. Vaccarino / Rio Grande Games",
+      "rationale": "Один официальный rulebook 2021."
+    },
+    {
+      "source_id": "S-HI-C03-016",
+      "canonical_origin_group": "OG-HI-IRIS",
+      "raw_origin_group": "iris-secondary-behavior-module",
+      "raw_owner": "The IRIS Center, Vanderbilt University",
+      "canonical_owner_or_dependency": "The IRIS Center, Vanderbilt University",
+      "rationale": "Страницы positive/negative consequences одного учебного модуля."
+    },
+    {
+      "source_id": "S-HI-C04-001",
+      "canonical_origin_group": "OG-HI-OBSIDIAN",
+      "raw_origin_group": "OG-HI-OBSIDIAN",
+      "raw_owner": "Obsidian",
+      "canonical_owner_or_dependency": "Obsidian",
+      "rationale": "Официальная документация из репозитория, не независимый сторонний источник."
+    },
+    {
+      "source_id": "S-HI-C04-002",
+      "canonical_origin_group": "OG-HI-NOTION",
+      "raw_origin_group": "OG-HI-NOTION",
+      "raw_owner": "Notion Labs, Inc.",
+      "canonical_owner_or_dependency": "Notion Labs",
+      "rationale": "Один владелец документации."
+    },
+    {
+      "source_id": "S-HI-C04-003",
+      "canonical_origin_group": "OG-HI-BITWARDEN",
+      "raw_origin_group": "OG-HI-BITWARDEN",
+      "raw_owner": "Bitwarden Inc.",
+      "canonical_owner_or_dependency": "Bitwarden Inc.",
+      "rationale": "Один владелец документации двух типов экспорта."
+    },
+    {
+      "source_id": "S-HI-C04-004",
+      "canonical_origin_group": "OG-HI-JOPLIN",
+      "raw_origin_group": "OG-HI-JOPLIN",
+      "raw_owner": "Joplin / Laurent Cozic",
+      "canonical_owner_or_dependency": "Joplin / Laurent Cozic",
+      "rationale": "Тот же владелец, что joplin-documentation из CAL-SEARCH-01."
+    },
+    {
+      "source_id": "S-HI-C04-005",
+      "canonical_origin_group": "OG-HI-SYNCTHING",
+      "raw_origin_group": "OG-HI-SYNCTHING",
+      "raw_owner": "Syncthing project",
+      "canonical_owner_or_dependency": "Syncthing project",
+      "rationale": "Один проект и страница."
+    },
+    {
+      "source_id": "S-HI-C04-006",
+      "canonical_origin_group": "OG-HI-YJS",
+      "raw_origin_group": "OG-HI-YJS",
+      "raw_owner": "Yjs project",
+      "canonical_owner_or_dependency": "Yjs project",
+      "rationale": "Одна документация двух необходимых условий offline; split не добавляет независимых свидетельств."
+    },
+    {
+      "source_id": "S-HI-C04-007",
+      "canonical_origin_group": "OG-HI-IETF-RFC9110",
+      "raw_origin_group": "OG-HI-IETF-RFC9110",
+      "raw_owner": "IETF HTTP Working Group; RFC Editor",
+      "canonical_owner_or_dependency": "IETF HTTP Working Group / RFC Editor",
+      "rationale": "Один нормативный RFC."
+    },
+    {
+      "source_id": "S-HI-C04-008",
+      "canonical_origin_group": "OG-HI-SQLITE",
+      "raw_origin_group": "OG-HI-SQLITE",
+      "raw_owner": "SQLite developers / SQLite Consortium",
+      "canonical_owner_or_dependency": "SQLite developers / SQLite Consortium",
+      "rationale": "Одна официальная статья."
+    },
+    {
+      "source_id": "S-HI-C04-009",
+      "canonical_origin_group": "OG-HI-GNU-EMACS-ORG",
+      "raw_origin_group": "OG-HI-GNU-EMACS",
+      "raw_owner": "Free Software Foundation / GNU Emacs project",
+      "canonical_owner_or_dependency": "GNU Emacs / Org documentation",
+      "rationale": "Общий консервативный документационный кластер с Org; отдельность maintainers не превращена в независимость."
+    },
+    {
+      "source_id": "S-HI-C04-010",
+      "canonical_origin_group": "OG-HI-RESTIC",
+      "raw_origin_group": "OG-HI-RESTIC",
+      "raw_owner": "restic project",
+      "canonical_owner_or_dependency": "restic project",
+      "rationale": "Документация 0.19.1 и код v0.17.3 одного проекта; разность версий сохранена, независимость владельца не добавлена."
+    },
+    {
+      "source_id": "S-HI-C04-011",
+      "canonical_origin_group": "OG-HI-RESTIC",
+      "raw_origin_group": "OG-HI-RESTIC",
+      "raw_owner": "restic project",
+      "canonical_owner_or_dependency": "restic project",
+      "rationale": "Документация 0.19.1 и код v0.17.3 одного проекта; разность версий сохранена, независимость владельца не добавлена."
+    },
+    {
+      "source_id": "S-HI-C04-012",
+      "canonical_origin_group": "OG-HI-GOOGLE",
+      "raw_origin_group": "OG-HI-GOOGLE-CLOUD",
+      "raw_owner": "Google Cloud",
+      "canonical_owner_or_dependency": "Google LLC / Google Cloud",
+      "rationale": "Тот же владелец, что Google Calendar; разные темы и переводы не увеличивают число независимых владельцев."
+    },
+    {
+      "source_id": "S-HI-C04-013",
+      "canonical_origin_group": "OG-HI-GITLAB",
+      "raw_origin_group": "OG-HI-GITLAB-INCIDENT-2017",
+      "raw_owner": "GitLab",
+      "canonical_owner_or_dependency": "GitLab",
+      "rationale": "Первичный предварительный отчёт участников инцидента, один владелец."
+    },
+    {
+      "source_id": "S-HI-C04-014",
+      "canonical_origin_group": "OG-HI-NEXTCLOUD",
+      "raw_origin_group": "OG-HI-NEXTCLOUD",
+      "raw_owner": "Nextcloud GmbH and Nextcloud contributors",
+      "canonical_owner_or_dependency": "Nextcloud GmbH / project",
+      "rationale": "Один владелец документации upcoming 36."
+    }
+  ],
+  "groups": [
+    {
+      "origin_group": "OG-HI-ALBULESCU-2022",
+      "source_ids": [
+        "S-HI-C02-004"
+      ],
+      "raw_origin_groups": [
+        "AlbulescuEtAl2022-Microbreaks"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-ALMEIDA-2023",
+      "source_ids": [
+        "S-HI-C03-014"
+      ],
+      "raw_origin_groups": [
+        "almeida-2023-negative-effects-mapping"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-ANKI",
+      "source_ids": [
+        "S-HI-C02-010",
+        "S-HI-C02-011"
+      ],
+      "raw_origin_groups": [
+        "Anki-Manual"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-APPLE",
+      "source_ids": [
+        "S-HI-C01-007"
+      ],
+      "raw_origin_groups": [
+        "apple-reminders-support"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-BEEMINDER",
+      "source_ids": [
+        "S-HI-C02-009"
+      ],
+      "raw_origin_groups": [
+        "Beeminder-GoalBreaks"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-BITWARDEN",
+      "source_ids": [
+        "S-HI-C04-003"
+      ],
+      "raw_origin_groups": [
+        "OG-HI-BITWARDEN"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-BLADES-SRD",
+      "source_ids": [
+        "S-HI-C02-006",
+        "S-HI-C02-007"
+      ],
+      "raw_origin_groups": [
+        "BladesInTheDark-SRD"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-BULLET-JOURNAL",
+      "source_ids": [
+        "S-HI-C01-002",
+        "S-HI-C01-003"
+      ],
+      "raw_origin_groups": [
+        "bullet-journal-method"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-CCP-EVE",
+      "source_ids": [
+        "S-HI-C03-004"
+      ],
+      "raw_origin_groups": [
+        "eve-online-support"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-CDC",
+      "source_ids": [
+        "S-HI-C02-002"
+      ],
+      "raw_origin_groups": [
+        "CDC-MECFS-Management"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-DOIST",
+      "source_ids": [
+        "S-HI-C01-009",
+        "S-HI-C01-015"
+      ],
+      "raw_origin_groups": [
+        "doist-publications"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-DOMINION",
+      "source_ids": [
+        "S-HI-C03-015"
+      ],
+      "raw_origin_groups": [
+        "dominion-rio-grande-2021-rules"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-DUOLINGO",
+      "source_ids": [
+        "S-HI-C03-012"
+      ],
+      "raw_origin_groups": [
+        "duolingo-official-energy"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-FACTORIO",
+      "source_ids": [
+        "S-HI-C03-003"
+      ],
+      "raw_origin_groups": [
+        "factorio-official-wiki"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-FIDE",
+      "source_ids": [
+        "S-HI-C02-013"
+      ],
+      "raw_origin_groups": [
+        "FIDE-Laws-2023"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-GARANT",
+      "source_ids": [
+        "S-HI-C02-014"
+      ],
+      "raw_origin_groups": [
+        "Garant-Consult-1760323"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-GITLAB",
+      "source_ids": [
+        "S-HI-C04-013"
+      ],
+      "raw_origin_groups": [
+        "OG-HI-GITLAB-INCIDENT-2017"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-GNU-EMACS-ORG",
+      "source_ids": [
+        "S-HI-C01-004",
+        "S-HI-C01-005",
+        "S-HI-C04-009"
+      ],
+      "raw_origin_groups": [
+        "OG-HI-GNU-EMACS",
+        "org-manual"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-GOOGLE",
+      "source_ids": [
+        "S-HI-C01-010",
+        "S-HI-C01-011",
+        "S-HI-C01-012",
+        "S-HI-C04-012"
+      ],
+      "raw_origin_groups": [
+        "OG-HI-GOOGLE-CLOUD",
+        "google-calendar-help"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-GTD",
+      "source_ids": [
+        "S-HI-C01-001",
+        "S-HI-C01-008",
+        "S-HI-C01-017"
+      ],
+      "raw_origin_groups": [
+        "gtd-david-allen"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-HSE",
+      "source_ids": [
+        "S-HI-C02-003"
+      ],
+      "raw_origin_groups": [
+        "HSE-DSE-WorkRoutine"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-ICY-VEINS",
+      "source_ids": [
+        "S-HI-C03-013"
+      ],
+      "raw_origin_groups": [
+        "icy-veins-rested-xp-guide"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-IETF-RFC9110",
+      "source_ids": [
+        "S-HI-C04-007"
+      ],
+      "raw_origin_groups": [
+        "OG-HI-IETF-RFC9110"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-IRIS",
+      "source_ids": [
+        "S-HI-C03-011",
+        "S-HI-C03-016"
+      ],
+      "raw_origin_groups": [
+        "iris-secondary-behavior-module"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-JOPLIN",
+      "source_ids": [
+        "S-HI-C01-006",
+        "S-HI-C04-004"
+      ],
+      "raw_origin_groups": [
+        "OG-HI-JOPLIN",
+        "joplin-documentation"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-KHAN",
+      "source_ids": [
+        "S-HI-C03-001",
+        "S-HI-C03-002"
+      ],
+      "raw_origin_groups": [
+        "khan-academy-mastery"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-MISERANDINO-2003",
+      "source_ids": [
+        "S-HI-C02-008"
+      ],
+      "raw_origin_groups": [
+        "Miserandino-SpoonTheory-2003"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-MOODLE",
+      "source_ids": [
+        "S-HI-C03-007",
+        "S-HI-C03-008"
+      ],
+      "raw_origin_groups": [
+        "moodle-docs-badges"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-NEXTCLOUD",
+      "source_ids": [
+        "S-HI-C04-014"
+      ],
+      "raw_origin_groups": [
+        "OG-HI-NEXTCLOUD"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-NHS",
+      "source_ids": [
+        "S-HI-C02-005"
+      ],
+      "raw_origin_groups": [
+        "NHS-CouchTo5K"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-NICE",
+      "source_ids": [
+        "S-HI-C02-001"
+      ],
+      "raw_origin_groups": [
+        "NICE-NG206"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-NOTION",
+      "source_ids": [
+        "S-HI-C04-002"
+      ],
+      "raw_origin_groups": [
+        "OG-HI-NOTION"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-OBSIDIAN",
+      "source_ids": [
+        "S-HI-C04-001"
+      ],
+      "raw_origin_groups": [
+        "OG-HI-OBSIDIAN"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-REMIND",
+      "source_ids": [
+        "S-HI-C01-014"
+      ],
+      "raw_origin_groups": [
+        "remind-author-slides"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-RESCUETIME",
+      "source_ids": [
+        "S-HI-C01-016"
+      ],
+      "raw_origin_groups": [
+        "rescuetime-timeblocking-guide"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-RESTIC",
+      "source_ids": [
+        "S-HI-C04-010",
+        "S-HI-C04-011"
+      ],
+      "raw_origin_groups": [
+        "OG-HI-RESTIC"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-SQLITE",
+      "source_ids": [
+        "S-HI-C04-008"
+      ],
+      "raw_origin_groups": [
+        "OG-HI-SQLITE"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-STACK-OVERFLOW",
+      "source_ids": [
+        "S-HI-C03-005",
+        "S-HI-C03-006"
+      ],
+      "raw_origin_groups": [
+        "stack-overflow-help"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-SYNCTHING",
+      "source_ids": [
+        "S-HI-C04-005"
+      ],
+      "raw_origin_groups": [
+        "OG-HI-SYNCTHING"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-TASKWARRIOR",
+      "source_ids": [
+        "S-HI-C01-013"
+      ],
+      "raw_origin_groups": [
+        "taskwarrior-documentation"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-WESNOTH",
+      "source_ids": [
+        "S-HI-C03-009",
+        "S-HI-C03-010"
+      ],
+      "raw_origin_groups": [
+        "wesnoth-manual-1.18.5"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-WORKRAVE",
+      "source_ids": [
+        "S-HI-C02-012"
+      ],
+      "raw_origin_groups": [
+        "Workrave-1.11-Manual"
+      ],
+      "independence_status": "not_established_by_grouping"
+    },
+    {
+      "origin_group": "OG-HI-YJS",
+      "source_ids": [
+        "S-HI-C04-006"
+      ],
+      "raw_origin_groups": [
+        "OG-HI-YJS"
+      ],
+      "independence_status": "not_established_by_grouping"
+    }
+  ],
+  "counts": {
+    "source_ids": 61,
+    "raw_origin_groups": 46,
+    "canonical_origin_groups": 43
+  }
+}

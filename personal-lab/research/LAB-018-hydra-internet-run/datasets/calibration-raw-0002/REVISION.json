@@ -1,0 +1,34 @@
+{
+  "snapshot": "calibration-raw-0002",
+  "source_snapshot": "calibration-raw-0001",
+  "at": "2026-11-13T08:39:20.361839+00:00",
+  "input_hashes": {
+    "decisions.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "merge_map.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ratings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "findings.jsonl": "3df9c7c814e4366397a5aecc6e64f1642b7b2d2784eaeab00713cdb930fc6845",
+    "sources.jsonl": "19b794137e77ef4feec5afd73c8488b4361af2035c3dae4bbea4fa2d7bf6cae7",
+    "elements.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "relations.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "changes": [
+    {
+      "raw_id": "F-HI-C04-010",
+      "source_id": "S-HI-C04-011",
+      "field": "claims.locator",
+      "before": "v0.17.3 internal/checker/checker.go, lines 475–478 and 482–565; ReadData/ReadPacks",
+      "after": "v0.17.3 internal/checker/checker.go, lines 475–478 and 482–557; ReadData/ReadPacks",
+      "reason": "HI-SOURCE-PREFLIGHT-002, exact file length557. Function/claim content unchanged."
+    }
+  ],
+  "output_hashes": {
+    "decisions.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "merge_map.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ratings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "findings.jsonl": "04cbaf2cff3ea21b167d795e3de13aa59f2b38e605d1a332c0a177a39f543a89",
+    "sources.jsonl": "19b794137e77ef4feec5afd73c8488b4361af2035c3dae4bbea4fa2d7bf6cae7",
+    "elements.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "relations.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw_and_accepted_packages_unchanged": true
+}

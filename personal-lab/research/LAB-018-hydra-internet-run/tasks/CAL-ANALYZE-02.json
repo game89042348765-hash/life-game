@@ -1,0 +1,84 @@
+{
+  "template": false,
+  "task_id": "CAL-ANALYZE-02",
+  "stage": "analyze",
+  "mode": "analyze",
+  "owner_id": "/root/cal_analyze_02",
+  "status": "assigned",
+  "attempt": 1,
+  "protocol_version": "2.1",
+  "taxonomy_version": "2.1",
+  "rubric_version": "2.1",
+  "input_snapshot": "calibration-normalized-0001+calibration-raw-0002",
+  "input_hashes": {
+    "datasets/calibration-analysis-input-0001/part-002/elements.normalized.jsonl": "afe3d64239a42a1290041499f1c0edce002eec8513cf336bf40bc19a4067546c",
+    "datasets/calibration-analysis-input-0001/part-002/findings.jsonl": "657fee694901334fac411968733ad797d0acadc7d06a20aebedf41be1b61552b",
+    "datasets/calibration-analysis-input-0001/part-002/sources.jsonl": "d7bbe3e91d52ed0e1772e71202d646af72886d6edf7a903a464b2b6456360b9a",
+    "datasets/calibration-normalized-0001/INDEX.jsonl": "70c49104edbed6f37d062bc2e319712f8f4f095da6fc6cb2a162176d6a170fc8",
+    "tasks/ANALYSIS-INSTRUCTIONS.md": "8fd67238d8e2bc0a20c6f7f22a638139a33d41acaa4e3615b511272a1d4dbf06"
+  },
+  "scope": {
+    "element_ids": [
+      "E-HI-CAL-027",
+      "E-HI-CAL-028",
+      "E-HI-CAL-029",
+      "E-HI-CAL-030",
+      "E-HI-CAL-031",
+      "E-HI-CAL-032",
+      "E-HI-CAL-033",
+      "E-HI-CAL-034",
+      "E-HI-CAL-035",
+      "E-HI-CAL-036",
+      "E-HI-CAL-037",
+      "E-HI-CAL-038",
+      "E-HI-CAL-039",
+      "E-HI-CAL-040",
+      "E-HI-CAL-041",
+      "E-HI-CAL-042",
+      "E-HI-CAL-043",
+      "E-HI-CAL-044",
+      "E-HI-CAL-045",
+      "E-HI-CAL-046",
+      "E-HI-CAL-047",
+      "E-HI-CAL-048",
+      "E-HI-CAL-049",
+      "E-HI-CAL-050",
+      "E-HI-CAL-051",
+      "E-HI-CAL-052"
+    ],
+    "full_count": 26,
+    "global_index": "datasets/calibration-normalized-0001/INDEX.jsonl"
+  },
+  "exclusions": [
+    "Do not use current LifeGame feature inventory to limit discovery",
+    "Do not invent sources or completed checks"
+  ],
+  "id_prefixes": {
+    "source": null,
+    "finding": null,
+    "element": null,
+    "rating": null
+  },
+  "deliverables": [
+    "TASK.json",
+    "elements.jsonl",
+    "relations.jsonl",
+    "ANALYSIS.md",
+    "REPORT.md",
+    "RESULT_MANIFEST.json"
+  ],
+  "acceptance": [
+    "All26 assigned full analyses or exact blocked IDs",
+    "No ratings, local top or application mapping",
+    "Specific risks and sources/efficacy separated",
+    "Exact read_ids and provenance; no hidden source changes"
+  ],
+  "due_at": null,
+  "input_files": [
+    "datasets/calibration-analysis-input-0001/part-002/elements.normalized.jsonl",
+    "datasets/calibration-analysis-input-0001/part-002/findings.jsonl",
+    "datasets/calibration-analysis-input-0001/part-002/sources.jsonl",
+    "datasets/calibration-normalized-0001/INDEX.jsonl",
+    "tasks/ANALYSIS-INSTRUCTIONS.md"
+  ]
+}

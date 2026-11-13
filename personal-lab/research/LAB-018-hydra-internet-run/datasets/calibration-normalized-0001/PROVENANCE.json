@@ -1,0 +1,25 @@
+{
+  "snapshot": "calibration-normalized-0001",
+  "status": "normalization_complete_analysis_pending",
+  "full_element_schema_validated": false,
+  "reason": "Normalized skeletons intentionally lack full analysis fields; not rankable input",
+  "raw_source": "calibration-raw-0002",
+  "normalization_source": "accepted/CAL-NORMALIZE-01/attempt-001",
+  "source_origin_groups_applied": 43,
+  "restic_locator_revision": "raw0002/REVISION.json",
+  "input_hashes": {
+    "datasets/calibration-raw-0002/decisions.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "datasets/calibration-raw-0002/merge_map.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "datasets/calibration-raw-0002/ratings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "datasets/calibration-raw-0002/findings.jsonl": "04cbaf2cff3ea21b167d795e3de13aa59f2b38e605d1a332c0a177a39f543a89",
+    "datasets/calibration-raw-0002/sources.jsonl": "19b794137e77ef4feec5afd73c8488b4361af2035c3dae4bbea4fa2d7bf6cae7",
+    "datasets/calibration-raw-0002/elements.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "datasets/calibration-raw-0002/relations.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "accepted/CAL-NORMALIZE-01/attempt-001/elements.normalized.jsonl": "bd1d33a7418a768dcde9c2dacd71c255eb293aa4e38b9d7620e377af9b0a1a3a",
+    "accepted/CAL-NORMALIZE-01/attempt-001/merge_map.jsonl": "dc8fd8ff7d6caf1ff52c7b98e0d447632fd3cac989372e4cbb5514a1bddfe6d8",
+    "accepted/CAL-NORMALIZE-01/attempt-001/INDEX.jsonl": "70c49104edbed6f37d062bc2e319712f8f4f095da6fc6cb2a162176d6a170fc8",
+    "accepted/CAL-NORMALIZE-01/attempt-001/relations.jsonl": "7c5036dc8cf8e07753e6665b1412d44b11393ee1fad045aaaedf0fdb0886270d",
+    "accepted/CAL-NORMALIZE-01/attempt-001/normalization_decisions.jsonl": "cd0d6254fbc430390434aabe62e43533f30495bce9d207ab9671c949a7ac1a19",
+    "accepted/CAL-NORMALIZE-01/attempt-001/origin_groups.json": "6e234432c98f4a621d840151ff62638a2ca13c881f9e3b6f337022bb42add6a7"
+  }
+}

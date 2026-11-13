@@ -1,0 +1,303 @@
+{
+  "task_id": "CAL-SOURCE-AUDIT-01",
+  "attempt": 1,
+  "stage": "audit",
+  "phase": "source_preflight_only",
+  "input_snapshot": "four-calibration-final-sealed-search-packages-attempt-001",
+  "protocol_version": "2.1",
+  "taxonomy_version": "2.1",
+  "rubric_version": "2.1",
+  "owner_id": "/root/cal_audit",
+  "actual_context_id": "/root/cal_audit",
+  "model_id": null,
+  "decision": "pass",
+  "decision_scope": "raw findings source preflight only",
+  "release_audit_status": "audit_incomplete_pending_phase2",
+  "read_ids": {
+    "sources": [
+      "S-HI-C01-001",
+      "S-HI-C01-002",
+      "S-HI-C01-003",
+      "S-HI-C01-004",
+      "S-HI-C01-005",
+      "S-HI-C01-006",
+      "S-HI-C01-007",
+      "S-HI-C01-008",
+      "S-HI-C01-009",
+      "S-HI-C01-010",
+      "S-HI-C01-011",
+      "S-HI-C01-012",
+      "S-HI-C01-013",
+      "S-HI-C01-014",
+      "S-HI-C01-015",
+      "S-HI-C01-016",
+      "S-HI-C01-017",
+      "S-HI-C02-001",
+      "S-HI-C02-002",
+      "S-HI-C02-003",
+      "S-HI-C02-004",
+      "S-HI-C02-005",
+      "S-HI-C02-006",
+      "S-HI-C02-007",
+      "S-HI-C02-008",
+      "S-HI-C02-009",
+      "S-HI-C02-010",
+      "S-HI-C02-011",
+      "S-HI-C02-012",
+      "S-HI-C02-013",
+      "S-HI-C02-014",
+      "S-HI-C03-001",
+      "S-HI-C03-002",
+      "S-HI-C03-003",
+      "S-HI-C03-004",
+      "S-HI-C03-005",
+      "S-HI-C03-006",
+      "S-HI-C03-007",
+      "S-HI-C03-008",
+      "S-HI-C03-009",
+      "S-HI-C03-010",
+      "S-HI-C03-011",
+      "S-HI-C03-012",
+      "S-HI-C03-013",
+      "S-HI-C03-014",
+      "S-HI-C03-015",
+      "S-HI-C03-016",
+      "S-HI-C04-001",
+      "S-HI-C04-002",
+      "S-HI-C04-003",
+      "S-HI-C04-004",
+      "S-HI-C04-005",
+      "S-HI-C04-006",
+      "S-HI-C04-007",
+      "S-HI-C04-008",
+      "S-HI-C04-009",
+      "S-HI-C04-010",
+      "S-HI-C04-011",
+      "S-HI-C04-012",
+      "S-HI-C04-013",
+      "S-HI-C04-014"
+    ],
+    "findings": [
+      "F-HI-C01-001",
+      "F-HI-C01-002",
+      "F-HI-C01-003",
+      "F-HI-C01-004",
+      "F-HI-C01-005",
+      "F-HI-C01-006",
+      "F-HI-C01-007",
+      "F-HI-C01-008",
+      "F-HI-C01-009",
+      "F-HI-C01-010",
+      "F-HI-C01-011",
+      "F-HI-C01-012",
+      "F-HI-C02-001",
+      "F-HI-C02-002",
+      "F-HI-C02-003",
+      "F-HI-C02-004",
+      "F-HI-C02-005",
+      "F-HI-C02-006",
+      "F-HI-C02-007",
+      "F-HI-C02-008",
+      "F-HI-C02-009",
+      "F-HI-C02-010",
+      "F-HI-C02-011",
+      "F-HI-C02-012",
+      "F-HI-C03-001",
+      "F-HI-C03-002",
+      "F-HI-C03-003",
+      "F-HI-C03-004",
+      "F-HI-C03-005",
+      "F-HI-C03-006",
+      "F-HI-C03-007",
+      "F-HI-C03-008",
+      "F-HI-C03-009",
+      "F-HI-C03-010",
+      "F-HI-C03-011",
+      "F-HI-C03-012",
+      "F-HI-C04-001",
+      "F-HI-C04-002",
+      "F-HI-C04-003",
+      "F-HI-C04-004",
+      "F-HI-C04-005",
+      "F-HI-C04-006",
+      "F-HI-C04-007",
+      "F-HI-C04-008",
+      "F-HI-C04-009",
+      "F-HI-C04-010",
+      "F-HI-C04-011",
+      "F-HI-C04-012"
+    ]
+  },
+  "output_counts": {
+    "phase": "independent_source_preflight",
+    "decision": "pass",
+    "decision_scope": "Only source grounding of the 48 raw calibration findings; no final selection/release approval.",
+    "overall_release_audit_status": "audit_incomplete_pending_phase2",
+    "sources": 61,
+    "findings": 48,
+    "claims": 120,
+    "existence_claims": 75,
+    "sources_with_existence_claims": 55,
+    "benefit_claims": 1,
+    "risk_claims": 31,
+    "failure_claims": 12,
+    "origin_claims": 1,
+    "http_gets": 62,
+    "http_200": 62,
+    "existence_verified_findings": 48,
+    "existence_unverified_findings": 0,
+    "source_blockers": 0,
+    "major_issues": 0,
+    "open_minor_issues": 2,
+    "resolved_minor_issues": 1,
+    "single_origin_findings": 44,
+    "input_origin_labels": 46,
+    "audit_canonical_origin_groups": 45,
+    "source_type_counts": {
+      "practice_manual": 20,
+      "review": 2,
+      "official_documentation": 34,
+      "research": 2,
+      "first_person_report": 2,
+      "source_code": 1
+    },
+    "actual_context_id": "/root/cal_audit",
+    "model_id": null,
+    "generated_at": "2026-11-13T08:34:27.214608+00:00"
+  },
+  "input_files": {
+    "incoming/CAL-SEARCH-01/attempt-001/sources.jsonl": {
+      "bytes": 18477,
+      "sha256": "12dee33441ae9d104df3677adb40101013bb8189d9c999704a64128b8e3b59ee",
+      "initial_task_sha256": "12dee33441ae9d104df3677adb40101013bb8189d9c999704a64128b8e3b59ee",
+      "initial_task_match": true,
+      "amendment_match": true
+    },
+    "incoming/CAL-SEARCH-01/attempt-001/findings.jsonl": {
+      "bytes": 28967,
+      "sha256": "6afbb33215b840053991d614f6ab1813dff3d7ce5268dc319e29aba9a7d01ce3",
+      "initial_task_sha256": "6afbb33215b840053991d614f6ab1813dff3d7ce5268dc319e29aba9a7d01ce3",
+      "initial_task_match": true,
+      "amendment_match": true
+    },
+    "incoming/CAL-SEARCH-02/attempt-001/sources.jsonl": {
+      "bytes": 13670,
+      "sha256": "1961e3d6acc8031ae129d9de3c6e757bbe4a752f140e90e776fdd94d4ae3e20a",
+      "initial_task_sha256": "444b9b512ceced9038b0cd749e443b583b9a6d8dc56e7515edf1484bd4afe8d9",
+      "initial_task_match": false,
+      "amendment_match": true
+    },
+    "incoming/CAL-SEARCH-02/attempt-001/findings.jsonl": {
+      "bytes": 36376,
+      "sha256": "ddf087982a332fda1e396279b0a89ab27025be678fe45c764a099a9bcc643829",
+      "initial_task_sha256": "643b2bdae982120e1c1f3eed3fcad677ae0d1468efea19449e934c4a808dba26",
+      "initial_task_match": false,
+      "amendment_match": true
+    },
+    "incoming/CAL-SEARCH-03/attempt-001/sources.jsonl": {
+      "bytes": 18604,
+      "sha256": "ff7ecc5c3259754c66697e51ca460875952a7608b2d9b9cb49cf89cd4024f34e",
+      "initial_task_sha256": "ff7ecc5c3259754c66697e51ca460875952a7608b2d9b9cb49cf89cd4024f34e",
+      "initial_task_match": true,
+      "amendment_match": true
+    },
+    "incoming/CAL-SEARCH-03/attempt-001/findings.jsonl": {
+      "bytes": 42784,
+      "sha256": "6d731d3610d5ebdc4c5c6c97e28e734ab613432c84ee807de3c5d116e0291729",
+      "initial_task_sha256": "6d731d3610d5ebdc4c5c6c97e28e734ab613432c84ee807de3c5d116e0291729",
+      "initial_task_match": true,
+      "amendment_match": true
+    },
+    "incoming/CAL-SEARCH-04/attempt-001/sources.jsonl": {
+      "bytes": 14117,
+      "sha256": "d1b2391b67d309c3b1053d266521dfc7c59b4df99d1340f5da324d39cce2db27",
+      "initial_task_sha256": "d1b2391b67d309c3b1053d266521dfc7c59b4df99d1340f5da324d39cce2db27",
+      "initial_task_match": true,
+      "amendment_match": true
+    },
+    "incoming/CAL-SEARCH-04/attempt-001/findings.jsonl": {
+      "bytes": 29292,
+      "sha256": "d06e7486230b118092bab8cf787ee6026e299fa173e93b0acaafaef5438d209b",
+      "initial_task_sha256": "d06e7486230b118092bab8cf787ee6026e299fa173e93b0acaafaef5438d209b",
+      "initial_task_match": true,
+      "amendment_match": true
+    }
+  },
+  "input_amendment": "tasks/CAL-SOURCE-AUDIT-01-INPUT-AMENDMENT.json",
+  "limitations": [
+    "No normalized/selected snapshot, ratings or calculations audited",
+    "No application or shared current statuses read",
+    "No source execution/product behavior/clinical effects tested",
+    "Published PLOS results checked as reported, not independently recalculated",
+    "Original historical accessed times not proved by fresh GETs",
+    "No mass-search authorization implied"
+  ],
+  "files": [
+    {
+      "path": "AUDIT.md",
+      "bytes": 15761,
+      "sha256": "c4862d3e02c5d3e4c51668f3f6b15df65cfab69fc26a25c8c6593b023de01c63"
+    },
+    {
+      "path": "CONTEXT.json",
+      "bytes": 9444,
+      "sha256": "888a8d86da4dea1644a1dbb720554fdae6aa2ea10b8a2b1e1daa23bbb219a3e3"
+    },
+    {
+      "path": "INPUT_INTEGRITY.json",
+      "bytes": 15057,
+      "sha256": "6d6fe1157aaef64b05927d47e886af182755c8144ebe19accc2e20fb93457cd2"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 2299,
+      "sha256": "b42f4901b0f0016f248bf7877c500777ba6d36cecdfd5cde0baf79834ad40ddf"
+    },
+    {
+      "path": "STATIC_CHECKS.json",
+      "bytes": 1360,
+      "sha256": "87b9250d337d099dd989a08bba76293167f1449a31e42eeeef15e4d396384a61"
+    },
+    {
+      "path": "SUMMARY.json",
+      "bytes": 1070,
+      "sha256": "842f278137411ec436a886e0daa036e22746816c9ef2b6476b78cc68a89519ca"
+    },
+    {
+      "path": "checked_ids.json",
+      "bytes": 7607,
+      "sha256": "18ed75ed44a750e4736b38231959358fe3f8082c4ba554fab5ea5101c5a0ce12"
+    },
+    {
+      "path": "claim_checks.jsonl",
+      "bytes": 33567,
+      "sha256": "24cfa23aed7497aaa18e4d7dd039180a178445d0233247597763eecb7e1da8f9"
+    },
+    {
+      "path": "finding_checks.jsonl",
+      "bytes": 34163,
+      "sha256": "a5b782fa3e66a8004fb99d9cc55c72b472fee4d688d6bb0cd51dd3fe96ea2af6"
+    },
+    {
+      "path": "http_log.jsonl",
+      "bytes": 48859,
+      "sha256": "b6afcbe0cf0d0cc8dee4587526846f811595515f52c86e55199a52055d23775e"
+    },
+    {
+      "path": "issues.jsonl",
+      "bytes": 3316,
+      "sha256": "7811dfe4da9ba6f04abf735761857a66bfcb9dece289aeb80c9ee60755064784"
+    },
+    {
+      "path": "provenance_groups.json",
+      "bytes": 16172,
+      "sha256": "d343b7e71d5856b489d8431ff8782feac4864d7747c862f3a4e954b8e9e97202"
+    },
+    {
+      "path": "source_checks.jsonl",
+      "bytes": 164899,
+      "sha256": "58706460aeef037f62b0d831bd0675a8d4faec811033479629b032ac9c77b508"
+    }
+  ],
+  "completed_at": "2026-11-13T08:37:42.801833+00:00"
+}

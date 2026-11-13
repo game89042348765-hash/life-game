@@ -1,0 +1,612 @@
+{
+  "input_origin_group_label_count": 46,
+  "audit_canonical_group_count": 45,
+  "note": "Группы происхождения — учёт, не число независимых испытаний эффективности. Joplin объединён только в аудитной карте; входы не исправлялись. EN/RU Google/Wesnoth и зеркало Spoon Theory не добавляют независимого первоисточника.",
+  "groups": [
+    {
+      "canonical_group": "AlbulescuEtAl2022-Microbreaks",
+      "input_origin_group_labels": [
+        "AlbulescuEtAl2022-Microbreaks"
+      ],
+      "source_ids": [
+        "S-HI-C02-004"
+      ],
+      "owners_as_input": [
+        "Patricia Albulescu, Irina Macsinga, Andrei Rusu, Coralia Sulea, Alexandra Bodnaru, Bogdan Tudor Tulbure / PLOS ONE"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "Anki-Manual",
+      "input_origin_group_labels": [
+        "Anki-Manual"
+      ],
+      "source_ids": [
+        "S-HI-C02-010",
+        "S-HI-C02-011"
+      ],
+      "owners_as_input": [
+        "Ankitects / Anki documentation"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "Beeminder-GoalBreaks",
+      "input_origin_group_labels": [
+        "Beeminder-GoalBreaks"
+      ],
+      "source_ids": [
+        "S-HI-C02-009"
+      ],
+      "owners_as_input": [
+        "Beeminder"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "BladesInTheDark-SRD",
+      "input_origin_group_labels": [
+        "BladesInTheDark-SRD"
+      ],
+      "source_ids": [
+        "S-HI-C02-006",
+        "S-HI-C02-007"
+      ],
+      "owners_as_input": [
+        "Blades in the Dark RPG — SRD на bladesinthedark.com"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "CDC-MECFS-Management",
+      "input_origin_group_labels": [
+        "CDC-MECFS-Management"
+      ],
+      "source_ids": [
+        "S-HI-C02-002"
+      ],
+      "owners_as_input": [
+        "Centers for Disease Control and Prevention (CDC), NCEZID"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "FIDE-Laws-2023",
+      "input_origin_group_labels": [
+        "FIDE-Laws-2023"
+      ],
+      "source_ids": [
+        "S-HI-C02-013"
+      ],
+      "owners_as_input": [
+        "Fédération Internationale des Échecs (FIDE)"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "Garant-Consult-1760323",
+      "input_origin_group_labels": [
+        "Garant-Consult-1760323"
+      ],
+      "source_ids": [
+        "S-HI-C02-014"
+      ],
+      "owners_as_input": [
+        "Ирина Ипполитова, служба Правового консалтинга ГАРАНТ"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "HSE-DSE-WorkRoutine",
+      "input_origin_group_labels": [
+        "HSE-DSE-WorkRoutine"
+      ],
+      "source_ids": [
+        "S-HI-C02-003"
+      ],
+      "owners_as_input": [
+        "Health and Safety Executive (HSE)"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "Miserandino-SpoonTheory-2003",
+      "input_origin_group_labels": [
+        "Miserandino-SpoonTheory-2003"
+      ],
+      "source_ids": [
+        "S-HI-C02-008"
+      ],
+      "owners_as_input": [
+        "Christine Miserandino; разрешённая перепечатка Lymphoma Action"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "NHS-CouchTo5K",
+      "input_origin_group_labels": [
+        "NHS-CouchTo5K"
+      ],
+      "source_ids": [
+        "S-HI-C02-005"
+      ],
+      "owners_as_input": [
+        "NHS / Better Health"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "NICE-NG206",
+      "input_origin_group_labels": [
+        "NICE-NG206"
+      ],
+      "source_ids": [
+        "S-HI-C02-001"
+      ],
+      "owners_as_input": [
+        "National Institute for Health and Care Excellence (NICE)"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "OG-HI-BITWARDEN",
+      "input_origin_group_labels": [
+        "OG-HI-BITWARDEN"
+      ],
+      "source_ids": [
+        "S-HI-C04-003"
+      ],
+      "owners_as_input": [
+        "Bitwarden Inc."
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "OG-HI-GITLAB-INCIDENT-2017",
+      "input_origin_group_labels": [
+        "OG-HI-GITLAB-INCIDENT-2017"
+      ],
+      "source_ids": [
+        "S-HI-C04-013"
+      ],
+      "owners_as_input": [
+        "GitLab"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "OG-HI-GNU-EMACS",
+      "input_origin_group_labels": [
+        "OG-HI-GNU-EMACS"
+      ],
+      "source_ids": [
+        "S-HI-C04-009"
+      ],
+      "owners_as_input": [
+        "Free Software Foundation / GNU Emacs project"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "OG-HI-GOOGLE-CLOUD",
+      "input_origin_group_labels": [
+        "OG-HI-GOOGLE-CLOUD"
+      ],
+      "source_ids": [
+        "S-HI-C04-012"
+      ],
+      "owners_as_input": [
+        "Google Cloud"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "OG-HI-IETF-RFC9110",
+      "input_origin_group_labels": [
+        "OG-HI-IETF-RFC9110"
+      ],
+      "source_ids": [
+        "S-HI-C04-007"
+      ],
+      "owners_as_input": [
+        "IETF HTTP Working Group; RFC Editor"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "OG-HI-NEXTCLOUD",
+      "input_origin_group_labels": [
+        "OG-HI-NEXTCLOUD"
+      ],
+      "source_ids": [
+        "S-HI-C04-014"
+      ],
+      "owners_as_input": [
+        "Nextcloud GmbH and Nextcloud contributors"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "OG-HI-NOTION",
+      "input_origin_group_labels": [
+        "OG-HI-NOTION"
+      ],
+      "source_ids": [
+        "S-HI-C04-002"
+      ],
+      "owners_as_input": [
+        "Notion Labs, Inc."
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "OG-HI-OBSIDIAN",
+      "input_origin_group_labels": [
+        "OG-HI-OBSIDIAN"
+      ],
+      "source_ids": [
+        "S-HI-C04-001"
+      ],
+      "owners_as_input": [
+        "Obsidian"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "OG-HI-RESTIC",
+      "input_origin_group_labels": [
+        "OG-HI-RESTIC"
+      ],
+      "source_ids": [
+        "S-HI-C04-010",
+        "S-HI-C04-011"
+      ],
+      "owners_as_input": [
+        "restic project"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "OG-HI-SQLITE",
+      "input_origin_group_labels": [
+        "OG-HI-SQLITE"
+      ],
+      "source_ids": [
+        "S-HI-C04-008"
+      ],
+      "owners_as_input": [
+        "SQLite developers / SQLite Consortium"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "OG-HI-SYNCTHING",
+      "input_origin_group_labels": [
+        "OG-HI-SYNCTHING"
+      ],
+      "source_ids": [
+        "S-HI-C04-005"
+      ],
+      "owners_as_input": [
+        "Syncthing project"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "OG-HI-YJS",
+      "input_origin_group_labels": [
+        "OG-HI-YJS"
+      ],
+      "source_ids": [
+        "S-HI-C04-006"
+      ],
+      "owners_as_input": [
+        "Yjs project"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "Workrave-1.11-Manual",
+      "input_origin_group_labels": [
+        "Workrave-1.11-Manual"
+      ],
+      "source_ids": [
+        "S-HI-C02-012"
+      ],
+      "owners_as_input": [
+        "Raymond Penners & Rob Caelers / Workrave"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "almeida-2023-negative-effects-mapping",
+      "input_origin_group_labels": [
+        "almeida-2023-negative-effects-mapping"
+      ],
+      "source_ids": [
+        "S-HI-C03-014"
+      ],
+      "owners_as_input": [
+        "Cláuvin Almeida, Marcos Kalinowski, Anderson Uchôa, Bruno Feijó"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "apple-reminders-support",
+      "input_origin_group_labels": [
+        "apple-reminders-support"
+      ],
+      "source_ids": [
+        "S-HI-C01-007"
+      ],
+      "owners_as_input": [
+        "Apple Inc."
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "bullet-journal-method",
+      "input_origin_group_labels": [
+        "bullet-journal-method"
+      ],
+      "source_ids": [
+        "S-HI-C01-002",
+        "S-HI-C01-003"
+      ],
+      "owners_as_input": [
+        "Lightcage LLC / Bullet Journal"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "doist-publications",
+      "input_origin_group_labels": [
+        "doist-publications"
+      ],
+      "source_ids": [
+        "S-HI-C01-009",
+        "S-HI-C01-015"
+      ],
+      "owners_as_input": [
+        "Doist / Todoist"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "dominion-rio-grande-2021-rules",
+      "input_origin_group_labels": [
+        "dominion-rio-grande-2021-rules"
+      ],
+      "source_ids": [
+        "S-HI-C03-015"
+      ],
+      "owners_as_input": [
+        "Donald X. Vaccarino / Rio Grande Games"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "duolingo-official-energy",
+      "input_origin_group_labels": [
+        "duolingo-official-energy"
+      ],
+      "source_ids": [
+        "S-HI-C03-012"
+      ],
+      "owners_as_input": [
+        "Duolingo Team"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "eve-online-support",
+      "input_origin_group_labels": [
+        "eve-online-support"
+      ],
+      "source_ids": [
+        "S-HI-C03-004"
+      ],
+      "owners_as_input": [
+        "CCP Games; Lead GM Carbon"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "factorio-official-wiki",
+      "input_origin_group_labels": [
+        "factorio-official-wiki"
+      ],
+      "source_ids": [
+        "S-HI-C03-003"
+      ],
+      "owners_as_input": [
+        "Wube Software / Official Factorio Wiki contributors"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "google-calendar-help",
+      "input_origin_group_labels": [
+        "google-calendar-help"
+      ],
+      "source_ids": [
+        "S-HI-C01-010",
+        "S-HI-C01-011",
+        "S-HI-C01-012"
+      ],
+      "owners_as_input": [
+        "Google LLC"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "gtd-david-allen",
+      "input_origin_group_labels": [
+        "gtd-david-allen"
+      ],
+      "source_ids": [
+        "S-HI-C01-001",
+        "S-HI-C01-008",
+        "S-HI-C01-017"
+      ],
+      "owners_as_input": [
+        "David Allen Company",
+        "FacileThings"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "icy-veins-rested-xp-guide",
+      "input_origin_group_labels": [
+        "icy-veins-rested-xp-guide"
+      ],
+      "source_ids": [
+        "S-HI-C03-013"
+      ],
+      "owners_as_input": [
+        "Daylea / Icy Veins"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "iris-secondary-behavior-module",
+      "input_origin_group_labels": [
+        "iris-secondary-behavior-module"
+      ],
+      "source_ids": [
+        "S-HI-C03-011",
+        "S-HI-C03-016"
+      ],
+      "owners_as_input": [
+        "The IRIS Center, Vanderbilt University"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "joplin-project-documentation",
+      "input_origin_group_labels": [
+        "OG-HI-JOPLIN",
+        "joplin-documentation"
+      ],
+      "source_ids": [
+        "S-HI-C01-006",
+        "S-HI-C04-004"
+      ],
+      "owners_as_input": [
+        "Joplin / Laurent Cozic",
+        "Laurent Cozic / Joplin project"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "khan-academy-mastery",
+      "input_origin_group_labels": [
+        "khan-academy-mastery"
+      ],
+      "source_ids": [
+        "S-HI-C03-001",
+        "S-HI-C03-002"
+      ],
+      "owners_as_input": [
+        "Khan Academy"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "moodle-docs-badges",
+      "input_origin_group_labels": [
+        "moodle-docs-badges"
+      ],
+      "source_ids": [
+        "S-HI-C03-007",
+        "S-HI-C03-008"
+      ],
+      "owners_as_input": [
+        "Moodle / MoodleDocs contributors"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "org-manual",
+      "input_origin_group_labels": [
+        "org-manual"
+      ],
+      "source_ids": [
+        "S-HI-C01-004",
+        "S-HI-C01-005"
+      ],
+      "owners_as_input": [
+        "Org mode maintainers"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "remind-author-slides",
+      "input_origin_group_labels": [
+        "remind-author-slides"
+      ],
+      "source_ids": [
+        "S-HI-C01-014"
+      ],
+      "owners_as_input": [
+        "Dianne Skoll"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "rescuetime-timeblocking-guide",
+      "input_origin_group_labels": [
+        "rescuetime-timeblocking-guide"
+      ],
+      "source_ids": [
+        "S-HI-C01-016"
+      ],
+      "owners_as_input": [
+        "RescueTime"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "stack-overflow-help",
+      "input_origin_group_labels": [
+        "stack-overflow-help"
+      ],
+      "source_ids": [
+        "S-HI-C03-005",
+        "S-HI-C03-006"
+      ],
+      "owners_as_input": [
+        "Stack Overflow / Stack Exchange"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "taskwarrior-documentation",
+      "input_origin_group_labels": [
+        "taskwarrior-documentation"
+      ],
+      "source_ids": [
+        "S-HI-C01-013"
+      ],
+      "owners_as_input": [
+        "Gothenburg Bit Factory"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    },
+    {
+      "canonical_group": "wesnoth-manual-1.18.5",
+      "input_origin_group_labels": [
+        "wesnoth-manual-1.18.5"
+      ],
+      "source_ids": [
+        "S-HI-C03-009",
+        "S-HI-C03-010"
+      ],
+      "owners_as_input": [
+        "The Battle for Wesnoth Project",
+        "The Battle for Wesnoth Project; переводчики русского руководства"
+      ],
+      "multiple_pages_are_not_independent_effect_evidence": true
+    }
+  ]
+}

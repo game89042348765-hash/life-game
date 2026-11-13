@@ -1,0 +1,41 @@
+{
+  "checked_at": "2026-11-13T08:37:42.800463+00:00",
+  "context_id": "/root/cal_audit",
+  "checks": {
+    "input_rows_and_ids": true,
+    "all_source_checks_and_nonempty_excerpts": true,
+    "all_finding_checks": true,
+    "claim_checks_complete_unique": true,
+    "all_claim_source_refs": true,
+    "all_claim_input_locators_covered": true,
+    "all_62_http_gets_succeeded": true,
+    "no_repeated_requested_urls": true,
+    "arxiv_v1_body_identical": true,
+    "all_28_manifest_entries_match": true,
+    "final_input_hashes_still_match": true,
+    "actual_final_semantic_snapshot_equals_reviewed_tmp": true,
+    "only_2_amended_task_hashes": true,
+    "zero_unverified_existence_ids": true,
+    "no_blocker_or_major_issues": true,
+    "no_long_response_bodies_in_output": true,
+    "source_code_path_version_fragment": true,
+    "required_audit_deliverables_exist": true,
+    "summary_consistent": true
+  },
+  "all_passed": true,
+  "not_tests_of_products_or_effects": true,
+  "output_sizes": {
+    "AUDIT.md": 15761,
+    "CONTEXT.json": 9444,
+    "INPUT_INTEGRITY.json": 15057,
+    "REPORT.md": 2299,
+    "SUMMARY.json": 1070,
+    "checked_ids.json": 7607,
+    "claim_checks.jsonl": 33567,
+    "finding_checks.jsonl": 34163,
+    "http_log.jsonl": 48859,
+    "issues.jsonl": 3316,
+    "provenance_groups.json": 16172,
+    "source_checks.jsonl": 164899
+  }
+}

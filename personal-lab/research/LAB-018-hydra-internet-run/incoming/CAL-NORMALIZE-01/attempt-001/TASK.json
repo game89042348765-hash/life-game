@@ -1,0 +1,65 @@
+{
+  "template": false,
+  "task_id": "CAL-NORMALIZE-01",
+  "stage": "normalize",
+  "mode": "normalize",
+  "owner_id": "/root/cal_normalize",
+  "status": "assigned",
+  "attempt": 1,
+  "protocol_version": "2.1",
+  "taxonomy_version": "2.1",
+  "rubric_version": "2.1",
+  "input_snapshot": "calibration-raw-0001",
+  "input_hashes": {
+    "datasets/calibration-raw-0001/decisions.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "datasets/calibration-raw-0001/merge_map.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "datasets/calibration-raw-0001/ratings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "datasets/calibration-raw-0001/findings.jsonl": "3df9c7c814e4366397a5aecc6e64f1642b7b2d2784eaeab00713cdb930fc6845",
+    "datasets/calibration-raw-0001/sources.jsonl": "19b794137e77ef4feec5afd73c8488b4361af2035c3dae4bbea4fa2d7bf6cae7",
+    "datasets/calibration-raw-0001/elements.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "datasets/calibration-raw-0001/relations.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "datasets/calibration-raw-0001/MERGE.json": "01e3305bbc6255bd87790c8f76ef32314e69fa08f25e90fd51ee87f1ffdbc9d6"
+  },
+  "scope": {
+    "category_ids": [
+      "C05",
+      "C08",
+      "C09",
+      "C12",
+      "C21",
+      "C22",
+      "C28",
+      "C29"
+    ],
+    "orientation_count": "All 48 accepted raw findings, no top filter"
+  },
+  "exclusions": [
+    "Do not use current LifeGame feature inventory to limit discovery",
+    "Do not invent sources or completed checks"
+  ],
+  "id_prefixes": {
+    "source": null,
+    "finding": null,
+    "element": "E-HI-CAL-",
+    "rating": null
+  },
+  "deliverables": [
+    "elements.normalized.jsonl",
+    "merge_map.jsonl",
+    "relations.jsonl",
+    "origin_groups.json",
+    "normalization_decisions.jsonl",
+    "INDEX.jsonl",
+    "DUPLICATES.md",
+    "REPORT.md",
+    "RESULT_MANIFEST.json"
+  ],
+  "acceptance": [
+    "All48 findings mapped",
+    "No lost raw/source provenance",
+    "Cross-category semantic comparison explicit",
+    "Variants distinguished by rules/inputs/state not brands",
+    "Origin groups canonicalized without mutating raw packages"
+  ],
+  "due_at": null
+}

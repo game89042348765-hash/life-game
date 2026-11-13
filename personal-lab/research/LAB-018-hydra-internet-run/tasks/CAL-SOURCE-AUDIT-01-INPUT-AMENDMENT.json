@@ -1,0 +1,19 @@
+{
+  "task_id": "CAL-SOURCE-AUDIT-01",
+  "type": "input_amendment",
+  "at": "2026-11-13T08:27:05.026922+00:00",
+  "changes": {
+    "incoming/CAL-SEARCH-02/attempt-001/findings.jsonl": {
+      "task_initial_sha256": "643b2bdae982120e1c1f3eed3fcad677ae0d1468efea19449e934c4a808dba26",
+      "final_sealed_sha256": "ddf087982a332fda1e396279b0a89ab27025be678fe45c764a099a9bcc643829",
+      "reason": "CAL02 finalized source-internal PLOS note before submission/sealing, after preflight assignment; initial task declared pending final sealing."
+    },
+    "incoming/CAL-SEARCH-02/attempt-001/sources.jsonl": {
+      "task_initial_sha256": "444b9b512ceced9038b0cd749e443b583b9a6d8dc56e7515edf1484bd4afe8d9",
+      "final_sealed_sha256": "1961e3d6acc8031ae129d9de3c6e757bbe4a752f140e90e776fdd94d4ae3e20a",
+      "reason": "CAL02 finalized source-internal PLOS note before submission/sealing, after preflight assignment; initial task declared pending final sealing."
+    }
+  },
+  "raw_snapshot": "datasets/calibration-raw-0001",
+  "rule": "Original task and incoming packages retained. Auditor reads final sealed files and records exact actual hashes; no claim that initial hashes matched."
+}

@@ -1,0 +1,341 @@
+{
+  "schema_version": "2.1.1+lab.1",
+  "input_sha256": {
+    "decisions.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "elements.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "findings.jsonl": "04cbaf2cff3ea21b167d795e3de13aa59f2b38e605d1a332c0a177a39f543a89",
+    "merge_map.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ratings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "relations.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sources.jsonl": "19b794137e77ef4feec5afd73c8488b4361af2035c3dae4bbea4fa2d7bf6cae7"
+  },
+  "limits": {
+    "max_records_per_shard": 24,
+    "max_packet_total_bytes": 400000,
+    "max_findings_bytes_per_shard": 180000,
+    "prompt_reserve_bytes": 194172,
+    "index_max_records": 100,
+    "index_max_bytes": 100000,
+    "preview_chars": 160
+  },
+  "total_findings": 48,
+  "total_shard_parts": 10,
+  "largest_part_records": 8,
+  "largest_standard_part_bytes": 29494,
+  "largest_standard_packet_total_bytes": 238942,
+  "oversized_single_records": [],
+  "index_parts": [
+    {
+      "file": "compact_findings_index_part001.txt",
+      "records": 48,
+      "bytes": 31238,
+      "contains_oversized_records": false,
+      "oversized_record_ids": [],
+      "truncated_previews_count": 46
+    }
+  ],
+  "shards": {
+    "SHARD_C05__GENERAL__part001": {
+      "group": "SHARD_C05__GENERAL",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 6,
+      "bytes": 13340,
+      "findings_bytes": 13340,
+      "sources_bytes": 8632,
+      "prompt_reserve_bytes": 194172,
+      "total_bytes": 216144,
+      "finding_ids": [
+        "F-HI-C01-001",
+        "F-HI-C01-002",
+        "F-HI-C01-003",
+        "F-HI-C01-004",
+        "F-HI-C01-005",
+        "F-HI-C01-006"
+      ],
+      "source_ids": [
+        "S-HI-C01-001",
+        "S-HI-C01-002",
+        "S-HI-C01-003",
+        "S-HI-C01-004",
+        "S-HI-C01-005",
+        "S-HI-C01-006",
+        "S-HI-C01-007",
+        "S-HI-C01-008"
+      ],
+      "file": "SHARD_C05__GENERAL__part001.jsonl",
+      "sources_file": "SHARD_C05__GENERAL__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_C08__GENERAL__part001": {
+      "group": "SHARD_C08__GENERAL",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 6,
+      "bytes": 16334,
+      "findings_bytes": 16334,
+      "sources_bytes": 10559,
+      "prompt_reserve_bytes": 194172,
+      "total_bytes": 221065,
+      "finding_ids": [
+        "F-HI-C01-007",
+        "F-HI-C01-008",
+        "F-HI-C01-009",
+        "F-HI-C01-010",
+        "F-HI-C01-011",
+        "F-HI-C01-012"
+      ],
+      "source_ids": [
+        "S-HI-C01-009",
+        "S-HI-C01-010",
+        "S-HI-C01-011",
+        "S-HI-C01-012",
+        "S-HI-C01-013",
+        "S-HI-C01-014",
+        "S-HI-C01-015",
+        "S-HI-C01-016",
+        "S-HI-C01-017"
+      ],
+      "file": "SHARD_C08__GENERAL__part001.jsonl",
+      "sources_file": "SHARD_C08__GENERAL__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_C09__GENERAL__part001": {
+      "group": "SHARD_C09__GENERAL",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 8,
+      "bytes": 23770,
+      "findings_bytes": 23770,
+      "sources_bytes": 10017,
+      "prompt_reserve_bytes": 194172,
+      "total_bytes": 227959,
+      "finding_ids": [
+        "F-HI-C02-001",
+        "F-HI-C02-003",
+        "F-HI-C02-004",
+        "F-HI-C02-005",
+        "F-HI-C02-006",
+        "F-HI-C02-007",
+        "F-HI-C02-010",
+        "F-HI-C02-012"
+      ],
+      "source_ids": [
+        "S-HI-C02-001",
+        "S-HI-C02-002",
+        "S-HI-C02-003",
+        "S-HI-C02-004",
+        "S-HI-C02-005",
+        "S-HI-C02-006",
+        "S-HI-C02-007",
+        "S-HI-C02-008",
+        "S-HI-C02-012",
+        "S-HI-C02-014"
+      ],
+      "file": "SHARD_C09__GENERAL__part001.jsonl",
+      "sources_file": "SHARD_C09__GENERAL__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_C12__GENERAL__part001": {
+      "group": "SHARD_C12__GENERAL",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 4,
+      "bytes": 12606,
+      "findings_bytes": 12606,
+      "sources_bytes": 4632,
+      "prompt_reserve_bytes": 194172,
+      "total_bytes": 211410,
+      "finding_ids": [
+        "F-HI-C02-002",
+        "F-HI-C02-008",
+        "F-HI-C02-009",
+        "F-HI-C02-011"
+      ],
+      "source_ids": [
+        "S-HI-C02-001",
+        "S-HI-C02-009",
+        "S-HI-C02-010",
+        "S-HI-C02-011",
+        "S-HI-C02-013"
+      ],
+      "file": "SHARD_C12__GENERAL__part001.jsonl",
+      "sources_file": "SHARD_C12__GENERAL__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_C28__GENERAL__part001": {
+      "group": "SHARD_C28__GENERAL",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 4,
+      "bytes": 9739,
+      "findings_bytes": 9739,
+      "sources_bytes": 4230,
+      "prompt_reserve_bytes": 194172,
+      "total_bytes": 208141,
+      "finding_ids": [
+        "F-HI-C04-001",
+        "F-HI-C04-002",
+        "F-HI-C04-003",
+        "F-HI-C04-012"
+      ],
+      "source_ids": [
+        "S-HI-C04-001",
+        "S-HI-C04-002",
+        "S-HI-C04-003",
+        "S-HI-C04-014"
+      ],
+      "file": "SHARD_C28__GENERAL__part001.jsonl",
+      "sources_file": "SHARD_C28__GENERAL__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_C29__GENERAL__part001": {
+      "group": "SHARD_C29__GENERAL",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 8,
+      "bytes": 20125,
+      "findings_bytes": 20125,
+      "sources_bytes": 10421,
+      "prompt_reserve_bytes": 194172,
+      "total_bytes": 224718,
+      "finding_ids": [
+        "F-HI-C04-004",
+        "F-HI-C04-005",
+        "F-HI-C04-006",
+        "F-HI-C04-007",
+        "F-HI-C04-008",
+        "F-HI-C04-009",
+        "F-HI-C04-010",
+        "F-HI-C04-011"
+      ],
+      "source_ids": [
+        "S-HI-C04-004",
+        "S-HI-C04-005",
+        "S-HI-C04-006",
+        "S-HI-C04-007",
+        "S-HI-C04-008",
+        "S-HI-C04-009",
+        "S-HI-C04-010",
+        "S-HI-C04-011",
+        "S-HI-C04-012",
+        "S-HI-C04-013"
+      ],
+      "file": "SHARD_C29__GENERAL__part001.jsonl",
+      "sources_file": "SHARD_C29__GENERAL__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P2_SENSEMAKING_DESIGN__GENERAL__part001": {
+      "group": "SHARD_P2_SENSEMAKING_DESIGN__GENERAL",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 2,
+      "bytes": 6571,
+      "findings_bytes": 6571,
+      "sources_bytes": 4051,
+      "prompt_reserve_bytes": 194172,
+      "total_bytes": 204794,
+      "finding_ids": [
+        "F-HI-C03-008",
+        "F-HI-C03-012"
+      ],
+      "source_ids": [
+        "S-HI-C03-009",
+        "S-HI-C03-010",
+        "S-HI-C03-015"
+      ],
+      "file": "SHARD_P2_SENSEMAKING_DESIGN__GENERAL__part001.jsonl",
+      "sources_file": "SHARD_P2_SENSEMAKING_DESIGN__GENERAL__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P4_EXECUTION_PACING__GENERAL__part001": {
+      "group": "SHARD_P4_EXECUTION_PACING__GENERAL",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 1,
+      "bytes": 4188,
+      "findings_bytes": 4188,
+      "sources_bytes": 1360,
+      "prompt_reserve_bytes": 194172,
+      "total_bytes": 199720,
+      "finding_ids": [
+        "F-HI-C03-010"
+      ],
+      "source_ids": [
+        "S-HI-C03-012"
+      ],
+      "file": "SHARD_P4_EXECUTION_PACING__GENERAL__part001.jsonl",
+      "sources_file": "SHARD_P4_EXECUTION_PACING__GENERAL__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P5_FEEDBACK_REWARD__GENERAL__part001": {
+      "group": "SHARD_P5_FEEDBACK_REWARD__GENERAL",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 8,
+      "bytes": 29494,
+      "findings_bytes": 29494,
+      "sources_bytes": 15276,
+      "prompt_reserve_bytes": 194172,
+      "total_bytes": 238942,
+      "finding_ids": [
+        "F-HI-C03-001",
+        "F-HI-C03-002",
+        "F-HI-C03-003",
+        "F-HI-C03-004",
+        "F-HI-C03-005",
+        "F-HI-C03-006",
+        "F-HI-C03-007",
+        "F-HI-C03-009"
+      ],
+      "source_ids": [
+        "S-HI-C03-001",
+        "S-HI-C03-002",
+        "S-HI-C03-003",
+        "S-HI-C03-004",
+        "S-HI-C03-005",
+        "S-HI-C03-006",
+        "S-HI-C03-007",
+        "S-HI-C03-008",
+        "S-HI-C03-009",
+        "S-HI-C03-010",
+        "S-HI-C03-011",
+        "S-HI-C03-014",
+        "S-HI-C03-016"
+      ],
+      "file": "SHARD_P5_FEEDBACK_REWARD__GENERAL__part001.jsonl",
+      "sources_file": "SHARD_P5_FEEDBACK_REWARD__GENERAL__part001.sources.jsonl",
+      "oversized_single_record": false
+    },
+    "SHARD_P6_RECOVERY_ADAPTATION__GENERAL__part001": {
+      "group": "SHARD_P6_RECOVERY_ADAPTATION__GENERAL",
+      "part": 1,
+      "packet_status": "standard_bounded_packet",
+      "oversize_reason": null,
+      "count": 1,
+      "bytes": 3336,
+      "findings_bytes": 3336,
+      "sources_bytes": 1296,
+      "prompt_reserve_bytes": 194172,
+      "total_bytes": 198804,
+      "finding_ids": [
+        "F-HI-C03-011"
+      ],
+      "source_ids": [
+        "S-HI-C03-013"
+      ],
+      "file": "SHARD_P6_RECOVERY_ADAPTATION__GENERAL__part001.jsonl",
+      "sources_file": "SHARD_P6_RECOVERY_ADAPTATION__GENERAL__part001.sources.jsonl",
+      "oversized_single_record": false
+    }
+  }
+}

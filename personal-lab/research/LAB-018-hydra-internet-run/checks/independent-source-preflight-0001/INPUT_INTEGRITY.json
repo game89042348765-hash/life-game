@@ -1,0 +1,387 @@
+{
+  "checked_at": "2026-11-13T08:34:27.212178+00:00",
+  "task_initial_hashes_preserved": true,
+  "input_amendment_path": "tasks/CAL-SOURCE-AUDIT-01-INPUT-AMENDMENT.json",
+  "input_amendment_sha256": "a8d70b6e09cdeff85b40d9965d8e8274faf123de41fbb6349f3600b0715415b2",
+  "final_sources_findings": {
+    "incoming/CAL-SEARCH-01/attempt-001/sources.jsonl": {
+      "bytes": 18477,
+      "sha256": "12dee33441ae9d104df3677adb40101013bb8189d9c999704a64128b8e3b59ee",
+      "initial_task_sha256": "12dee33441ae9d104df3677adb40101013bb8189d9c999704a64128b8e3b59ee",
+      "initial_task_match": true,
+      "amendment_match": true
+    },
+    "incoming/CAL-SEARCH-01/attempt-001/findings.jsonl": {
+      "bytes": 28967,
+      "sha256": "6afbb33215b840053991d614f6ab1813dff3d7ce5268dc319e29aba9a7d01ce3",
+      "initial_task_sha256": "6afbb33215b840053991d614f6ab1813dff3d7ce5268dc319e29aba9a7d01ce3",
+      "initial_task_match": true,
+      "amendment_match": true
+    },
+    "incoming/CAL-SEARCH-02/attempt-001/sources.jsonl": {
+      "bytes": 13670,
+      "sha256": "1961e3d6acc8031ae129d9de3c6e757bbe4a752f140e90e776fdd94d4ae3e20a",
+      "initial_task_sha256": "444b9b512ceced9038b0cd749e443b583b9a6d8dc56e7515edf1484bd4afe8d9",
+      "initial_task_match": false,
+      "amendment_match": true
+    },
+    "incoming/CAL-SEARCH-02/attempt-001/findings.jsonl": {
+      "bytes": 36376,
+      "sha256": "ddf087982a332fda1e396279b0a89ab27025be678fe45c764a099a9bcc643829",
+      "initial_task_sha256": "643b2bdae982120e1c1f3eed3fcad677ae0d1468efea19449e934c4a808dba26",
+      "initial_task_match": false,
+      "amendment_match": true
+    },
+    "incoming/CAL-SEARCH-03/attempt-001/sources.jsonl": {
+      "bytes": 18604,
+      "sha256": "ff7ecc5c3259754c66697e51ca460875952a7608b2d9b9cb49cf89cd4024f34e",
+      "initial_task_sha256": "ff7ecc5c3259754c66697e51ca460875952a7608b2d9b9cb49cf89cd4024f34e",
+      "initial_task_match": true,
+      "amendment_match": true
+    },
+    "incoming/CAL-SEARCH-03/attempt-001/findings.jsonl": {
+      "bytes": 42784,
+      "sha256": "6d731d3610d5ebdc4c5c6c97e28e734ab613432c84ee807de3c5d116e0291729",
+      "initial_task_sha256": "6d731d3610d5ebdc4c5c6c97e28e734ab613432c84ee807de3c5d116e0291729",
+      "initial_task_match": true,
+      "amendment_match": true
+    },
+    "incoming/CAL-SEARCH-04/attempt-001/sources.jsonl": {
+      "bytes": 14117,
+      "sha256": "d1b2391b67d309c3b1053d266521dfc7c59b4df99d1340f5da324d39cce2db27",
+      "initial_task_sha256": "d1b2391b67d309c3b1053d266521dfc7c59b4df99d1340f5da324d39cce2db27",
+      "initial_task_match": true,
+      "amendment_match": true
+    },
+    "incoming/CAL-SEARCH-04/attempt-001/findings.jsonl": {
+      "bytes": 29292,
+      "sha256": "d06e7486230b118092bab8cf787ee6026e299fa173e93b0acaafaef5438d209b",
+      "initial_task_sha256": "d06e7486230b118092bab8cf787ee6026e299fa173e93b0acaafaef5438d209b",
+      "initial_task_match": true,
+      "amendment_match": true
+    }
+  },
+  "package_manifest_checks": [
+    {
+      "task_id": "CAL-SEARCH-01",
+      "manifest_path": "incoming/CAL-SEARCH-01/attempt-001/RESULT_MANIFEST.json",
+      "manifest_sha256": "5c893732a676718fbf7420c7444838e704a0e232ccc6c350f531f71f56852f08",
+      "declared_output_counts": {
+        "sources": 17,
+        "accessed_sources": 17,
+        "findings": 12,
+        "verified_findings": 12,
+        "leads": 1,
+        "inaccessible_leads": 1,
+        "search_log": 47,
+        "elements": 0,
+        "ratings": 0,
+        "existence_claims": 20,
+        "risk_claims": 7,
+        "failure_claims": 7,
+        "benefit_claims": 0
+      },
+      "actual_source_rows": 17,
+      "actual_finding_rows": 12,
+      "files": [
+        {
+          "path": "incoming/CAL-SEARCH-01/attempt-001/TASK.json",
+          "bytes": 1925,
+          "sha256": "4c80ccff36ef633e769dedb5b0ed8d744dac18964f53221a50f7fbc7f0309768",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-01/attempt-001/sources.jsonl",
+          "bytes": 18477,
+          "sha256": "12dee33441ae9d104df3677adb40101013bb8189d9c999704a64128b8e3b59ee",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "semantic_read"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-01/attempt-001/findings.jsonl",
+          "bytes": 28967,
+          "sha256": "6afbb33215b840053991d614f6ab1813dff3d7ce5268dc319e29aba9a7d01ce3",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "semantic_read"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-01/attempt-001/leads.jsonl",
+          "bytes": 957,
+          "sha256": "c6f317b6bdeac8d7f7f7a36038090ffcf945e9d5280aeb86ee4430e8eb2a7335",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-01/attempt-001/search_log.jsonl",
+          "bytes": 41562,
+          "sha256": "367650d35a90ddaadc1863ae054126025d9be5d9794600a55626c5890b277ee8",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-01/attempt-001/COVERAGE.md",
+          "bytes": 4973,
+          "sha256": "3e201485fb5609e542533eac0923e18346956c3b08ad0777c8253a7cf3b691e9",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-01/attempt-001/REPORT.md",
+          "bytes": 6241,
+          "sha256": "ca601ebb66f2d4d4f678c06366ba20c171c12d26a2248591ba2abd643494488a",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        }
+      ]
+    },
+    {
+      "task_id": "CAL-SEARCH-02",
+      "manifest_path": "incoming/CAL-SEARCH-02/attempt-001/RESULT_MANIFEST.json",
+      "manifest_sha256": "0d4beef869703c4c08fabb024e7c1abf928735b87759bd4e3eb0fb4f2353964f",
+      "declared_output_counts": {
+        "sources": 14,
+        "findings": 12,
+        "verified_findings": 12,
+        "leads": 3,
+        "search_log_records": 33,
+        "origin_groups": 12,
+        "search_queries": 8,
+        "http_attempts": 33,
+        "http_200": 29,
+        "http_404": 3,
+        "http_timeout": 1,
+        "ratings": 0,
+        "canonical_elements": null,
+        "category_occurrences": {
+          "C09": 11,
+          "C12": 5
+        }
+      },
+      "actual_source_rows": 14,
+      "actual_finding_rows": 12,
+      "files": [
+        {
+          "path": "incoming/CAL-SEARCH-02/attempt-001/TASK.json",
+          "bytes": 1933,
+          "sha256": "cd7af1f38b36abc72a3ecaac75b2c240402ac2018042ba252f9d3a0e2b783a89",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-02/attempt-001/sources.jsonl",
+          "bytes": 13670,
+          "sha256": "1961e3d6acc8031ae129d9de3c6e757bbe4a752f140e90e776fdd94d4ae3e20a",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "semantic_read"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-02/attempt-001/findings.jsonl",
+          "bytes": 36376,
+          "sha256": "ddf087982a332fda1e396279b0a89ab27025be678fe45c764a099a9bcc643829",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "semantic_read"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-02/attempt-001/leads.jsonl",
+          "bytes": 2613,
+          "sha256": "ec6c27da14bd72d9bdb3a8f64ab499658f55019db7efbeb537a648e7f2586321",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-02/attempt-001/search_log.jsonl",
+          "bytes": 35124,
+          "sha256": "35d07e26f3b1754dac9bbb6f949851a067945f321b9e21b8e62ad1e0cee76cf5",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-02/attempt-001/COVERAGE.md",
+          "bytes": 7339,
+          "sha256": "bddcbf668552238b35d7bde15ee75e0698ce720761d78590ea30b14cf2c9350b",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-02/attempt-001/REPORT.md",
+          "bytes": 9676,
+          "sha256": "dd012738aeb47fac1e3ccb05a6129a043825d7506c68463aa19b0d9298827a18",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        }
+      ]
+    },
+    {
+      "task_id": "CAL-SEARCH-03",
+      "manifest_path": "incoming/CAL-SEARCH-03/attempt-001/RESULT_MANIFEST.json",
+      "manifest_sha256": "c393a6cf579dd0a962f517389b1cc5fbe07600c5638dc32abf9cf9f16232a09e",
+      "declared_output_counts": {
+        "sources": 16,
+        "findings": 12,
+        "verified_findings": 12,
+        "leads": 6,
+        "search_log_records": 43,
+        "origin_groups": 11,
+        "example_contexts": 10,
+        "independent_normalized_elements": null,
+        "ratings": 0,
+        "selected_top": 0,
+        "files_listed": 7
+      },
+      "actual_source_rows": 16,
+      "actual_finding_rows": 12,
+      "files": [
+        {
+          "path": "incoming/CAL-SEARCH-03/attempt-001/TASK.json",
+          "bytes": 1968,
+          "sha256": "b5f061544b1b6695fccc70a3ee78ccedf9f0e94a8447159df5466213e54a21d6",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-03/attempt-001/sources.jsonl",
+          "bytes": 18604,
+          "sha256": "ff7ecc5c3259754c66697e51ca460875952a7608b2d9b9cb49cf89cd4024f34e",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "semantic_read"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-03/attempt-001/findings.jsonl",
+          "bytes": 42784,
+          "sha256": "6d731d3610d5ebdc4c5c6c97e28e734ab613432c84ee807de3c5d116e0291729",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "semantic_read"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-03/attempt-001/leads.jsonl",
+          "bytes": 5179,
+          "sha256": "b735edb6808090661bfa47b498dc9a48c3aba1c647aa27ebe4f5533f5ca8e6df",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-03/attempt-001/search_log.jsonl",
+          "bytes": 59240,
+          "sha256": "6752977c82531cc1d7e1fae0ec59500c0dde7411766464dc3bc5921177b9e357",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-03/attempt-001/COVERAGE.md",
+          "bytes": 8213,
+          "sha256": "1911a8cfa6e9563d1f4d857635b8aed8bbbb98c8655f37574c8bfd9da044f09c",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-03/attempt-001/REPORT.md",
+          "bytes": 7283,
+          "sha256": "dd07717d8f0375e2700ef21f3591004f5249baa97f70f5a85fded2d63794c160",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        }
+      ]
+    },
+    {
+      "task_id": "CAL-SEARCH-04",
+      "manifest_path": "incoming/CAL-SEARCH-04/attempt-001/RESULT_MANIFEST.json",
+      "manifest_sha256": "025a016c31e05db6f3bcf5d727a397cd2823c11b8569a62e4f69d2a037d592ab",
+      "declared_output_counts": {
+        "sources": 14,
+        "findings": 12,
+        "verified_findings": 12,
+        "leads": 2,
+        "search_log": 21,
+        "claims": 25,
+        "existence_claims": 14,
+        "origin_groups": 13,
+        "http_requests": 21,
+        "search_queries": 6
+      },
+      "actual_source_rows": 14,
+      "actual_finding_rows": 12,
+      "files": [
+        {
+          "path": "incoming/CAL-SEARCH-04/attempt-001/TASK.json",
+          "bytes": 1932,
+          "sha256": "e797a91c8c729e93f49243abe3a339b642db5f62cb3d0203c97dd032fbfa49fb",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-04/attempt-001/sources.jsonl",
+          "bytes": 14117,
+          "sha256": "d1b2391b67d309c3b1053d266521dfc7c59b4df99d1340f5da324d39cce2db27",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "semantic_read"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-04/attempt-001/findings.jsonl",
+          "bytes": 29292,
+          "sha256": "d06e7486230b118092bab8cf787ee6026e299fa173e93b0acaafaef5438d209b",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "semantic_read"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-04/attempt-001/leads.jsonl",
+          "bytes": 1397,
+          "sha256": "d15fce8b4b5004e4506a66f7f76b464595dce80e38bf48518f7f6fc707649d82",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-04/attempt-001/search_log.jsonl",
+          "bytes": 40598,
+          "sha256": "82416a76e5d437565d0d64624f468227301e2dc6b6e29964adf878c83286d406",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-04/attempt-001/COVERAGE.md",
+          "bytes": 7767,
+          "sha256": "7ec3c8034a8626151db1399293a9e3f02a66407e969a876e3f25ce351f6caee1",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        },
+        {
+          "path": "incoming/CAL-SEARCH-04/attempt-001/REPORT.md",
+          "bytes": 5757,
+          "sha256": "e071661f4c522ccb039842ca1b1e428fe777831d9adaee7a93cd9948700d2b12",
+          "manifest_bytes_match": true,
+          "manifest_sha256_match": true,
+          "inspection": "hash_only"
+        }
+      ]
+    }
+  ],
+  "semantic_snapshot_comparison": "Final decoded JSON sources/findings equal objects in /tmp used for source review. Initial/final file SHA differ for CAL02 as documented; byte identity is not claimed.",
+  "source_review_did_not_depend_on_reports_or_search_logs": true
+}

@@ -1,0 +1,217 @@
+{
+  "task_id": "CAL-SOURCE-AUDIT-01",
+  "scope": "all 48 raw calibration findings, phase 1 source preflight only",
+  "actual_context_id": "/root/cal_audit",
+  "owner_id": "/root/cal_audit",
+  "model_id": null,
+  "model_id_basis": "Exact backend model is not exposed; no inference from product label.",
+  "started_at": "2026-11-13T08:15:59.651574+00:00",
+  "input_files": [
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/tasks/CAL-SOURCE-AUDIT-01.json",
+      "bytes": 2149,
+      "sha256": "e0fdfc778ff92950b6608e5fde2907bb2e50c12f9c2073ba32d80baa62d7bfae"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-01/attempt-001/sources.jsonl",
+      "bytes": 18477,
+      "sha256": "12dee33441ae9d104df3677adb40101013bb8189d9c999704a64128b8e3b59ee"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-01/attempt-001/findings.jsonl",
+      "bytes": 28967,
+      "sha256": "6afbb33215b840053991d614f6ab1813dff3d7ce5268dc319e29aba9a7d01ce3"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-02/attempt-001/sources.jsonl",
+      "bytes": 13670,
+      "sha256": "1961e3d6acc8031ae129d9de3c6e757bbe4a752f140e90e776fdd94d4ae3e20a"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-02/attempt-001/findings.jsonl",
+      "bytes": 36376,
+      "sha256": "ddf087982a332fda1e396279b0a89ab27025be678fe45c764a099a9bcc643829"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-03/attempt-001/sources.jsonl",
+      "bytes": 18604,
+      "sha256": "ff7ecc5c3259754c66697e51ca460875952a7608b2d9b9cb49cf89cd4024f34e"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-03/attempt-001/findings.jsonl",
+      "bytes": 42784,
+      "sha256": "6d731d3610d5ebdc4c5c6c97e28e734ab613432c84ee807de3c5d116e0291729"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-04/attempt-001/sources.jsonl",
+      "bytes": 14117,
+      "sha256": "d1b2391b67d309c3b1053d266521dfc7c59b4df99d1340f5da324d39cce2db27"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-04/attempt-001/findings.jsonl",
+      "bytes": 29292,
+      "sha256": "d06e7486230b118092bab8cf787ee6026e299fa173e93b0acaafaef5438d209b"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/DATA_CONTRACT.md",
+      "bytes": 17413,
+      "sha256": "8a785c5249d4008cd31cdef41280daf22372bfd127989bde51fd86ac9ac88bad"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/TAXONOMY.md",
+      "bytes": 14645,
+      "sha256": "e42b9a34e6f742ee6e2b683454360361a1173f1e8d386dd31ef73ac3524b5ff2"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/SYSTEM.md",
+      "bytes": 23474,
+      "sha256": "9e0cf21146ee76c95b2b64832fae6630cbd9d0fc91accfbfb0e655c227013594"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/SCORING.md",
+      "bytes": 18342,
+      "sha256": "f2753b2be2d2b22950368c7d4bb1b439a1e387788654ff136c92a8549c6136f3"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/PROMPTS/04-AUDIT.md",
+      "bytes": 5300,
+      "sha256": "2337a644ac207de6a074410906cc737406003ef52c6d2d77057d43362998c329"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 25469,
+      "sha256": "3118f379a34b5e6c7e471d1e71eab0ecfd4fac65af0f599fa164ef34ece81a8d"
+    },
+    {
+      "path": "personal-lab/AGENTS.md",
+      "bytes": 9776,
+      "sha256": "ca84beeff6238b5679b31c320822f3d9626152fb0f3546d83a41c7d0af77a837"
+    }
+  ],
+  "runtime": {
+    "environment_id": "ccarenv_b64_Y2NhcmVudl84MThlOTVkMmRiZmM4MTkxYWQxNzM1YjJjNmVmZjMzYw",
+    "observations_current": true,
+    "network_policy_state": "enforced",
+    "network_policy_mode": "unrestricted",
+    "startup_policy_snapshot_mode": "restricted; superseded by current environment status"
+  },
+  "boundaries": [
+    "No application files or functionality inventory read",
+    "No shared current status or handoff read",
+    "No ratings or other independent model outputs read",
+    "No Git/branch/settings changes",
+    "Only own checks directory is writable within checkout",
+    "Long third-party response bodies and extracted text kept only in /tmp"
+  ],
+  "input_final_hash_check_at": "2026-11-13T08:20:29.299257+00:00",
+  "input_changes_since_initial_read": [],
+  "final_input_files": [
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/tasks/CAL-SOURCE-AUDIT-01.json",
+      "bytes": 2149,
+      "sha256": "e0fdfc778ff92950b6608e5fde2907bb2e50c12f9c2073ba32d80baa62d7bfae"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-01/attempt-001/sources.jsonl",
+      "bytes": 18477,
+      "sha256": "12dee33441ae9d104df3677adb40101013bb8189d9c999704a64128b8e3b59ee"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-01/attempt-001/findings.jsonl",
+      "bytes": 28967,
+      "sha256": "6afbb33215b840053991d614f6ab1813dff3d7ce5268dc319e29aba9a7d01ce3"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-02/attempt-001/sources.jsonl",
+      "bytes": 13670,
+      "sha256": "1961e3d6acc8031ae129d9de3c6e757bbe4a752f140e90e776fdd94d4ae3e20a"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-02/attempt-001/findings.jsonl",
+      "bytes": 36376,
+      "sha256": "ddf087982a332fda1e396279b0a89ab27025be678fe45c764a099a9bcc643829"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-03/attempt-001/sources.jsonl",
+      "bytes": 18604,
+      "sha256": "ff7ecc5c3259754c66697e51ca460875952a7608b2d9b9cb49cf89cd4024f34e"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-03/attempt-001/findings.jsonl",
+      "bytes": 42784,
+      "sha256": "6d731d3610d5ebdc4c5c6c97e28e734ab613432c84ee807de3c5d116e0291729"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-04/attempt-001/sources.jsonl",
+      "bytes": 14117,
+      "sha256": "d1b2391b67d309c3b1053d266521dfc7c59b4df99d1340f5da324d39cce2db27"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-04/attempt-001/findings.jsonl",
+      "bytes": 29292,
+      "sha256": "d06e7486230b118092bab8cf787ee6026e299fa173e93b0acaafaef5438d209b"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/DATA_CONTRACT.md",
+      "bytes": 17413,
+      "sha256": "8a785c5249d4008cd31cdef41280daf22372bfd127989bde51fd86ac9ac88bad"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/TAXONOMY.md",
+      "bytes": 14645,
+      "sha256": "e42b9a34e6f742ee6e2b683454360361a1173f1e8d386dd31ef73ac3524b5ff2"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/SYSTEM.md",
+      "bytes": 23474,
+      "sha256": "9e0cf21146ee76c95b2b64832fae6630cbd9d0fc91accfbfb0e655c227013594"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/SCORING.md",
+      "bytes": 18342,
+      "sha256": "f2753b2be2d2b22950368c7d4bb1b439a1e387788654ff136c92a8549c6136f3"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/PROMPTS/04-AUDIT.md",
+      "bytes": 5300,
+      "sha256": "2337a644ac207de6a074410906cc737406003ef52c6d2d77057d43362998c329"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 25469,
+      "sha256": "3118f379a34b5e6c7e471d1e71eab0ecfd4fac65af0f599fa164ef34ece81a8d"
+    },
+    {
+      "path": "personal-lab/AGENTS.md",
+      "bytes": 9776,
+      "sha256": "ca84beeff6238b5679b31c320822f3d9626152fb0f3546d83a41c7d0af77a837"
+    }
+  ],
+  "finished_at": "2026-11-13T08:34:27.212800+00:00",
+  "additional_read_files": [
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/tasks/CAL-SOURCE-AUDIT-01-INPUT-AMENDMENT.json",
+      "sha256": "a8d70b6e09cdeff85b40d9965d8e8274faf123de41fbb6349f3600b0715415b2"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-01/attempt-001/RESULT_MANIFEST.json",
+      "sha256": "5c893732a676718fbf7420c7444838e704a0e232ccc6c350f531f71f56852f08"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-02/attempt-001/RESULT_MANIFEST.json",
+      "sha256": "0d4beef869703c4c08fabb024e7c1abf928735b87759bd4e3eb0fb4f2353964f"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-03/attempt-001/RESULT_MANIFEST.json",
+      "sha256": "c393a6cf579dd0a962f517389b1cc5fbe07600c5638dc32abf9cf9f16232a09e"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-internet-run/incoming/CAL-SEARCH-04/attempt-001/RESULT_MANIFEST.json",
+      "sha256": "025a016c31e05db6f3bcf5d727a397cd2823c11b8569a62e4f69d2a037d592ab"
+    }
+  ],
+  "http_get_count": 62,
+  "unique_input_source_url_count": 61,
+  "non_repeat_additional_get_reason": "Versioned arXiv v1 compared against unversioned source body, exact SHA match.",
+  "content_review_completed_at": "2026-11-13T08:34:27.213844+00:00"
+}

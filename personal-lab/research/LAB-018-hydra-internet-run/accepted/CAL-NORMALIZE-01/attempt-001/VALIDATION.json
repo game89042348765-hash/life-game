@@ -1,0 +1,52 @@
+{
+  "task_id": "CAL-NORMALIZE-01",
+  "checked_at": "2026-11-13T08:39:34.564959+00:00",
+  "checks": {
+    "input_hashes_match_task": true,
+    "all_48_raw_mapped_exactly_once": true,
+    "raw_element_mapping_reciprocal": true,
+    "all_61_sources_preserved": true,
+    "all_sources_have_canonical_origin_group": true,
+    "all_element_ids_unique": true,
+    "required_skeleton_fields": true,
+    "all_pending": true,
+    "source_existence_claim_refs_valid": true,
+    "all_relation_endpoints_resolve": true,
+    "all_relation_statuses_explicit": true,
+    "all_52_elements_in_semantic_comparison_clusters": true,
+    "category_ids_valid": true,
+    "no_fabricated_analysis_or_rating_fields": true
+  },
+  "counts": {
+    "raw_findings": 48,
+    "raw_sources": 61,
+    "normalized_skeletons": 52,
+    "standalone_skeletons": 51,
+    "reference_composites": 1,
+    "families": 24,
+    "merge_map": 48,
+    "merge_decisions": {
+      "canonical": 44,
+      "merged_variant": 1,
+      "split": 3
+    },
+    "quarantined_raw": 0,
+    "out_of_scope_raw": 0,
+    "relations": 11,
+    "relation_statuses": {
+      "documented": 9,
+      "hypothesis": 2
+    },
+    "origin_groups": 43,
+    "normalization_decisions": 71,
+    "index_rows": 76,
+    "full_analyses": 0,
+    "ratings": 0,
+    "new_http_requests": 0
+  },
+  "limits": [
+    "Проверки структуры/ссылок воспроизведены кодом; содержательное решение отражено отдельно, код не подтверждает истинность источников.",
+    "Нормализатор прочитал принятую полную metadata/claims-базу, но не выполнял повторный HTTP-аудит всех страниц.",
+    "Нет проверки эффектов, анализа затрат/рисков или оценивания; все карточки pending."
+  ]
+}
