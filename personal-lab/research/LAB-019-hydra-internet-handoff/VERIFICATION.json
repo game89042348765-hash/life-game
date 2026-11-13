@@ -1,0 +1,45 @@
+{
+  "task_id": "LAB-019",
+  "checked_at": "2026-11-13T10:50:46.820423+03:00",
+  "status": "passed_static_handoff_checks_not_research_validation",
+  "base_commit": "fd61d2595071a0d02ccb9306064eecde958fc3cb",
+  "checks": {
+    "release_manifest": {
+      "verified_files": 53,
+      "meaning": "byte integrity, not authenticity or research quality"
+    },
+    "input_files_sha256_and_size": 24,
+    "new_local_markdown_links_checked": 4,
+    "required_protocol_and_starter_task_paths_exist": true,
+    "previous_shared_document_text_preserved": [
+      "LifeGame_CURRENT_WORK.md",
+      "LABORATORY_HANDOFF.md",
+      "personal-lab/README.md",
+      "personal-lab/CHANGELOG.md"
+    ],
+    "tracked_changes_limited_to_shared_document_additions": [
+      "LABORATORY_HANDOFF.md",
+      "LifeGame_CURRENT_WORK.md",
+      "personal-lab/CHANGELOG.md",
+      "personal-lab/README.md"
+    ],
+    "untracked_files_limited_to_handoff_directory": true,
+    "previous_scout_unchanged_and_counts_match": {
+      "sources": 2,
+      "findings": 12
+    },
+    "executor_result_directory_not_created": true,
+    "git_diff_check": "passed"
+  },
+  "not_run": [
+    "HYDRA source collection or calibration",
+    "normalization or independent ratings",
+    "research ranking or audit",
+    "application/browser/functional tests",
+    "external accounts or paid APIs"
+  ],
+  "limits": [
+    "New internet chat runtime not accessible from this thread; user screenshot is not independent runtime verification.",
+    "Branch publication checked separately after commit/push."
+  ]
+}

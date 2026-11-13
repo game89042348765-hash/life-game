@@ -1,0 +1,151 @@
+{
+  "task_id": "LAB-019",
+  "status": "handoff_prepared_not_research_executed",
+  "created_at": "2026-11-13T10:50:09.383429+03:00",
+  "timezone": "Europe/Moscow",
+  "repository": "game89042348765-hash/life-game",
+  "input_branch": "lab/synthetic-users",
+  "base_commit": "fd61d2595071a0d02ccb9306064eecde958fc3cb",
+  "release": "2.1.1+lab.1",
+  "executor_branch": "research/hydra-internet",
+  "executor_output_directory": "personal-lab/research/LAB-018-hydra-internet-run",
+  "executor_run_id": "HYDRA-INTERNET-001",
+  "recommended_orchestrator": {
+    "model": "GPT-6.1 Sol",
+    "reasoning": "Max",
+    "actually_switched_by_assistant": false
+  },
+  "research_started_in_this_task": false,
+  "input_files": [
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/BUNDLE_MANIFEST.json",
+      "bytes": 8321,
+      "sha256": "a322c9df6a4d47506c9b9f50b38f2094fe781224da7b255dd7a9ea173dd8c4e1"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/START_HERE.md",
+      "bytes": 13962,
+      "sha256": "f3a82903e1259ad3709b0d1c0c58e802796aa5e4c684faeb2ed605bae6fbdde9"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/COORDINATOR-PATCH.md",
+      "bytes": 4253,
+      "sha256": "6728a197d83b8b50fb0857c6b71f330a93717dd062e7a9f36533742fcbab6319"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/CALIBRATION_START.md",
+      "bytes": 5031,
+      "sha256": "d8e0d0fc389f56f04139ed3ba448fedb55f5168ef4d0eec52a8f329b65d41c51"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/SYSTEM.md",
+      "bytes": 23474,
+      "sha256": "9e0cf21146ee76c95b2b64832fae6630cbd9d0fc91accfbfb0e655c227013594"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/DATA_CONTRACT.md",
+      "bytes": 17413,
+      "sha256": "8a785c5249d4008cd31cdef41280daf22372bfd127989bde51fd86ac9ac88bad"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/SCORING.md",
+      "bytes": 18342,
+      "sha256": "f2753b2be2d2b22950368c7d4bb1b439a1e387788654ff136c92a8549c6136f3"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/taxonomy.json",
+      "bytes": 27405,
+      "sha256": "317bd62120fad45150543fbb752740ddb8b47c7b7ea00e0bd5f60d96cef94dbd"
+    },
+    {
+      "path": "personal-lab/research/LAB-011-hybrid-v211-review/release/tools/atlas.py",
+      "bytes": 64666,
+      "sha256": "a47e9b5d51db57b5888bb0deee79870b7e2e74e055cff50df5ccf78b39592035"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-independent/ACCESS-AUDIT.json",
+      "bytes": 1373,
+      "sha256": "c9b52168e535fa7f27438892c4a506d0f1232ee2cb83307f91a4502cf1c06217"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-independent/NETWORK-DRAFT.json",
+      "bytes": 318,
+      "sha256": "f2cd946cd904fae4cc69426cef06ae42b614681c2e89d5a4e5c11ed7a468ee57"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-independent/README.md",
+      "bytes": 5137,
+      "sha256": "1669a1179a88eb1e556bbbf46cb86c283707ce1137476dde5f0210369004d227"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-independent/RUN.json",
+      "bytes": 2116,
+      "sha256": "436aa88bf8dbc4d676fffad2087c1de9f8f26078c94deb84bc6caea8a133fd4a"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-independent/VERIFICATION.json",
+      "bytes": 477,
+      "sha256": "b42bdca6a52cca906b099a88c1d64495fbb62cca9e22598c865bb306bb5bf343"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-independent/registry/CAL-SEARCH-01.json",
+      "bytes": 1817,
+      "sha256": "48f0fd761f599a853881a9e984b0aec5c49ee84c109ebff23e410b659c0ae35f"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-independent/registry/CAL-SEARCH-02.json",
+      "bytes": 1825,
+      "sha256": "e8c3f8c24eb189ed11d2695fd4c2aafc1b46781b0298fca9a7c2a693e4bdce6e"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-independent/registry/CAL-SEARCH-03.json",
+      "bytes": 1860,
+      "sha256": "64d60f843e639a375e5bd13af772aec16d91a40b89c040a596a771838d8fe602"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-independent/registry/CAL-SEARCH-04.json",
+      "bytes": 1824,
+      "sha256": "77ac40716e497c381f839c6a6500a6647e784bdd81e055ef1ff37efc46674fea"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-independent/registry/tasks.csv",
+      "bytes": 509,
+      "sha256": "faede20012d9fe83a0d48397a62f84fa786697a1715763a808d99e77b7c62207"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-independent/scout/RESULT_MANIFEST.json",
+      "bytes": 605,
+      "sha256": "a5d8ee3eb782516e34bb220919131bf25478de1257ffe40ea148ad13b4b9274b"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-independent/scout/TASK.json",
+      "bytes": 1862,
+      "sha256": "f37ba5f945301dbad2dee40970a3a1bc9ab00d44284d86d8f92152eda8cb57a9"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-independent/scout/findings.jsonl",
+      "bytes": 10197,
+      "sha256": "85231d3b1bba81eabe31e9a46616c32c3e58688f084363f9557c2e6a2ec70538"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-independent/scout/search_log.jsonl",
+      "bytes": 1239,
+      "sha256": "bf126469628b05760928745203cb7aaeb042d7bb6b81a88f530d7436fcac569d"
+    },
+    {
+      "path": "personal-lab/research/LAB-018-hydra-independent/scout/sources.jsonl",
+      "bytes": 1424,
+      "sha256": "e49883e19657276f5b7ad49df9bc3a7b38d9a91a73a59b97c7b214a4836cc526"
+    }
+  ],
+  "network_evidence": {
+    "this_session": {
+      "github": "HTTP 200",
+      "todoist": "proxy CONNECT 403, no origin status",
+      "notion": "proxy CONNECT 403, no origin status",
+      "wikipedia": "proxy CONNECT 403, no origin status"
+    },
+    "other_session": "user screenshot reports HTTP 200; executor must independently verify its own session"
+  },
+  "delivery": "recorded separately after actual push"
+}
