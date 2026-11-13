@@ -1,0 +1,54 @@
+{
+  "task_id": "LAB-019",
+  "status": "payload_delivery_verified",
+  "checked_at": "2026-11-13T10:51:46.832920+03:00",
+  "branch": "lab/synthetic-users",
+  "payload_commit": "5b15b1634702f4a5214fbe333c118fd07af6d5ac",
+  "remote_payload_ref_matches": true,
+  "remote_main": "90df9542bbffa5651fd31bdad12460a4c586c3ef",
+  "main_unchanged_by_task": true,
+  "pinned_raw_files_verified": [
+    {
+      "path": "personal-lab/research/LAB-019-hydra-internet-handoff/PROMPT.md",
+      "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/5b15b1634702f4a5214fbe333c118fd07af6d5ac/personal-lab/research/LAB-019-hydra-internet-handoff/PROMPT.md",
+      "http_status": 200,
+      "bytes": 30347,
+      "sha256": "2c87e3249c5a8d6337db03793cf1c26160e0fd2a6336e75ac258c050c8c410b9"
+    },
+    {
+      "path": "personal-lab/research/LAB-019-hydra-internet-handoff/START_MESSAGE.txt",
+      "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/5b15b1634702f4a5214fbe333c118fd07af6d5ac/personal-lab/research/LAB-019-hydra-internet-handoff/START_MESSAGE.txt",
+      "http_status": 200,
+      "bytes": 2523,
+      "sha256": "2c6850d40b9f98e1422442b6b0fc6213e9b04f22a0dfbefe54942dea330bc0fa"
+    },
+    {
+      "path": "personal-lab/research/LAB-019-hydra-internet-handoff/README.md",
+      "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/5b15b1634702f4a5214fbe333c118fd07af6d5ac/personal-lab/research/LAB-019-hydra-internet-handoff/README.md",
+      "http_status": 200,
+      "bytes": 6137,
+      "sha256": "3e3aafd7b435d0e3ae3ad635c96463effd8b77d240c17222f2679c5ec5e404ba"
+    },
+    {
+      "path": "personal-lab/research/LAB-019-hydra-internet-handoff/SOURCE.json",
+      "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/5b15b1634702f4a5214fbe333c118fd07af6d5ac/personal-lab/research/LAB-019-hydra-internet-handoff/SOURCE.json",
+      "http_status": 200,
+      "bytes": 6041,
+      "sha256": "b0adfd4f77298cec9c6b4f772509d18f8c0daa18e4c4040448a4595085866915"
+    },
+    {
+      "path": "personal-lab/research/LAB-019-hydra-internet-handoff/VERIFICATION.json",
+      "url": "https://raw.githubusercontent.com/game89042348765-hash/life-game/5b15b1634702f4a5214fbe333c118fd07af6d5ac/personal-lab/research/LAB-019-hydra-internet-handoff/VERIFICATION.json",
+      "http_status": 200,
+      "bytes": 1557,
+      "sha256": "2c2e982ad15a102c1f394e52bd932116b7bc2189a0f211bb3feb778ed773b37a"
+    }
+  ],
+  "research_started": false,
+  "new_chat_started_by_this_agent": false,
+  "application_modified": false,
+  "limits": [
+    "This receipt is a subsequent documentation record, not part of the payload commit.",
+    "Successful delivery does not verify execution in the new internet chat."
+  ]
+}
