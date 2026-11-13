@@ -1,0 +1,2 @@
+{"prior_issue_id": "HI-SOURCE-PREFLIGHT-001", "status_in_this_phase": "resolved_in_new_snapshot", "evidence": "origin_groups.json aliases map S-HI-C01-006 and S-HI-C04-004 to OG-HI-JOPLIN; original_origin_group retained", "source_preflight_rewritten": false}
+{"prior_issue_id": "HI-SOURCE-PREFLIGHT-002", "status_in_this_phase": "resolved_in_raw0002", "evidence": "F-HI-C04-010 claim index1 locator ends 482–557; restic source body unchanged", "source_preflight_rewritten": false}

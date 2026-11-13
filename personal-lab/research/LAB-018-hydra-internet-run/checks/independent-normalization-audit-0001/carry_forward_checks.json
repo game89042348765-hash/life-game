@@ -1,0 +1,100 @@
+[
+  {
+    "id": "CF-HI-STRUCT-001",
+    "affected_ids": [
+      "E-HI-CAL-015",
+      "E-HI-CAL-024",
+      "E-HI-CAL-026"
+    ],
+    "status": "carry_forward_not_current_issue",
+    "rule": "HSE task-switch/posture/worker-choice conditions and PLOS ≤10-minute definition/effects must remain separate. Do not assign PLOS effects to Workrave, legal policies or all task-switching. Preserve Abstract/Results p discrepancy."
+  },
+  {
+    "id": "CF-HI-STRUCT-002",
+    "affected_ids": [
+      "E-HI-CAL-016",
+      "E-HI-CAL-017",
+      "E-HI-CAL-018",
+      "E-HI-CAL-019"
+    ],
+    "status": "carry_forward_not_current_issue",
+    "rule": "Composite must be reference/nonrankable; three parts share one NHS source and do not create three independent efficacy observations. No ME/CFS generalization."
+  },
+  {
+    "id": "CF-HI-STRUCT-003",
+    "affected_ids": [
+      "E-HI-CAL-032",
+      "E-HI-CAL-033"
+    ],
+    "status": "carry_forward_not_current_issue",
+    "rule": "Badge conditions do not establish mastery. Educational badge adverse-association mapping is not evidence of harm from backpack portability."
+  },
+  {
+    "id": "CF-HI-STRUCT-004",
+    "affected_ids": [
+      "E-HI-CAL-045",
+      "E-HI-CAL-046"
+    ],
+    "status": "carry_forward_not_current_issue",
+    "rule": "Document persistence and offline shell are distinct requirements; cached shell alone does not preserve user document or guarantee storage durability."
+  },
+  {
+    "id": "CF-HI-STRUCT-005",
+    "affected_ids": [
+      "E-HI-CAL-001",
+      "E-HI-CAL-002",
+      "E-HI-CAL-003",
+      "E-HI-CAL-004",
+      "E-HI-CAL-005",
+      "E-HI-CAL-006",
+      "E-HI-CAL-007",
+      "E-HI-CAL-008",
+      "E-HI-CAL-009",
+      "E-HI-CAL-010",
+      "E-HI-CAL-011",
+      "E-HI-CAL-012",
+      "E-HI-CAL-013",
+      "E-HI-CAL-014",
+      "E-HI-CAL-015",
+      "E-HI-CAL-016",
+      "E-HI-CAL-017",
+      "E-HI-CAL-018",
+      "E-HI-CAL-019",
+      "E-HI-CAL-020",
+      "E-HI-CAL-021",
+      "E-HI-CAL-022",
+      "E-HI-CAL-023",
+      "E-HI-CAL-024",
+      "E-HI-CAL-025",
+      "E-HI-CAL-026",
+      "E-HI-CAL-027",
+      "E-HI-CAL-028",
+      "E-HI-CAL-029",
+      "E-HI-CAL-030",
+      "E-HI-CAL-031",
+      "E-HI-CAL-032",
+      "E-HI-CAL-033",
+      "E-HI-CAL-034",
+      "E-HI-CAL-035",
+      "E-HI-CAL-036",
+      "E-HI-CAL-037",
+      "E-HI-CAL-038",
+      "E-HI-CAL-039",
+      "E-HI-CAL-040",
+      "E-HI-CAL-041",
+      "E-HI-CAL-042",
+      "E-HI-CAL-043",
+      "E-HI-CAL-044",
+      "E-HI-CAL-045",
+      "E-HI-CAL-046",
+      "E-HI-CAL-047",
+      "E-HI-CAL-048",
+      "E-HI-CAL-049",
+      "E-HI-CAL-050",
+      "E-HI-CAL-051",
+      "E-HI-CAL-052"
+    ],
+    "status": "carry_forward_not_current_issue",
+    "rule": "Families/categories/jobs are analytical descriptions, not effect evidence. Skeleton pending status is not full schema validation or admission to ranking."
+  }
+]

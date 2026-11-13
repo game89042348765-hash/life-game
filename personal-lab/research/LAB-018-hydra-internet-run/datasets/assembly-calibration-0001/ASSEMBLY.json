@@ -1,0 +1,15 @@
+{
+  "role": "assembly_fragment_not_standalone_snapshot",
+  "reason": "Canonical sources, corrected raw claims and normalized maps/relations/decisions are combined with full analytical cards through native merge after both submissions. The fragment alone intentionally has unresolved element references.",
+  "input_snapshot": "calibration-normalized-0001",
+  "full_schema_ready": false,
+  "files": {
+    "decisions.jsonl": "cd0d6254fbc430390434aabe62e43533f30495bce9d207ab9671c949a7ac1a19",
+    "merge_map.jsonl": "dc8fd8ff7d6caf1ff52c7b98e0d447632fd3cac989372e4cbb5514a1bddfe6d8",
+    "ratings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "findings.jsonl": "04cbaf2cff3ea21b167d795e3de13aa59f2b38e605d1a332c0a177a39f543a89",
+    "sources.jsonl": "325dda5bbf229cd6ed16227a879e5f3e1ad4cc21ccb2ea6621de8ccedb8aa818",
+    "elements.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "relations.jsonl": "7c5036dc8cf8e07753e6665b1412d44b11393ee1fad045aaaedf0fdb0886270d"
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "checked_at": "2026-11-13T08:57:35.381169+00:00",
+  "manifest_sha256": "2a1fb106c68875b897d1fa06637274f8fbe8114ba9f0aa5232e386454ace90d2",
+  "entries": [
+    {
+      "path": "accepted/CAL-NORMALIZE-01/attempt-001/DUPLICATES.md",
+      "bytes": 14809,
+      "sha256": "05e75f056ef110e49ed9a855da5e82826b014df434aeaf22c609452f7f124339",
+      "manifest_bytes_match": true,
+      "manifest_sha256_match": true,
+      "content_semantically_read": false
+    },
+    {
+      "path": "accepted/CAL-NORMALIZE-01/attempt-001/INDEX.jsonl",
+      "bytes": 52728,
+      "sha256": "70c49104edbed6f37d062bc2e319712f8f4f095da6fc6cb2a162176d6a170fc8",
+      "manifest_bytes_match": true,
+      "manifest_sha256_match": true,
+      "content_semantically_read": true
+    },
+    {
+      "path": "accepted/CAL-NORMALIZE-01/attempt-001/REPORT.md",
+      "bytes": 6148,
+      "sha256": "3c6909124f061935840a87fb48f27d8d6e3e07b38c1fa1b4213a732e646001f0",
+      "manifest_bytes_match": true,
+      "manifest_sha256_match": true,
+      "content_semantically_read": false
+    },
+    {
+      "path": "accepted/CAL-NORMALIZE-01/attempt-001/TASK.json",
+      "bytes": 2303,
+      "sha256": "d0f28e5625a001f2c7724780a47c785bc5a16e1ef02cd81ea5e78ca1f7bec1f3",
+      "manifest_bytes_match": true,
+      "manifest_sha256_match": true,
+      "content_semantically_read": false
+    },
+    {
+      "path": "accepted/CAL-NORMALIZE-01/attempt-001/VALIDATION.json",
+      "bytes": 1925,
+      "sha256": "c4448ca65e8b9b38b66db1295c76868e61d89320ddeb82e8c88e0efff8942d2a",
+      "manifest_bytes_match": true,
+      "manifest_sha256_match": true,
+      "content_semantically_read": false
+    },
+    {
+      "path": "accepted/CAL-NORMALIZE-01/attempt-001/elements.normalized.jsonl",
+      "bytes": 55952,
+      "sha256": "bd1d33a7418a768dcde9c2dacd71c255eb293aa4e38b9d7620e377af9b0a1a3a",
+      "manifest_bytes_match": true,
+      "manifest_sha256_match": true,
+      "content_semantically_read": true
+    },
+    {
+      "path": "accepted/CAL-NORMALIZE-01/attempt-001/merge_map.jsonl",
+      "bytes": 29429,
+      "sha256": "dc8fd8ff7d6caf1ff52c7b98e0d447632fd3cac989372e4cbb5514a1bddfe6d8",
+      "manifest_bytes_match": true,
+      "manifest_sha256_match": true,
+      "content_semantically_read": true
+    },
+    {
+      "path": "accepted/CAL-NORMALIZE-01/attempt-001/normalization_decisions.jsonl",
+      "bytes": 77999,
+      "sha256": "cd0d6254fbc430390434aabe62e43533f30495bce9d207ab9671c949a7ac1a19",
+      "manifest_bytes_match": true,
+      "manifest_sha256_match": true,
+      "content_semantically_read": true
+    },
+    {
+      "path": "accepted/CAL-NORMALIZE-01/attempt-001/origin_groups.json",
+      "bytes": 39337,
+      "sha256": "6e234432c98f4a621d840151ff62638a2ca13c881f9e3b6f337022bb42add6a7",
+      "manifest_bytes_match": true,
+      "manifest_sha256_match": true,
+      "content_semantically_read": true
+    },
+    {
+      "path": "accepted/CAL-NORMALIZE-01/attempt-001/relations.jsonl",
+      "bytes": 4689,
+      "sha256": "7c5036dc8cf8e07753e6665b1412d44b11393ee1fad045aaaedf0fdb0886270d",
+      "manifest_bytes_match": true,
+      "manifest_sha256_match": true,
+      "content_semantically_read": true
+    }
+  ],
+  "all_matched": true,
+  "note": "Hash-only reads of normalizer REPORT/DUPLICATES/VALIDATION/TASK do not assert their conclusions; no analyst full cards or ratings read."
+}

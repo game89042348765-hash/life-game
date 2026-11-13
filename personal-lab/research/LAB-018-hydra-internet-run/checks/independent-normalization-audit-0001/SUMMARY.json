@@ -1,0 +1,23 @@
+{
+  "task_id": "CAL-STRUCTURE-AUDIT-01",
+  "decision": "pass",
+  "scope": "semantic normalization precheck only; not final analyzed/rated/selected release audit",
+  "raw_fates_checked": 48,
+  "units_checked": 52,
+  "standalone": 51,
+  "reference_composite": 1,
+  "families_checked": 24,
+  "relations_checked": 11,
+  "decisions_checked": 71,
+  "source_aliases_checked": 61,
+  "canonical_origin_groups": 43,
+  "unchecked_in_scope_ids": 0,
+  "blocker": 0,
+  "major": 0,
+  "minor": 0,
+  "static_checks_passed": 28,
+  "new_get_requests": 0,
+  "actual_context_id": "/root/cal_audit",
+  "model_id": null,
+  "release_audit_status": "audit_incomplete_pending_final_phase"
+}

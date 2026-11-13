@@ -1,0 +1,182 @@
+{
+  "task_id": "CAL-STRUCTURE-AUDIT-01",
+  "actual_context_id": "/root/cal_audit",
+  "model_id": null,
+  "phase": 2,
+  "phase_label": "independent_semantic_normalization_precheck",
+  "input_task": {
+    "path": "tasks/CAL-STRUCTURE-AUDIT-01.json",
+    "sha256": "3f2122d08a6224b8b56fe6a8ed21945e8d93f395233e33a219c5ce294b7c5e12"
+  },
+  "task_input_checks": [
+    {
+      "path": "datasets/calibration-normalized-0001/elements.normalized.jsonl",
+      "bytes": 55952,
+      "sha256": "bd1d33a7418a768dcde9c2dacd71c255eb293aa4e38b9d7620e377af9b0a1a3a",
+      "task_sha256": "bd1d33a7418a768dcde9c2dacd71c255eb293aa4e38b9d7620e377af9b0a1a3a",
+      "matches": true
+    },
+    {
+      "path": "datasets/calibration-normalized-0001/decisions.jsonl",
+      "bytes": 77999,
+      "sha256": "cd0d6254fbc430390434aabe62e43533f30495bce9d207ab9671c949a7ac1a19",
+      "task_sha256": "cd0d6254fbc430390434aabe62e43533f30495bce9d207ab9671c949a7ac1a19",
+      "matches": true
+    },
+    {
+      "path": "datasets/calibration-normalized-0001/PROVENANCE.json",
+      "bytes": 2102,
+      "sha256": "f9053742608bdfb412b308cbb576200010c3011dc7b9e63ce1123afe55775eba",
+      "task_sha256": "f9053742608bdfb412b308cbb576200010c3011dc7b9e63ce1123afe55775eba",
+      "matches": true
+    },
+    {
+      "path": "datasets/calibration-normalized-0001/merge_map.jsonl",
+      "bytes": 29429,
+      "sha256": "dc8fd8ff7d6caf1ff52c7b98e0d447632fd3cac989372e4cbb5514a1bddfe6d8",
+      "task_sha256": "dc8fd8ff7d6caf1ff52c7b98e0d447632fd3cac989372e4cbb5514a1bddfe6d8",
+      "matches": true
+    },
+    {
+      "path": "datasets/calibration-normalized-0001/findings.jsonl",
+      "bytes": 139503,
+      "sha256": "04cbaf2cff3ea21b167d795e3de13aa59f2b38e605d1a332c0a177a39f543a89",
+      "task_sha256": "04cbaf2cff3ea21b167d795e3de13aa59f2b38e605d1a332c0a177a39f543a89",
+      "matches": true
+    },
+    {
+      "path": "datasets/calibration-normalized-0001/sources.jsonl",
+      "bytes": 69299,
+      "sha256": "325dda5bbf229cd6ed16227a879e5f3e1ad4cc21ccb2ea6621de8ccedb8aa818",
+      "task_sha256": "325dda5bbf229cd6ed16227a879e5f3e1ad4cc21ccb2ea6621de8ccedb8aa818",
+      "matches": true
+    },
+    {
+      "path": "datasets/calibration-normalized-0001/origin_groups.json",
+      "bytes": 39337,
+      "sha256": "6e234432c98f4a621d840151ff62638a2ca13c881f9e3b6f337022bb42add6a7",
+      "task_sha256": "6e234432c98f4a621d840151ff62638a2ca13c881f9e3b6f337022bb42add6a7",
+      "matches": true
+    },
+    {
+      "path": "datasets/calibration-normalized-0001/INDEX.jsonl",
+      "bytes": 52728,
+      "sha256": "70c49104edbed6f37d062bc2e319712f8f4f095da6fc6cb2a162176d6a170fc8",
+      "task_sha256": "70c49104edbed6f37d062bc2e319712f8f4f095da6fc6cb2a162176d6a170fc8",
+      "matches": true
+    },
+    {
+      "path": "datasets/calibration-normalized-0001/relations.jsonl",
+      "bytes": 4689,
+      "sha256": "7c5036dc8cf8e07753e6665b1412d44b11393ee1fad045aaaedf0fdb0886270d",
+      "task_sha256": "7c5036dc8cf8e07753e6665b1412d44b11393ee1fad045aaaedf0fdb0886270d",
+      "matches": true
+    }
+  ],
+  "source_preflight_immutable_baseline": [
+    {
+      "path": "checks/independent-source-preflight-0001/AUDIT.md",
+      "sha256": "c4862d3e02c5d3e4c51668f3f6b15df65cfab69fc26a25c8c6593b023de01c63",
+      "bytes": 15761
+    },
+    {
+      "path": "checks/independent-source-preflight-0001/CONTEXT.json",
+      "sha256": "888a8d86da4dea1644a1dbb720554fdae6aa2ea10b8a2b1e1daa23bbb219a3e3",
+      "bytes": 9444
+    },
+    {
+      "path": "checks/independent-source-preflight-0001/INPUT_INTEGRITY.json",
+      "sha256": "6d6fe1157aaef64b05927d47e886af182755c8144ebe19accc2e20fb93457cd2",
+      "bytes": 15057
+    },
+    {
+      "path": "checks/independent-source-preflight-0001/REPORT.md",
+      "sha256": "b42f4901b0f0016f248bf7877c500777ba6d36cecdfd5cde0baf79834ad40ddf",
+      "bytes": 2299
+    },
+    {
+      "path": "checks/independent-source-preflight-0001/RESULT_MANIFEST.json",
+      "sha256": "9f292e14853cf26fb0197d5f810e85c683f37a52f49e90555ed38689fb72de2b",
+      "bytes": 9340
+    },
+    {
+      "path": "checks/independent-source-preflight-0001/STATIC_CHECKS.json",
+      "sha256": "87b9250d337d099dd989a08bba76293167f1449a31e42eeeef15e4d396384a61",
+      "bytes": 1360
+    },
+    {
+      "path": "checks/independent-source-preflight-0001/SUMMARY.json",
+      "sha256": "842f278137411ec436a886e0daa036e22746816c9ef2b6476b78cc68a89519ca",
+      "bytes": 1070
+    },
+    {
+      "path": "checks/independent-source-preflight-0001/checked_ids.json",
+      "sha256": "18ed75ed44a750e4736b38231959358fe3f8082c4ba554fab5ea5101c5a0ce12",
+      "bytes": 7607
+    },
+    {
+      "path": "checks/independent-source-preflight-0001/claim_checks.jsonl",
+      "sha256": "24cfa23aed7497aaa18e4d7dd039180a178445d0233247597763eecb7e1da8f9",
+      "bytes": 33567
+    },
+    {
+      "path": "checks/independent-source-preflight-0001/finding_checks.jsonl",
+      "sha256": "a5b782fa3e66a8004fb99d9cc55c72b472fee4d688d6bb0cd51dd3fe96ea2af6",
+      "bytes": 34163
+    },
+    {
+      "path": "checks/independent-source-preflight-0001/http_log.jsonl",
+      "sha256": "b6afcbe0cf0d0cc8dee4587526846f811595515f52c86e55199a52055d23775e",
+      "bytes": 48859
+    },
+    {
+      "path": "checks/independent-source-preflight-0001/issues.jsonl",
+      "sha256": "7811dfe4da9ba6f04abf735761857a66bfcb9dece289aeb80c9ee60755064784",
+      "bytes": 3316
+    },
+    {
+      "path": "checks/independent-source-preflight-0001/provenance_groups.json",
+      "sha256": "d343b7e71d5856b489d8431ff8782feac4864d7747c862f3a4e954b8e9e97202",
+      "bytes": 16172
+    },
+    {
+      "path": "checks/independent-source-preflight-0001/source_checks.jsonl",
+      "sha256": "58706460aeef037f62b0d831bd0675a8d4faec811033479629b032ac9c77b508",
+      "bytes": 164899
+    }
+  ],
+  "new_network_requests": 0,
+  "independence_limits": [
+    "Same audit context as SOURCE PREFLIGHT; not another independent model",
+    "No analysis/full cards, ratings, calculations or application read",
+    "Only normalized skeletons/index, raw findings/sources and normalizer decisions in scope"
+  ],
+  "completed_at": "2026-11-13T08:56:33.439793+00:00",
+  "additional_inputs": [
+    {
+      "path": "datasets/calibration-raw-0002/sources.jsonl",
+      "bytes": 66710,
+      "sha256": "19b794137e77ef4feec5afd73c8488b4361af2035c3dae4bbea4fa2d7bf6cae7"
+    },
+    {
+      "path": "datasets/calibration-raw-0002/findings.jsonl",
+      "bytes": 139503,
+      "sha256": "04cbaf2cff3ea21b167d795e3de13aa59f2b38e605d1a332c0a177a39f543a89"
+    },
+    {
+      "path": "datasets/calibration-raw-0002/REVISION.json",
+      "bytes": 1930,
+      "sha256": "afa4ec43bf690947ec6638ccc095a716730755ba8d595ed3fd12d9d3bfbc5cf1"
+    },
+    {
+      "path": "accepted/CAL-NORMALIZE-01/attempt-001/RESULT_MANIFEST.json",
+      "bytes": 8557,
+      "sha256": "2a1fb106c68875b897d1fa06637274f8fbe8114ba9f0aa5232e386454ace90d2"
+    }
+  ],
+  "source_cache_reuse": "All61 /tmp response bodies match phase1 recorded SHA; focused sections for HSE/PLOS/NHS/Moodle/Yjs re-read locally, zero new GET.",
+  "source_preflight_unchanged_at_end": true,
+  "initial_provenance_recorded_at": "2026-11-13T08:51:51.049482+00:00",
+  "timestamp_note": "Record times are actual output capture/check times; exact per-paragraph review start/end times were not separately recorded.",
+  "final_seal_checked_at": "2026-11-13T08:59:41.941479+00:00"
+}
