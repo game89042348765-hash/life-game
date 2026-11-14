@@ -1,0 +1,123 @@
+{
+  "date_moscow": "2026-11-10",
+  "source_commit": "1d16c2d6ce37431d9374d6744a4acdedb58a7a56",
+  "notes": "Static source baseline; local publication notes in CURRENT_WORK may differ from commit. No personal browser data.",
+  "files": {
+    "index.html": {
+      "bytes": 764028,
+      "sha256": "e2dc9f9e05cb8887db8456a8cfbf5da9b1b9995701853567d205d890961179a3"
+    },
+    "LifeGame_PROJECT_CONTEXT.md": {
+      "bytes": 145685,
+      "sha256": "2dea421b2cd828c0da8104a06be73eaedae5cde18ac41408137f256779cc3c32"
+    },
+    "LifeGame_CURRENT_WORK.md": {
+      "bytes": 79649,
+      "sha256": "5eddbcc681694129e47bec00289c73014b515f249f036762b91fc521b3ecb8f5"
+    },
+    "lifegame_happiness_200_messages.json": {
+      "bytes": 65568,
+      "sha256": "0d9ef49d02101cd51177b8a3b6963f1e811c0d448bbc19e427c3bf7a4c88d3ce"
+    },
+    "assets/block-path-aesthetics.css": {
+      "bytes": 55217,
+      "sha256": "01f33c44bfd8645767baba58634a5a39ec014214c49ac8ccd0d046f6d44ebde3"
+    },
+    "assets/block-stages.css": {
+      "bytes": 6414,
+      "sha256": "de5931376379dbbe17e076d897bf48d757e58a7f6d0aa7229d1a6167f4913eed"
+    },
+    "assets/block-stages.js": {
+      "bytes": 7712,
+      "sha256": "5579fc5d98604e519c30949d6e775b045d6fa510344a7b573f77db2135f84f3b"
+    },
+    "assets/calendar-links.js": {
+      "bytes": 2290,
+      "sha256": "22e01beb00726528aa611ba0e76b3e3baa2ecfc189e6ae2dcda92e549f5e4d89"
+    },
+    "assets/images/journey.png": {
+      "bytes": 2231849,
+      "sha256": "ba66742c46f01a3f894687d1a903da503696abaf04ca7628e444a3919ce37bf2"
+    },
+    "assets/images/journey.webp": {
+      "bytes": 1656876,
+      "sha256": "b2d712d035acd9461e0bb2f80d7b4e07a7792aa0fe8fc7436816febc09fed5ca"
+    },
+    "assets/images/quiet-focus.png": {
+      "bytes": 1898704,
+      "sha256": "92868956e06a041617446cd57eaad35efc225d9d406c4f5e6995b08307729cf6"
+    },
+    "assets/images/quiet-focus.webp": {
+      "bytes": 1357924,
+      "sha256": "51cb9ebdd9e2b9bdfa089bff47a8f12e7cb10cb2f277c838c3eb6dfea543b097"
+    },
+    "assets/images/splash-path.jpg": {
+      "bytes": 243462,
+      "sha256": "92061a6354c2350146b8e096b4c3af13d1be77895b81f2c41b836fd7220307a2"
+    },
+    "assets/images/sunrise-splash.jpg": {
+      "bytes": 419537,
+      "sha256": "8ad58071d67495b47ae3d5bd8f594405ce63d96c14f3f52b8f8b18d70e0edd93"
+    },
+    "assets/legacy-data.js": {
+      "bytes": 3332,
+      "sha256": "6dd8aa9460635bc6bb0c457c13d9fcb2f9057e3cac962812afea2b925789799e"
+    },
+    "assets/light-thread.js": {
+      "bytes": 6081,
+      "sha256": "354667b2a90a77e1495a32ecdbb84c94518ed73cabe1a5a09c6c884240dcf92b"
+    },
+    "assets/path-fx.css": {
+      "bytes": 3439,
+      "sha256": "d1737e37e1685d62a4f5e001f5465c1404a7a1eb73657ea00b377b672833f3b2"
+    },
+    "assets/path-v2.css": {
+      "bytes": 16088,
+      "sha256": "b0e2365cb74e271bdaab6d615c826b1c4f535f8e990a7999b387f08c4c076046"
+    },
+    "assets/path-v2.js": {
+      "bytes": 13663,
+      "sha256": "c6fd63bcc9398bd8b1e1e79d729729a66cb84566aa195bf5af538e5644e1da26"
+    },
+    "assets/splash-scene.js": {
+      "bytes": 10165,
+      "sha256": "99bfc646b260f1a1e83bbec7491a121422767c4188e4718df6b23fc147e066ce"
+    },
+    "assets/splash-sunrise.css": {
+      "bytes": 7234,
+      "sha256": "731320a8ff8db3894414a6c45c306ae4f2c6aa6c2c012967b281b0bc0080349b"
+    },
+    "assets/splash-sunrise.js": {
+      "bytes": 9512,
+      "sha256": "85ced80e02cfe4e6e418bf6db1dad03bd824abff661802e4e46c3388ce848d4d"
+    },
+    "assets/task-form.css": {
+      "bytes": 26159,
+      "sha256": "18a058dd3737a5b5f6c1f969226bb70570ad16cb9f73707aadfbd66347f5f677"
+    },
+    "assets/task-form.js": {
+      "bytes": 6262,
+      "sha256": "b9a7e9155a5458a67fccc72d6c901c990efc8fce3f5f2b2bdad975484328e237"
+    },
+    "assets/wallet-counter.css": {
+      "bytes": 908,
+      "sha256": "0b8534203866a3afd8cd7c8585455a5bf6ab8e7db8861e6bdcaa8a0d9e8debe6"
+    },
+    "tests/block-paths.test.cjs": {
+      "bytes": 2960,
+      "sha256": "95751b8d9672e5a505401b658fa3434ebb42c9e4259330d93dc98186e5f4307e"
+    },
+    "tests/block-stages.test.cjs": {
+      "bytes": 5063,
+      "sha256": "e0be25a19ad8eb195571cfaaf43737e483fb3262c25b4079652c7a3cfcd75972"
+    },
+    "tests/calendar-links.test.cjs": {
+      "bytes": 2396,
+      "sha256": "8effc327790716126b494bba06d07806e36dc69a840a36abe8f5506257585510"
+    },
+    "tests/conveyor-demo.test.cjs": {
+      "bytes": 5390,
+      "sha256": "f392572e9dab26923b9808d94a4a8df3ee3af6de0f55af9e144b9bb03da9546f"
+    }
+  }
+}
